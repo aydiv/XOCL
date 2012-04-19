@@ -87,7 +87,7 @@
 				<directory>${project.basedir}/src/xocl</directory>
 			</resource>
 			<resource>
-				<directory>${project.build.directory}/avro-gen</directory>
+				<directory>${project.basedir}/src-gen/avro</directory>
 			</resource>
 		</resources>
 		<plugins>
@@ -115,7 +115,7 @@
 				<inherited>true</inherited>
 				<groupId>com.x.ocl</groupId>
 				<artifactId>xocl-maven-plugin</artifactId>
-				<version>1.2.5</version>
+				<version>1.2.6</version>
 				<executions>
 					<execution>
 						<phase>generate-sources</phase>
@@ -124,7 +124,7 @@
 						</goals>
 						<configuration>
 							<sourceDirectory>${project.basedir}/src/xocl</sourceDirectory>
-							<xocltoavdl.output>${project.build.directory}/avro-gen</xocltoavdl.output>
+							<outputDir>${project.basedir}/src-gen/avro</outputDir>
 							<legacyMode>false</legacyMode>
 						</configuration>
 					</execution>
@@ -142,7 +142,7 @@
 							<goal>idl-protocol</goal>
 						</goals>
 						<configuration>
-							<sourceDirectory>${project.build.directory}/avro-gen</sourceDirectory>
+							<sourceDirectory>${project.basedir}/src-gen/avro</sourceDirectory>
 						</configuration>
 					</execution>
 				</executions>
