@@ -1,0 +1,21 @@
+ package com.x.marketplace.v3{  
+ 	
+ 	import com.x.marketplace.v3.*
+ 	
+    transaction LookupStore query
+    {
+        sender
+        {
+        	message LookupStore
+        	{
+        		 timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success LookupStoreSucceeded
+        	failure LookupStoreFailed          
+        } 
+    }
+    
+ }

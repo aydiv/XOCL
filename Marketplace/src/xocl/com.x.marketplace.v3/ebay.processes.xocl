@@ -1,0 +1,20 @@
+ package com.x.marketplace.v3{  
+ 	
+ 	import com.x.marketplace.v3.*
+ 		
+	process StoreLookup
+	{
+		description "A merchant looks up metadata about their marketplace store"
+		roles(MarketplaceMarketplaceMetadataConsumer, MarketplaceMarketplaceMetadataProvider)
+	
+		workflow
+		{
+			transaction LookupStore
+			{
+				roles(MarketplaceMarketplaceMetadataConsumer, MarketplaceMarketplaceMetadataProvider)
+			}
+		}
+	}
+ 	
+ 	
+ }
