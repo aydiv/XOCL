@@ -11,17 +11,17 @@ package com.x.core.v1
 
 	record Campaign
 	{
-		string? id = null
+		string? id
 
 		/** The account this campaign belongs to */
 		string accountId
 		
 		string name
-		string? _avdl_description = null
+		string? _avdl_description
 
 		/** Date Time Format: ISO 8601 */
-		 string? startTime = null
-		 string? endTime = null
+		 datetime? startTime
+		 datetime? endTime
 		
 		/** Provider specific types can be specified as strings */
 		union{CampaignStatus,string} status

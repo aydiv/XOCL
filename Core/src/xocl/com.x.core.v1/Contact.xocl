@@ -13,10 +13,10 @@ package com.x.core.v1
 	record Contact 
 	{
 		Name fullName	   
-	    array<Address>? addresses = null
-		Phone? primaryPhone = null
-	    array<Phone>? additionalPhones = null
-		Email? emailAddress = null
-		ContactAddressType? addressType = null
+	    array<Address>? addresses
+		Phone? primaryPhone
+	    array<Phone>? additionalPhones
+		Email? emailAddress
+		ContactAddressType? addressType
 	}
 }

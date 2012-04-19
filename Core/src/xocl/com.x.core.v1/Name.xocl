@@ -4,9 +4,9 @@ package com.x.core.v1
 	record Name
 	{
 		string firstName
-		string? middleName = null
+		string? middleName
 		string lastName
-		string? prefix = null
-		string? suffix = null
+		string? prefix
+		string? suffix
 	}
 }

@@ -4,12 +4,12 @@ package com.x.core.v1
 	record Address
 	{
 		string street1
-		string? street2 = null
-		string? street3 = null
-		string? street4 = null
+		string? street2
+		string? street3
+		string? street4
 		string city
-		string? county = null
-		string? stateOrProvince = null
+		string? county
+		string? stateOrProvince
 		string postalCode
 		string country
 	}

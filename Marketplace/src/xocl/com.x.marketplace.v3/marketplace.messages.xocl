@@ -80,7 +80,7 @@ package com.x.marketplace.v3{
 	
 	record SupportedShippingService {
 		string _AVDL_description;
-		string? carrier = null; //USPS
+		string? carrier; //USPS
 		string serviceName; //i.e. USPSPriorityFlatRateBox
 		int shippingTimeMaxInDays;
 		int shippingTimeMinInDays;
@@ -331,8 +331,8 @@ package com.x.marketplace.v3{
 
 	record SearchCategorySucceeded {
 		array<Category> categories; 
-		string? siteCode = null;
-		string? environmentName = null;
+		string? siteCode;
+		string? environmentName;
 	}
 
 	record SearchCategoryFailed {
@@ -449,7 +449,7 @@ package com.x.marketplace.v3{
 	record OfferDeactivated {
 		string offerId;
 		string reason;
-		string? policyGroupId = null;
+		string? policyGroupId;
 	}
 
 	

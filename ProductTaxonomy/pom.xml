@@ -67,8 +67,6 @@
                             <goal>xocltoavdl</goal>
                         </goals>
                         <configuration>
-                            <sourceDirectory>${project.basedir}/src/xocl</sourceDirectory>
-                            <xocltoavdl.output>${project.build.directory}/avro-gen</xocltoavdl.output>
 							<legacyMode combine.self="override">true</legacyMode>
                         </configuration>
                     </execution>

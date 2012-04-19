@@ -2,7 +2,7 @@ package com.x.core.v1
 {
 	record DateRange
 	{
-		string? beginDate = null
-		string? endDate = null
+		string? beginDate
+		string? endDate
 	}
 }

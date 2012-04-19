@@ -76,7 +76,7 @@ package com.x.producttaxonomy.v1{
 		string id;
 		string name;
 		array<ChannelAttributeDecoration>? channelAttributeDecorations;
-		string? _AVDL_description = null;
+		string? _AVDL_description;
 		
 		// default value
 	    boolean? defaultValue;
@@ -121,7 +121,7 @@ package com.x.producttaxonomy.v1{
 		// List of product category ids which the product type is associated with
 		array<string>? productClassIds;
 		// Attribute can be StringAttribute, StringEnumerationAttribute or BooleanAttribute
-		array<union {StringAttribute, StringEnumerationAttribute, BooleanAttribute}>? attributes = null;
+		array<union {StringAttribute, StringEnumerationAttribute, BooleanAttribute}>? attributes;
 	}
 	
 	record ProductTaxonomy {

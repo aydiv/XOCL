@@ -113,7 +113,7 @@ package com.x.pim.v1
     {
     	// a string attribute value can optionally refer to 
     	// a predefined value in ProductTaxonomy, or it can be localized name/value pair 
-        string? valueId = null;
+        string? valueId;
         // this localized value can be populated by capability if valueId is present 
         // if valueId is not present, the localized values can be populated by requester 
         StringAttributeValue? attributeValue;

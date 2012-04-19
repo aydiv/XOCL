@@ -44,8 +44,8 @@ package com.x.ordermanagement.v1 {
 	
 
 	record GiftTag {
-		string? from = null
-		string? to = null
+		string? from
+		string? to
 		string giftMessage
 	}
 	
@@ -71,7 +71,7 @@ package com.x.ordermanagement.v1 {
 	
 	record Shipping {
 		ShippingServiceType serviceType
-		string? carrierCode = null
+		string? carrierCode
 		
 		/** Next day, ground, etc. */
 		string shippingMethod
@@ -79,7 +79,7 @@ package com.x.ordermanagement.v1 {
 		DateRange deliveryWindow
 		DateRange shippingWindow
 		
-		string? shippingMessage = null
+		string? shippingMessage
 	}
 	
 	record AdditionalCost {
@@ -89,8 +89,8 @@ package com.x.ordermanagement.v1 {
 	
 	record TrackingDetail {
 		string trackingNumber
-		string? carrier = null
-		string? service = null
+		string? carrier
+		string? service
 		ShippingServiceType serviceType
 	}
 	
@@ -99,8 +99,8 @@ package com.x.ordermanagement.v1 {
 
 		string datePaid
 
-		string? transactionId = null
-		string? transactionStatus = null
+		string? transactionId
+		string? transactionStatus
 	}
 	
 	record Tax {
@@ -136,9 +136,9 @@ package com.x.ordermanagement.v1 {
 	}
 
 	record SimpleOrderLineData {
-		string? orderLineId = null
-		string? itemId = null
-		string? orderNumber = null
+		string? orderLineId
+		string? itemId
+		string? orderNumber
 		
 		float quantity
 		string productSku
@@ -151,17 +151,17 @@ package com.x.ordermanagement.v1 {
 		/** This is quantity * unit price */
 		OrderLinePrice price
 			
-		datetime? dateCancelled = null
-		datetime? dateDelivered = null
-		datetime? dateShipped = null
-		datetime? dateReturned = null
-		datetime? dateInvoiced = null
+		datetime? dateCancelled
+		datetime? dateDelivered
+		datetime? dateShipped
+		datetime? dateReturned
+		datetime? dateInvoiced
 		
 		ShipTo destination
 	}
 	
 	record OrderLineData extends SimpleOrderLineData {	
-		string? lineMessage = null
+		string? lineMessage
 		
 		boolean? bundle = false
 		boolean? expandBundle = false
@@ -215,7 +215,7 @@ package com.x.ordermanagement.v1 {
 		array<OrderLineData> orderLines
 		
 		/** The marketing source that referred this order */
-		string? referralSource = null
+		string? referralSource
 	}
 	
 	record OrderData extends NonSensitiveOrderData {
@@ -227,7 +227,7 @@ package com.x.ordermanagement.v1 {
 		/** if not provided, use ShipTo in the associated OrderLine */
 		ShipTo destination
 		
-		string? purchaseOrder = null
+		string? purchaseOrder
 	}
 	
 	record NonSensitiveOrder extends NonSensitiveOrderData {
@@ -254,13 +254,13 @@ package com.x.ordermanagement.v1 {
 	record OrderShipped {
 		string orderNumber
 		string shipmentId
-		array<TrackingDetail>? trackingDetails = null
+		array<TrackingDetail>? trackingDetails
 		string sourceId
 	}
 	
 	record MarketplaceOrderShipped extends OrderShipped {
 		string accountId
-		string? siteCode = null		
+		string? siteCode		
 	}
 	
     record CreateOrder {
@@ -269,7 +269,7 @@ package com.x.ordermanagement.v1 {
 	
     record CreateMarketplaceOrder extends CreateOrder {
 		string accountId
-		string? siteCode = null
+		string? siteCode
 	}
 	
 	record CreateOrderSucceeded {
@@ -278,7 +278,7 @@ package com.x.ordermanagement.v1 {
 	
 	record SalesChannelCreateOrderSucceeded extends CreateOrderSucceeded {
 		string accountId
-		string? siteCode = null
+		string? siteCode
 	}
 	
 	record CreateOrderFailed {
@@ -288,7 +288,7 @@ package com.x.ordermanagement.v1 {
 	
 	record SalesChannelCreateOrderFailed extends CreateOrderFailed {
 		string accountId
-		string? siteCode = null
+		string? siteCode
 	}
 	
 	record OrderCreated {
@@ -297,7 +297,7 @@ package com.x.ordermanagement.v1 {
 	
 	record MarketplaceOrderCreated extends OrderCreated {
 		string accountId
-		string? siteCode = null
+		string? siteCode
 	}
 	
 	record CancelOrder {
@@ -306,7 +306,7 @@ package com.x.ordermanagement.v1 {
 	
 	record CancelMarketplaceOrder extends CancelOrder {
 		string accountId
-		string? siteCode = null
+		string? siteCode
 	}
 	
 	record CancelOrderSucceeded extends CancelOrder {
@@ -314,7 +314,7 @@ package com.x.ordermanagement.v1 {
 	
 	record CancelMarketplaceOrderSucceeded extends CancelOrderSucceeded {
 		string accountId
-		string? siteCode = null
+		string? siteCode
 	}
 	
 	record CancelOrderFailed {

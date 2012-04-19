@@ -201,7 +201,7 @@ package com.x.example.v1
     	/*
     	 * A success message for a response transaction may return data the sender.
     	 */
-    	string TrackingNumber = null 
+    	string TrackingNumber 
     }
     
     record ShipOrderFailed extends ShipOrder
