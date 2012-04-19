@@ -35,5 +35,41 @@ package com.x.marketplace.v3{
 	    }
 	    
 	 }
+	 		
+    contract EbayMarketplaceOfferer 
+    {
+    	// A description defines the purpose of the contract
+    	description "A system that creates offers on ebay marketplace and processes the orders from the marketplace"
+    	
+    	// A set of roles collectively define the implementer's responsibilities
+    	roles
+    	{
+	   		//Marketplace  roles 
+			MarketplaceSetup.MarketplaceMetadataConsumer
+	   		PolicyGroupCreation.MarketplaceMerchantConsole<Ebay>
+	   		PolicyGroupUpdate.MarketplaceMerchantConsole<Ebay> 
+	   		PolicyGroupDeletion.MarketplaceMerchantConsole<Ebay> 
+	   		PolicyGroupLookup.MarketplacePolicyManager<Ebay> 
+	   		OfferPublication.OfferManager<Ebay> 
+	   		OfferDeactivation.OfferManager
+	   		PublishedOfferRevision.OfferManager<Ebay>
+	   		PublishedOfferRevocation.OfferManager
+	   		OfferSearch.OfferManager
+	   		AuthorizedAccountSearch.MarketplaceMetadataConsumer
+	   		AuthorizationRevoke.MarketplaceMetadataConsumer
+	   		
+	   		//Ebay roles
+	        StoreLookup.MarketplaceMarketplaceMetadataConsumer
+	        
+	   		//Order roles
+	   		ProcessSalesChannelOrder.OrderProcessor<SalesChannelOrder> 
+	   		
+	   		//Auth roles
+	   		AuthorizationGrant.AuthorizedUser
+	    }
+	    
+	 }
+	
+	 
 	
 }

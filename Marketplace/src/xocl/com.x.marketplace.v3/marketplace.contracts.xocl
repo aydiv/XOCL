@@ -5,7 +5,7 @@ package com.x.marketplace.v3{
 	
     contract Marketplace 
     {
-    	description "An adapter to a sales channel that is an online marketplace, such as eBay"
+    	description "An adapter to an online marketplace, such as eBay"
     	
     	roles
     	{
@@ -34,4 +34,34 @@ package com.x.marketplace.v3{
 	    
 	 }
 	
+	contract MarketplaceOfferer 
+    {
+    	// A description defines the purpose of the contract
+    	description "A system that places offers on a marketplace and processes orders from the marketplace"
+    	
+    	// A set of roles collectively define the implementer's responsibilities
+    	roles
+    	{
+	   		//Marketplace  roles 
+			MarketplaceSetup.MarketplaceMetadataConsumer
+	   		PolicyGroupCreation.MarketplaceMerchantConsole
+	   		PolicyGroupUpdate.MarketplaceMerchantConsole
+	   		PolicyGroupDeletion.MarketplaceMerchantConsole
+	   		PolicyGroupLookup.MarketplacePolicyManager 
+	   		OfferPublication.OfferManager
+	   		OfferDeactivation.OfferManager
+	   		PublishedOfferRevision.OfferManager
+	   		PublishedOfferRevocation.OfferManager
+	   		OfferSearch.OfferManager
+	   		AuthorizedAccountSearch.MarketplaceMetadataConsumer
+	   		AuthorizationRevoke.MarketplaceMetadataConsumer
+	   		
+	   		//Order roles
+	   		ProcessSalesChannelOrder.OrderProcessor<SalesChannelOrder> 
+	   		
+	   		//Auth roles
+	   		AuthorizationGrant.AuthorizedUser
+	    }
+	    
+	 }
 }
