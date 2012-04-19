@@ -383,7 +383,7 @@ package com.x.example.v1
     }
     
     /*
-     * This transaction is a broadcast. Any two way transaction can be a broadcast.
+     * This transaction is a broadcast, as indicated by the presence of the broadcast keyword.
      * In a broadcast, the sender waits for the specified timeouts to expire, and then processes 
      *   all received messages, instead of sending a cancellation to abort the transaction.
      * Any messages received after the specified timeouts have expired are ignored by the sender.
