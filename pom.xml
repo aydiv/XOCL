@@ -62,7 +62,6 @@
 		<module>Authorization</module>
 		<module>Cart</module>
 		<module>ComparisonShoppingEngine</module>
-		<module>ConsumerRating</module>
 		<module>Customer</module>
 		<module>Example</module>
 		<module>InventoryManagement</module>
@@ -73,14 +72,14 @@
 		<module>WebStore</module>
 	</modules>
 
-	<dependencies>
-		<dependency>
-			<groupId>org.apache.avro</groupId>
-			<artifactId>avro</artifactId>
-			<version>1.6.3</version>
-			<scope>compile</scope>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>1.6.3</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 	<build>
 		<resources>
