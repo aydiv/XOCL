@@ -34,7 +34,7 @@ package com.x.marketplace.v3{
 	    
 	 }
 	
-	contract MarketplaceOfferer 
+	contract MarketplaceOfferProducer 
     {
     	// A description defines the purpose of the contract
     	description "A system that places offers on a marketplace and processes orders from the marketplace"
