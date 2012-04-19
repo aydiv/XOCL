@@ -1,53 +1,48 @@
 /** This file includes the processes that are part of the
  *  order management domain
  */
-package com.x.ordermanagement.v2 
-{
+package com.x.ordermanagement.v2 {
 	import com.x.ordermanagement.v2.*
 	import com.x.customer.v1.*
 	
-	entity Order
-    {
+	entity Order {
     	state Created[Submitted]
     	state Submitted[Cancelled, Shipped]
     	state Shipped[Cancelled]
     	state Cancelled
     }
     
-    //new process for marketing channels and analytics.  Non-PII only, no customer information.  
-    //Search only for now
-  
-    process OrderSearch<NonSensitive>
-    {
+    // A new process for marketing channels and analytics.  Non-PII only, no customer information.  
+    // Search only for now
+    process OrderSearch<NonSensitive> {
+    	
     	description "A marketing or analytics provider searches for orders modified since a timestamp"
+    	
     	roles (OrderManager, OrderConsumer)
     	
     	workflow {
-    		transaction SearchOrder<NonSensitive>
-    		{
+    		transaction SearchOrder<NonSensitive> {
     			roles (OrderManager, OrderConsumer)
     		}   
     	}
     }
     
-    process ProcessSalesChannelOrder<SalesChannelOrder> 
-    {
-        description "An order id submitted for processing and is shipped or cancelled"
+    // Process orders that originate from a sales channel
+    process ProcessSalesChannelOrder<SalesChannelOrder> {
+    	
+        description "An order is submitted for processing and is shipped or cancelled"
         
         roles(Marketplace, OrderProcessor, OrderObserver, CustomerManager)
     
-	    workflow 
-	    {
+	    workflow {
 	    	all {
 	   			// Notify observers that an order was created
-	       	    transaction OrderCreated<SalesChannelOrder>
-	        	{
+	       	    transaction OrderCreated<SalesChannelOrder> {
 	        		roles(Marketplace, OrderObserver)
 	       		}
 	    	 	
 	    		// An order submitter submits an order to an order processor
-	       	 	transaction ProcessOrder
-	        	{
+	       	 	transaction ProcessOrder {
 	        		roles(Marketplace, OrderProcessor)
 	        	}
 	        }
@@ -58,25 +53,20 @@ package com.x.ordermanagement.v2
 	    	}	 
 	        one {     
 	        	// An order processor updates shipment tracking information for an order
-	        	transaction OrderShipped<SalesChannelOrder>
-	        	{
+	        	transaction OrderShipped<SalesChannelOrder> {
 	        		roles(OrderProcessor, Marketplace)
 	        	}
         	
-	        	do
-	        	{
-		        	any
-		        	{
+	        	do {
+		        	any {
 						// A canceller asks the processer to cancel its order 
-						transaction CancelOrder<SalesChannelOrder>
-						{
+						transaction CancelOrder<SalesChannelOrder> {
 						   	roles(Marketplace, OrderProcessor)
 						}
 					}
 					
 					// The order processor informs observers that an order was cancelled
-					transaction OrderCancelled<SalesChannelOrder>
-					{
+					transaction OrderCancelled<SalesChannelOrder> {
 					   	roles(OrderProcessor, OrderObserver)
 					}
 				}
