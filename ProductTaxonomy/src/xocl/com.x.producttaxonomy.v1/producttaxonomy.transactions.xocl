@@ -6,44 +6,44 @@ package com.x.producttaxonomy.v1{
 	
     transaction SearchProductType query {
         sender {
-        	message SearchProductType "/productTaxonomy/productType/search" {
+        	message SearchProductType topic "/productTaxonomy/productType/search" {
         		timeouts(response=1m)     		
         	}
         }
         receiver {
-        	success SearchProductTypeSucceeded "/productTaxonomy/productType/searchSucceeded"
-            failure SearchProductTypeFailed "/productTaxonomy/productType/searchFailed"
+        	success SearchProductTypeSucceeded topic "/productTaxonomy/productType/searchSucceeded"
+            failure SearchProductTypeFailed topic "/productTaxonomy/productType/searchFailed"
         }
     }
 	
 	transaction GetProductTaxonomy query {
         sender {
-        	message GetProductTaxonomy  "/productTaxonomy/get" {
+        	message GetProductTaxonomy topic "/productTaxonomy/get" {
         		timeouts(response=30s)     		
         	}
         }
         receiver {
-        	success GetProductTaxonomySucceeded "/productTaxonomy/getSucceeded"
-            failure GetProductTaxonomyFailed "/productTaxonomy/getFailed"
+        	success GetProductTaxonomySucceeded topic "/productTaxonomy/getSucceeded"
+            failure GetProductTaxonomyFailed topic "/productTaxonomy/getFailed"
         }
     }
 
 	transaction ProductTaxonomyUpdated inform {
 		sender {
-			message ProductTaxonomyUpdated "/productTaxonomy/updated"
+			message ProductTaxonomyUpdated topic "/productTaxonomy/updated"
 		}
 	}
 
 	
     transaction GetProductType query {
         sender {
-        	message GetProductType "/productTaxonomy/productType/get" {
+        	message GetProductType topic "/productTaxonomy/productType/get" {
         		timeouts(response=5m)     		
         	}
         }
         receiver {
-        	success GetProductTypeSucceeded "/productTaxonomy/productType/getSucceeded"
-            failure GetProductTypeFailed "/productTaxonomy/productType/getFailed"
+        	success GetProductTypeSucceeded topic "/productTaxonomy/productType/getSucceeded"
+            failure GetProductTypeFailed topic "/productTaxonomy/productType/getFailed"
         }
     }
 }
