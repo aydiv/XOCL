@@ -262,7 +262,19 @@ package com.x.marketplace.v3{
             	timeouts(receipt=30s, validation=3m)
             	retries=3
             }
+            success <Ebay>PublishEbayOfferSucceeded
+        	{
+				// A success message does not have a response timeout
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
             failure PublishOfferFailed
+            {
+				// A failure message does not have a response timeout
+            	timeouts(receipt=30s)
+            	retries=3
+            }
+            failure <Ebay>PublishEbayOfferFailed
             {
 				// A failure message does not have a response timeout
             	timeouts(receipt=30s)
