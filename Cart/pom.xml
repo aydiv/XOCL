@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>com.x.ocl</groupId>
 		<artifactId>xocl-contracts</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.1</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>com.x.ocl</groupId>
@@ -14,7 +13,7 @@
 		The Cart XOCL
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/Cart</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/tags/xocl-contracts-0.0.1/Cart</connection>
 	</scm>
 
 	<repositories>
