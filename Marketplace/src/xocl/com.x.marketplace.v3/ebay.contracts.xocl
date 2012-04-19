@@ -36,7 +36,7 @@ package com.x.marketplace.v3{
 	    
 	 }
 	 		
-    contract EbayMarketplaceOfferer 
+    contract EbayMarketplaceOfferProducer
     {
     	// A description defines the purpose of the contract
     	description "A system that creates offers on ebay marketplace and processes the orders from the marketplace"
