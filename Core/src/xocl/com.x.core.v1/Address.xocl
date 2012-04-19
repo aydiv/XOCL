@@ -1,6 +1,10 @@
 
 package com.x.core.v1
 {
+	enum AddressTag{
+		BILLING
+		SHIPPING
+	}
 	record Address
 	{
 		string street1
@@ -12,5 +16,6 @@ package com.x.core.v1
 		string? stateOrProvince
 		string postalCode
 		string country
+		array<AddressTag>? tags
 	}
 }
