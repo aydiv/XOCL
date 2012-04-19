@@ -160,10 +160,6 @@ package com.x.marketplace.v3{
 				}
 			}
 		}
-	   postconditions
-		{
-			success(offer[Offer.Active])
-		}
 	}
 	
 	process OfferDeactivation(Offer offer)

@@ -184,7 +184,8 @@ package com.x.marketplace.v3{
         } 
     }
     
-    transaction PublishOffer<Ebay> response {
+    transaction PublishOffer<Ebay>(Offer offer) response {
+        preconditions(offer[Offer.Created])
         sender {
         	message PublishOffer {
         		timeouts(receipt=30s, response=3h)  		
@@ -221,6 +222,10 @@ package com.x.marketplace.v3{
             	retries=3
             }
         }
+        postconditions
+		{
+			success(offer[Offer.Active])
+		}
     }
     
     transaction RevisePublishedOffer<Ebay> response {
@@ -255,7 +260,8 @@ package com.x.marketplace.v3{
         }
     }
     
-    transaction OfferDeactivated notify {
+    transaction OfferDeactivated(Offer offer) notify {
+    	preconditions(offer[Offer.Inactive])
         sender {
         	message OfferDeactivated {
         		timeouts(receipt=30s)   
