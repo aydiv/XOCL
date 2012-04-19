@@ -1,35 +1,27 @@
-package com.x.authz.v1  0.0
-{
+package com.x.authz.v1 {
 	
 	import com.x.authz.v1.*
 	
-    process AuthorizationGrant(Authorization auth)
-	{
+    process AuthorizationGrant(Authorization auth) {
 		description "Merchant authorizes software to act on Merchant's behalf"
 		roles(AuthorizedUser, AuthorizationProvider)
 		preconditions(!exists(auth))	
 	
 	    
-	    postconditions
-		{
+	    postconditions {
 			success(exists(auth))
 			failure(!exists(auth))
 		}
 		
 	}
-	workflow  AuthorizationGrant[5m] implements AuthorizationGrant
-		{
+	workflow  AuthorizationGrant[5m] implements AuthorizationGrant {
 			
-			transaction InitAuthorization
-			{
+			transaction InitAuthorization {
 				roles(AuthorizedUser, AuthorizationProvider)
 			}
 			
-			transaction CompleteAuthorization
-			{
+			transaction CompleteAuthorization {
 				roles(AuthorizedUser, AuthorizationProvider)
 			}
-		}
-	
-	
+	}
 }

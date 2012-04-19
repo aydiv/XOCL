@@ -1,60 +1,47 @@
-package com.x.authz.v1{
+package com.x.authz.v1 {
 	
 	import com.x.authz.v1.*
 	
 	entity Authorization
 
     
-    transaction InitAuthorization response
-    {
-        sender
-        {
-        	message InitAuthorization
-        	{
+    transaction InitAuthorization response {
+        sender {
+        	message InitAuthorization {
         		timeouts(receipt=30s, response=1m)     		
         		retries=3
         	}
         }
-        receiver
-        {
-        	success InitAuthorizationSucceeded
-        	{
+        receiver {
+        	success InitAuthorizationSucceeded {
             	timeouts(receipt=30s)
             	retries=3
             }
             
-            failure InitAuthorizationFailed
-            {
+            failure InitAuthorizationFailed {
             	timeouts(receipt=30s)
             	retries=3
             }
         }
     }
     
-    transaction CompleteAuthorization response
-    {
-        sender
-        {
-        	message CompleteAuthorization
-        	{
+    transaction CompleteAuthorization response {
+        sender {
+        	message CompleteAuthorization {
         		timeouts(receipt=30s, response =5m)     		
         		retries=3
         	}
         }
-        receiver
-        {
-        	success CompleteAuthorizationSucceeded
-        	{
+        receiver {
+        	success CompleteAuthorizationSucceeded {
             	timeouts(receipt=30s)
             	retries=3
             }
             
-            failure CompleteAuthorizationFailed
-            {
+            failure CompleteAuthorizationFailed {
             	timeouts(receipt=30s)
             	retries=3
             }
         }
     }
-    
 }
