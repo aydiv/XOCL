@@ -47,7 +47,7 @@ package com.x.example.v1
     {
     	/*
     	 * Every transaction has exacty two roles: sender and receiver. One or more capabilities may
-    	 *   play the receiver role at the same time in the same event or broadcast transaction.
+    	 *   play the receiver role at the same time in an event or broadcast transaction.
 	     * The sender of the first message in a workflow must set the X-XC-MESSAGE-GUID-CONTINUATION 
 	     *   header to null, and the X-XC-RESULT-CORRELATION-ID to a new GUID.
 	     *     The value of the X-XC-RESULT-CORRELATION-ID header is the workflow ID.
@@ -95,7 +95,8 @@ package com.x.example.v1
 		 *   If the contract requires receipt acknowledgement, wait for com.x.core.v1.MessageReceived 
 		 *       on topic com.x.core.v1/MessageReceived.
 		 *     If timeout occurs, retry
-		 *       If retries exhausted, give up.
+		 *       If retries exhausted, send com.x.core.v1.TransactionCancelled to the receiver on topic 
+		 *         com.x.core.v1/TransactionCancelled with reason ValidationTimedOut.
 		 *   If the contract requires validation acknowledgement, wait for com.x.core.v1.MessageValidated 
 		 *       on topic com.x.core.v1/MessageValidated.
 		 *     If timeout occurs, retry
@@ -383,9 +384,9 @@ package com.x.example.v1
     
     /*
      * This transaction is a broadcast. Any two way transaction can be a broadcast.
-     * In a broadcast, the sender waits for the specified timeout to expire, and then processes 
+     * In a broadcast, the sender waits for the specified timeouts to expire, and then processes 
      *   all received messages, instead of sending a cancellation to abort the transaction.
-     * Any messages received after the specified timeout has expired are ignored by the sender.
+     * Any messages received after the specified timeouts have expired are ignored by the sender.
      */
     transaction LookupOrder broadcast query
     {
