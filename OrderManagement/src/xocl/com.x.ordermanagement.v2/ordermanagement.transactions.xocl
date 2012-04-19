@@ -1,0 +1,124 @@
+/** This file includes the transactions that are part of the
+ *  order management domain
+ */
+package com.x.ordermanagement.v2
+{
+	import com.x.ordermanagement.v2.*
+	
+	// Tell an order processor to process an order 
+	transaction ProcessOrder response
+	{
+		sender
+		{
+			message ProcessOrder
+			{
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}
+		
+		receiver
+		{
+			success ProcessOrderSucceeded
+			{
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+			failure ProcessOrderFailed
+		}
+	}
+	
+	// Update the shipping tracking information for an order
+	transaction OrderShipped<MarketplaceOrder> notify
+	{
+		sender
+		{
+			message OrderShipped
+			{
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+            message<MarketplaceOrder> MarketplaceOrderShipped
+			{
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}		
+	}
+    
+    // Inform observers that an order was created
+    transaction OrderCreated<MarketplaceOrder> inform
+    {
+        sender
+        {
+        	message OrderCreated
+        	message<MarketplaceOrder> MarketplaceOrderCreated
+        }
+    }
+    
+    // Cancel the content of an order
+	transaction CancelOrder<MarketplaceOrder>(Order order) response
+    {
+        sender
+        {
+        	message CancelOrder
+        	{
+        		timeouts(receipt=30s, response=3m)     		
+        		retries=3
+        	}
+        	message<MarketplaceOrder> CancelMarketplaceOrder
+        	{
+        		timeouts(receipt=30s, response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver
+        {
+        	success CancelOrderSucceeded
+        	{
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }            
+        	success<MarketplaceOrder> CancelMarketplaceOrderSucceeded
+        	{
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }            
+            failure CancelOrderFailed
+            failure<MarketplaceOrder> CancelMarketplaceOrderFailed
+        }
+		postconditions
+		{
+			success(order[Order.Cancelled])
+		}
+    }
+    
+    // Inform observers that an order was cancelled
+    transaction OrderCancelled <MarketplaceOrder> inform
+    {
+        sender
+        {
+        	message OrderCancelled
+        	message <MarketplaceOrder> MarketplaceOrderCancelled
+        }
+    }
+      
+    transaction SearchOrder<NonSensitive> query
+    {
+        sender
+        {
+        	message SearchOrder
+        	{
+        		 timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success SearchOrderSucceeded   
+        	success<NonSensitive> SearchNonSensitiveOrderSucceeded           
+                    	        
+            failure SearchOrderFailed
+        } 
+    }
+    
+}
