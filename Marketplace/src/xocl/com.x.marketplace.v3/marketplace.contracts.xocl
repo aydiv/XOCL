@@ -1,6 +1,6 @@
 package com.x.marketplace.v3{
 	import com.x.marketplace.v3.*
-	import com.x.ordermanagement.v1.*
+	import com.x.ordermanagement.v2.*
 	import com.x.authz.v1.*
 	
     contract Marketplace 
