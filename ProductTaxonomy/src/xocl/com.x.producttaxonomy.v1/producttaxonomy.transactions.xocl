@@ -3,47 +3,65 @@ package com.x.producttaxonomy.v1{
 	
 	import com.x.producttaxonomy.v1.*
 
-	
     transaction SearchProductType query {
         sender {
-        	message SearchProductType topic "/productTaxonomy/productType/search" {
+        	message SearchProductType  {
+        		topic "/productTaxonomy/productType/search"
         		timeouts(response=1m)     		
         	}
         }
         receiver {
-        	success SearchProductTypeSucceeded topic "/productTaxonomy/productType/searchSucceeded"
-            failure SearchProductTypeFailed topic "/productTaxonomy/productType/searchFailed"
+        	success SearchProductTypeSucceeded{
+        		 topic "/productTaxonomy/productType/searchSucceeded"
+        	}
+            failure SearchProductTypeFailed{
+            	topic "/productTaxonomy/productType/searchFailed"
+            } 
         }
     }
 	
 	transaction GetProductTaxonomy query {
         sender {
-        	message GetProductTaxonomy topic "/productTaxonomy/get" {
+        	message GetProductTaxonomy  {
+        		topic "/productTaxonomy/get"
         		timeouts(response=30s)     		
         	}
         }
         receiver {
-        	success GetProductTaxonomySucceeded topic "/productTaxonomy/getSucceeded"
-            failure GetProductTaxonomyFailed topic "/productTaxonomy/getFailed"
+        	success GetProductTaxonomySucceeded{
+        		 topic "/productTaxonomy/getSucceeded"
+        	}
+            failure GetProductTaxonomyFailed{
+            	topic "/productTaxonomy/getFailed"
+            } 
         }
     }
 
-	transaction ProductTaxonomyUpdated inform {
-		sender {
-			message ProductTaxonomyUpdated topic "/productTaxonomy/updated"
-		}
-	}
-
-	
     transaction GetProductType query {
         sender {
-        	message GetProductType topic "/productTaxonomy/productType/get" {
+        	message GetProductType  {
+        		topic "/productTaxonomy/productType/get"
         		timeouts(response=5m)     		
         	}
         }
         receiver {
-        	success GetProductTypeSucceeded topic "/productTaxonomy/productType/getSucceeded"
-            failure GetProductTypeFailed topic "/productTaxonomy/productType/getFailed"
+        	success GetProductTypeSucceeded{
+        		topic "/productTaxonomy/productType/getSucceeded"
+        	} 
+            failure GetProductTypeFailed {
+            	 topic "/productTaxonomy/productType/getFailed"
+            }
         }
     }
+    
+	transaction ProductTaxonomyUpdated inform {
+		sender {
+			message ProductTaxonomyUpdated{
+				 topic "/productTaxonomy/updated"
+			}
+		}
+	}
+
+	
+
 }
