@@ -165,7 +165,9 @@ package com.x.example.v1
         	 * This message is used by the variant WithAuthorization. It does not require any acknowledgements.
 	         * This message specifies an optional string to override the default topic name.
 	         */
-        	message<WithAuthorization> OrderCreatedWithAuthorization topic "this_string/overrides_the_default/topic_name"
+        	message<WithAuthorization> OrderCreatedWithAuthorization {
+        		topic "this_string/overrides_the_default/topic_name"
+        	}
         }
         
         /*
