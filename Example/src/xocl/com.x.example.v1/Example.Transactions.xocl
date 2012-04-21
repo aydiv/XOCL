@@ -49,13 +49,15 @@ package com.x.example.v1
     	 * Every transaction has exacty two roles: sender and receiver. One or more capabilities may
     	 *   play the receiver role at the same time in an event or broadcast transaction.
 	     * The sender of the first message in a workflow must set the X-XC-MESSAGE-GUID-CONTINUATION 
-	     *   header to null, and the X-XC-RESULT-CORRELATION-ID to a new GUID.
-	     *     The value of the X-XC-RESULT-CORRELATION-ID header is the workflow ID.
-	     * The sender of any other message in a workflow must set 
-	     *   the X-XC-MESSAGE-GUID-CONTINUATION header to the ID of the message that triggered the  
-	     *     sending of the current message, and  
-	     *   the X-XC-RESULT-CORRELATION-ID header to the value it had on the message that triggered the 
-	     *     sending of the current message.
+	     *   header to null, and the X-XC-WORKFLOW-ID header to a new GUID.
+	     * The sender of any other message in a workflow, including an acknowledgement, cancellation 
+	     *     or response, must set 
+	     *   the X-XC-MESSAGE-GUID-CONTINUATION header to the ID of the immediately preceding message,   
+	     *   the X-XC-WORKFLOW-ID header to the value it had on the immediately preceding message. 
+	     * The sender of the first message in a transaction must set the X-XC-TRANSACTION-ID to a new GUID.
+	     * The sender of any other message in a transaction, including an acknowledgement, cancellation 
+	     *     or response, must set
+	     *   the X-XC-TRANSACTION-ID header to the value it had on the immediately preceding message.
     	 */
         sender
         {
@@ -218,9 +220,6 @@ package com.x.example.v1
 			     * A response must be routed only to the transaction sender by setting the
 			     *   X-XC-DESTINATION-ID header to the value of the X-XC-PUBLISHER-PSEUDONYM header 
 			     *   on the request message.
-			     * The sender of a response must identify the request message by setting the
-			     *   X-XC-RESULT-CORRELATION-ID header to the value it had on the request message, and by 
-			     *   setting the X-XC-MESSAGE-GUID-CONTINUATION header to the ID of the request message.
 				 * A response indicates whether the operation succeeded or failed and may contain additional data.
 				 * If a response is received out of order, then the sender must send a cancellation
 				 *   to abort the transaction, with the Reason set to ResponseOutOfSequence.
