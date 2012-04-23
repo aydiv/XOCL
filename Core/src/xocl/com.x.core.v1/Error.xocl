@@ -2,7 +2,7 @@ package com.x.core.v1
 {
 	record Error
 	{
-		/** Numeric value that indicates the type of error */
+		/** Value that indicates the type of error.  Should be stable, short, and easily comparable */
 		string code;
  
 		/**  Key whose value is a human displayable version of this error */
