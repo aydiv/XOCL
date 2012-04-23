@@ -234,7 +234,7 @@ package com.x.marketplace.v3{
 		/** The channel this offer is for */
 		string channelId;
 
-		/** Reference to an object of type com.x.ocl.SKU */
+		/** Identifier of the SKU that is being offered */
 		string sku;
 		
 		CurrencyAmount price;
@@ -267,11 +267,6 @@ package com.x.marketplace.v3{
 	    ReturnPolicy? returnPolicy;
 	}
 	
-	
-	record PublishOffer {
-		OfferDetails offer; 
-		string? policyGroupId;
-	}
 	
 	record GetAllAvailableChannel {
 
