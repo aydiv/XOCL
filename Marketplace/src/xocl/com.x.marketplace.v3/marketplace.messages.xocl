@@ -240,13 +240,10 @@ package com.x.marketplace.v3{
 		CurrencyAmount price;
 		int quantity;
 
-		/** Date Time Format: ISO 8601 */
 		datetime? startTime;
 	    
-	    /** Date Time Format: ISO 8601 */
 		datetime? endTime;
-    	
-    	
+    	  	
 		string? title;
 
 		/*
