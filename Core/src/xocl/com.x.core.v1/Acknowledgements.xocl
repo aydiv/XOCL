@@ -29,10 +29,6 @@ package com.x.core.v1
      *     be the transaction receiver.
      *   If the transaction receiver sends a cancellation, then the intended recipient must
      *     be the transaction sender.
-     * The sender of a cancellation must set the X-XC-RESULT-CORRELATION-ID header to the  
-     *   value it had on the message that started the transaction.
-     * The sender of a cancellation must set the X-XC-MESSAGE-GUID-CONTINUATION header to the 
-     *   ID of the message that started the transaction.
      */
 	record TransactionCancelled {
 	    Reason reason // The reason for cancellation.
@@ -40,10 +36,6 @@ package com.x.core.v1
 	
     /*
      * The following message types are acknowledgements.
-     * The sender of an acknowledgement must identify the message being acknowledged by
-     *   setting the X-XC-RESULT-CORRELATION-ID header to the value it had on the message 
-     *   being acknowledged, and by setting the X-XC-MESSAGE-GUID-CONTINUATION header to 
-     *   the ID of the message being acknowledged.
      * An acknowledgement must be routed only to the sender of the message being acknowledged
      *   by setting the X-XC-DESTINATION-ID header to the value of the X-XC-PUBLISHER-PSEUDONYM 
      *   header on the message being acknowledged.
