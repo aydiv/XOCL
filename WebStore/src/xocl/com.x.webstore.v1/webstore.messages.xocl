@@ -15,12 +15,12 @@ package com.x.webstore.v1{
 		string url;
 	}
 	
-	record WebStoreOffer{
+	record WebStoreOffer extends WebStoreOfferData{
 		string offerId;
 		OfferState offerState;
 	}
 	
-	record WebStoreOfferData extends WebStoreOffer{
+	record WebStoreOfferData {
 		string url;
 		CurrencyAmount currentPrice;
 		long quantity;
