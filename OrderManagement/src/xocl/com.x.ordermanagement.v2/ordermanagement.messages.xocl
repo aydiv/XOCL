@@ -144,6 +144,9 @@ package com.x.ordermanagement.v2 {
 		string productSku
 		string itemDescription
 		
+		/** Optionall provided with each item, overriding order */
+		Shipping? shipping
+		
 		OrderLinePrice unitPrice
 
 		OrderStatus status
@@ -205,6 +208,10 @@ package com.x.ordermanagement.v2 {
 		
 		/** An optional collection of related orders numbers */
 		array<string>? relatedOrderNumbers
+		
+		/** Default shipping for entire order that can be overridden by each order item */
+		Shipping? shipping
+		
 	}
 	
 	record SimpleOrder extends OrderDetails {
