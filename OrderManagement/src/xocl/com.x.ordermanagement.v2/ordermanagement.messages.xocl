@@ -22,7 +22,7 @@ package com.x.ordermanagement.v2 {
 		PARTIALLY_SHIPPED,
 		SHIPPED,
 		PROCESSING_RETURN,
-		EXHANGED,
+		EXCHANGED,
 		CANCELLED,
 		COMPLETED,
 		PAID
