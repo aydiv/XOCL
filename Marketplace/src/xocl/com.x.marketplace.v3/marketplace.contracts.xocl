@@ -25,7 +25,7 @@ package com.x.marketplace.v3{
 	   		AuthorizationRevoke.MarketplaceMetadataProvider
 	   
 	   		//Order roles
-	   		ProcessSalesChannelOrder.Marketplace<SalesChannelOrder> 
+	   		ProcessSalesChannelOrder.SalesChannel<SalesChannelOrder> 
 	   		
 	   		//Auth roles
 	   		AuthorizationGrant.AuthorizationProvider
