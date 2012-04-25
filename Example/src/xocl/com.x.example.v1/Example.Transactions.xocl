@@ -139,7 +139,7 @@ package com.x.example.v1
 				 *     A validation must be sent to the standard topic com.x.core.v1/MessageValidated.
 				 *     See com.x.core.v1.MessageValidated for more information about validations.
         		 */ 
-        		timeouts(receipt=1h, validation=24h)
+        		timeouts(receipt=30s, validation=3m)
         		
         		/*
 				 * If a given acknowledgement is not received within the specified timeout, 
@@ -159,7 +159,7 @@ package com.x.example.v1
         	 */
         	message<WithCreationMetadata> OrderCreatedWithCreationMetadata 
         	{
-        		timeouts(receipt = 1h, validation=12h)
+        		timeouts(receipt = 30s, validation=1d)
         		retries=5
         	}
         	
@@ -232,7 +232,7 @@ package com.x.example.v1
 				 * If a receipt timeout and/or a validation timeout is specified, then the receiver may send a 
 				 *   response instead of a receipt and/or a validation, respectively, within the specified timeout.
 				 */
-        		timeouts(receipt=1h, validation=24h, response=3d)
+        		timeouts(receipt=30s, validation=3m, response=1h)
         		
         		/*
 				 * If a response is not received within the specified timeout, 
@@ -275,13 +275,13 @@ package com.x.example.v1
 	        	 * A response message may have timeouts requiring acknowledgements from the sender.
 	        	 * They are implemented as above, but apply to the response message, not the request message.
         		 */
-            	timeouts(receipt=1h, validation=24h)
+            	timeouts(receipt=30s, validation=3m)
             	retries=3
             }
             
         	/* 
 			 * By convention, the default failure message uses the naming pattern <default_message_name>Failed.
-			 * If the default SLAs are acceptable for a message, then the SLA specification block can be omitted.
+			 * If no SLAs are required for a message, then the SLA specification block can be omitted.
         	 */
             failure PrepareOrderFailed
         }
@@ -307,10 +307,16 @@ package com.x.example.v1
         preconditions(order[Order.Prepared])
         
         sender {
-        	message ShipOrder
+        	message ShipOrder {
+        		timeouts(receipt=30s, validation=3m, response=1h)
+        		retries = 3
+        	}
         }
         receiver {
-        	success ShipOrderSucceeded
+        	success ShipOrderSucceeded {
+        		timeouts(receipt=30s, validation=3m)
+        		retries = 3
+        	}
         	failure ShipOrderFailed
         }
         /*
@@ -339,10 +345,16 @@ package com.x.example.v1
      */
     transaction UpdateInventory response {
     	sender {
-    		message UpdateInventory
+    		message UpdateInventory {
+        		timeouts(receipt=30s, validation=3m, response=1h)
+        		retries = 3
+    		}
     	}
     	receiver {
-    		success UpdateInventorySuccess
+    		success UpdateInventorySuccess {
+        		timeouts(receipt=30s, validation=3m)
+        		retries = 3
+    		}
     		failure UpdateInventoryFailure
     	}
     }
