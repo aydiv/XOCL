@@ -28,22 +28,22 @@ package com.x.ordermanagement.v2 {
     }
     
     // Process orders that originate from a sales channel
-    process ProcessSalesChannelOrder<SalesChannelOrder> {
+    process ProcessSalesChannelOrder<MarketplaceOrder> {
     	
         description "An order is submitted for processing and is shipped or cancelled"
         
-        roles(Marketplace, OrderProcessor, OrderObserver, CustomerManager)
+        roles(SalesChannel, OrderProcessor, OrderObserver, CustomerManager)
     
 	    workflow {
 	    	all {
 	   			// Notify observers that an order was created
-	       	    transaction OrderCreated<SalesChannelOrder> {
-	        		roles(Marketplace, OrderObserver)
+	       	    transaction OrderCreated<MarketplaceOrder> {
+	        		roles(SalesChannel, OrderObserver)
 	       		}
 	    	 	
 	    		// An order submitter submits an order to an order processor
 	       	 	transaction ProcessOrder {
-	        		roles(Marketplace, OrderProcessor)
+	        		roles(SalesChannel, OrderProcessor)
 	        	}
 	        }
 	        any {
@@ -53,20 +53,20 @@ package com.x.ordermanagement.v2 {
 	    	}	 
 	        one {     
 	        	// An order processor updates shipment tracking information for an order
-	        	transaction OrderShipped<SalesChannelOrder> {
-	        		roles(OrderProcessor, Marketplace)
+	        	transaction OrderShipped<MarketplaceOrder> {
+	        		roles(OrderProcessor, SalesChannel)
 	        	}
         	
 	        	do {
 		        	any {
 						// A canceller asks the processer to cancel its order 
-						transaction CancelOrder<SalesChannelOrder> {
-						   	roles(Marketplace, OrderProcessor)
+						transaction CancelOrder<MarketplaceOrder> {
+						   	roles(SalesChannel, OrderProcessor)
 						}
 					}
 					
 					// The order processor informs observers that an order was cancelled
-					transaction OrderCancelled<SalesChannelOrder> {
+					transaction OrderCancelled<MarketplaceOrder> {
 					   	roles(OrderProcessor, OrderObserver)
 					}
 				}
