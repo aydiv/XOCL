@@ -1,0 +1,29 @@
+package com.x.gsitan.v1{
+	import com.x.webstore.v1.*
+	import com.x.customer.v1.*
+	import com.x.ordermanagement.v2.*
+	import com.x.pim.v1.*
+	
+    contract TAN 
+    {
+    	// A description defines the purpose of the contract
+    	description "True Action Marketing Services"
+    	
+    	// A set of roles collectivley define the implementer's responsibilities
+    	roles
+    	{
+	 		WebStoreOfferSearch.WebStoreOfferConsumer
+	 		WebStoreOfferUpdate.WebStoreOfferObserver
+	 		WebStoreOfferCreation.WebStoreOfferObserver
+	 		WebStoreOfferDeletion.WebStoreOfferObserver
+	 		ProductSearch.ProductInformationConsumer
+	 		ProductLookup.ProductInformationConsumer
+	 		OrderSearch.OrderConsumer<NonSensitive>
+	 		ProcessSalesChannelOrder.OrderObserver<SalesChannelOrder> 
+	 		CustomerSearch.CustomerConsumer<Email>
+	 	    CustomerUpsert.CustomerObserver  
+	    }
+	    
+	 }
+	
+}
