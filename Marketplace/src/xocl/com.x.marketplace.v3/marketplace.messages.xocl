@@ -30,9 +30,10 @@ package com.x.marketplace.v3{
 		array<SupportedShippingService>? services;
 	    /** ISO 4217 3-letter currency codes */
 		array<string> currencies;
+		array<PaymentMethod> methods;
 		array<SupportedCountry> countries;
 		array<Environment> environments;
-		string marketplace; //TODO Is this needed? - comment on what it is.
+		string marketplace;
 	}
 	 /*
 		An environment represents a sub-section of the marketplace/site.
