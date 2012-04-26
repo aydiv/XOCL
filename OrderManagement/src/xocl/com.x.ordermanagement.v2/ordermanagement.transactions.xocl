@@ -104,4 +104,16 @@ package com.x.ordermanagement.v2 {
         } 
     }
     
+    transaction ShippingInformationUpdate response {
+        sender {
+        	message ShippingInformationUpdate {
+        		 timeouts(response=30s)     		
+        	}
+        }
+        receiver {
+        	success ShippingInformationUpdateSucceeded                       	        
+            failure ShippingInformationUpdateFailed
+        } 
+    }
+    
 }

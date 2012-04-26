@@ -95,10 +95,31 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	record TrackingDetail {
-		array<string> trackingNumber
+		array<string> trackingNumbers
 		string? carrier
 		string? service
 		ShippingServiceType serviceType
+	}
+	
+	record ShippingInformationUpdate extends TrackingDetail {
+		string? orderNumber
+		string? orderLineId
+	}
+	
+	record ShippingInformationUpdateSucceeded {
+		string? orderNumber
+		string? orderLineId
+	}
+	
+	record ShippingInformationUpdateFailed {
+		string? orderNumber
+		string? orderLineId
+		array<Error> errors
+	}
+	
+	record ShippingInformationUpdate extends TrackingDetail {
+		string? orderNumber
+		string? orderLineId
 	}
 	
 	record PaymentInfo {

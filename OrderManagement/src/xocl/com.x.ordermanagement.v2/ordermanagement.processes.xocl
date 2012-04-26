@@ -50,7 +50,16 @@ package com.x.ordermanagement.v2 {
 	        	workflow CustomerUpsert {
 	    			roles(OrderProcessor, CustomerManager)
 	    		}
-	    	}	 
+	    		
+	    		transaction ShippingInformationUpdate {
+	    			roles(OrderProcessor, SalesChannel)
+	    		}
+	    		
+	    		transaction ShippingInformationUpdate {
+	    			roles(SalesChannel, OrderProcessor)
+	    		}
+	    	}
+	   
 	        one {     
 	        	// An order processor updates shipment tracking information for an order
 	        	transaction OrderShipped<MarketplaceOrder> {
