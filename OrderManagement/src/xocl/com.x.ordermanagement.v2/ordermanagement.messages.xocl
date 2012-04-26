@@ -95,7 +95,7 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	record TrackingDetail {
-		string trackingNumber
+		array<string> trackingNumber
 		string? carrier
 		string? service
 		ShippingServiceType serviceType
