@@ -14,14 +14,14 @@ package com.x.ordermanagement.v2 {
     
     // A new process for marketing channels and analytics.  Non-PII only, no customer information.  
     // Search only for now
-    process OrderSearch<NonSensitive> {
+    process OrderSearch<NonSensitive, MarketplaceOrderSearch> {
     	
     	description "A marketing or analytics provider searches for orders modified since a timestamp"
     	
     	roles (OrderManager, OrderConsumer)
     	
     	workflow {
-    		transaction SearchOrder<NonSensitive> {
+    		transaction SearchOrder<NonSensitive, MarketplaceOrderSearch> {
     			roles (OrderManager, OrderConsumer)
     		}   
     	}
@@ -37,12 +37,12 @@ package com.x.ordermanagement.v2 {
 	    workflow {
 	    	all {
 	   			// Notify observers that an order was created
-	       	    transaction OrderCreated<MarketplaceOrder> {
+	       	    transaction OrderCreated {
 	        		roles(SalesChannel, OrderObserver)
 	       		}
 	    	 	
 	    		// An order submitter submits an order to an order processor
-	       	 	transaction ProcessOrder {
+	       	 	transaction ProcessOrder<MarketplaceOrder> {
 	        		roles(SalesChannel, OrderProcessor)
 	        	}
 	        }
@@ -56,6 +56,7 @@ package com.x.ordermanagement.v2 {
 	        	transaction OrderShipped<MarketplaceOrder> {
 	        		roles(OrderProcessor, SalesChannel)
 	        	}
+	       
         	
 	        	do {
 		        	any {

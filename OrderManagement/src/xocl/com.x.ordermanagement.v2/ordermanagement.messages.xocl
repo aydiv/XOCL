@@ -42,6 +42,13 @@ package com.x.ordermanagement.v2 {
 		OTHER
 	}
 	
+	enum PaymentStatus {
+		AUTHORIZED,
+		PAID,
+		NOT_AUTHORIZED,
+		PARTIAL,
+		NONE
+	}	
 
 	record GiftTag {
 		string? from
@@ -101,6 +108,9 @@ package com.x.ordermanagement.v2 {
 
 		string? transactionId
 		string? transactionStatus
+		
+		CurrencyAmount? processingFee
+		PaymentStatus paymentStatus = NONE
 	}
 	
 	record Tax {
@@ -249,6 +259,11 @@ package com.x.ordermanagement.v2 {
 		OrderData order
 	}
 	
+	record ProcessMarketplaceOrder extends ProcessOrder {
+		string? accountId
+		string? siteCode
+	}
+	
 	record ProcessOrderSucceeded {
 		Order order
 	}
@@ -343,52 +358,58 @@ package com.x.ordermanagement.v2 {
 	}
 	
     record SearchOrder {
+    	Query _AVDL_query
     	
-		datetime? lastModified;
+		datetime? lastModified
 		/**
 		 * Restrict the number of items return to this many or less.
 		 * When null, it is assumed there is no restriction
 		 */
-		long? itemsRequested;
+		long? itemsRequested
 		
 		/**
 		 * Return the results starting from this zero-based index.
 		 * When null, items will be returned started from the first item
 		 */
-		long? startItemIndex;
-	}	
+		long? startItemIndex
+	}
+	
+	record MarketplaceSearchOrder extends SearchOrder {
+		string? siteCode
+		string? sellerAccountId
+	}
 
 	record SearchOrderSucceeded {
-		array<Order> orders;	
+		array<Order> orders
 
 		/**
 		 * The total number of items found by the data provider.
 		 * This field will be filled in by the result provider when supported.
 		 * Requester should not fill this out.
 		 */
-		 datetime? modifiedSince;
-		 long totalItemsFound;
-		 long? itemsRequested;
-		 long? startItemIndex;
+		datetime? modifiedSince
+		long totalItemsFound
+		long? itemsRequested
+		long? startItemIndex
 	}
 	
 	record SearchNonSensitiveOrderSucceeded {
-        array<NonSensitiveOrder> orders;
+        array<NonSensitiveOrder> orders
         	
 		/**
 		 * The total number of items found by the data provider.
 		 * This field will be filled in by the result provider when supported.
 		 * Requester should not fill this out.
 		 */
-		 datetime? modifiedSince;
-		 long totalItemsFound;
-		 long? itemsRequested;
-		 long? startItemIndex;
+		 datetime? modifiedSince
+		 long totalItemsFound
+		 long? itemsRequested
+		 long? startItemIndex
 	}
 	
 	record SearchOrderFailed {
-		SearchOrder search;
-		array<Error> errors;
+		SearchOrder search
+		array<Error> errors
 	}
 
 }

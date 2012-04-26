@@ -5,9 +5,13 @@ package com.x.ordermanagement.v2 {
 	import com.x.ordermanagement.v2.*
 	
 	// Tell an order processor to process an order 
-	transaction ProcessOrder response {
+	transaction ProcessOrder<MarketplaceOrder> response {
 		sender {
 			message ProcessOrder {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+			message<MarketplaceOrder> ProcessMarketplaceOrder {
             	timeouts(receipt=30s, validation=3m)
             	retries=3
             }
@@ -38,10 +42,9 @@ package com.x.ordermanagement.v2 {
 	}
     
     // Inform observers that an order was created
-    transaction OrderCreated<MarketplaceOrder> inform {
+    transaction OrderCreated inform {
         sender {
         	message OrderCreated
-        	message<MarketplaceOrder> MarketplaceOrderCreated
         }
     }
     
@@ -84,10 +87,13 @@ package com.x.ordermanagement.v2 {
         }
     }
       
-    transaction SearchOrder<NonSensitive> query {
+    transaction SearchOrder<NonSensitive, MarketplaceOrderSearch> query {
         sender {
         	message SearchOrder {
         		 timeouts(response=30s)     		
+        	}
+        	message <MarketplaceOrderSearch> MarketplaceSearchOrder {
+        		 timeouts(response=30s)     		        		
         	}
         }
         receiver {
