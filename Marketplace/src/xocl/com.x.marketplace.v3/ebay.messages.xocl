@@ -69,10 +69,18 @@
 	}
 
 	record PublishEbayOfferFailed {
-		OfferPublicationError offerError;
+		EbayOfferPublicationError offerError;
 		string? policyGroupId;
 	}
+    record EbayOfferPublicationError {
+		EbayOffer offer;
+		array<Error> errors;
+	}
 	
+    record EbayOfferUpdateError {
+		EbayOffer offer;
+		array<Error> errors;
+	}
 	
 	record RevisePublishedEbayOffer {
 		EbayOfferDetails update; //must have channelOfferId
@@ -84,7 +92,7 @@
 	}
 	
 	record ReviseEbayPublishedOfferFailed {
-		OfferUpdateError errors;
+		EbayOfferUpdateError errors;
 		string? policyGroupId;
 	}
 
