@@ -54,7 +54,7 @@
 		boolean? useTaxTable;
 	}
 	
-	record EbayPolicyGroup extends PolicyGroup{
+	record EbayPolicyGroup extends EbayPolicyGroupData{
 			string policyGroupId;
 	}	
 
