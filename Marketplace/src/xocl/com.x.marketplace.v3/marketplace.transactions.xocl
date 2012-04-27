@@ -369,7 +369,7 @@ package com.x.marketplace.v3{
         }
     }
     
-    transaction SearchOffers query {
+    transaction SearchOffers<Ebay> query {
         sender {
         	message SearchOffers {
         		 timeouts(response=30s)     		
@@ -377,7 +377,8 @@ package com.x.marketplace.v3{
         }
         receiver {
         	// One of these two messages must be sent back to the sender as a response	 
-        	success SearchOffersSucceeded            	        
+        	success SearchOffersSucceeded
+        	success<Ebay> SearchEbayOffersSucceeded            	        
                     	
         	// A failure message does not have a response timeout
             failure SearchOffersFailed
