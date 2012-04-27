@@ -1,148 +1,120 @@
- package com.x.pim.v1 
-{ 	
+package com.x.pim.v1 { 	
     import com.x.pim.v1.*
     
-    process ProductSearch
-	{
+    process ProductSearch{
 		description "A consumer queries the product catalog, and gets all products back"
 
 		roles(ProductInformationConsumer, ProductInformationManager)
 	
-		workflow
-		{
-			transaction SearchProduct
-			{
+		workflow {
+			transaction SearchProduct {
 				roles(ProductInformationConsumer, ProductInformationManager)
 			}
 		}
 	}
 	
-	process ProductLookup
-	{
+	process ProductLookup {
 		description "A consumer queries the product catalog, and gets a single product back"
 		
 		roles(ProductInformationConsumer, ProductInformationManager)
+	}
 	
-		workflow
-		{
-			transaction LookupProduct
-			{
+    workflow ProductLookup implements ProductLookup {
+			transaction LookupProduct {
 				roles(ProductInformationConsumer, ProductInformationManager)
 			}
 		}
-	}
 	
-	process ProductUpdate (Product product, StockKeepingUnit sku)
-	{
+	process ProductUpdate (Product product, StockKeepingUnit sku){
 		description "A product is updated in the PIM"
 		
 		roles(ProductInformationConsumer, ProductInformationManager, ProductInformationObserver)
 		
 		preconditions(exists(product))	
 	
-		workflow
-		{
-			one
-			{
+		workflow {
+			one {
 
 				noop
 			
 				// A consumer asks the PIM to update a product.  An update, create, or delete of a SKU is considered a product update
-				transaction UpdateSKU(sku) 
-				{
+				transaction UpdateSKU(sku) {
 				   	roles(ProductInformationConsumer,ProductInformationManager)
 				}
 
-				transaction CreateSKU(sku) 
-				{
+				transaction CreateSKU(sku) {
 				   	roles(ProductInformationConsumer,ProductInformationManager)
 				}
 				
-				transaction DeleteSKU(sku) 
-				{
+				transaction DeleteSKU(sku) {
 				   	roles(ProductInformationConsumer,ProductInformationManager)
 				}
 		
 				// A consumer asks the PIM to update a product
-				transaction UpdateProduct
-				{
+				transaction UpdateProduct {
 				   	roles(ProductInformationConsumer,ProductInformationManager)
 				}
 			}
 			
 			// The PIM informs an observer that a product was updated
-			transaction ProductUpdated
-			{
+			transaction ProductUpdated {
 			   	roles(ProductInformationManager, ProductInformationObserver)
 			}
 		}
 
-		postconditions
-		{
+		postconditions {
 			success(exists(product))
 		}
 	}
 
-	process ProductCreation (Product product)
-	{
+	process ProductCreation (Product product) {
 		description "A product is created in the PIM"
 		
 		roles(ProductInformationConsumer, ProductInformationManager, ProductInformationObserver)
 		
 		preconditions(!exists(product))
 	
-		workflow 
-		{
-			any
-			{
+		workflow  {
+			any {
 				// A consumer asks the PIM to create a product
-				transaction CreateProduct
-				{
+				transaction CreateProduct {
 				   	roles(ProductInformationConsumer,ProductInformationManager)
 				}
 			}
 				// The PIM informs an observer that a product was created
-				transaction ProductCreated
-				{
+				transaction ProductCreated {
 			   		roles(ProductInformationManager, ProductInformationObserver)
 				}
 		}
 
-	    postconditions
-		{
+	    postconditions {
 			success(exists(product))
 			failure(!exists(product))
 		}
 	}	
 
-    process ProductDeletion (Product product)
-    {
+    process ProductDeletion (Product product) {
 		description "A product is deleted in the PIM"
 		
 		roles(ProductInformationConsumer, ProductInformationManager, ProductInformationObserver)
 		
 		preconditions(exists(product))
 	
-		workflow
-		{
-			any
-			{
+		workflow {
+			any {
 				// A consumer asks the PIM to delete a product
-				transaction DeleteProduct
-				{
+				transaction DeleteProduct {
 				   	roles(ProductInformationConsumer,ProductInformationManager)
 				}
 			}
 			
 			// The PIM informs an observer that a product was deleted
-			transaction ProductDeleted
-			{
+			transaction ProductDeleted {
 			   	roles(ProductInformationManager, ProductInformationObserver)
 			}
 		}
 		
-	    postconditions
-		{
+	    postconditions {
 			success(!exists(product))
 			failure(exists(product))
 		}
