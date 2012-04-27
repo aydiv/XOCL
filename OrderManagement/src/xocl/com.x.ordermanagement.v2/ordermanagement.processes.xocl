@@ -8,8 +8,9 @@ package com.x.ordermanagement.v2 {
 	entity Order {
     	state Created[Submitted]
     	state Submitted[Cancelled, Shipped]
-    	state Shipped[Cancelled]
+    	state Shipped[Cancelled, Returned]
     	state Cancelled
+    	state Returned
     }
     
     // A new process for marketing channels and analytics.  Non-PII only, no customer information.  
@@ -35,17 +36,16 @@ package com.x.ordermanagement.v2 {
         roles(SalesChannel, OrderProcessor, OrderObserver, CustomerManager)
     
 	    workflow {
-	    	all {
-	   			// Notify observers that an order was created
-	       	    transaction OrderCreated {
-	        		roles(SalesChannel, OrderObserver)
-	       		}
+   			// Notify observers that an order was created
+       	    transaction OrderCreated {
+        		roles(SalesChannel, OrderObserver)
+       		}
 	    	 	
-	    		// An order submitter submits an order to an order processor
-	       	 	transaction ProcessOrder<MarketplaceOrder> {
-	        		roles(SalesChannel, OrderProcessor)
-	        	}
-	        }
+    		// An order submitter submits an order to an order processor
+       	 	transaction ProcessOrder<MarketplaceOrder> {
+        		roles(SalesChannel, OrderProcessor)
+        	}
+        	
 	        any {
 	        	workflow CustomerUpsert {
 	    			roles(OrderProcessor, CustomerManager)
@@ -57,6 +57,10 @@ package com.x.ordermanagement.v2 {
 	    		
 	    		transaction ShippingInformationUpdate {
 	    			roles(SalesChannel, OrderProcessor)
+	    		}
+	    		
+	    		transaction OrderAdjust {
+	    			roles(OrderProcessor, OrderObserver)
 	    		}
 	    	}
 	   
