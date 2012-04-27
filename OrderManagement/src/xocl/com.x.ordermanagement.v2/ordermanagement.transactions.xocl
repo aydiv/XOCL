@@ -98,6 +98,7 @@ package com.x.ordermanagement.v2 {
         }
         receiver {
         	success SearchOrderSucceeded   
+        	success<MarketplaceOrderSearch> MarketplaceSearchOrderSucceeded   
         	success<NonSensitive> SearchNonSensitiveOrderSucceeded           
                     	        
             failure SearchOrderFailed
@@ -116,4 +117,33 @@ package com.x.ordermanagement.v2 {
         } 
     }
     
+    transaction OrderReturn inform {
+    	sender {
+    		message OrderReturn
+    	}
+    }
+    
+    transaction PartialOrderReturn inform {
+    	sender {
+    		message PartialOrderReturn
+    	}
+    }
+    
+    transaction OrderAdjust inform {
+    	sender {
+    		message OrderAdjust
+    	}
+    }
+    
+    transaction PaymentUpdate response {
+    	sender {
+    		message PaymentUpdate {
+    			timeouts(response=30s)    		
+        	}
+        }
+        receiver {
+        	success PaymentUpdateSucceeded                       	        
+            failure PaymentUpdateFailed
+        } 
+    }
 }
