@@ -50,8 +50,8 @@ package com.x.marketplace.v3{
         	}
         }
         receiver {
-        	success GetAllAvailableChannelsSucceeded                 	
-        	//No failure message in this case.  If the reciever cannot give channel/provider information, it should not return anything.  
+        	success GetAllAvailableChannelsSucceeded 
+        	//there is no failure message here because the implementation should not respond if it cannot identify itself                	
         } 
     }
     
@@ -62,11 +62,8 @@ package com.x.marketplace.v3{
         	}
         }
         receiver {
-        	// One of these two messages must be sent back to the sender as a response	
-        	// A success message does not have a response timeout
         	success GetAllSitesSucceeded           
-                    	
-        	// A failure message does not have a response timeout
+
             failure GetAllSitesFailed
         } 
     }
@@ -78,11 +75,8 @@ package com.x.marketplace.v3{
         	}
         }
         receiver {
-        	// One of these two messages must be sent back to the sender as a response	
-        	// A success message does not have a response timeout
         	success LookupSiteMetadataSucceeded   
-        	
-        	// A failure message does not have a response timeout
+
             failure LookupSiteMetadataFailed
         } 
     }
@@ -96,11 +90,8 @@ package com.x.marketplace.v3{
         	}
         }
         receiver {
-        	// One of these two messages must be sent back to the sender as a response	
-        	// A success message does not have a response timeout
         	success SearchCategoriesSucceeded         
-                    	
-        	// A failure message does not have a response timeout
+
             failure SearchCategoriesFailed
         } 
     }
@@ -109,17 +100,14 @@ package com.x.marketplace.v3{
         sender {
         	message CreatePolicyGroup {
         		timeouts(receipt=30s, response=3m)     		
-        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         	message <Ebay> CreateEbayPolicyGroup {
         		timeouts(receipt=30s, response=3m)     		
-        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         }
         receiver {
-        	// One of these two messages must be sent back to the sender as a response
         	success CreatePolicyGroupSucceeded {
         		 timeouts(receipt=30s)     		
         	}
@@ -152,7 +140,6 @@ package com.x.marketplace.v3{
 
         }
         receiver {
-        	// One of these two messages must be sent back to the sender as a response
         	success UpdatePolicyGroupSucceeded{
         		timeouts(receipt=30s)
         	}
@@ -174,12 +161,10 @@ package com.x.marketplace.v3{
         sender {
         	message DeletePolicyGroup {
         		timeouts(receipt=30s, response=3m)     		
-        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         }
         receiver {
-        	// One of these two messages must be sent back to the sender as a response
         	success DeletePolicyGroupSucceeded{
         		timeouts(receipt=30s)
         	}
@@ -197,17 +182,12 @@ package com.x.marketplace.v3{
         	}
         }
         receiver {
-        	// One of these two messages must be sent back to the sender as a response	
-        	// A success message does not have a response timeout
         	success LookupPolicyGroupSucceeded{
         		timeouts(receipt=30s)
         	}
         	success <Ebay> LookupEbayPolicyGroupSucceeded{
         		timeouts(receipt=30s)
         	}
-        	                   	
-                    	
-        	// A failure message does not have a response timeout
             failure LookupPolicyGroupFailed{
         		timeouts(receipt=30s)
         	}
@@ -221,12 +201,10 @@ package com.x.marketplace.v3{
         sender {
         	message PublishOfferSucceeded {
         		timeouts(receipt=30s)  		
-        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         	message <Ebay> PublishEbayOfferSucceeded {
         		timeouts(receipt=30s)  		
-        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         }
@@ -237,12 +215,10 @@ package com.x.marketplace.v3{
         sender {
         	message PublishOfferSucceeded {
         		timeouts(receipt=30s)  		
-        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         	message <Ebay> PublishEbayOfferSucceeded {
         		timeouts(receipt=30s)  		
-        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         }
@@ -253,12 +229,10 @@ package com.x.marketplace.v3{
         sender {
         	message PublishOfferFailed {
         		timeouts(receipt=30s)  		
-        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         	message <Ebay> PublishEbayOfferFailed {
         		timeouts(receipt=30s)  		
-        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         }
@@ -268,24 +242,19 @@ package com.x.marketplace.v3{
         sender {
         	message RevisePublishedOffer {
         		timeouts(receipt=30s, response=2h)     		
-        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         	message<Ebay> RevisePublishedEbayOffer {
         		timeouts(receipt=30s, response=2h)     		
-        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         }
         receiver {
-        	// One of these two messages must be sent back to the sender as a response
         	success RevisePublishedOfferSucceeded {
-				// A success message does not have a response timeout
             	timeouts(receipt=30s, validation=3m)
             	retries=3
             }
             success <Ebay> ReviseEbayPublishedOfferSucceeded {
-				// A success message does not have a response timeout
             	timeouts(receipt=30s, validation=3m)
             	retries=3
             }
@@ -353,12 +322,10 @@ package com.x.marketplace.v3{
         sender {
         	message RevokePublishedOffer {
         		timeouts(receipt=30s, response=2h)     		
-        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         }
         receiver {
-        	// One of these two messages must be sent back to the sender as a response
         	success RevokePublishedOfferSucceeded{
         		timeouts(receipt=30s)
         	}
@@ -376,11 +343,9 @@ package com.x.marketplace.v3{
         	}
         }
         receiver {
-        	// One of these two messages must be sent back to the sender as a response	 
         	success SearchOffersSucceeded
         	success<Ebay> SearchEbayOffersSucceeded            	        
-                    	
-        	// A failure message does not have a response timeout
+
             failure SearchOffersFailed
         } 
     } 
