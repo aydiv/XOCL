@@ -42,32 +42,32 @@ package com.x.marketplace.v3{
         }
     }
     
-    transaction GetAllAvailableChannel broadcast query {
+    transaction GetAllAvailableChannels broadcast query {
         sender {
-        	message GetAllAvailableChannel {
+        	message GetAllAvailableChannels {
         		 timeouts(response=30s)
         		 //In a broadcast query, the client should wait for the entire timeout before assuming all available channels have responded     		
         	}
         }
         receiver {
-        	success GetAllAvailableChannelSucceeded                 	
+        	success GetAllAvailableChannelsSucceeded                 	
         	//No failure message in this case.  If the reciever cannot give channel/provider information, it should not return anything.  
         } 
     }
     
- 	transaction GetAllSite query {
+ 	transaction GetAllSites query {
         sender {
-        	message GetAllSite {
+        	message GetAllSites {
         		 timeouts(response=30s)     		
         	}
         }
         receiver {
         	// One of these two messages must be sent back to the sender as a response	
         	// A success message does not have a response timeout
-        	success GetAllSiteSucceeded           
+        	success GetAllSitesSucceeded           
                     	
         	// A failure message does not have a response timeout
-            failure GetAllSiteFailed
+            failure GetAllSitesFailed
         } 
     }
     
@@ -89,19 +89,19 @@ package com.x.marketplace.v3{
     
     
    
-    transaction SearchCategory query {
+    transaction SearchCategories query {
         sender {
-        	message SearchCategory {
+        	message SearchCategories {
         		 timeouts(response=30s)     		
         	}
         }
         receiver {
         	// One of these two messages must be sent back to the sender as a response	
         	// A success message does not have a response timeout
-        	success SearchCategorySucceeded         
+        	success SearchCategoriesSucceeded         
                     	
         	// A failure message does not have a response timeout
-            failure SearchCategoryFailed
+            failure SearchCategoriesFailed
         } 
     }
     
@@ -120,32 +120,52 @@ package com.x.marketplace.v3{
         }
         receiver {
         	// One of these two messages must be sent back to the sender as a response
-        	success CreatePolicyGroupSucceeded
+        	success CreatePolicyGroupSucceeded {
+        		 timeouts(receipt=30s)     		
+        	}
 
-            success <Ebay>CreateEbayPolicyGroupSucceeded
+            success <Ebay>CreateEbayPolicyGroupSucceeded {
+      			 timeouts(receipt=30s)      		
+        	}
             
-            failure CreatePolicyGroupFailed
+            failure CreatePolicyGroupFailed {
+        		 timeouts(receipt=30s)       		
+        	}
 
-            failure <Ebay>CreateEbayPolicyGroupFailed
+            failure <Ebay>CreateEbayPolicyGroupFailed {
+        		 timeouts(receipt=30s)       		
+        	}
         }
     }
     
     transaction UpdatePolicyGroup<Ebay> response {
         sender {
-        	message UpdatePolicyGroup
+        	message UpdatePolicyGroup{
+        	    timeouts(receipt=30s, response=3m)     		
+        		retries=3
+        	}
 
-            message <Ebay>UpdateEbayPolicyGroup
+            message <Ebay>UpdateEbayPolicyGroup{
+        	    timeouts(receipt=30s, response=3m)     		
+        		retries=3
+        	}
 
         }
         receiver {
         	// One of these two messages must be sent back to the sender as a response
-        	success UpdatePolicyGroupSucceeded
-
-            success<Ebay> UpdateEbayPolicyGroupSucceeded
+        	success UpdatePolicyGroupSucceeded{
+        		timeouts(receipt=30s)
+        	}
+            success<Ebay> UpdateEbayPolicyGroupSucceeded{
+        		timeouts(receipt=30s)
+        	}
             
-            failure UpdatePolicyGroupFailed
-
-            failure <Ebay>UpdateEbayPolicyGroupFailed
+            failure UpdatePolicyGroupFailed{
+        		timeouts(receipt=30s)
+        	}
+            failure <Ebay>UpdateEbayPolicyGroupFailed{
+        		timeouts(receipt=30s)
+        	}
 
         }
     }
@@ -160,9 +180,13 @@ package com.x.marketplace.v3{
         }
         receiver {
         	// One of these two messages must be sent back to the sender as a response
-        	success DeletePolicyGroupSucceeded
+        	success DeletePolicyGroupSucceeded{
+        		timeouts(receipt=30s)
+        	}
           
-            failure DeletePolicyGroupFailed
+            failure DeletePolicyGroupFailed{
+        		timeouts(receipt=30s)
+        	}
         }
     }
      
@@ -175,57 +199,69 @@ package com.x.marketplace.v3{
         receiver {
         	// One of these two messages must be sent back to the sender as a response	
         	// A success message does not have a response timeout
-        	success LookupPolicyGroupSucceeded
-        	success <Ebay> LookupEbayPolicyGroupSucceeded
+        	success LookupPolicyGroupSucceeded{
+        		timeouts(receipt=30s)
+        	}
+        	success <Ebay> LookupEbayPolicyGroupSucceeded{
+        		timeouts(receipt=30s)
+        	}
         	                   	
                     	
         	// A failure message does not have a response timeout
-            failure LookupPolicyGroupFailed
+            failure LookupPolicyGroupFailed{
+        		timeouts(receipt=30s)
+        	}
+            
         } 
     }
+ 
     
-    transaction PublishOffer<Ebay>(Offer offer) response {
+    transaction PublishOffer<Ebay>(Offer offer) notify {
         preconditions(offer[Offer.Created])
         sender {
-        	message PublishOffer {
-        		timeouts(receipt=30s, response=3h)  		
+        	message PublishOfferSucceeded {
+        		timeouts(receipt=30s)  		
         		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
-        	message <Ebay> PublishEbayOffer {
-        		timeouts(receipt=30s, response=3h)  		
+        	message <Ebay> PublishEbayOfferSucceeded {
+        		timeouts(receipt=30s)  		
         		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         }
-        receiver {
-        	//PublishOffers may take some time, and N succeeded messages may be returned.
-        	//Multiple requests may map to 1 response.   
-        	success PublishOfferSucceeded {
-				// A success message does not have a response timeout
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
-            success <Ebay>PublishEbayOfferSucceeded {
-				// A success message does not have a response timeout
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
-            failure PublishOfferFailed {
-				// A failure message does not have a response timeout
-            	timeouts(receipt=30s)
-            	retries=3
-            }
-            failure <Ebay>PublishEbayOfferFailed {
-				// A failure message does not have a response timeout
-            	timeouts(receipt=30s)
-            	retries=3
-            }
+    }
+    
+    transaction PublishOfferSucceeded<Ebay>(Offer offer) notify {
+        preconditions(offer[Offer.Active])
+        sender {
+        	message PublishOfferSucceeded {
+        		timeouts(receipt=30s)  		
+        		// How many times should we retry if one of the timeouts expires? 
+        		retries=3
+        	}
+        	message <Ebay> PublishEbayOfferSucceeded {
+        		timeouts(receipt=30s)  		
+        		// How many times should we retry if one of the timeouts expires? 
+        		retries=3
+        	}
         }
-        postconditions
-		{
-			success(offer[Offer.Active])
-		}
+    }
+    
+    transaction PublishOfferFailed<Ebay>(Offer offer) notify {
+        preconditions(!offer[Offer.Active])
+        sender {
+        	message PublishOfferFailed {
+        		timeouts(receipt=30s)  		
+        		// How many times should we retry if one of the timeouts expires? 
+        		retries=3
+        	}
+        	message <Ebay> PublishEbayOfferFailed {
+        		timeouts(receipt=30s)  		
+        		// How many times should we retry if one of the timeouts expires? 
+        		retries=3
+        	}
+        }
     }
     
     transaction RevisePublishedOffer<Ebay> response {
@@ -254,11 +290,55 @@ package com.x.marketplace.v3{
             	retries=3
             }
             
-            failure RevisePublishedOfferFailed
+            failure RevisePublishedOfferFailed{
+            	timeouts(receipt=30s)
+            }
 
-            failure <Ebay> ReviseEbayPublishedOfferFailed
+            failure <Ebay> ReviseEbayPublishedOfferFailed{
+            	timeouts(receipt=30s)
+            }
         }
     }
+       
+    transaction RevisePublishedOffer<Ebay> notify {
+        sender {
+        	message RevisePublishedOffer {
+        		timeouts(receipt=30s)		
+        		retries=3
+        	}
+        	message<Ebay> RevisePublishedEbayOffer {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+        }
+      }
+      
+             
+    transaction RevisePublishedOfferSucceeded<Ebay> notify {
+        sender {
+        	message RevisePublishedOfferSucceeded {
+        		timeouts(receipt=30s)		
+        		retries=3
+        	}
+        	message<Ebay> ReviseEbayPublishedOfferSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+        }
+      }
+      
+      transaction RevisePublishedOfferFailed<Ebay> notify {
+        sender {
+        	message RevisePublishedOfferFailed {
+        		timeouts(receipt=30s)		
+        		retries=3
+        	}
+        	message<Ebay> ReviseEbayPublishedOfferFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+        }
+      }
     
     transaction OfferDeactivated(Offer offer) notify {
     	preconditions(offer[Offer.Inactive])
@@ -279,24 +359,28 @@ package com.x.marketplace.v3{
         }
         receiver {
         	// One of these two messages must be sent back to the sender as a response
-        	success RevokePublishedOfferSucceeded
+        	success RevokePublishedOfferSucceeded{
+        		timeouts(receipt=30s)
+        	}
     
-            failure RevokePublishedOfferFailed
+            failure RevokePublishedOfferFailed{
+            	timeouts(receipt=30s)
+            }
         }
     }
     
-    transaction SearchOffer query {
+    transaction SearchOffers query {
         sender {
-        	message SearchOffer {
+        	message SearchOffers {
         		 timeouts(response=30s)     		
         	}
         }
         receiver {
         	// One of these two messages must be sent back to the sender as a response	 
-        	success SearchOfferSucceeded            	        
+        	success SearchOffersSucceeded            	        
                     	
         	// A failure message does not have a response timeout
-            failure SearchOfferFailed
+            failure SearchOffersFailed
         } 
     } 
 }

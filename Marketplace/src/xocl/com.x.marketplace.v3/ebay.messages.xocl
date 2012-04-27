@@ -2,27 +2,13 @@
  	import com.x.core.v1.*
  	import com.x.marketplace.v3.*
  	
-   record VariationSpecific {
-		string name;
-		string value; 
-	}
-
-	record Variation {
+	record Sku {
 		CurrencyAmount price;
 		int quantity;
 		string sku;
-		array<string>? imageUrls;
-		array<VariationSpecific> variationSpecifics;
-		CurrencyAmount? msrp;
-		CurrencyAmount? minimumAdvertisedPrice;
 	}
 	
-	record ListingVariations {
-		array<Variation> variations;
-		union{null,string} imageVariationName;
-	}
-
-	record EbayOfferDetails extends OfferDetails{
+	record EbayOfferDetails extends OfferData{
 		string listingFormat;
 		string duration;
         string countryCode;
@@ -35,9 +21,9 @@
 		// Product Details (additional field)
 		string? postalCode;
 		string? location;
-	
-		// Variations
-		ListingVariations? listingVariations;
+	   
+	    array<Sku> skus;  //There will be at least one SKU
+		string? imageVariationName;
 	}
 	
 	record EbayOffer {

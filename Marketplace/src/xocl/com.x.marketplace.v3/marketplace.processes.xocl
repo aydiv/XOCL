@@ -3,6 +3,7 @@ package com.x.marketplace.v3{
 	
 	import com.x.marketplace.v3.*
 	import com.x.authz.v1.*
+	import com.x.pim.v1.*
 	
 	process MarketplaceSetup {
 		description "A consumer queries one sales channel, gets sites and metadata back"
@@ -14,12 +15,12 @@ package com.x.marketplace.v3{
 		any {
 			do {
 				any {
-			 		transaction GetAllAvailableChannel {
+			 		transaction GetAllAvailableChannels {
 						roles(MarketplaceSetup.MarketplaceMetadataConsumer, MarketplaceSetup.MarketplaceMetadataProvider)
 					}
 				}
 				any {
-					transaction GetAllSite { //goes to a specific destination 
+					transaction GetAllSites { //goes to a specific destination 
 						roles(MarketplaceSetup.MarketplaceMetadataConsumer, MarketplaceSetup.MarketplaceMetadataProvider)
 					}	
 				}
@@ -29,7 +30,7 @@ package com.x.marketplace.v3{
 					}	
 				}
 				any {
-					transaction SearchCategory { //A consumer searches site for available categories
+					transaction SearchCategories { //A consumer searches site for available categories
 						roles(MarketplaceSetup.MarketplaceMetadataConsumer, MarketplaceSetup.MarketplaceMetadataProvider)
 					}
 				}	
@@ -118,14 +119,27 @@ package com.x.marketplace.v3{
 	}
 	
 	process OfferPublication<Ebay>(Offer offer) {
-		description "A merchant publishes offers to a sales channel"
-		roles(OfferManager, Marketplace)
+		description "A merchant publishes offers to a marketplace"
+		roles(OfferManager, Marketplace, ProductInformationManager)
 	
 		preconditions(offer[Offer.Created])
 	
-		workflow {
+		workflow [3h] {
 			transaction PublishOffer<Ebay> {
 				roles(OfferManager, Marketplace)
+			}
+			any{
+				workflow ProductLookup {
+					roles(Marketplace, ProductInformationManager)
+				}
+			}
+			one{
+				transaction PublishOfferSucceeded<Ebay>{
+					roles(Marketplace, OfferManager)
+				}
+				transaction PublishOfferFailed<Ebay>{
+					roles(Marketplace, OfferManager)
+				}
 			}
 			any {
 				workflow OfferDeactivation {
@@ -135,46 +149,37 @@ package com.x.marketplace.v3{
 		}
 	}
 	
-	process OfferDeactivation(Offer offer) {
-		description "A sales channel deactivates an existing offer"
-		roles (Marketplace, OfferManager)
-		
-		preconditions(offer[Offer.Inactive])
 
-		postconditions {
-			success(offer[Offer.Inactive])
-		}
-	}
+    
+    process PublishedOfferRevision<Ebay>(Offer offer) {
+		description "A merchant updates published offers in a marketplace"
+		roles(OfferManager, Marketplace, ProductInformationManager)
 	
-    workflow OfferDeactivation implements OfferDeactivation {
-		transaction OfferDeactivated {
-			roles(Marketplace, OfferManager)
-		}
-	}
+		preconditions(offer[Offer.Created])
 	
-	
-	process PublishedOfferRevision<Ebay>(Offer offer) {
-		
-		description "A merchant updates publishes offers in a sales channel"
-		
-		roles(OfferManager, Marketplace)
-		
-		preconditions(exists(offer))
-	
-		workflow {
-				transaction RevisePublishedOffer<Ebay> {
-					roles(OfferManager, Marketplace)
+		workflow [3h] {
+			transaction RevisePublishedOffer<Ebay> {
+				roles(OfferManager, Marketplace)
+			}
+			any{
+				workflow ProductLookup {
+					roles(Marketplace, ProductInformationManager)
 				}
-				any {
-					workflow OfferDeactivation {
-						roles(Marketplace, OfferManager)	
-					}
+			}
+			one{
+				transaction RevisePublishedOfferSucceeded<Ebay>{
+					roles(Marketplace, OfferManager)
 				}
+				transaction RevisePublishedOfferFailed<Ebay>{
+					roles(Marketplace, OfferManager)
+				}
+			}
+			any {
+				workflow OfferDeactivation {
+					roles(Marketplace, OfferManager)	
+				}
+			}
 		}
-	    postconditions {
-			success(offer[Offer.Active])
-		}
-		
 	}
 	
 	process PublishedOfferRevocation(Offer offer) {
@@ -195,6 +200,23 @@ package com.x.marketplace.v3{
 		}
 	}
 	
+	process OfferDeactivation(Offer offer) {
+		description "A sales channel deactivates an existing offer"
+		roles (Marketplace, OfferManager)
+		
+		preconditions(offer[Offer.Inactive])
+
+		postconditions {
+			success(offer[Offer.Inactive])
+		}
+	}
+	
+    workflow OfferDeactivation implements OfferDeactivation {
+		transaction OfferDeactivated {
+			roles(Marketplace, OfferManager)
+		}
+	}
+	
 	process OfferSearch {
 	    
 	    description "Offer Manager queries Sales Channel to reconcile offer data"
@@ -202,7 +224,7 @@ package com.x.marketplace.v3{
 		roles( OfferManager, Marketplace)
 		
 		workflow {
-				transaction SearchOffer {
+				transaction SearchOffers {
 						roles(OfferManager, Marketplace)
 				}	
 		}

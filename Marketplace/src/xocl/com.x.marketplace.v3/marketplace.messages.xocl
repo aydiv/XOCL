@@ -229,17 +229,18 @@ package com.x.marketplace.v3{
 	}
 
     
-    record OfferDetails  {
+    record OfferDetails  extends OfferData {
+    	/** Identifier of the SKU that is being offered */
+		string sku;
+		CurrencyAmount price;
+		int quantity;
+	}
+	
+	record OfferData  {
         /** The ID in the system that creates the offer  */
 		string id;
 		/** The channel this offer is for */
 		string channelId;
-
-		/** Identifier of the SKU that is being offered */
-		string sku;
-		
-		CurrencyAmount price;
-		int quantity;
 
 		datetime? startTime;
 	    
@@ -266,25 +267,25 @@ package com.x.marketplace.v3{
 	}
 	
 	
-	record GetAllAvailableChannel {
+	record GetAllAvailableChannels {
 
 	}
 	
-    record GetAllAvailableChannelSucceeded {
+    record GetAllAvailableChannelsSucceeded {
 		string channelName;
 		string channelProviderName;
 	    //Caller must get destination ID from header - X-XC-PUBLISHER-ID
 	}
 
-	record GetAllSite {  //goes to a specific channnel
+	record GetAllSites {  //goes to a specific channnel
 	
 	}
 	
-    record GetAllSiteSucceeded {
+    record GetAllSitesSucceeded {
 		array<Site> sites;
 	}
 	
-    record GetAllSiteFailed {
+    record GetAllSitesFailed {
 		array<Error> errors;
 	}
 	
@@ -304,37 +305,23 @@ package com.x.marketplace.v3{
 		string? environmentName
 	}
 	
-	
-    record SearchSiteSucceeded {
-    	string? environmentName
-		array<Site> sites;
-	}
-	
-    record SearchSiteFailed {
-    	string? environmentName
-		array<Error> errors;
-	}
-	
-	
-	record SearchCategory {
+	record SearchCategories {
 		string? siteCode;
 		string? xProductTypeId ;  
 		string? environmentName ;
 	}
 
-	record SearchCategorySucceeded {
+	record SearchCategoriesSucceeded {
 		array<Category> categories; 
 		string? siteCode;
 		string? environmentName;
 	}
 
-	record SearchCategoryFailed {
+	record SearchCategoriesFailed {
 		string? siteCode;
 		string? environmentName;
 		array<Error> errors;
 	}
-	
-	
 	
 	record LookupPolicyGroup {
 		string policyGroupId;
@@ -343,7 +330,6 @@ package com.x.marketplace.v3{
 	record LookupPolicyGroupSucceeded {
 		PolicyGroup p;
 	}
-
 	
 	record LookupPolicyGroupFailed {
 		string policyGroupId;
@@ -446,17 +432,17 @@ package com.x.marketplace.v3{
 	}
 
 	
-	record SearchOffer{
+	record SearchOffers{
 		array<string>? skus;
 		datetime? startTime;
 		datetime? endTime;
 	}	
-	record SearchOfferSucceeded{	
+	record SearchOffersSucceeded{	
 		array<Offer> offers;
-		SearchOffer request;
+		SearchOffers request;
 	}
-	record SearchOfferFailed{
-		SearchOffer request;
+	record SearchOffersFailed{
+		SearchOffers request;
 		array<Error> errors;
 	}
 	
