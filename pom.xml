@@ -149,6 +149,16 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+			        <inherited>true</inherited>
+               		 	<groupId>org.apache.maven.plugins</groupId>
+               			<artifactId>maven-compiler-plugin</artifactId>
+                		<configuration>
+                    		<excludes>
+					<exclude>**/com_x_*.java</exclude>
+                    		</excludes>
+               			 </configuration>
+             		</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
