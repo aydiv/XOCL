@@ -19,7 +19,7 @@ package com.x.marketplace.v3{
 	   		OfferDeactivation.Marketplace
 	   		PublishedOfferRevision.Marketplace<Ebay>
 	   		PublishedOfferRevocation.Marketplace
-	   		OfferSearch.Marketplace
+	   		OfferSearch.Marketplace<Ebay>
 	   		AuthorizedAccountSearch.MarketplaceMetadataProvider
 	   		AuthorizationRevoke.MarketplaceMetadataProvider
 	   		
@@ -54,7 +54,7 @@ package com.x.marketplace.v3{
 	   		OfferDeactivation.OfferManager
 	   		PublishedOfferRevision.OfferManager<Ebay>
 	   		PublishedOfferRevocation.OfferManager
-	   		OfferSearch.OfferManager
+	   		OfferSearch.OfferManager<Ebay>
 	   		AuthorizedAccountSearch.MarketplaceMetadataConsumer
 	   		AuthorizationRevoke.MarketplaceMetadataConsumer
 	   		
