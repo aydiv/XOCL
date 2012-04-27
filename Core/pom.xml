@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.x.ocl</groupId>
 		<artifactId>xocl-contracts</artifactId>
-		<version>0.0.4</version>
+		<version>0.0.5-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>com.x.ocl</groupId>
@@ -13,7 +13,7 @@
 		A core xocl package
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/tags/xocl-contracts-0.0.4/Core</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/Core</connection>
 	</scm>
 
 	<repositories>
