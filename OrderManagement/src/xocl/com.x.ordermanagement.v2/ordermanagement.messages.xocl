@@ -165,10 +165,29 @@ package com.x.ordermanagement.v2 {
 		/** A collection of additional costs that were associated with this order line  */
 		array<AdditionalCost> additionalCosts
 	}
+	
+	record ReturnOrderLineData {
+		/* The unique id of this item */
+		string? orderLineId
+		
+		/* The ordered index of this item (also referred to as line number) */
+		string? itemId
+		
+		float quantity
+		string productSku
+		string itemDescription
+		
+		datetime dateReturned		
+		OrderLinePrice price
+	}
 
 	record SimpleOrderLineData {
+		/* The unique id of this item */
 		string? orderLineId
+		
+		/* The ordered index of this item (also referred to as line number) */
 		string? itemId
+		
 		string? orderNumber
 		
 		float quantity
@@ -338,11 +357,6 @@ package com.x.ordermanagement.v2 {
 		SimpleOrder simpleOrder
 	}
 	
-	record MarketplaceOrderCreated extends OrderCreated {
-		string accountId
-		string? siteCode
-	}
-	
 	record CancelOrder {
 		array<string> orderNumbers
 	}
@@ -408,16 +422,17 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	record OrderReturn {
-		string? orderNumber
+		string orderNumber
 		datetime? dateReturned
 	}
 	
 	record PartialOrderReturn {
-		string? orderNumber
-		datetime? dateReturned
+		string orderNumber
 		
-		/* A collectiong containing the items and quantities that were returned */
-		array<SimpleOrderLineData> returnedItems
+		/* A collectiong containing the items and quantities that were returned. It does
+		 * not include the remaining items.
+		 */
+		array<ReturnOrderLineData> returnedItems
 	}
 	
 	/** OrderAdjusted capatures information about orders that were changed in ways that
@@ -426,9 +441,12 @@ package com.x.ordermanagement.v2 {
 	record OrderAdjust {
 		string? orderNumber
 		
-		/** A collection of the lines that were adjsusted */
-		array<SimpleOrderLineData> adjustedLines
-		
+		/** A collection of the lines that were adjusted/updated. This does
+		 * not include items that were not adjusted/updated.
+		 * 
+		 * TODO: Should the scope of the order line data be more constrainer here?
+		 */
+		array<SimpleOrderLineData> adjustedLines	
 	}
 	
 	record PaymentUpdate {
