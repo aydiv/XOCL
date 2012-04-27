@@ -238,37 +238,7 @@ package com.x.marketplace.v3{
         }
     }
     
-    transaction RevisePublishedOffer<Ebay> response {
-        sender {
-        	message RevisePublishedOffer {
-        		timeouts(receipt=30s, response=2h)     		
-        		retries=3
-        	}
-        	message<Ebay> RevisePublishedEbayOffer {
-        		timeouts(receipt=30s, response=2h)     		
-        		retries=3
-        	}
-        }
-        receiver {
-        	success RevisePublishedOfferSucceeded {
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
-            success <Ebay> ReviseEbayPublishedOfferSucceeded {
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
-            
-            failure RevisePublishedOfferFailed{
-            	timeouts(receipt=30s)
-            }
-
-            failure <Ebay> ReviseEbayPublishedOfferFailed{
-            	timeouts(receipt=30s)
-            }
-        }
-    }
-       
+ 
     transaction RevisePublishedOffer<Ebay> notify {
         sender {
         	message RevisePublishedOffer {
