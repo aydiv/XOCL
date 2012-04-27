@@ -129,5 +129,9 @@
 		array<Error> errors;
 	}
     
+    record SearchEbayOffersSucceeded{	
+		array<Offer> offers;
+		SearchOffers request;
+	}
 	
 }
