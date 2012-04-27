@@ -52,11 +52,11 @@ package com.x.ordermanagement.v2 {
 	    			roles(OrderProcessor, CustomerManager)
 	    		}
 	    		
-	    		transaction ShippingInformationUpdate {
+	    		transaction ShippingInformationUpdate<MarketplaceOrder> {
 	    			roles(OrderProcessor, SalesChannel)
 	    		}
 	    		
-	    		transaction ShippingInformationUpdate {
+	    		transaction ShippingInformationUpdate<MarketplaceOrder> {
 	    			roles(SalesChannel, OrderProcessor)
 	    		}
 	    		

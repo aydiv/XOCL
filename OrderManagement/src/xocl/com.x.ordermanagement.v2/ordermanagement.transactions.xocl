@@ -105,9 +105,12 @@ package com.x.ordermanagement.v2 {
         } 
     }
     
-    transaction ShippingInformationUpdate response {
+    transaction ShippingInformationUpdate<MarketplaceOrder> response {
         sender {
         	message ShippingInformationUpdate {
+        		 timeouts(response=30s)     		
+        	}
+        	message <MarketplaceOrder> MarketplaceShippingInformationUpdate {
         		 timeouts(response=30s)     		
         	}
         }
