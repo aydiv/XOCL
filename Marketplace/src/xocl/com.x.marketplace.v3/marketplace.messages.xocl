@@ -405,10 +405,6 @@ package com.x.marketplace.v3{
 		string? policyGroupId;
 	}
 	
-	record ReviseMarketplacePublishedOfferFailed {
-		OfferUpdateError errors;
-		string? policyGroupId;
-	}
 	
 	record RevokePublishedOffer {
 		string offerId;
