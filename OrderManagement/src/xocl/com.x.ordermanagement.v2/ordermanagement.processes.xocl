@@ -31,21 +31,22 @@ package com.x.ordermanagement.v2 {
     // Process orders that originate from a sales channel
     process ProcessSalesChannelOrder<MarketplaceOrder> {
     	
-        description "An order is submitted for processing and is shipped or cancelled"
+        description "An order is submitted for processing and is adjusted, shipped, or cancelled"
         
         roles(SalesChannel, OrderProcessor, OrderObserver, CustomerManager)
     
 	    workflow {
-   			// Notify observers that an order was created
-       	    transaction OrderCreated {
-        		roles(SalesChannel, OrderObserver)
-       		}
 	    	 	
     		// An order submitter submits an order to an order processor
        	 	transaction ProcessOrder<MarketplaceOrder> {
         		roles(SalesChannel, OrderProcessor)
         	}
         	
+   			// Notify observers that an order was created
+       	    transaction OrderCreated {
+        		roles(SalesChannel, OrderObserver)
+       		}
+       		
 	        any {
 	        	workflow CustomerUpsert {
 	    			roles(OrderProcessor, CustomerManager)
