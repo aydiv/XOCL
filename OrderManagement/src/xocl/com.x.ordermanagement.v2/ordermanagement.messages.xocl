@@ -48,7 +48,7 @@ package com.x.ordermanagement.v2 {
 		NOT_AUTHORIZED,
 		PARTIAL,
 		NONE
-	}	
+	}
 
 	record GiftTag {
 		string? from
@@ -175,7 +175,7 @@ package com.x.ordermanagement.v2 {
 		string productSku
 		string itemDescription
 		
-		/** Optionall provided with each item, overriding order */
+		/** Optionally provided with each item, overriding order */
 		Shipping? shipping
 		
 		OrderLinePrice unitPrice
@@ -380,19 +380,6 @@ package com.x.ordermanagement.v2 {
 	
     record SearchOrder {
     	Query _AVDL_query
-    	
-		datetime? lastModified
-		/**
-		 * Restrict the number of items return to this many or less.
-		 * When null, it is assumed there is no restriction
-		 */
-		long? itemsRequested
-		
-		/**
-		 * Return the results starting from this zero-based index.
-		 * When null, items will be returned started from the first item
-		 */
-		long? startItemIndex
 	}
 	
 	record MarketplaceSearchOrder extends SearchOrder {
@@ -401,35 +388,61 @@ package com.x.ordermanagement.v2 {
 	}
 
 	record SearchOrderSucceeded {
+    	Query _AVDL_query		
 		array<Order> orders
+	}
 
-		/**
-		 * The total number of items found by the data provider.
-		 * This field will be filled in by the result provider when supported.
-		 * Requester should not fill this out.
-		 */
-		datetime? modifiedSince
-		long totalItemsFound
-		long? itemsRequested
-		long? startItemIndex
+	record MarketplaceSearchOrderSucceeded extends SearchOrderSucceeded {
+		string? siteCode
+		string? sellerAccountId
 	}
 	
 	record SearchNonSensitiveOrderSucceeded {
-        array<NonSensitiveOrder> orders
-        	
-		/**
-		 * The total number of items found by the data provider.
-		 * This field will be filled in by the result provider when supported.
-		 * Requester should not fill this out.
-		 */
-		 datetime? modifiedSince
-		 long totalItemsFound
-		 long? itemsRequested
-		 long? startItemIndex
+    	Query _AVDL_query		
+        array<NonSensitiveOrder> orders        	
 	}
 	
 	record SearchOrderFailed {
 		SearchOrder search
+		array<Error> errors
+	}
+	
+	record OrderReturn {
+		string? orderNumber
+		datetime? dateReturned
+	}
+	
+	record PartialOrderReturn {
+		string? orderNumber
+		datetime? dateReturned
+		
+		/* A collectiong containing the items and quantities that were returned */
+		array<SimpleOrderLineData> returnedItems
+	}
+	
+	/** OrderAdjusted capatures information about orders that were changed in ways that
+	 *  effect the overall price of the product.
+	 */
+	record OrderAdjust {
+		string? orderNumber
+		
+		/** A collection of the lines that were adjsusted */
+		array<SimpleOrderLineData> adjustedLines
+		
+	}
+	
+	record PaymentUpdate {
+		string? orderNumber
+		
+		PaymentInfo paymentInfo
+	}
+	
+	record PaymentUpdateSucceeded {
+		string orderNumber		
+	}
+	
+	record PaymentUpdateFailed {
+		string orderNumber
 		array<Error> errors
 	}
 
