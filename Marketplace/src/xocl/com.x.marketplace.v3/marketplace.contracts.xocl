@@ -17,7 +17,6 @@ package com.x.marketplace.v3{
 	   		PolicyGroupDeletion.MarketplacePolicyManager 
 	   		PolicyGroupLookup.MarketplacePolicyManager 
 	   		OfferPublication.Marketplace 
-	   		OfferDeactivation.Marketplace
 	   		PublishedOfferRevision.Marketplace
 	   		PublishedOfferRevocation.Marketplace
 	   		OfferSearch.Marketplace
@@ -49,7 +48,6 @@ package com.x.marketplace.v3{
 	   		PolicyGroupDeletion.MarketplaceMerchantConsole
 	   		PolicyGroupLookup.MarketplacePolicyManager 
 	   		OfferPublication.OfferManager
-	   		OfferDeactivation.OfferManager
 	   		PublishedOfferRevision.OfferManager
 	   		PublishedOfferRevocation.OfferManager
 	   		OfferSearch.OfferManager

@@ -16,7 +16,6 @@ package com.x.marketplace.v3{
 	   		PolicyGroupDeletion.MarketplacePolicyManager<Ebay> 
 	   		PolicyGroupLookup.MarketplacePolicyManager<Ebay> 
 	   		OfferPublication.Marketplace<Ebay> 
-	   		OfferDeactivation.Marketplace
 	   		PublishedOfferRevision.Marketplace<Ebay>
 	   		PublishedOfferRevocation.Marketplace
 	   		OfferSearch.Marketplace<Ebay>
@@ -51,7 +50,7 @@ package com.x.marketplace.v3{
 	   		PolicyGroupDeletion.MarketplaceMerchantConsole<Ebay> 
 	   		PolicyGroupLookup.MarketplacePolicyManager<Ebay> 
 	   		OfferPublication.OfferManager<Ebay> 
-	   		OfferDeactivation.OfferManager
+	   		//OfferDeactivation.OfferManager
 	   		PublishedOfferRevision.OfferManager<Ebay>
 	   		PublishedOfferRevocation.OfferManager
 	   		OfferSearch.OfferManager<Ebay>

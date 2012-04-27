@@ -229,14 +229,14 @@ package com.x.marketplace.v3{
 	}
 
     
-    record OfferDetails  extends OfferData {
+    record Sku  {
     	/** Identifier of the SKU that is being offered */
 		string sku;
 		CurrencyAmount price;
 		int quantity;
 	}
 	
-	record OfferData  {
+	record OfferDetails  {
         /** The ID in the system that creates the offer  */
 		string id;
 		/** The channel this offer is for */
@@ -248,6 +248,7 @@ package com.x.marketplace.v3{
     	  	
 		string? title;
 
+		//string? offerDescription;  //description for this offer that can override the product description
 		/*
 			Following are fields that are optionally supported
 			across marketplaces.  Will be ignored if market does
@@ -259,6 +260,8 @@ package com.x.marketplace.v3{
 		array<string>? marketCategories;
 		//Indicates where in the seller custom categories to list
 		array<string>? customCategories;
+		
+		array<Sku> skus;
 
 		//Following data can override data in a specified profile
 		PaymentPolicy? payment;

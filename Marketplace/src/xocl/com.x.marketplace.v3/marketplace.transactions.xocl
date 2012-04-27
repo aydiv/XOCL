@@ -13,7 +13,8 @@ package com.x.marketplace.v3{
     transaction GetAllAuthorizedAccount query {
         sender {
         	message GetAllAuthorizedAccount	{
-        		 timeouts(response=30s)     		
+        		 timeouts(response=30s) 
+        		 retries=3    		
         	}
         }
         receiver {
@@ -46,6 +47,7 @@ package com.x.marketplace.v3{
         sender {
         	message GetAllAvailableChannels {
         		 timeouts(response=30s)
+        		 retries=3
         		 //In a broadcast query, the client should wait for the entire timeout before assuming all available channels have responded     		
         	}
         }
@@ -58,7 +60,8 @@ package com.x.marketplace.v3{
  	transaction GetAllSites query {
         sender {
         	message GetAllSites {
-        		 timeouts(response=30s)     		
+        		 timeouts(response=30s)
+        		 retries=3     		
         	}
         }
         receiver {
@@ -71,7 +74,8 @@ package com.x.marketplace.v3{
  	transaction LookupSiteMetadata query {
         sender {
         	message LookupSiteMetadata {
-        		 timeouts(response=30s)     		
+        		 timeouts(response=30s)
+        		 retries=3     		
         	}
         }
         receiver {
@@ -86,7 +90,8 @@ package com.x.marketplace.v3{
     transaction SearchCategories query {
         sender {
         	message SearchCategories {
-        		 timeouts(response=30s)     		
+        		 timeouts(response=30s)
+        		 retries=3     		
         	}
         }
         receiver {
@@ -309,7 +314,8 @@ package com.x.marketplace.v3{
     transaction SearchOffers<Ebay> query {
         sender {
         	message SearchOffers {
-        		 timeouts(response=30s)     		
+        		 timeouts(response=30s)
+        		 retries=3     		
         	}
         }
         receiver {

@@ -1,19 +1,15 @@
  package com.x.marketplace.v3{  
  	import com.x.core.v1.*
  	import com.x.marketplace.v3.*
- 	
-	record Sku {
-		CurrencyAmount price;
-		int quantity;
-		string sku;
-	}
 	
-	record EbayOfferDetails extends OfferData{
+	record EbayOfferDetails extends OfferDetails{
 		string listingFormat;
 		string duration;
         string countryCode;
+        //these are only applicable for auction
 		CurrencyAmount? buyItNowPrice;
 		CurrencyAmount? reservePrice;
+		
 		string? payPalEmailAddress;
 		int? handlingTime;
 		boolean? useTaxTable;
@@ -21,8 +17,7 @@
 		// Product Details (additional field)
 		string? postalCode;
 		string? location;
-	   
-	    array<Sku> skus;  //There will be at least one SKU
+
 		string? imageVariationName;
 	}
 	

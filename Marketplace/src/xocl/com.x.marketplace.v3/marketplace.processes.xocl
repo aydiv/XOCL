@@ -124,7 +124,7 @@ package com.x.marketplace.v3{
 	
 		preconditions(offer[Offer.Created])
 	
-		workflow [3h] {
+		workflow [5m] {
 			transaction PublishOffer<Ebay> {
 				roles(OfferManager, Marketplace)
 			}
@@ -141,11 +141,6 @@ package com.x.marketplace.v3{
 					roles(Marketplace, OfferManager)
 				}
 			}
-			any {
-				workflow OfferDeactivation {
-					roles(Marketplace, OfferManager)	
-				}
-			}
 		}
 	}
 	
@@ -157,7 +152,7 @@ package com.x.marketplace.v3{
 	
 		preconditions(offer[Offer.Created])
 	
-		workflow [3h] {
+		workflow [5m] {
 			transaction RevisePublishedOffer<Ebay> {
 				roles(OfferManager, Marketplace)
 			}
@@ -172,11 +167,6 @@ package com.x.marketplace.v3{
 				}
 				transaction RevisePublishedOfferFailed<Ebay>{
 					roles(Marketplace, OfferManager)
-				}
-			}
-			any {
-				workflow OfferDeactivation {
-					roles(Marketplace, OfferManager)	
 				}
 			}
 		}
@@ -197,23 +187,6 @@ package com.x.marketplace.v3{
 		}
 	    postconditions {
 			success(offer[Offer.Inactive])
-		}
-	}
-	
-	process OfferDeactivation(Offer offer) {
-		description "A sales channel deactivates an existing offer"
-		roles (Marketplace, OfferManager)
-		
-		preconditions(offer[Offer.Inactive])
-
-		postconditions {
-			success(offer[Offer.Inactive])
-		}
-	}
-	
-    workflow OfferDeactivation implements OfferDeactivation {
-		transaction OfferDeactivated {
-			roles(Marketplace, OfferManager)
 		}
 	}
 	
