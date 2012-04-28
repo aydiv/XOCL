@@ -204,11 +204,11 @@ package com.x.marketplace.v3{
     transaction PublishOffer<Ebay>(Offer offer) notify {
         preconditions(offer[Offer.Created])
         sender {
-        	message PublishOfferSucceeded {
+        	message PublishOffer {
         		timeouts(receipt=30s)  		
         		retries=3
         	}
-        	message <Ebay> PublishEbayOfferSucceeded {
+        	message <Ebay> PublishEbayOffer {
         		timeouts(receipt=30s)  		
         		retries=3
         	}
