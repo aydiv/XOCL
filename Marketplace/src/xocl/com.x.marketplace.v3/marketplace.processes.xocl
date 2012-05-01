@@ -159,13 +159,8 @@ package com.x.marketplace.v3{
 					roles(OfferPublication.Marketplace, OfferPublication.OfferManager)
 				}
 			}
-		
-		
-		
 	}
-	
 
-    
     process PublishedOfferRevision<Ebay>(Offer offer) {
 		description "A merchant updates published offers in a marketplace"
 		roles(OfferManager, Marketplace, ProductInformationManager)
