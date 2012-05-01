@@ -112,6 +112,7 @@ package com.x.marketplace.v3{
 		OfferDetails offerDetails;	
 	}
 	
+	
 	record OfferChannelData{
 		/** State of the offer */
 		OfferState offerState;
@@ -119,8 +120,54 @@ package com.x.marketplace.v3{
 		string? channelOfferUrl; //To be provided by channel provider
 		string? channelStatus; //To be provided by channel provider	
 	}
+	
+	enum ImageTag {
+		FEATURED,
+		GALLERY,
+		THUMBNAIL
+	}
 
+	record ProductImage {
+		union{null, array<ImageTag>} tags = null;
+		string locationURL;
+	}
 
+	record ProductAttribute {
+		string name;
+		array<string> value;
+	}
+
+	
+	record VariationSpecific {
+		string name;
+		string value; 
+	}
+
+	record Variation {
+		CurrencyAmount price;
+		int quantity;
+		string sku;
+		array<string>? imageUrls;
+		array<VariationSpecific> variationSpecifics;
+		CurrencyAmount? msrp;
+		CurrencyAmount? minimumAdvertisedPrice;
+	}
+    
+	record ProductDetails {
+		//ID as assigned by X catalog service or null if this is not a catalog product
+		string? xId;
+		string? xProductTypeId;  // Product type id as defined by the taxonomy manager.
+		string sku;
+		string? manufacturer;
+		string? mpn;
+	    string? brand;
+	    CurrencyAmount? msrp;
+		CurrencyAmount? minimumAdvertisedPrice;
+	    array<ProductImage>? imageURL;
+		string? productDescription;
+	    array<ProductAttribute>? attributes;
+	}
+  
 	record Category {
 		string id;
 		string name;
@@ -236,11 +283,18 @@ package com.x.marketplace.v3{
 		int quantity;
 	}
 	
-	record OfferDetails  {
+	record OfferDetails extends OfferDetailsWithoutSKU  {
+		array<Sku> skus;
+	}
+	
+	record OfferDetailsWithProduct extends OfferDetailsWithoutSKU  {
+	       ProductDetails product;
+	       array<Variation> variations;
+	}
+	
+	record OfferDetailsWithoutSKU  {
         /** The ID in the system that creates the offer  */
 		string id;
-		/** The channel this offer is for */
-		string channelId;
 
 		datetime? startTime;
 	    
@@ -258,10 +312,6 @@ package com.x.marketplace.v3{
 		boolean? giftWrapAvailable;
 		//Indicates where in the marketplace category to list
 		array<string>? marketCategories;
-		//Indicates where in the seller custom categories to list
-		array<string>? customCategories;
-		
-		array<Sku> skus;
 
 		//Following data can override data in a specified profile
 		PaymentPolicy? payment;
@@ -383,6 +433,12 @@ package com.x.marketplace.v3{
 		string? policyGroupId;
 	}
 
+		
+	record PublishOfferWithProductData {
+		OfferDetailsWithProduct offer;
+		string? policyGroupId;
+	}
+
 	record PublishOfferSucceeded { //Does not map 1:1 with request message - need to model this
 		Offer offer;
 		string? policyGroupId;
@@ -395,6 +451,11 @@ package com.x.marketplace.v3{
 	
 	record RevisePublishedOffer {
 		OfferDetails update; //must have channelOfferId
+		string? policyGroupId;
+	}
+	
+    record RevisePublishedOfferWithProductData {
+		OfferDetailsWithProduct update; //must have channelOfferId
 		string? policyGroupId;
 	}
 

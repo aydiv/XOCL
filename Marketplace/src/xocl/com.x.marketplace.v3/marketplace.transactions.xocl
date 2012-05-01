@@ -215,6 +215,20 @@ package com.x.marketplace.v3{
         }
     }
     
+    transaction PublishOfferWithProductData<Ebay>(Offer offer) notify {
+        preconditions(offer[Offer.Created])
+        sender {
+        	message PublishOfferWithProductData {
+        		timeouts(receipt=30s)  		
+        		retries=3
+        	}
+        	message <Ebay> PublishEbayOfferWithProductData {
+        		timeouts(receipt=30s)  		
+        		retries=3
+        	}
+        }
+    }
+    
     transaction PublishOfferSucceeded<Ebay>(Offer offer) notify {
         preconditions(offer[Offer.Active])
         sender {
@@ -250,7 +264,19 @@ package com.x.marketplace.v3{
         		timeouts(receipt=30s)		
         		retries=3
         	}
-        	message<Ebay> RevisePublishedEbayOffer {
+        	message<Ebay> ReviseEbayPublishedOffer {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+        }
+      }
+      transaction RevisePublishedOfferWithProductData<Ebay> notify {
+        sender {
+        	message RevisePublishedOfferWithProductData {
+        		timeouts(receipt=30s)		
+        		retries=3
+        	}
+        	message<Ebay> ReviseEbayPublishedOfferWithProductData {
         		timeouts(receipt=30s)   		
         		retries=3
         	}

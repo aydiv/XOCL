@@ -3,6 +3,10 @@
  	import com.x.marketplace.v3.*
 	
 	record EbayOfferDetails extends OfferDetails{
+		array<Sku> skus;
+	}
+	
+	record EbayOfferDetailsWithoutSKU extends OfferDetailsWithoutSKU{
 		string listingFormat;
 		string duration;
         string countryCode;
@@ -18,9 +22,14 @@
 		string? postalCode;
 		string? location;
 
-		string? imageVariationName;
+		string? imageVariationName;	
 	}
 	
+	record EbayOfferDetailsWithProductData extends EbayOfferDetailsWithoutSKU{
+		ProductDetails product;
+	    array<Variation> variations;
+	}
+
 	record EbayOffer {
 		OfferChannelData channelData;
 		EbayOfferDetails offerDetails;	
@@ -44,6 +53,11 @@
 		string? policyGroupId;
 	}
 	
+	record PublishEbayOfferWithProductData {
+		EbayOfferDetailsWithProductData offer; 
+		string? policyGroupId;
+	}
+	
 	record PublishEbayOfferSucceeded { //Does not map 1:1 with request message - need to model this
 		EbayOffer offer;
 		string? policyGroupId;
@@ -63,8 +77,12 @@
 		array<Error> errors;
 	}
 	
-	record RevisePublishedEbayOffer {
+	record ReviseEbayPublishedOffer {
 		EbayOfferDetails update; //must have channelOfferId
+		string? policyGroupId;
+	}
+	record ReviseEbayPublishedOfferWithProductData {
+		EbayOfferDetailsWithProductData update; //must have channelOfferId
 		string? policyGroupId;
 	}
 	record ReviseEbayPublishedOfferSucceeded {

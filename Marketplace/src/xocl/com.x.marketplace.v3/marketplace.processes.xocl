@@ -124,7 +124,10 @@ package com.x.marketplace.v3{
 	
 		preconditions(offer[Offer.Created])
 	
-		workflow [5m] {
+
+	}
+	
+	workflow OfferPublication [5m] implements OfferPublication {
 			transaction PublishOffer<Ebay> {
 				roles(OfferManager, Marketplace)
 			}
@@ -141,7 +144,24 @@ package com.x.marketplace.v3{
 					roles(Marketplace, OfferManager)
 				}
 			}
-		}
+	}
+	
+	workflow  OfferPublicationWithProductData  [5m] implements OfferPublication{
+	
+			transaction PublishOfferWithProductData<OfferPublication.Ebay> {
+				roles(OfferPublication.OfferManager, OfferPublication.Marketplace)
+			}
+			one{
+				transaction PublishOfferSucceeded<OfferPublication.Ebay>{
+					roles(OfferPublication.Marketplace, OfferPublication.OfferManager)
+				}
+				transaction PublishOfferFailed<OfferPublication.Ebay>{
+					roles(OfferPublication.Marketplace, OfferPublication.OfferManager)
+				}
+			}
+		
+		
+		
 	}
 	
 
