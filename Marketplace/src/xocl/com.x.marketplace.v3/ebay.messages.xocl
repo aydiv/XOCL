@@ -1,6 +1,7 @@
  package com.x.marketplace.v3{  
  	import com.x.core.v1.*
  	import com.x.marketplace.v3.*
+ 	import com.x.pim.v1.*
 	
 	record EbayOfferDetails extends EbayOfferDetailsWithoutSKU{
 		array<Sku> skus;
@@ -26,8 +27,7 @@
 	}
 	
 	record EbayOfferDetailsWithProductData extends EbayOfferDetailsWithoutSKU{
-		ProductDetails product;
-	    array<Variation> variations;
+		Product product;
 	}
 
 	record EbayOffer {

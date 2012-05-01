@@ -1,6 +1,7 @@
 package com.x.marketplace.v3{
 
 	import com.x.core.v1.*
+	import com.x.pim.v1.*
 	/*
 		Defines a marketplace account which is intended to be used for all supported marketplaces.
 	*/
@@ -121,53 +122,6 @@ package com.x.marketplace.v3{
 		string? channelStatus; //To be provided by channel provider	
 	}
 	
-	enum ImageTag {
-		FEATURED,
-		GALLERY,
-		THUMBNAIL
-	}
-
-	record ProductImage {
-		union{null, array<ImageTag>} tags = null;
-		string locationURL;
-	}
-
-	record ProductAttribute {
-		string name;
-		array<string> value;
-	}
-
-	
-	record VariationSpecific {
-		string name;
-		string value; 
-	}
-
-	record Variation {
-		CurrencyAmount price;
-		int quantity;
-		string sku;
-		array<string>? imageUrls;
-		array<VariationSpecific> variationSpecifics;
-		CurrencyAmount? msrp;
-		CurrencyAmount? minimumAdvertisedPrice;
-	}
-    
-	record ProductDetails {
-		//ID as assigned by X catalog service or null if this is not a catalog product
-		string? xId;
-		string? xProductTypeId;  // Product type id as defined by the taxonomy manager.
-		string sku;
-		string? manufacturer;
-		string? mpn;
-	    string? brand;
-	    CurrencyAmount? msrp;
-		CurrencyAmount? minimumAdvertisedPrice;
-	    array<ProductImage>? imageURL;
-		string? productDescription;
-	    array<ProductAttribute>? attributes;
-	}
-  
 	record Category {
 		string id;
 		string name;
@@ -288,8 +242,7 @@ package com.x.marketplace.v3{
 	}
 	
 	record OfferDetailsWithProduct extends OfferDetailsWithoutSKU  {
-	       ProductDetails product;
-	       array<Variation> variations;
+	       Product product;
 	}
 	
 	record OfferDetailsWithoutSKU  {
