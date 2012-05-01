@@ -2,7 +2,7 @@
  	import com.x.core.v1.*
  	import com.x.marketplace.v3.*
 	
-	record EbayOfferDetails extends OfferDetails{
+	record EbayOfferDetails extends EbayOfferDetailsWithoutSKU{
 		array<Sku> skus;
 	}
 	
