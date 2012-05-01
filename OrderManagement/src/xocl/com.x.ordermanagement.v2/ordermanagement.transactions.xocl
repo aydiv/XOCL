@@ -105,19 +105,17 @@ package com.x.ordermanagement.v2 {
         } 
     }
     
-    transaction ShippingInformationUpdate<MarketplaceOrder> response {
+    transaction ShippingInformationUpdate<MarketplaceOrder> notify {
         sender {
         	message ShippingInformationUpdate {
-        		 timeouts(response=30s)     		
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
         	}
         	message <MarketplaceOrder> MarketplaceShippingInformationUpdate {
-        		 timeouts(response=30s)     		
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
         	}
         }
-        receiver {
-        	success ShippingInformationUpdateSucceeded                       	        
-            failure ShippingInformationUpdateFailed
-        } 
     }
     
     transaction OrderReturn inform {
