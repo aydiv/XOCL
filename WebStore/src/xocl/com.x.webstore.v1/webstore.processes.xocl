@@ -84,16 +84,23 @@ package com.x.webstore.v1{
 					roles(WebStoreOfferConsumer, WebStoreOfferManager)
 				}
 			}
-			any{ //it's possible an update may cause none or both of these events to happen
-				noop
-				transaction WebStoreOfferQuantityUpdated
-				{
-					roles (WebStoreOfferManager, WebStoreOfferObserver)
-				}
-				transaction WebStoreOfferPriceUpdated
+			do{ 
+				transaction WebStoreOfferUpdated
 			    {
-			    	roles (WebStoreOfferManager, WebStoreOfferObserver)
+			    	roles(WebStoreOfferManager, WebStoreOfferObserver)
 			    }
+				any{
+					noop
+					transaction WebStoreOfferQuantityUpdated
+					{
+						roles (WebStoreOfferManager, WebStoreOfferObserver)
+					}
+					transaction WebStoreOfferPriceUpdated
+			    	{
+			    		roles (WebStoreOfferManager, WebStoreOfferObserver)
+			    	}	
+			    }
+
 			}
 		}		
 	}

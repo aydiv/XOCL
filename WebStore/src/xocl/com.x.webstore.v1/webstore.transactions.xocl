@@ -172,6 +172,10 @@ package com.x.webstore.v1{
    		sender
    		{
    			message WebStoreOfferCreated
+   		    {
+        		timeouts(receipt=30s)     		
+        		retries=3
+        	}
    		}
    	}
    	
@@ -180,6 +184,10 @@ package com.x.webstore.v1{
    		sender
    		{
    			message WebStoreOfferPriceUpdated
+   			{
+   				timeouts(receipt=30s)     		
+        		retries=3
+        	}
    		}
    	}
    	
@@ -187,7 +195,10 @@ package com.x.webstore.v1{
    	{
    		sender
    		{
-   			message WebStoreOfferQuantityUpdated
+   			message WebStoreOfferQuantityUpdated{
+   			    timeouts(receipt=30s)     		
+        		retries=3
+        	}
    		}
    	}
    	
@@ -195,9 +206,36 @@ package com.x.webstore.v1{
    	{
    		sender
    		{
-   			message WebStoreOfferDeleted
+   			message WebStoreOfferDeleted{
+   			    timeouts(receipt=30s)     		
+        		retries=3
+        	}
+   			
+   		}
+   	}  
+   	   	
+   	transaction WebStoreOfferDeleted notify
+   	{
+   		sender
+   		{
+   			message WebStoreOfferDeleted{
+   			    timeouts(receipt=30s)     		
+        		retries=3
+        	}
    		}
    	}
+   	   	
+   	transaction WebStoreOfferUpdated notify
+   	{
+   		sender
+   		{
+   			message WebStoreOfferUpdated{
+   			    timeouts(receipt=30s)     		
+        		retries=3
+        	}
+   		}
+   	}
+   	
 
 
 }
