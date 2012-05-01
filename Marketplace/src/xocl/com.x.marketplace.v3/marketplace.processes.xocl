@@ -167,8 +167,11 @@ package com.x.marketplace.v3{
 	
 		preconditions(offer[Offer.Created])
 	
-		workflow [5m] {
-			transaction RevisePublishedOffer<Ebay> {
+
+	}
+	
+	workflow PublishedOfferRevision [5m] implements PublishedOfferRevision {
+			transaction RevisePublishedOfferWithProductData<Ebay> {
 				roles(OfferManager, Marketplace)
 			}
 			any{
@@ -184,8 +187,22 @@ package com.x.marketplace.v3{
 					roles(Marketplace, OfferManager)
 				}
 			}
-		}
 	}
+	
+	workflow PublishedOfferRevisionWithProductData [5m]  implements PublishedOfferRevision {
+			transaction RevisePublishedOfferWithProductData<PublishedOfferRevision.Ebay> {
+				roles(PublishedOfferRevision.OfferManager, PublishedOfferRevision.Marketplace)
+			}
+			one{
+				transaction RevisePublishedOfferSucceeded<PublishedOfferRevision.Ebay>{
+					roles(PublishedOfferRevision.Marketplace, PublishedOfferRevision.OfferManager)
+				}
+				transaction RevisePublishedOfferFailed<PublishedOfferRevision.Ebay>{
+					roles(PublishedOfferRevision.Marketplace, PublishedOfferRevision.OfferManager)
+				}
+			}
+	}
+	
 	
 	process PublishedOfferRevocation(Offer offer) {
 		
