@@ -24,6 +24,7 @@
 		string? location;
 
 		string? imageVariationName;	
+	    array<string>? customCategories;
 	}
 	
 	record EbayOfferDetailsWithProductData extends EbayOfferDetailsWithoutSKU{
