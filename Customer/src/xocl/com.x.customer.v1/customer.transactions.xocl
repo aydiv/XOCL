@@ -16,11 +16,17 @@ package com.x.customer.v1{
         	// One of these two messages must be sent back to the sender as a response	
          	// A success message does not have a response timeout
         	success UpsertCustomerSucceeded
-
-              
-                    	
+        	{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+         	
         	// A failure message does not have a response timeout
-            failure UpsertCustomerFailed  
+            failure UpsertCustomerFailed
+            {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}  
         } 
     }
     
@@ -29,7 +35,7 @@ package com.x.customer.v1{
     {
         sender
         {
-        	message CustomerCreated
+        	message CustomerCreated 
    
         }
     }
@@ -57,8 +63,7 @@ package com.x.customer.v1{
         	
         	success SearchCustomerSucceeded
         	
-        	success<Email> SearchEmailCustomerSucceeded         
-                    	
+        	success<Email> SearchEmailCustomerSucceeded
         	// A failure message does not have a response timeout
             failure SearchCustomerFailed
         } 
