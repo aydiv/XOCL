@@ -9,5 +9,14 @@ package com.x.producttaxonomy.v1 {
 					ProductTaxonomyRetrieval.ProductTaxonomyManager
 					ProductTaxonomyUpdate.ProductTaxonomyManager
 	 		}			
+	}	
+	
+	contract ProductTaxonomyComsumer {
+		
+		description "A consumer of a product taxonomy system"
+    		roles {
+					ProductTaxonomyRetrieval.ProductTaxonomyConsumer
+					ProductTaxonomyUpdate.ProductTaxonomyObserver
+	 		}			
 	}
 }
