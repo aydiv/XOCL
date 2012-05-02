@@ -18,8 +18,14 @@ package com.x.marketplace.v3{
         	}
         }
         receiver {
-        	success GetAllAuthorizedAccountSucceeded
-        	failure GetAllAuthorizedAccountFailed          
+        	success GetAllAuthorizedAccountSucceeded{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+        	failure GetAllAuthorizedAccountFailed{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}          
         } 
     }
     
@@ -52,7 +58,10 @@ package com.x.marketplace.v3{
         	}
         }
         receiver {
-        	success GetAllAvailableChannelsSucceeded 
+        	success GetAllAvailableChannelsSucceeded{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	} 
         	//there is no failure message here because the implementation should not respond if it cannot identify itself                	
         } 
     }
@@ -79,9 +88,15 @@ package com.x.marketplace.v3{
         	}
         }
         receiver {
-        	success LookupSiteMetadataSucceeded   
+        	success LookupSiteMetadataSucceeded{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}   
 
-            failure LookupSiteMetadataFailed
+            failure LookupSiteMetadataFailed{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
         } 
     }
     
@@ -95,9 +110,14 @@ package com.x.marketplace.v3{
         	}
         }
         receiver {
-        	success SearchCategoriesSucceeded         
-
-            failure SearchCategoriesFailed
+        	success SearchCategoriesSucceeded{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}         
+            failure SearchCategoriesFailed{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
         } 
     }
     
@@ -345,10 +365,18 @@ package com.x.marketplace.v3{
         	}
         }
         receiver {
-        	success SearchOffersSucceeded
-        	success<Ebay> SearchEbayOffersSucceeded            	        
-
-            failure SearchOffersFailed
+        	success SearchOffersSucceeded{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+        	success<Ebay> SearchEbayOffersSucceeded{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}            	        
+            failure SearchOffersFailed{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
         } 
     } 
 }

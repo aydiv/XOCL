@@ -13,8 +13,14 @@
         }
         receiver
         {
-        	success LookupStoreSucceeded
-        	failure LookupStoreFailed          
+        	success LookupStoreSucceeded{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+        	failure LookupStoreFailed{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}          
         } 
     }
     
