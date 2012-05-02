@@ -237,7 +237,7 @@ package com.x.marketplace.v3{
 	}
 	
 	
-	record OfferDetailsWithProduct  {
+	record OfferDetailsWithProductData  {
 		   OfferDetails offerDetails;
 	       Product product;
 	}
@@ -386,7 +386,7 @@ package com.x.marketplace.v3{
 
 		
 	record PublishOfferWithProductData {
-		OfferDetailsWithProduct offer;
+		OfferDetailsWithProductData offer;
 		string? policyGroupId;
 	}
 
@@ -406,7 +406,7 @@ package com.x.marketplace.v3{
 	}
 	
     record RevisePublishedOfferWithProductData {
-		OfferDetailsWithProduct update; //must have channelOfferId
+		OfferDetailsWithProductData update; //must have channelOfferId
 		string? policyGroupId;
 	}
 

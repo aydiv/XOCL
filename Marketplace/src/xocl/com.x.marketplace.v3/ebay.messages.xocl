@@ -24,7 +24,8 @@
 	    array<string>? customCategories;
 	}
 	
-	record EbayOfferDetailsWithProductData extends EbayOfferDetails{
+	record EbayOfferDetailsWithProductData{
+		EbayOfferDetails offerDetails;
 		Product product;
 	}
 
