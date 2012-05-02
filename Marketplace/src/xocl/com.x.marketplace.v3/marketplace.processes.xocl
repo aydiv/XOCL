@@ -171,7 +171,7 @@ package com.x.marketplace.v3{
 	}
 	
 	workflow PublishedOfferRevision [5m] implements PublishedOfferRevision {
-			transaction RevisePublishedOfferWithProductData<Ebay> {
+			transaction RevisePublishedOffer<Ebay> {
 				roles(OfferManager, Marketplace)
 			}
 			any{
