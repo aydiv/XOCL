@@ -22,7 +22,9 @@ package com.x.ordermanagement.v2 {
             	timeouts(receipt=30s, validation=3m)
             	retries=3
             }
-			failure ProcessOrderFailed
+			failure ProcessOrderFailed{
+				timeouts(receipt=30s)
+			}
 		}
 	}
 	
@@ -71,8 +73,12 @@ package com.x.ordermanagement.v2 {
             	retries=3
             }            
             
-            failure CancelOrderFailed
-            failure<MarketplaceOrder> CancelMarketplaceOrderFailed
+            failure CancelOrderFailed{
+            	timeouts(receipt=30s)
+            }
+            failure<MarketplaceOrder> CancelMarketplaceOrderFailed{
+            	timeouts(receipt=30s)
+            }
         }
 		postconditions {
 			success(order[Order.Cancelled])
