@@ -229,7 +229,6 @@ package com.x.marketplace.v3{
 		array<Error> errors;
 	}
 
-    
     record Sku  {
     	/** Identifier of the SKU that is being offered */
 		string sku;
