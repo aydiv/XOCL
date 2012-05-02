@@ -3,11 +3,8 @@
  	import com.x.marketplace.v3.*
  	import com.x.pim.v1.*
 	
-	record EbayOfferDetails extends EbayOfferDetailsWithoutSKU{
-		array<Sku> skus;
-	}
 	
-	record EbayOfferDetailsWithoutSKU extends OfferDetailsWithoutSKU{
+	record EbayOfferDetails extends OfferDetails{
 		string listingFormat;
 		string duration;
         string countryCode;
@@ -27,7 +24,7 @@
 	    array<string>? customCategories;
 	}
 	
-	record EbayOfferDetailsWithProductData extends EbayOfferDetailsWithoutSKU{
+	record EbayOfferDetailsWithProductData extends EbayOfferDetails{
 		Product product;
 	}
 
