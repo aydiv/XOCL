@@ -24,7 +24,7 @@ package com.x.marketplace.v3{
 		string name;
 	    array<CustomCategory>? categories;
 	}
-	
+
     record SiteMetadata extends Site {	
 		array<SupportedHandlingTime>? handlingTimes;
 		SupportedReturnPolicy? policy;
