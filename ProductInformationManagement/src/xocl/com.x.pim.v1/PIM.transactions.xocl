@@ -94,7 +94,9 @@ package com.x.pim.v1
             	retries=3
             }
             
-            failure UpdateProductFailed
+            failure UpdateProductFailed{
+            	timeouts(receipt=30s)
+            }
 
         }
     }
@@ -120,7 +122,9 @@ package com.x.pim.v1
             	retries=3
             }
             
-            failure CreateProductFailed
+            failure CreateProductFailed{
+            	timeouts(receipt=30s)
+            }
         }
     }
 
@@ -145,7 +149,9 @@ package com.x.pim.v1
             	retries=3
             }
             
-            failure DeleteProductFailed
+            failure DeleteProductFailed{
+            	timeouts(receipt=30s)
+            }
         }
     }
     
@@ -172,7 +178,9 @@ package com.x.pim.v1
             	retries=3
             }
             
-            failure UpdateSKUFailed
+            failure UpdateSKUFailed{
+            	timeouts(receipt=30s)
+            }
         }
     }
     
@@ -198,7 +206,9 @@ package com.x.pim.v1
             	retries=3
             }
             
-            failure CreateSKUFailed
+            failure CreateSKUFailed{
+            	timeouts(receipt=30s)
+            }
 		}
     }
 
@@ -224,10 +234,10 @@ package com.x.pim.v1
             	retries=3
             }
             
-            failure DeleteSKUFailed
+            failure DeleteSKUFailed{
+            	timeouts(receipt=30s)
+            }
         }
-    }
-    
-    
+    }   
     
 }
