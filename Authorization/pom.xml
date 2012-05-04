@@ -6,7 +6,6 @@
 		<version>0.0.5-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<groupId>com.x.ocl</groupId>
 	<artifactId>authorization-xocl</artifactId>
 	<name>Authorization XOCL</name>
 	<description>

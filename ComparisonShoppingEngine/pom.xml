@@ -6,7 +6,6 @@
 		<version>0.0.5-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<groupId>com.x.ocl</groupId>
 	<artifactId>comparison-shopping-engine-xocl</artifactId>
 	<name>ComparisonShoppingEngine XOCL</name>
 	<description>
