@@ -108,6 +108,7 @@ package com.x.ordermanagement.v2 {
         	success<NonSensitive> SearchNonSensitiveOrderSucceeded           
                     	        
             failure SearchOrderFailed
+        	failure<MarketplaceOrderSearch> MarketplaceSearchOrderFailed   
         } 
     }
     
