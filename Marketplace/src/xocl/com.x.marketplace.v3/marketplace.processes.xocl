@@ -173,11 +173,8 @@ package com.x.marketplace.v3{
 		roles(OfferManager, Marketplace, ProductInformationManager)
 	
 		preconditions(offer[Offer.Created])
-	
-
-	}
-	
-	workflow PublishedOfferRevision [5m] implements PublishedOfferRevision {
+			
+		workflow  [5m]  {
 			transaction RevisePublishedOffer<Ebay> {
 				roles(OfferManager, Marketplace)
 			}
@@ -194,9 +191,16 @@ package com.x.marketplace.v3{
 					roles(Marketplace, OfferManager)
 				}
 			}
+		}
 	}
+
+ 	process PublishedOfferRevisionWithProductData<Ebay>(Offer offer) {
+		description "A merchant updates published offers in a marketplace"
+		roles(OfferManager, Marketplace, ProductInformationManager)
 	
-	workflow PublishedOfferRevisionWithProductData [5m]  implements PublishedOfferRevision {
+		preconditions(offer[Offer.Created])
+			
+		workflow  [5m]  {
 			transaction RevisePublishedOfferWithProductData<PublishedOfferRevision.Ebay> {
 				roles(PublishedOfferRevision.OfferManager, PublishedOfferRevision.Marketplace)
 			}
@@ -208,6 +212,7 @@ package com.x.marketplace.v3{
 					roles(PublishedOfferRevision.Marketplace, PublishedOfferRevision.OfferManager)
 				}
 			}
+		}
 	}
 	
 	
