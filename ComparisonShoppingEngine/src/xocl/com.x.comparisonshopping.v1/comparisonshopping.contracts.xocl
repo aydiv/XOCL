@@ -16,7 +16,6 @@ package com.x.comparisonshopping.v1
     	// A set of roles collectivley define the implementer's responsibilities
     	roles
     	{
-	        PublishProductFeed.TrafficGenerationManager
 	        PublishProductFeed.ComparisonShoppingPublisher
 	    }
     }

@@ -10,12 +10,22 @@ package com.x.comparisonshopping.v1
     // Publish a set of products on a comparison shopping engine site
     process PublishProductFeed(ProductFeed productFeed)
     {
-        description "MarketingManager publises a list of products to a comparison shopping engine site"
+        description "Traffic generation manager publishes a list of products to a comparison shopping engine site"
         
         roles(TrafficGenerationManager, ComparisonShoppingPublisher)
         
         preconditions(productFeed[ProductFeed.Prepared])
         
+	    // The baseline worflow for processing product feeds
+	    workflow
+	    {
+	    	// This transaction publishes the feed to the CSE 
+	        transaction PublishProductFeed
+	        {
+	        	roles(PublishProductFeed.TrafficGenerationManager, PublishProductFeed.ComparisonShoppingPublisher)
+	        }
+	    }
+	    
         postconditions
         {
           success(productFeed[ProductFeed.Published])
@@ -23,13 +33,26 @@ package com.x.comparisonshopping.v1
         }
     }
     
-    // The baseline worflow for processing product feeds
-    workflow StandardPublishProductFeed implements PublishProductFeed
-    {
-    	// This transaction publishes the feed to the CSE 
-        transaction PublishProductFeed
+    
+    process UpdatePublishedProductFeed(ProductFeed productFeed) {
+        description "Traffic generation manager updates information about one or more products that have already been published"
+        
+        roles(TrafficGenerationManager, ComparisonShoppingPublisher)
+        
+        preconditions(productFeed[ProductFeed.Published])
+        
+	    workflow {
+	        transaction UpdateProductFeed
+	        {
+	        	roles(PublishProductFeed.TrafficGenerationManager, PublishProductFeed.ComparisonShoppingPublisher)
+	        }
+	    }
+	    
+        postconditions
         {
-        	roles(PublishProductFeed.TrafficGenerationManager, PublishProductFeed.ComparisonShoppingPublisher)
+          success(productFeed[ProductFeed.Updated])
+          failure(productFeed[ProductFeed.Denied])
         }
+    	
     }
 }

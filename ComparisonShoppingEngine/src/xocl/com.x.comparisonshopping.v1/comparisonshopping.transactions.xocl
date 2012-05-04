@@ -14,13 +14,16 @@ package com.x.comparisonshopping.v1
         state Prepared[Published, Denied]
                 
         // The feed was successfully published
-        state Published
+        state Published[Updated]
+        
+        // A published product feed was updated
+        state Updated[Denied]
         
 		// A feed was denied by the comparison shopping engine
         state Denied
 	} 
     
-    // Publish a product order and get information back from the CSE about
+    // Publish products and get information back from the CSE about
     // the status of each product that was offered
     transaction PublishProductFeed response
     {
@@ -51,4 +54,37 @@ package com.x.comparisonshopping.v1
             failure PublishProductFeedFailure
         }
     }
+    
+        
+    // Update the products that are published on a CSE
+    transaction UpdateProductFeed response
+    {
+    	// Send the list of products to the CSE
+        sender
+        {
+        	message UpdateProductFeed
+        	{        		
+				// Timeouts for the receiver to acknowledge message receipt and/or message validation
+        		timeouts(receipt=1h, validation=24h, response=3d)
+        		
+        		// How many times should we retry if one of the timeouts expires? 
+        		retries=3
+        	}
+        }
+        
+        // Receive a list of product sku and assigned CSE ids
+        receiver
+        {
+        	// The feed was accepted and processed by the CSE
+	       	success UpdateProductFeedSuccess
+        	{
+            	timeouts(receipt=1h, validation=24h)
+            	retries=3
+            }
+            
+            // The feed was not accepted by the CSE
+            failure UpdateProductFeedFailure
+        }
+    }
+    
 }
