@@ -427,6 +427,11 @@ package com.x.ordermanagement.v2 {
 		array<Error> errors
 	}
 	
+	record MarketplaceSearchOrderFailed extends SearchOrderFailed {
+		string? siteCode
+		string? sellerAccountId
+	}
+	
 	record OrderReturn {
 		string orderNumber
 		datetime? dateReturned
