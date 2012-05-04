@@ -308,6 +308,7 @@ package com.x.marketplace.v3{
 	record LookupSiteMetadataFailed {  
 		array<string> siteCode
 		string? environmentName
+		array<Error> errors;
 	}
 	
 	record SearchCategories {
