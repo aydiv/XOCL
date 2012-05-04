@@ -123,11 +123,8 @@ package com.x.marketplace.v3{
 		roles(OfferManager, Marketplace, ProductInformationManager)
 	
 		preconditions(offer[Offer.Created])
-	
-
-	}
-	
-	workflow OfferPublication [5m] implements OfferPublication {
+			
+	     workflow [5m]  {
 			transaction PublishOffer<Ebay> {
 				roles(OfferManager, Marketplace)
 			}
@@ -146,7 +143,16 @@ package com.x.marketplace.v3{
 			}
 	}
 	
-	workflow  OfferPublicationWithProductData  [5m] implements OfferPublication{
+
+	}
+		
+    process OfferPublicationWithProductData<Ebay>(Offer offer) {
+		description "A merchant publishes offers to a marketplace"
+		roles(OfferManager, Marketplace)
+	
+		preconditions(offer[Offer.Created])
+	
+		workflow [5m]{
 	
 			transaction PublishOfferWithProductData<OfferPublication.Ebay> {
 				roles(OfferPublication.OfferManager, OfferPublication.Marketplace)
@@ -159,6 +165,7 @@ package com.x.marketplace.v3{
 					roles(OfferPublication.Marketplace, OfferPublication.OfferManager)
 				}
 			}
+		}
 	}
 
     process PublishedOfferRevision<Ebay>(Offer offer) {
