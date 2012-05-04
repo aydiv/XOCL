@@ -329,16 +329,7 @@ package com.x.marketplace.v3{
         	}
         }
       }
-    
-    transaction OfferDeactivated(Offer offer) notify {
-    	preconditions(offer[Offer.Inactive])
-        sender {
-        	message OfferDeactivated {
-        		timeouts(receipt=30s)   
-        	}
-        }
-    }
-            
+      
     transaction RevokePublishedOffer response {
         sender {
         	message RevokePublishedOffer {
