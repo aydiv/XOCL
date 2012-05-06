@@ -1,0 +1,53 @@
+/** This file includes the processes that are part of the
+ *  order fulfillment domain
+ */
+package com.x.orderfulfillment.v1 {
+	import com.x.orderfulfillment.v1.*
+	
+	entity Order {
+    	state Created[PartiallyShipped, Shipped, PartiallyCancelled, Cancelled] 
+    	state PartiallyCancelled[PartiallyCancelled, Cancelled, PartiallyShipped, Shipped]   	
+    	state Cancelled[Fullfilled]
+    	state PartiallyShipped[PartiallyShipped, Shipped, PartiallyCancelled, Cancelled]
+    	state Shipped[Fullfilled]
+    	state Fullfilled
+    }
+    	
+	 process ProcessFulfillmentOrder {
+	 	description "An order is submitted for fullfillment and is shipped or cancelled"
+	 
+	 	roles(OrderManager, DropShipManager)
+	 	
+	 	 workflow {
+	 	 	// An order manager submits the order to an order fulfillment system and is sent back tracking information
+       	 	transaction FulfillOrder {
+        		roles(OrderManager, DropShipManager)
+        	}
+        	
+        	any {
+        		transaction DropShipperComment {
+        			roles(DropShipManager, OrderManager)
+        		}
+        	}
+        	
+        	any {
+        		transaction MerchantComment {
+        			roles(OrderManager, DropShipManager)
+        		}
+        	}
+        	
+        	any {
+        		transaction OrderComment {
+        			roles(OrderManager, DropShipManager)
+        		}
+        	}
+        	
+        	transaction OrderShipped {
+	        	roles(DropShipManager, OrderManager)
+	        }
+        	
+	 	 }
+	 
+	 }
+	
+}

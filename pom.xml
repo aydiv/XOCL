@@ -67,6 +67,7 @@
 		<module>Marketing</module>
 		<module>Marketplace</module>
 		<module>OrderManagement</module>
+		<module>OrderFulfillment</module>
 		<module>ProductInformationManagement</module>
 		<module>ProductTaxonomy</module>
 		<module>WebStore</module>

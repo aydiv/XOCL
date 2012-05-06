@@ -1,0 +1,98 @@
+/** This file includes the transactions that are part of the
+ *  order fulfillment domain
+ */
+package com.x.orderfulfillment.v1 {
+	import com.x.orderfulfillment.v1.*
+	
+	// Notify fulfillment system that order needs to be fullfilled
+	transaction FulfillOrder notify {
+		sender
+		{
+			message FulfillOrder {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}
+	}
+	
+	// Used to notify retailer of changes to expected shipping date
+	transaction ItemExpectedShipDate notify {
+    	sender {
+    		message ItemExpectedShipDate {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+    	}
+    }
+	
+	
+	transaction DropShipperComment notify {
+    	sender {
+    		message DropShipperComment {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+    	}
+    }
+    
+    
+	transaction MerchantComment notify {
+    	sender {
+    		message MerchantComment {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+    	}
+    }
+    
+    // Used to notify retailer that item was shipped 
+	transaction ItemShipped notify {
+    	sender {
+    		message ItemShipped {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+    	}
+    }
+    
+    // Cancel the order entirely
+	transaction CancelOrder(Order order) response {
+        sender {
+        	message CancelOrder {
+        		timeouts(receipt=30s, response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success CancelOrderSucceeded {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }         
+            
+            failure CancelOrderFailed
+        }
+		postconditions {
+			success(order[Order.Cancelled])
+		}
+    }
+    
+     // Cancel parts of the order
+	transaction CancelItem response {
+        sender {
+        	message CancelItem {
+        		timeouts(receipt=30s, response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success CancelItemSucceeded {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }         
+            
+            failure CancelItemFailed
+        }
+    }
+    
+    
+}

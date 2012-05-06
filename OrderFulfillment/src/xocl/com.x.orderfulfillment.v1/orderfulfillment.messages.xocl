@@ -1,0 +1,187 @@
+/** This file includes the messages that are part of the
+ *  order fulfillment domain
+ */
+package com.x.orderfulfillment.v1 {
+	
+	import com.x.core.v1.*
+	
+		
+	record FulfillOrder {
+		FulfillmentOrderData order
+	}
+	
+	record FulfillmentOrderData {
+		
+		/** Unique identifier that is assigned by the originator of this order once created.*/
+		string orderNumber 
+		
+		array<FulfillmentOrderLineData> orderLines
+		
+		FulfillmentOrderStatus status 
+		string dateOrdered 
+
+		/** The total paid by the customer (total of items, fees, taxes, etc.) */ 
+		CurrencyAmount? grandTotal
+				
+		/** The channel where this order originated (ebay, amazon, etc.) */
+		string sourceId
+		
+		/** The id of the group that classifies source (web, print, email, etc.) */
+		string sourceGroupId
+				
+		/** Default shipping for entire order that can be overridden by each order item */
+		DateRange? expectedShipDate
+		CustomerInfo customer
+		Address billingAddress	
+		
+		/** if not provided, use ShipTo in the associated OrderLine */
+		ShipTo destination		
+	}	
+	
+	record FulfillmentOrderLineData {
+		/* The unique id of this item */
+		string orderLineId
+		
+		/* The ordered index of this item (also referred to as line number) */
+		string? itemId
+		
+		/* Reference to FulfillmentOrderData.orderNumber */
+		string? orderNumber
+		
+		float quantity
+		string productSku
+		string itemDescription
+		
+		/** Optionally provided with each item, overriding order */
+		DateRange? expectedShipDate
+		
+		CurrencyAmount? unitPrice
+
+		FulfillmentOrderStatus status
+		
+		/** This is quantity * unit price */
+		CurrencyAmount? price
+			
+		datetime? dateCancelled
+		datetime? dateDelivered
+		datetime? dateShipped
+		
+		ShipTo destination
+	}
+	
+	enum FulfillmentOrderStatus {
+		NEW,
+		READY_TO_SHIP,
+		PARTIALLY_SHIPPED,
+		SHIPPED,
+		PARTIALLY_CANCELLED,
+		CANCELLED,
+		COMPLETED
+	}
+	
+	record CustomerInfo confidential {
+		union{guid, EntityId} id;   //id is created by the system that creates the record.	
+		Name name
+		Email? email
+		Phone? phone
+	}	
+	
+	record ShipTo confidential {
+		Name name
+		Address address
+		GiftTag giftTag
+	}
+	
+	record GiftTag {
+		string? from
+		string? to
+		string giftMessage
+	}
+	
+	record DropShipperComment {
+		string orderNumber
+		string? orderLineId
+		string comment 
+	}
+	
+	record ItemExpectedShipDate {
+		string orderNumber
+		string orderLineId	
+		DateRange expectedShipDate
+	}
+	
+	record ItemShipped {
+		string shipmentId
+		string orderNumber
+		string orderLineId
+		float? quantity		
+		datetime dateShipped
+		ShippingDetail shippingDetails
+		TrackingDetail? trackingDetails
+		
+	}
+	
+	record ShippingDetail {
+		ShippingServiceType serviceType
+		/** Next day, ground, etc. */
+		string shippingMethod
+		string? shippingMessage
+	}
+	
+	record TrackingDetail {
+		array<string> trackingNumbers
+		string? carrier
+		string? service
+	}
+	
+	enum ShippingServiceType {
+		MERCHANT_SHIPPED,
+		DROP_SHIP,
+		SHIPPING_SERVICE,
+		WILL_CALL
+	}
+	
+	record CancelOrder {
+		FulfillmentOrderData order		
+		string? reasonCode
+		string? cancelMessage
+	}
+	
+	record CancelOrderSucceeded {
+		string orderNumber
+	}
+	
+	record CancelOrderFailed {
+		string orderNumber
+		array<Error> errors
+	}
+	
+	record CancelItem {
+		string orderNumber
+		FulfillmentOrderLineData orderLine
+		string? reasonCode
+		string? cancelMessage
+	}
+	
+	record CancelItemSucceeded {
+		string orderNumber
+		string orderLineId
+	}
+	
+	record CancelItemFailed {
+		string orderNumber
+		string orderLineId
+		array<Error> errors
+	}
+	
+	record MerchantComment {
+		string orderNumber
+		string? orderLineId
+		string comment 
+	}
+	
+	
+}
+
+
+

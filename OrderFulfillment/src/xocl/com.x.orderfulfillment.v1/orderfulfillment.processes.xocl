@@ -1,0 +1,74 @@
+/** This file includes the processes that are part of the
+ *  order fulfillment domain
+ */
+package com.x.orderfulfillment.v1 {
+	import com.x.orderfulfillment.v1.*
+	
+	   
+    entity Order
+    {
+        state Created[Shipped, Cancelled]
+        state Shipped
+        state Cancelled
+    }
+    
+   
+	process OrderShipment(Order order) {
+	description "An order gets submitted for shipping and is either shipped or cancelled"
+	 
+	 	roles(OrderManager, DropShipManager)
+	 	
+	 	 workflow { 
+	 	 	transaction FulfillOrder {
+	        	roles(OrderManager, DropShipManager)
+        	}
+        	
+	 	    do [10 d]{
+		 	 	//Dropship manager may notify change in expected ship date
+		 	 	any {
+	        		transaction ItemExpectedShipDate {
+	        			roles(DropShipManager, OrderManager)
+	        		}
+	        	}
+	        	
+	        	any {
+	        		transaction DropShipperComment {
+	        			roles(DropShipManager, OrderManager)
+	        		}
+	        	}
+	        	
+	        	any {
+	        		transaction MerchantComment {
+	        			roles(OrderManager, DropShipManager)
+	        		}
+	        	}        	
+	        	
+	        	// An order manager may choose to cancel the order partly or completely
+	        	any {
+	        		transaction CancelItem {
+		        		roles(OrderManager, DropShipManager)
+	        		}
+	        	}
+	        	
+	        	any {
+	        		one {
+		        		transaction CancelOrder {
+		        			roles(OrderManager, DropShipManager)
+		        		}
+	        		}
+	        	}
+	        	// Order shipped notification is sent in parts as items get shipped
+	        	any {
+	        		transaction ItemShipped {
+	        			roles(DropShipManager, OrderManager)
+	        		}
+	        	}
+        	}
+	 	}
+	 	postconditions {
+          	success(order[Order.Shipped], order[Order.Cancelled])          		
+        }
+	 	
+	 }
+	
+}
