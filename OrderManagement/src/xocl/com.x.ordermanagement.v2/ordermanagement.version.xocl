@@ -1,3 +1,3 @@
-package com.x.ordermanagement.v2 0.1 workingdraft {
+package com.x.ordermanagement.v2 1.0 workingdraft {
 	import com.x.ordermanagement.v2.*
 }
