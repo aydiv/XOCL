@@ -4,60 +4,71 @@ package com.x.inventory.v1
 	
     record StockItem 
 	{
-		string sku;
-		int quantity;  // note: quantity is a high consistency field due to serialization issues.
-		string locationName; // reference to location based on unique name
+		description "The SKUs of the stock items to be retrieved."
+		string sku "The SKU (Stock Keeping Unit) of the stock item.";
+		int quantity "The quantity of stock items at a location. Note: quantity is a high-consistency field due to serialization issues";
+		string locationName "The reference to location based on a unique name";
 	}
 	
 	record LookupStockItem
 	{
-		array<string> skus;
+		description "Looks up a stock item."
+		array<string> skus "The SKUs of the stock items to be retrieved.";
 	}
 
 	record LookupStockItemSucceeded
 	{
-		array<StockItem> stockItems;
+		description "Returns one or more stock items."
+		array<StockItem> stockItems "The stock items that were looked up.";
 	}
 	
 	record LookupStockItemFailed
 	{
-		array<InventoryLookupError> errors;
+		description "Signals that the request to look up a stock item has failed."
+		array<InventoryLookupError> errors "The array of InventoryLookupErrors related to the failed lookup of stock items. Human-readable.";
 	}
 	
 	record InventoryLookupError
 	{
-		string? sku;
-		array<Error> errors;
+		description "A container for specific errors related to looking up one or more stock items."
+		string? sku "The SKUs of the stock items involved in the failed lookup.";
+		array<Error> errors "The array of errors related to the failed lookup. Human-readable.";
 	}
 	
 	record UpdateStockItem
 	{
-		array<StockItem> stockItems;
+		description "Requests that the capability update information related to one or more stock items."
+		array<StockItem> stockItems "The stock items whose information is to be updated.";
 	}
 	
 	record UpdateStockItemSucceeded
 	{
-		array<StockItem> stockItems;
+		description "Returns stock items whose information is successfully updated."
+		array<StockItem> stockItems "The stock items whose information was successfully updated.";
 	}
 	
 	record UpdateStockItemFailed
 	{
-		array<InventoryError> errors;
+		description "Signals that a request to update information related to one or more stock items has failed."
+		array<InventoryError> errors "The errors specifying why the update failed. Human-readable.";
 	}
 
    record InventoryError
 	{
-		StockItem? stockItem;
-		array<Error> errors;
+		description "A container for specific errors related to updating a stock item. A way of grouping error information in StockItemFailed."
+		StockItem? stockItem "One or more stock items involved in the failed update operation.";
+		array<Error> errors "The array of errors related to the failed update operation.";
 	}
 
     record StockItemUpdated
 	{
-		array<StockItem> stockItems;
+		description "An event sent to observers to inform them of a change in information about one or more stock items. Includes the array of updated stock items."
+		array<StockItem> stockItems "The stock items whose information was successfully updated.";
 	}
 
     record OutOfStock
 	{
-		StockItem stockItem;
+		description "Informs an Inventory Observer that a stock item quantity has gone to zero."
+		StockItem stockItem "Informs an Inventory Observer that a stock item quantity has gone to zero.";
 	}
 }
