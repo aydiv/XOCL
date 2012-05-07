@@ -6,8 +6,8 @@ package com.x.inventory.v1
 	{
 		description "The SKUs of the stock items to be retrieved."
 		string sku "The SKU (Stock Keeping Unit) of the stock item.";
-		int quantity "The quantity of stock items at a location. Note: quantity is a high-consistency field due to serialization issues";
-		string locationName "The reference to location based on a unique name";
+		int quantity "The quantity of stock items at a location. Note: Quantity is a high-consistency field due to serialization issues.";
+		string locationName "The reference to location based on a unique name.";
 	}
 	
 	record LookupStockItem
