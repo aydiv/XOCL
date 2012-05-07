@@ -49,6 +49,32 @@ package com.x.ordermanagement.v2 {
 		PARTIAL,
 		NONE
 	}
+	
+
+	record Shipment {
+		/** only need to be unique to the order like 1, 2, 3, etc...*/
+		string shipmentId
+				
+		/** The fees paid by the customer for this shipment */
+		CurrencyAmount shippingFees
+		
+		/** Total discount amount summarized from all PromotionalDiscount. */
+		CurrencyAmount? discountAmount
+		array<PromotionalDiscount>? discounts
+		CurrencyAmount? additionalCost
+		CurrencyAmount? packagingHandlingCost
+		CurrencyAmount? surcharge  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
+
+		array<TrackingDetail>? trackingDetails
+		
+		/** Next day, ground, etc. */
+		string? shippingMethod
+		
+		DateRange? deliveryWindow
+		DateRange? shippingWindow
+		
+		string? shippingMessage
+	}
 
 	record GiftTag {
 		string? from
@@ -74,19 +100,6 @@ package com.x.ordermanagement.v2 {
 		Name name
 		Address address
 		GiftTag giftTag
-	}
-	
-	record Shipping {
-		ShippingServiceType serviceType
-		string? carrierCode
-		
-		/** Next day, ground, etc. */
-		string shippingMethod
-		
-		DateRange deliveryWindow
-		DateRange shippingWindow
-		
-		string? shippingMessage
 	}
 	
 	record AdditionalCost {
@@ -155,12 +168,10 @@ package com.x.ordermanagement.v2 {
 		/** The price the customer is paying for this item (without taxes, fees, addtional costs, etc.) */
 		CurrencyAmount price 
 		
-		CurrencyAmount insuranceCost
+		CurrencyAmount? insuranceCost
 		
 		/** The tax charges for this item with addtional data about the nature of the tax */
 		Tax taxAmount
-		
-		CurrencyAmount shippingDiscount
 
 	    /** The sum all of the discount that were applied to this order line */
 		CurrencyAmount totalDiscountAmount
@@ -185,6 +196,9 @@ package com.x.ordermanagement.v2 {
 		
 		datetime dateReturned		
 		OrderLinePrice price
+		
+		/** A reference to the shipment that was used to ship this item */
+		string? shipmentId
 	}
 
 	record SimpleOrderLineData {
@@ -199,10 +213,7 @@ package com.x.ordermanagement.v2 {
 		float quantity
 		string productSku
 		string itemDescription
-		
-		/** Optionally provided with each item, overriding order */
-		Shipping? shipping
-		
+				
 		OrderLinePrice unitPrice
 
 		OrderStatus status
@@ -217,6 +228,9 @@ package com.x.ordermanagement.v2 {
 		datetime? dateInvoiced
 		
 		ShipTo destination
+		
+		/** A reference to the shipment that was used to ship this item */
+		string? shipmentId
 	}
 	
 	record OrderLineData extends SimpleOrderLineData {	
@@ -250,8 +264,11 @@ package com.x.ordermanagement.v2 {
 		CurrencyAmount totalInsuranceCost
 		CurrencyAmount totalTaxAmount
 		CurrencyAmount totalDiscountAmount
-		CurrencyAmount totalShippingFees
 		array<AdditionalCost> additionalCosts
+		
+		/** The sum of the shipping fees from each of the associated shipments */
+		CurrencyAmount totalShippingFees
+		
 		
 		/** A collection of all the promotional discounts that were applied at the order level */
 		array<PromotionalDiscount> discounts
@@ -264,9 +281,9 @@ package com.x.ordermanagement.v2 {
 		
 		/** An optional collection of related orders numbers */
 		array<string>? relatedOrderNumbers
-		
-		/** Default shipping for entire order that can be overridden by each order item */
-		Shipping? shipping
+				
+		/** The list of shipments that were created to ship one or more of the items in this order */
+		array<Shipment>? shipments
 		
 	}
 	
