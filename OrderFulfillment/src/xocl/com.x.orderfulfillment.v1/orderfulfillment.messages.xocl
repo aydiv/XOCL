@@ -114,7 +114,7 @@ package com.x.orderfulfillment.v1 {
 		string shipmentId
 		string orderNumber
 		string orderLineId
-		float? quantity		
+		int quantity		
 		datetime dateShipped
 		ShippingDetail shippingDetails
 		TrackingDetail? trackingDetails
@@ -130,8 +130,8 @@ package com.x.orderfulfillment.v1 {
 	
 	record TrackingDetail {
 		array<string> trackingNumbers
-		string? carrier
-		string? service
+		string carrier
+		string service
 	}
 	
 	enum ShippingServiceType {

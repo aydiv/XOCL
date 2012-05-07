@@ -5,13 +5,16 @@ package com.x.orderfulfillment.v1 {
 	import com.x.orderfulfillment.v1.*
 	
 	// Notify fulfillment system that order needs to be fullfilled
-	transaction FulfillOrder notify {
+	transaction FulfillOrder(Order order) notify {
 		sender
 		{
 			message FulfillOrder {
             	timeouts(receipt=30s, validation=3m)
             	retries=3
             }
+		}
+		postconditions {
+			success(order[Order.Created])
 		}
 	}
 	
@@ -46,7 +49,8 @@ package com.x.orderfulfillment.v1 {
     }
     
     // Used to notify retailer that item was shipped 
-	transaction ItemShipped notify {
+	transaction ItemShipped(Order order) notify {
+		preconditions(order[Order.Created])
     	sender {
     		message ItemShipped {
             	timeouts(receipt=30s, validation=3m)
@@ -57,6 +61,7 @@ package com.x.orderfulfillment.v1 {
     
     // Cancel the order entirely
 	transaction CancelOrder(Order order) response {
+		preconditions(order[Order.Created])
         sender {
         	message CancelOrder {
         		timeouts(receipt=30s, response=3m)     		
@@ -77,7 +82,8 @@ package com.x.orderfulfillment.v1 {
     }
     
      // Cancel parts of the order
-	transaction CancelItem response {
+	transaction CancelItem(Order order) response {
+		preconditions(order[Order.Created])
         sender {
         	message CancelItem {
         		timeouts(receipt=30s, response=3m)     		
