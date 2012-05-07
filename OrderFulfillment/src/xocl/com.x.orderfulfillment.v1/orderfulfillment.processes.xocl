@@ -46,14 +46,14 @@ package com.x.orderfulfillment.v1 {
 	        	// An order manager may choose to cancel the order partly or completely
 	        	any {
 	        		transaction CancelItem {
-		        		roles(OrderManager, DropShipManager)
+		        		roles(DropShipManager, OrderManager)
 	        		}
 	        	}
 	        	
 	        	any {
 	        		one {
 		        		transaction CancelOrder {
-		        			roles(OrderManager, DropShipManager)
+		        			roles(DropShipManager, OrderManager)
 		        		}
 	        		}
 	        	}
