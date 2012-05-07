@@ -3,25 +3,25 @@ package com.x.pim.v1{
 	
     contract ProductInformationManagement
     {
-    		description "A standard Product Information Management system"
+    		description "A product information management system's manager roles. Manages products and data about them, such as ID and SKU. Works with Inventory, which depends on roles, messages, and SLAs defined in this contract to provide products that can be tracked in an inventory system."
     		roles{
-		 		ProductSearch.ProductInformationManager
-		 		ProductLookup.ProductInformationManager
-	 			ProductUpdate.ProductInformationManager
-	 			ProductCreation.ProductInformationManager
-	 			ProductDeletion.ProductInformationManager
+		 		ProductSearch.ProductInformationManager "The product informatiion manager maintains and reports product information to product information consumers."
+		 		ProductLookup.ProductInformationManager "The product informatiion manager maintains and reports product information to product information consumers and observers."
+	 			ProductUpdate.ProductInformationManager "The product information manager maintains product information and reports it to product information consumers and observers."
+	 			ProductCreation.ProductInformationManager "The product information manager maintains product information and reports it to product information consumers and observers. "
+	 			ProductDeletion.ProductInformationManager "Descriptions"
 	 		}
 	}
 	     
     contract ProductInformationManagementConsumer
     {
-    		description "A read-only consumer and observer of PIM data"
+    		description "A product information system's read-only consumer/observer role. Products and data cannot be altered by the consumer/observer role for this contract. "
     		roles{
-	 			ProductSearch.ProductInformationConsumer
-		 		ProductLookup.ProductInformationConsumer
-	 			ProductUpdate.ProductInformationObserver
-	 			ProductCreation.ProductInformationObserver
-	 			ProductDeletion.ProductInformationObserver
+	 			ProductSearch.ProductInformationConsumer "The product information consumer needs to know product informatiion details."
+		 		ProductLookup.ProductInformationConsumer "The product information consumer needs to know product informatiion details."
+	 			ProductUpdate.ProductInformationObserver "The product information observer is informed when changes are made to product information."
+	 			ProductCreation.ProductInformationObserver "The product information observer is informed when changes are made to product information. "
+	 			ProductDeletion.ProductInformationObserver "The product information observer is informed when changes are made to product information. "
 	 		}
 	}
 	 
