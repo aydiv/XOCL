@@ -4,7 +4,7 @@ package com.x.pim.v1
 	
 	record Product extends ProductData
     {
-        // product id 
+        summary "The primary record of the capability. The base record that represents a product. Extends ProductData."
         string id;
     }
     
@@ -144,28 +144,30 @@ package com.x.pim.v1
 	
     record SearchProduct
     {
-        Query _AVDL_query; //@queryType("com.x.pim.v1.Product")
-        // The locale en_US will be the default if no locale is supplied in 
-        // the message.
-        array<Locale> ? locales;
+    	summary "Requests a search for specific products."
+    	description "Requests a search for specific products using a query of type Product. Contains an (optional) array of locales. The default locale is en_US if one isn't specified."
+        Query _AVDL_query "The search query of type Product."; //@queryType("com.x.pim.v1.Product")
+        array<Locale> ? locales "The (optional) array of locales to search in. The default locale is en_US if one isn't specified.";
     }
  
     record SearchProductSucceeded
     {
-        Query _AVDL_query;
+    	summary "Signals that a search for specific products succeeded."
+    	description "Signals that a search for specific products succeeded. Returns the result of the query. Also returns the original search query and locales specified."
+        Query _AVDL_query "The original search query."; 
         // The locale en_US will be the default if no locale is supplied in 
         // the message.
-        array<Locale> ? locales;
-        QueryResult queryResult;
+        array<Locale> ? locales "The array of locales associated with the search query, if any. The default locale is en_US if one isn't specified.";
+        QueryResult queryResult "The search results.";
     }
  
     record SearchProductFailed
     {
-        Query _AVDL_query;
-        // The locale en_US will be the default if no locale is supplied in 
-        // the message.
-        array<Locale> ? locales;
-        array<Error> errors;
+    	summary "Signals that a search for specific products failed."
+    	description "Signals that a search for specific products succeeded. Returns the original search query and any locales specified."
+        Query _AVDL_query "The original search query.";
+        array<Locale> ? locales "The array of locales associated with the search query, if any. The default locale is en_US if one isn't specified.";
+        array<Error> errors "The array of error information associated with the failure. Contains information useful for troubleshooting.";
     }
      
     
@@ -194,146 +196,190 @@ package com.x.pim.v1
     
     record LookupProduct
     {
-        array<ProductIdentifier> ids;
-        FilterType? filter; 
-        // The locale en_US will be the default if no locale is supplied in 
-        // the message.
-        array<Locale> ? locales;
+    	summary "Requests the lookup of specific products."
+    	description "Requests the lookup of specific products by their IDs. Contains an (optional) filter. Also contains an (optional) array of locales."
+        array<ProductIdentifier> ids "The IDs of the products to be looked up.";
+        FilterType? filter "The (optional) filter."; 
+        array<Locale> ? locales "The (optional) array of locales. The locale en_US is the default if no locale is specified";
     }
  
     record LookupProductSucceeded
     {
-        array<Product> products;
-        FilterType? filter; 
-        // The locale en_US will be the default if no locale is supplied in 
-        // the message.
-        array<Locale>? locales;
+    	summary "Signals that specific products were successfully looked up."
+    	description "Signals that specific products were successfully looked up by their IDs. Contains the array of products that were looked up. Also contains the (optional) filter and locale(s) that were specified in the original lookup."
+        array<Product> products "The array of products that were successfully looked up.";
+        FilterType? filter "The (optional) filter."; 
+        array<Locale>? locales "The (optional) array of locales. The locale en_US is the default if no locale was supplied in the original request message.";
     }
     
     record LookupProductFailed
     {
-        array<ProductIdentifier> ids;
-        FilterType? filter; 
-        // The locale en_US will be the default if no locale is supplied in 
-        // the message.
-        array<Locale>? locales;
-        array<Error> errors;
+    	summary "Signals that specific products couldn't be looked up."
+    	description "Signals that specific products couldn't be looked up by their IDs (in conjunction with a filter)."
+        array<ProductIdentifier> ids "The array of product IDs that couldn't be looked up.";
+        FilterType? filter "The (optional) filter."; 
+        array<Locale>? locales "The (optional) array of locales. The locale en_US is the default if no locale was supplied in the original request message.";
+        array<Error> errors "The array of error information that provides details about the lookup failure that are useful for troubleshooting.";
     }
     
     record UpdateProduct
     {
-        array<Product> products;
+    	summary "Requests the update of specific products."
+    	description "Requests the update of specific products. If one product in the array cannot be updated, the request fails."
+        array<Product> products "The array that contains the products requested to be updated.";
     }
    
     record UpdateProductSucceeded
     {
-        array<Product> products;
+    	summary "Signals the update of specific products."
+    	description "Signals the update of specific products. Contains the array of products that were successfully updated."
+        array<Product> products "The array of products that were successfully updated.";
     }
     
     record UpdateProductFailed
     {
-        array<Product> products;
-        array<Error> errors;
+    	summary "Signals that specific products couldn't be updated."
+    	description "Signals that specific products couldn't be updated. Contains the array of products that couldn't be updated. Also contains error information about the transaction useful in troubleshooting."
+        array<Product> products "The products that couldn't be updated.";
+        array<Error> errors "Error information about the transaction useful in troubleshooting.";
     }
 
     record ProductUpdated
     {
-        array<Product> productChanges;
+    	summary "Notifies an observer that products have been updated."
+    	description "Notifies an observer that products have been updated."
+        array<Product> productChanges "The array of products that were updated.";
     }
     	
     record CreateProductWithId
     {
-        array<Product> products;
+    	summary "Requests creation of one or more products with unique IDs."
+    	description "Requests creation of one or more products with an array of ProductData. Called by the consumer. Triggers /com.x.pim.v1/ProductCreation/CreateProductSucceeded upon success or /com.x.pim.v1/ProductCreation/CreateProductFailed upon failure."
+        array<Product> products "The array of products with unique IDs requested to be created.";
     }
 
     record CreateProduct
     {
-        array<ProductData> products;
+    	summary "Requests creation of product data."
+    	description "Requests creation of one or more products with an array of ProductData. Called by the consumer. Triggers /com.x.pim.v1/ProductCreation/CreateProductSucceeded upon success or /com.x.pim.v1/ProductCreation/CreateProductFailed upon failure."
+        array<ProductData> products "The array of product data requested to be created.";
     }
  
     record CreateProductSucceeded
     {
-    	array<Product> products;
+    	summary "Returns one or more newly created products."
+    	description "Returns one or more products that were created by /com.x.pim.v1/ProductCreation/CreateProduct. Received by the consumer."
+    	array<Product> products "The array of products that were created.";
     }
  
     record CreateProductFailed
     {
-        array<ProductData> products;
-        array<Error> errors;
+    	summary "Signals that creation of the data of one or more products has failed."
+    	description "Signals that creation of one or more products has failed. Received by the consumer. Returned after calling /com.x.pim.v1/ProductCreation/CreateProduct. Returns the products passed into the topic by the requestor. Contains information about the failure useful for troubleshooting."
+        array<ProductData> products "The array of product data that couldn't be created.";
+        array<Error> errors "The array of error information about the failure to create product data."
     }
     
     record ProductCreated
     {
-        array<Product> products;
+    	summary "Notifies an observer that one or products were created."
+    	description "The message contains the array of products that were created."
+        array<Product> products "The array of products that were created.";
     }
     
     record DeleteProduct
     {
-        array<string> productIds;
+    	summary "Requests deletion of products specified by their IDs."
+    	description "Requests deletion of one or more products specified by their IDs. Called by the consumer. Triggers /com.x.pim.v1/ProductDeletion/DeleteProductSucceeded upon success or /com.x.pim.v1/ProductDeletion/DeleteProductFailed upon failure."
+        array<string> productIds "The array of product IDs that reference the products to be deleted.";
     }
     
     record DeleteProductSucceeded
     {
-        array<string> productIds;
+    	summary "Signals that a request to delete one or more products using their IDs has succeeded."
+    	description "Signals that a request to delete one or more products using their IDs has succeeded. Returns the array of product IDs specified in DeleteProduct by the requestor."
+        array<string> productIds "The array of product IDs that reference the products that were deleted.";
     }
     
     record DeleteProductFailed
     {
-        array<string> productIds;
-        array<Error> errors;
+    	summary "Signals that a request to delete one or more products using their IDs has succeeded."
+    	description "Signals that a request to delete one or more product using their IDs has succeeded. Returned after calling /com.x.pim.v1/ProductDeletion/DeleteProduct and contains the array of product IDs specified in DeleteProduct by the requestor. Contains information about the failure useful for troubleshooting."
+        array<string> productIds "The array of product IDs that reference the products that weren't deleted.";
+        array<Error> errors "The array of error information about the failure to delete products.";
     }
     
     record ProductDeleted
     {
-        array<Product> products;
+    	summary "Notifies an observer that one or more products were deleted."
+		description "Notifies an observer that one or more products were deleted. The message contains the array of products that were deleted."
+        array<Product> products "The array of products that were deleted.";
     }
     
     record CreateSKU
     {
-        array<SKU> sku;
+    	summary "Requests creation of new Stock Keeping Units (SKUs)."
+    	description "Requests creation of new Stock Keeping Units (SKUs). The SKU value is determined on a per-merchant basis. A product can have one or more SKUs."
+        array<SKU> sku "The array of SKUs to be created.";
     }
     
     record CreateSKUFailed
     {
-        array<SKU> skus;
-        array<Error> errors;
+    	summary "Signals that a request to create new SKUs has failed."
+    	description "Signals that a request to create new SKUs has failed. The message contains the array of SKUs specified in CreateSKU by the requestor. It also contains error information useful in troubleshooting."
+        array<SKU> skus "The array of SKUs that couldn't be created.";
+        array<Error> errors "The array of error information that provides detail regarding why the SKUs couldn't be created.";
     }
 
     record CreateSKUSucceeded
     {
-        array<SKU> sku;
+    	summary "Signals that a request to create new SKUs has succeeded."
+    	description "Signals that a request to create new SKUs has succeeded. The message contains the array of SKUs specified in CreateSKU by the requestor."
+        array<SKU> sku "The array of SKUs that were created.";
     }
     
     record UpdateSKU
     {
-        array<SKU> skus;
+    	summary "Requests the update of specific SKUs."
+    	description "Requests the update of specific SKUs. The new SKU values are determined by the merchant."
+        array<SKU> skus "The array of SKUs to be updated.";
     }
     
     record UpdateSKUSucceeded
     {
-        array<SKU> skus;
+    	summary "Signals that a request to update specific SKUs succeeded."
+    	description "Signals that a request to update specific SKUs succeeded. Contains the array of SKUs specified in UpdateSKU by the requestor."
+        array<SKU> skus "The array of SKUs that were successfully updated.";
     }
  
     record UpdateSKUFailed
     {
-        array<SKU> skus;
-        array<Error> errors;
+    	summary "Signals that a request to update specific SKUs failed."
+    	description "Signals that a request to update specific SKUs failed. Contains the array of SKUs specified in UpdateSKU by the requestor. It also contains error information useful in troubleshooting."
+        array<SKU> skus "The array of SKUs that couldn't be updated.";
+        array<Error> errors "The array of error information that provides detail regarding why the SKUs couldn't be updated.";
     }	
     
     record DeleteSKU
     {
-        array<string> skus;
+    	summary "Requests the deletion of specific SKUs."
+    	description "Requests the deletion of specific SKUs specified by the merchant."
+        array<string> skus "The array of SKUs to be deleted.";
     }
     
     record DeleteSKUSucceeded
     {
-    	array<string> skus;
+    	summary "Signals that a request to delete specific SKUs succeeded."
+    	description "Signals that a request to delete specific SKUs succeeded. Contains the array of SKUs specified in DeleteSKU."
+    	array<string> skus "The array of SKUs that were deleted.";
     }
 
     record DeleteSKUFailed
     {
-        array<string> skus;
-        array<Error> errors;
+    	summary "Signals that a request to delete specific SKUs failed."
+    	description "Signals that a request to delete specific SKUs failed. Contains the array of SKUs specified in DeleteSKU. It also contains error information useful in troubleshooting."
+        array<string> skus "The array of SKUs that couldn't be deleted.";
+        array<Error> errors "The array of error information that provides detail regarding why the SKUs couldn't be deleted.";
     }
     
 }
