@@ -2,7 +2,7 @@ package com.x.customer.v1{
 	import com.x.customer.v1.*
 	
 	//The email variant of this process must honor whether the customer is opted in or out of email marketing
-	process CustomerSearch<Email>
+	process CustomerSearch<Email, NameAndId>
 	{
 		description "A consumer may query for a list of customers, they may also query by last modified date"
 
@@ -10,7 +10,7 @@ package com.x.customer.v1{
 	
 		workflow
 		{
-			transaction SearchCustomer<Email>
+			transaction SearchCustomer<Email, NameAndId>
 			{
 				roles(CustomerConsumer,CustomerManager)
 			}

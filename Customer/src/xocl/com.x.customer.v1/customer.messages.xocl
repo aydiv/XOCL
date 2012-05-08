@@ -71,16 +71,29 @@ package com.x.customer.v1{
 		Email email;
 		
 		datetime lastModifiedDate;
+		
+		union{guid,EntityId}? customerId;
+	}
+	
+	record CustomerNameAndId{
+		union{guid,EntityId}? customerId;
+		Name fullName ;	   //confidential, but not identifying by itself
+		datetime lastModifiedDate;
 	}
 	
 
  	// NOTE: Email opt-out customers should not appear in this response.
 	record SearchEmailCustomerSucceeded{
-		
 		array<CustomerEmail> customers;
 		long totalItemsFound;
 		SearchCustomer request;
 
+	}
+	
+	record SearchNameAndIdCustomerSucceeded{
+		array<CustomerNameAndId> customers;
+		long totalItemsFound;
+		SearchCustomer request;
 	}
 	
 	record SearchCustomerFailed{

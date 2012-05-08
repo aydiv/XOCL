@@ -49,13 +49,14 @@ package com.x.customer.v1{
         }
     }
     
-	transaction SearchCustomer<Email> query
+	transaction SearchCustomer<Email, NameAndId> query
     {
         sender
         {
         	message SearchCustomer
         	{
-        		 timeouts(response=1m)     		
+        		 timeouts(response=1m)
+        		 retries=3     		
         	}
         }
         receiver
@@ -64,6 +65,8 @@ package com.x.customer.v1{
         	success SearchCustomerSucceeded
         	
         	success<Email> SearchEmailCustomerSucceeded
+        	
+        	success<NameAndId> SearchNameAndIdCustomerSucceeded
         	// A failure message does not have a response timeout
             failure SearchCustomerFailed
         } 
