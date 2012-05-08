@@ -74,11 +74,11 @@ package com.x.customer.v1{
 		
 		datetime lastModifiedDate;
 		
-		union{guid,EntityId}? customerId;
+		union{null,guid,EntityId} customerId = null;
 	}
 	
 	record CustomerNameAndId{
-		union{guid,EntityId}? customerId;
+		union{guid,EntityId} customerId;
 		Name fullName ;	   //confidential, but not identifying by itself
 		datetime lastModifiedDate;
 	}
