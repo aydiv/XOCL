@@ -2,24 +2,6 @@ package com.x.loyalty.v1{
 	import com.x.core.v1.*
 	import com.x.loyalty.v1.*
 	
-	
-
-	process RewardCreation (Reward reward){
-		description "This process is used when a merchant creates a reward manually for a customer"
-		roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
-	
-		preconditions (!exists(reward))
-		workflow{
-			transaction CreateReward{
-				roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
-			}
-		}
-		postconditions{
-			success (exists(reward))
-			failure (!exists(reward))
-		}
-	}
-	
 	process RewardPointQueryAndUsage{
 		description "This process is used when a customer engages in activity on the web store, they can find their points, predict rewards, and spend points"
 		roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
@@ -49,4 +31,21 @@ package com.x.loyalty.v1{
 			}
 		}	
 	}
+	
+	process RewardCreation (Reward reward){
+		description "This process is used when a merchant creates a reward manually for a customer"
+		roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
+	
+		preconditions (!exists(reward))
+		workflow{
+			transaction CreateReward{
+				roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
+			}
+		}
+		postconditions{
+			success (exists(reward))
+			failure (!exists(reward))
+		}
+	}
+	
 }
