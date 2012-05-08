@@ -28,9 +28,11 @@ package com.x.customer.v1{
 		string? company;
 		datetime dateCreated;
 		datetime lastModified;
-		
 		/** map of source system to source Id. This is used for audit purposes, to indicate where the customer came from in the flow */
 	    map<string>? sourceIds;
+	    
+	    boolean? doNotCall;   
+		boolean? emailOptOut;
 	}  
 	
     record Customer confidential extends CustomerData {
