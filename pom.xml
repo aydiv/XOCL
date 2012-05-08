@@ -123,6 +123,7 @@
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>xocltoavdl</goal>
+							<goal>xocltolocaljson</goal>
 						</goals>
 						<configuration>
 							<sourceDirectory>${project.basedir}/src/xocl</sourceDirectory>
