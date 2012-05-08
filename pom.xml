@@ -64,6 +64,7 @@
 		<module>Customer</module>
 		<module>Example</module>
 		<module>InventoryManagement</module>
+		<module>LoyaltyMarketing</module>
 		<module>Marketing</module>
 		<module>Marketplace</module>
 		<module>OrderManagement</module>
