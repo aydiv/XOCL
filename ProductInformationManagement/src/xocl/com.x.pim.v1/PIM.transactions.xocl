@@ -8,6 +8,7 @@ package com.x.pim.v1
     
  	transaction SearchProduct query
     {
+    	description "Retrieve details for one or more products based on locale."
         sender
         {
         	message SearchProduct
@@ -29,6 +30,7 @@ package com.x.pim.v1
     
     transaction LookupProduct query
     {
+    	description "Retrieve details for one or more products based on SKU values."
         sender
         {
         	message LookupProduct
@@ -50,6 +52,7 @@ package com.x.pim.v1
     
     transaction ProductCreated inform
     {
+    	description "The product information manager informs an observer that a product was created."
         sender
         {
         	message ProductCreated
@@ -58,6 +61,7 @@ package com.x.pim.v1
     
     transaction ProductUpdated inform
     {
+    	description "The product information manager informs an observer that a product was updated."
         sender
         {
         	message ProductUpdated
@@ -66,6 +70,7 @@ package com.x.pim.v1
     
     transaction ProductDeleted inform
     {
+    	description "The product information manager informs an observer that a product was deleted."
         sender
         {
         	message ProductDeleted
@@ -75,6 +80,7 @@ package com.x.pim.v1
     
     transaction UpdateProduct response
     {
+    	description "A consumer asks the product information manager to update one or more products. This transaction is not specified in any contract at this time."
         sender
         {
         	message UpdateProduct
@@ -103,6 +109,7 @@ package com.x.pim.v1
     
     transaction CreateProduct response
     {
+    	description "A consumer asks the product information manager to create one or more products. This transaction is not specified in any contract at this time."
         sender
         {
         	message CreateProduct
@@ -130,6 +137,7 @@ package com.x.pim.v1
 
     transaction DeleteProduct response
     {
+    	description "A consumer asks the product information manager to delete one or more products. This transaction is not specified in any contract at this time."
         sender
         {
         	message DeleteProduct
@@ -158,7 +166,11 @@ package com.x.pim.v1
         
     transaction UpdateSKU (StockKeepingUnit sku)response
     {
-    	preconditions(exists(sku))
+     	description "A consumer asks the product information manager to update one or more product SKUs. This transaction is not specified in any contract at this time."
+    	preconditions
+    	{
+    		exists(sku) "A pre-condition to updating a product SKU is that the SKU already exists (i.e., the merchant has already generated an SKU)."
+    	}
         sender
         {
         	message UpdateSKU
@@ -186,7 +198,11 @@ package com.x.pim.v1
     
     transaction CreateSKU (StockKeepingUnit sku) response
     {
-        preconditions(!exists(sku))
+    	description "A consumer asks the product information manager to create one or more product SKUs. This transaction is not specified in any contract at this time."
+        preconditions
+        {
+        	!exists(sku) "A pre-condition to performing this transaction is that the SKU to be created does not already exist (i.e., the merchant has not already generated an SKU)."
+        }
         sender
         {
         	message CreateSKU
@@ -214,7 +230,11 @@ package com.x.pim.v1
 
     transaction DeleteSKU (StockKeepingUnit sku) response
     {
-        preconditions(exists(sku))
+    	description "A consumer asks the product information manager to delete one or more product SKUs. This transaction is not specified in any contract at this time."
+        preconditions
+        {
+        	exists(sku) "A pre-condition to performing this transaction is that the SKU to be delete must already exist (i.e., the merchant has already generated the SKU)."
+        }
         sender
         {
         	message DeleteSKU
