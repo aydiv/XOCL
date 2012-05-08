@@ -5,7 +5,8 @@ package com.x.orderfulfillment.v1 {
 	import com.x.orderfulfillment.v1.*
 	
 	// Notify fulfillment system that order needs to be fullfilled
-	transaction FulfillOrder notify {
+	transaction FulfillOrder(Order order) notify {
+		preconditions(order[Order.Created])
 		sender
 		{
 			message FulfillOrder {
@@ -14,6 +15,19 @@ package com.x.orderfulfillment.v1 {
             }
 		}
 	}
+	
+	// Notify order management system that order is fullfilled
+	transaction OrderFulfilled(Order order) notify {
+    	preconditions(order[Order.Cancelled], order[Order.Shipped])
+    	sender
+		{
+			message OrderFulfilled {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}
+    }
+	
 	
 	// Used to notify retailer of changes to expected shipping date
 	transaction ItemExpectedShipDate notify {
@@ -26,9 +40,9 @@ package com.x.orderfulfillment.v1 {
     }
 	
 	
-	transaction DropShipperComment notify {
+	transaction DropShipSupplierComment notify {
     	sender {
-    		message DropShipperComment {
+    		message DropShipSupplierComment {
             	timeouts(receipt=30s, validation=3m)
             	retries=3
             }
@@ -46,7 +60,7 @@ package com.x.orderfulfillment.v1 {
     }
     
     // Used to notify retailer that item was shipped 
-	transaction ItemShipped notify {
+	transaction ItemShipped notify {		
     	sender {
     		message ItemShipped {
             	timeouts(receipt=30s, validation=3m)
@@ -55,49 +69,15 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-    // Cancel the order entirely
-	transaction CancelOrder(Order order) response {
-        sender {
-        	message CancelOrder {
-        		timeouts(receipt=30s, response=3m)     		
-        		retries=3
-        	}
-        }
-        receiver {
-        	success CancelOrderSucceeded {
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }         
-            
-            failure CancelOrderFailed
-        }
-		postconditions {
-			success(order[Order.Cancelled])
-		}
-    }
-    
+     
      // Cancel parts of the order
-	transaction CancelItem(Order order) response {
+	transaction ItemCancelled notify {
         sender {
-        	message CancelItem {
-        		timeouts(receipt=30s, response=3m)     		
+        	message ItemCancelled {
+        		timeouts(receipt=30s, validation=3m)     		
         		retries=3
         	}
         }
-        receiver {
-        	success CancelItemSucceeded {
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }         
-            
-            failure CancelItemFailed
-        }
-		postconditions {
-			success(order[Order.PartiallyCancelled],order[Order.Cancelled])
-		}
     }
-    
-    
-    
-    
+
 }
