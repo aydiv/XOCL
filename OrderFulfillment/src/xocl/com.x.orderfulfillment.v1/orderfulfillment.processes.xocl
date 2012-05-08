@@ -8,7 +8,9 @@ package com.x.orderfulfillment.v1 {
     entity Order
     {
         state Created[Shipped, Cancelled]
+        // reached when all not cancelled items get shipped
         state Shipped
+        // reached when all items get cancelled
         state Cancelled
     }
     
@@ -23,37 +25,33 @@ package com.x.orderfulfillment.v1 {
 	        	roles(OrderManager, DropShipManager)
         	}
         	
-	 	    one [10 d]{
-	 	    		 	    	
-		 	 	any {		 	 		
-		 	 		noop		 	 		
+	 	    do(*) [10 d] {	 	    		 	    	
+		 	 	any {
+		 	 			 	 		
 			 	 	//Dropship manager may notify change in expected ship date
 			 	 	transaction ItemExpectedShipDate {
 		        		roles(DropShipManager, OrderManager)
 		        	}
 		        	
-		        	transaction DropShipperComment {
+		        	transaction DropShipSupplierComment {
 		        		roles(DropShipManager, OrderManager)
 		        	}
 		        	
 		        	transaction MerchantComment {
 		        		roles(OrderManager, DropShipManager)
 		        	}	        	
-	        	}	        	
+	        	        	
 	        	
-        		// An order manager may choose to cancel the order partly or completely		
-        		transaction CancelOrder {
-	        		roles(DropShipManager, OrderManager)
+        			// A supplier may choose to cancel the order		
+        			transaction ItemCancelled {
+	        			roles(DropShipManager, OrderManager)
+	        		}
+	        	
+        			// Order shipped notification is sent in parts as items get shipped
+	        		transaction ItemShipped {
+        				roles(DropShipManager, OrderManager)
+        			}		        		
 	        	}
-	        	
-	        	transaction CancelItem {
-	        		roles(DropShipManager, OrderManager)
-        		}
-        		// Order shipped notification is sent in parts as items get shipped
-	        	transaction ItemShipped {
-        			roles(DropShipManager, OrderManager)
-        		}		        		
-	        	
         	}
 	 	}
 	 	postconditions {

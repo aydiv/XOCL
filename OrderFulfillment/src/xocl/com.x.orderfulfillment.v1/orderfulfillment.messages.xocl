@@ -6,7 +6,7 @@ package com.x.orderfulfillment.v1 {
 	import com.x.core.v1.*
 	
 		
-	record FulfillOrder {
+	record FulfillmentOrder {
 		FulfillmentOrderData order
 	}
 	
@@ -98,7 +98,7 @@ package com.x.orderfulfillment.v1 {
 		string giftMessage
 	}
 	
-	record DropShipperComment {
+	record DropShipSupplierComment {
 		string orderNumber
 		string? orderLineId
 		string comment 
@@ -122,7 +122,6 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record ShippingDetail {
-		ShippingServiceType serviceType
 		/** Next day, ground, etc. */
 		string shippingMethod
 		string? shippingMessage
@@ -134,46 +133,15 @@ package com.x.orderfulfillment.v1 {
 		string service
 	}
 	
-	enum ShippingServiceType {
-		MERCHANT_SHIPPED,
-		DROP_SHIP,
-		SHIPPING_SERVICE,
-		WILL_CALL
-	}
-	
-	record CancelOrder {
-		FulfillmentOrderData order		
-		string? reasonCode
-		string? cancelMessage
-	}
-	
-	record CancelOrderSucceeded {
-		string orderNumber
-	}
-	
-	record CancelOrderFailed {
-		string orderNumber
-		array<Error> errors
-	}
-	
-	record CancelItem {
+		
+	record ItemCancelled {
 		string orderNumber
 		FulfillmentOrderLineData orderLine
 		string? reasonCode
 		string? cancelMessage
 	}
 	
-	record CancelItemSucceeded {
-		string orderNumber
-		string orderLineId
-	}
-	
-	record CancelItemFailed {
-		string orderNumber
-		string orderLineId
-		array<Error> errors
-	}
-	
+		
 	record MerchantComment {
 		string orderNumber
 		string? orderLineId
