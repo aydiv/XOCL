@@ -6,6 +6,7 @@ package com.x.inventory.v1
 	
 	transaction LookupStockItem query
     {
+        description "Retrieve details for one or more stock items based on SKU values."
         sender
         {
         	message LookupStockItem
@@ -27,6 +28,7 @@ package com.x.inventory.v1
     
 	transaction StockItemUpdated inform
     {
+		description "The inventory manager informs the inventory observer that properties of one or more stock items have been updated."
 		sender
 		{
 			message StockItemUpdated
@@ -35,6 +37,7 @@ package com.x.inventory.v1
 	
 	transaction OutOfStock inform
     {
+		description "The inventory manager informs the inventory observer that an item has gone out of stock."
 		sender
 		{
 			message OutOfStock
@@ -43,6 +46,7 @@ package com.x.inventory.v1
 	
     transaction UpdateStockItem response
     {
+        description "Update properties (quantity and location) for one or more stock items based on SKU values."
         sender
         {
         	message UpdateStockItem

@@ -2,14 +2,15 @@ package com.x.inventory.v1
 {
 	import com.x.inventory.v1.*
 	
-	process StockItemLookup
+	process StockItemLookup 
 	{
-		description "Inventory consumer queries inventory levels and locations"	
+		description "The inventory consumer queries inventory levels and locations. This process is read-only. Stock item properties are not altered by this process."	
 			
 		roles(InventoryConsumer, InventoryManager)
 		
-		workflow
+		workflow 
 		{
+			description "The inventory consumer queries inventory levels and locations."
 			transaction LookupStockItem
 			{
 				roles(InventoryConsumer, InventoryManager)
@@ -19,7 +20,7 @@ package com.x.inventory.v1
 	
     process StockItemUpdate(StockItem stockItem)
     {
-		description "The StockItem consumer updates the stock item in the inventory manager"
+		description "The stock item consumer submits stock item updates to the inventory manager."
 		
 		roles(StockItemConsumer, InventoryManager, InventoryObserver)
 		
@@ -27,6 +28,7 @@ package com.x.inventory.v1
 	
 		workflow
 		{
+			description "Optionally, the stock item consumer tells the inventory manager to update properties for one or more stock items. The inventory manager informs the inventory observer that stock item was updated (updates could occur through the messaging system or via the user interface), and, optionally, if an item is out of stock. The transactions defined in this workflow do not need to occur in a specific sequence."
 			any
 			{
 				// Stock item consumer tells inventory manager to update stock item
