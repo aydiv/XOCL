@@ -155,14 +155,14 @@ package com.x.marketplace.v3{
 		workflow [5m]{
 	
 			transaction PublishOfferWithProductData<OfferPublication.Ebay> {
-				roles(OfferPublication.OfferManager, OfferPublication.Marketplace)
+				roles(OfferManager, Marketplace)
 			}
 			one{
 				transaction PublishOfferSucceeded<OfferPublication.Ebay>{
-					roles(OfferPublication.Marketplace, OfferPublication.OfferManager)
+					roles(Marketplace, OfferManager)
 				}
 				transaction PublishOfferFailed<OfferPublication.Ebay>{
-					roles(OfferPublication.Marketplace, OfferPublication.OfferManager)
+					roles(Marketplace, OfferManager)
 				}
 			}
 		}
@@ -202,14 +202,14 @@ package com.x.marketplace.v3{
 			
 		workflow  [5m]  {
 			transaction RevisePublishedOfferWithProductData<PublishedOfferRevision.Ebay> {
-				roles(PublishedOfferRevision.OfferManager, PublishedOfferRevision.Marketplace)
+				roles(OfferManager, Marketplace)
 			}
 			one{
 				transaction RevisePublishedOfferSucceeded<PublishedOfferRevision.Ebay>{
-					roles(PublishedOfferRevision.Marketplace, PublishedOfferRevision.OfferManager)
+					roles(Marketplace, OfferManager)
 				}
 				transaction RevisePublishedOfferFailed<PublishedOfferRevision.Ebay>{
-					roles(PublishedOfferRevision.Marketplace, PublishedOfferRevision.OfferManager)
+					roles(Marketplace, OfferManager)
 				}
 			}
 		}
