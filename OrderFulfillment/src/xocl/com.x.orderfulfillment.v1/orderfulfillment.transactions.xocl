@@ -71,5 +71,13 @@ package com.x.orderfulfillment.v1 {
         }
     }
     
-    
+    // TODO: jgreenfield to fix
+    transaction OrderFulfilled notify {
+    	sender {
+    		message OrderFulfilled {
+    			timeouts(receipt=30s, validation=3m)
+    			retries=3
+    		}
+    	}
+    }
 }

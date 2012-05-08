@@ -148,7 +148,10 @@ package com.x.orderfulfillment.v1 {
 		string comment 
 	}
 	
-	
+	//TODO: jgreenfrield to fix
+	record OrderFulfilled {
+		
+	}
 }
 
 
