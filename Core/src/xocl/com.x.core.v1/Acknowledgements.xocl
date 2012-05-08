@@ -3,6 +3,7 @@
  */
 package com.x.core.v1
 {
+	import com.x.core.v1.*
     /*
      * This enum defines the set of all well known reasons for cancelling a transaction. 
      *   as well as a value indicating that the reason is not specified.
@@ -32,6 +33,7 @@ package com.x.core.v1
      */
 	record TransactionCancelled {
 	    Reason reason // The reason for cancellation.
+	    array<Error>? errors; //Any errors causing the cancellation
 	}
 	
     /*
