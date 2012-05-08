@@ -1,0 +1,39 @@
+package com.x.loyalty.v1{
+	import com.x.loyalty.v1.*
+	
+	contract LoyaltyMarketingProvider 
+    {
+    	description "A provider of Loyalty Marketing services"
+    	
+    	roles
+    	{   		
+			RewardCreation.LoyaltyMarketingProvider
+			RewardPointQueryAndUsage.LoyaltyMarketingProvider
+	   		LoyaltyReportGet.LoyaltyMarketingProvider
+	   		//add events for OrderManagement - Spectator?
+	    }
+	    
+	}
+	
+	contract LoyaltyMarketingConsumer
+    {
+    	description "A consumer of Loyalty Marketing services, such as a cart application"
+    	
+    	roles
+    	{   		
+			RewardCreation.LoyaltyMarketingConsumer
+			RewardPointQueryAndUsage.LoyaltyMarketingConsumer
+	    }
+	    
+	}
+	contract LoyaltyMarketingAnalyticsProvider
+    {
+    	description "A provider of analytics that will consume loyalty information"
+    	
+    	roles
+    	{   		
+	   		LoyaltyReportGet.LoyaltyAnalyticsConsumer
+	    }
+	    
+	 }		
+}

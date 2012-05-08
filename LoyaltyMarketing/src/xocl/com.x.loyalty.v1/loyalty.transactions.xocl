@@ -1,0 +1,83 @@
+package com.x.loyalty.v1{
+	import com.x.core.v1.*
+	import com.x.loyalty.v1.*
+	
+	entity Reward
+	
+	transaction LookupCustomerRewardData query {
+        sender {
+        	message LookupCustomerRewardData {
+        		timeouts(response=30s)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success LookupCustomerRewardDataSucceeded
+            failure LookupCustomerRewardDataFailed
+        }
+    }
+    
+    transaction CreateReward response {
+        sender {
+        	message CreateReward {
+        		timeouts(receipt=30s, response=1m)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success CreateRewardSucceeded {
+        		timeouts(receipt=30s)
+        		retries=3
+        	}
+            failure CreateRewardFailed {
+        		timeouts(receipt=30s)
+        		retries=3
+        	}
+        }
+    }
+    
+    transaction PredictOrderReward query {
+        sender {
+        	message PredictOrderReward {
+        		timeouts(response=30s)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success PredictOrderRewardSucceeded 
+            failure PredictOrderRewardFailed 
+        }
+    }
+    
+    transaction SpendPoints response {
+        sender {
+        	message SpendPoints {
+        		timeouts(receipt=30s, response=1m)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success SpendPointsSucceeded {
+        		timeouts(receipt=30s)
+        		retries=3
+        	}
+            failure SpendPointsFailed {
+        		timeouts(receipt=30s)
+        		retries=3
+        	}
+        }
+    }
+    
+    transaction GetLoyaltyReport query {
+        sender {
+        	message GetLoyaltyReport {
+        		timeouts(response=2m)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success GetLoyaltyReportSucceeded 
+            failure GetLoyaltyReportFailed 
+        }
+    }
+}
