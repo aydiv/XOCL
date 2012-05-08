@@ -6,6 +6,7 @@ package com.x.orderfulfillment.v1 {
 	
 	// Notify fulfillment system that order needs to be fullfilled
 	transaction FulfillOrder(Order order) notify {
+		preconditions(order[Order.Created])
 		sender
 		{
 			message FulfillmentOrder {
@@ -13,10 +14,20 @@ package com.x.orderfulfillment.v1 {
             	retries=3
             }
 		}
-		postconditions {
-			success(order[Order.Created])
-		}
 	}
+	
+	// Notify order management system that order is fullfilled
+	transaction OrderFulfilled(Order order) notify {
+    	preconditions(order[Order.Cancelled], order[Order.Shipped])
+    	sender
+		{
+			message FulfillmentOrder {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}
+    }
+	
 	
 	// Used to notify retailer of changes to expected shipping date
 	transaction ItemExpectedShipDate notify {
@@ -49,8 +60,7 @@ package com.x.orderfulfillment.v1 {
     }
     
     // Used to notify retailer that item was shipped 
-	transaction ItemShipped(Order order) notify {
-		preconditions(order[Order.Created])
+	transaction ItemShipped notify {		
     	sender {
     		message ItemShipped {
             	timeouts(receipt=30s, validation=3m)
@@ -61,8 +71,7 @@ package com.x.orderfulfillment.v1 {
     
      
      // Cancel parts of the order
-	transaction ItemCancelled(Order order) notify {
-		preconditions(order[Order.Created])
+	transaction ItemCancelled notify {
         sender {
         	message ItemCancelled {
         		timeouts(receipt=30s, validation=3m)     		
@@ -70,14 +79,5 @@ package com.x.orderfulfillment.v1 {
         	}
         }
     }
-    
-    // TODO: jgreenfield to fix
-    transaction OrderFulfilled notify {
-    	sender {
-    		message OrderFulfilled {
-    			timeouts(receipt=30s, validation=3m)
-    			retries=3
-    		}
-    	}
-    }
+
 }

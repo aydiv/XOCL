@@ -15,17 +15,18 @@ package com.x.orderfulfillment.v1 {
     }
     
    
-	process OrderShipment(Order order) {
-		description "An order gets submitted for shipping and is either shipped or cancelled"
+	process OrderFulfillment(Order order) {
+		description "An order is submitted for fulfillment and is either shipped or cancelled"
 	 
 	 	roles(OrderManager, DropShipManager)
+	 	preconditions(order[Order.Created])
 	 	
 	 	 workflow { 
 	 	 	transaction FulfillOrder {
 	        	roles(OrderManager, DropShipManager)
         	}
         	
-	 	    do(*) [10 d] {	 	    		 	    	
+	 	    do(*)[10 d] {	 	    		 	    	
 		 	 	any {
 		 	 			 	 		
 			 	 	//Dropship manager may notify change in expected ship date
@@ -39,9 +40,8 @@ package com.x.orderfulfillment.v1 {
 		        	
 		        	transaction MerchantComment {
 		        		roles(OrderManager, DropShipManager)
-		        	}	        	
-	        	        	
-	        	
+		        	}
+		        	
         			// A supplier may choose to cancel the order		
         			transaction ItemCancelled {
 	        			roles(DropShipManager, OrderManager)
@@ -52,9 +52,8 @@ package com.x.orderfulfillment.v1 {
         				roles(DropShipManager, OrderManager)
         			}		        		
 	        	}
-        	}
-	 	
-		 	transaction OrderFulfilled {
+        	}        	
+        	transaction OrderFulfilled {
 		 		roles(DropShipManager, OrderManager)
 		 	}
 	 	}
