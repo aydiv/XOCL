@@ -7,6 +7,8 @@ package com.x.orderfulfillment.v1 {
 	
 		
 	record FulfillmentOrder {
+				
+		guid orderId		
 		FulfillmentOrderData order
 	}
 	
@@ -99,20 +101,20 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record DropShipSupplierComment {
-		string orderNumber
+		guid orderId
 		string? orderLineId
 		string comment 
 	}
 	
 	record ItemExpectedShipDate {
-		string orderNumber
+		guid orderId
 		string orderLineId	
 		DateRange expectedShipDate
 	}
 	
 	record ItemShipped {
 		string shipmentId
-		string orderNumber
+		guid orderId
 		string orderLineId
 		int quantity		
 		datetime dateShipped
@@ -135,7 +137,7 @@ package com.x.orderfulfillment.v1 {
 	
 		
 	record ItemCancelled {
-		string orderNumber
+		guid orderId
 		FulfillmentOrderLineData orderLine
 		string? reasonCode
 		string? cancelMessage
@@ -143,15 +145,19 @@ package com.x.orderfulfillment.v1 {
 	
 		
 	record MerchantComment {
-		string orderNumber
+		guid orderId
 		string? orderLineId
 		string comment 
 	}
 	
-	//TODO: jgreenfrield to fix
-	record OrderFulfilled {
-		
+	record FulfillOrder {
+		FulfillmentOrder order
 	}
+	
+	record OrderFulfilled {
+		FulfillmentOrder order
+	}
+	
 }
 
 

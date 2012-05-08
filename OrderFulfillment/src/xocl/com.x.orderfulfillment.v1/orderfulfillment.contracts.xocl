@@ -1,0 +1,17 @@
+package com.x.orderfulfillment.v1 {	
+	import com.x.orderfulfillment.v1.*
+	
+    contract DropShipManager {
+    	description "A capability that performs drop shipment functions"
+    	roles {
+	        OrderFulfillment.DropShipManager
+	    }
+    }
+    
+    contract OrderManager {
+    	description "A capability that performs order management functions"
+    	roles {
+	        OrderFulfillment.OrderManager
+	    }
+    }
+}

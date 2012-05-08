@@ -9,7 +9,7 @@ package com.x.orderfulfillment.v1 {
 		preconditions(order[Order.Created])
 		sender
 		{
-			message FulfillmentOrder {
+			message FulfillOrder {
             	timeouts(receipt=30s, validation=3m)
             	retries=3
             }
@@ -21,7 +21,7 @@ package com.x.orderfulfillment.v1 {
     	preconditions(order[Order.Cancelled], order[Order.Shipped])
     	sender
 		{
-			message FulfillmentOrder {
+			message OrderFulfilled {
             	timeouts(receipt=30s, validation=3m)
             	retries=3
             }
