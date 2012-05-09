@@ -234,14 +234,14 @@ package com.x.marketplace.v3{
 		}
 	}
 	
-	process OfferSearch {
+	process OfferSearch<Ebay> {
 	    
 	    description "Offer Manager queries Sales Channel to reconcile offer data"
 		
 		roles( OfferManager, Marketplace)
 		
 		workflow {
-				transaction SearchOffers {
+				transaction SearchOffers<Ebay> {
 						roles(OfferManager, Marketplace)
 				}	
 		}

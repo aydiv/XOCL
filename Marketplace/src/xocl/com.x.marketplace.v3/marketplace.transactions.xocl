@@ -53,14 +53,11 @@ package com.x.marketplace.v3{
         sender {
         	message GetAllAvailableChannels {
         		 timeouts(response=30s)
-        		 retries=3
         		 //In a broadcast query, the client should wait for the entire timeout before assuming all available channels have responded     		
         	}
         }
         receiver {
-        	success GetAllAvailableChannelsSucceeded{
-        		timeouts(receipt=30s)   		
-        		retries=3
+        	success GetAllAvailableChannelsSucceeded{  		
         	} 
         	//there is no failure message here because the implementation should not respond if it cannot identify itself                	
         } 

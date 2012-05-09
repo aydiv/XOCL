@@ -13,7 +13,7 @@ package com.x.marketplace.v3{
 	   		MarketplaceSetup.MarketplaceMetadataProvider
 	   		PolicyGroupCreation.MarketplacePolicyManager<Ebay>
 	   		PolicyGroupUpdate.MarketplacePolicyManager<Ebay> 
-	   		PolicyGroupDeletion.MarketplacePolicyManager<Ebay> 
+	   		PolicyGroupDeletion.MarketplacePolicyManager
 	   		PolicyGroupLookup.MarketplacePolicyManager<Ebay> 
 	   		OfferPublicationWithProductData.Marketplace<Ebay> 
 	   		PublishedOfferRevision.Marketplace<Ebay>
@@ -26,7 +26,7 @@ package com.x.marketplace.v3{
 	        StoreLookup.MarketplaceMarketplaceMetadataProvider
 	        
 	   		//Order roles
-	   		ProcessSalesChannelOrder.SalesChannel<SalesChannelOrder> 
+	   		ProcessSalesChannelOrder.SalesChannel<MarketplaceOrder> 
 	   		
 	   		//Auth roles
 	   		AuthorizationGrant.AuthorizationProvider
@@ -47,7 +47,7 @@ package com.x.marketplace.v3{
 			MarketplaceSetup.MarketplaceMetadataConsumer
 	   		PolicyGroupCreation.MarketplaceMerchantConsole<Ebay>
 	   		PolicyGroupUpdate.MarketplaceMerchantConsole<Ebay> 
-	   		PolicyGroupDeletion.MarketplaceMerchantConsole<Ebay> 
+	   		PolicyGroupDeletion.MarketplaceMerchantConsole
 	   		PolicyGroupLookup.MarketplacePolicyManager<Ebay> 
 	   		OfferPublication.OfferManager<Ebay>  
 	   		//OfferDeactivation.OfferManager
@@ -61,7 +61,7 @@ package com.x.marketplace.v3{
 	        StoreLookup.MarketplaceMarketplaceMetadataConsumer
 	        
 	   		//Order roles
-	   		ProcessSalesChannelOrder.OrderProcessor<SalesChannelOrder> 
+	   		ProcessSalesChannelOrder.OrderProcessor<MarketplaceOrder> 
 	   		
 	   		//Auth roles
 	   		AuthorizationGrant.AuthorizedUser

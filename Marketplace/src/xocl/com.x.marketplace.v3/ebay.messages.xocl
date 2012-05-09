@@ -95,7 +95,7 @@
 	}
 
 	record LookupEbayPolicyGroupSucceeded {
-		PolicyGroup p;
+		EbayPolicyGroup p;
 	}
 	
 	record CreateEbayPolicyGroup {
