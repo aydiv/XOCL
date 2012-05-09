@@ -3,13 +3,13 @@ package com.x.pim.v1{
 	
     contract ProductInformationManagement
     {
-    		description "A product information management system's manager roles. Manages products and data about them, such as ID and SKU. Works with Inventory, which depends on roles, messages, and SLAs defined in this contract to provide products that can be tracked in an inventory system."
+    		description "A product information management system's manager roles. Manages products and product SKUs. Serves requests for data and notifies observers and consumers of data changes."
     		roles{
-		 		ProductSearch.ProductInformationManager "The product informatiion manager maintains and reports product information to product information consumers."
-		 		ProductLookup.ProductInformationManager "The product informatiion manager maintains and reports product information to product information consumers and observers."
-	 			ProductUpdate.ProductInformationManager "The product information manager maintains product information and reports it to product information consumers and observers."
-	 			ProductCreation.ProductInformationManager "The product information manager maintains product information and reports it to product information consumers and observers. "
-	 			ProductDeletion.ProductInformationManager "Descriptions"
+		 		ProductSearch.ProductInformationManager "The product information manager supplies details for an array of products that match a submitted query."
+		 		ProductLookup.ProductInformationManager "The product information manager supplies details for an array of requested products."
+	 			ProductUpdate.ProductInformationManager "The product information manager updates product and product SKU data and informs observers of changes."
+	 			ProductCreation.ProductInformationManager "The product information manager creates new products and informs observers of additions. "
+	 			ProductDeletion.ProductInformationManager "The product information manager deletes products and informs observers of deletions."
 	 		}
 	}
 	     
@@ -17,11 +17,11 @@ package com.x.pim.v1{
     {
     		description "A product information system's read-only consumer/observer role. Products and data cannot be altered by the consumer/observer role for this contract. "
     		roles{
-	 			ProductSearch.ProductInformationConsumer "The product information consumer needs to know product informatiion details."
-		 		ProductLookup.ProductInformationConsumer "The product information consumer needs to know product informatiion details."
-	 			ProductUpdate.ProductInformationObserver "The product information observer is informed when changes are made to product information."
-	 			ProductCreation.ProductInformationObserver "The product information observer is informed when changes are made to product information. "
-	 			ProductDeletion.ProductInformationObserver "The product information observer is informed when changes are made to product information. "
+	 			ProductSearch.ProductInformationConsumer "The product information consumer submits queries to retrieve product details for products that match the specified criteria."
+		 		ProductLookup.ProductInformationConsumer "The product information consumer submits queries to retrieve product details for specified products."
+	 			ProductUpdate.ProductInformationObserver "The product information observer is informed when product details are updated."
+	 			ProductCreation.ProductInformationObserver "The product information observer is informed when new products are created. "
+	 			ProductDeletion.ProductInformationObserver "The product information observer is informed when products are deleted. "
 	 		}
 	}
 	 
