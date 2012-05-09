@@ -1,6 +1,8 @@
 package com.x.loyalty.v1{
 	import com.x.loyalty.v1.*
 	import com.x.customer.v1.*
+	import com.x.ordermanagement.v2.*
+	
 	
 	contract LoyaltyMarketingProvider 
     {
@@ -11,7 +13,7 @@ package com.x.loyalty.v1{
 			RewardCreation.LoyaltyMarketingProvider
 			RewardPointQueryAndUsage.LoyaltyMarketingProvider
 	   		LoyaltyReportGet.LoyaltyMarketingProvider
-	   		//add events for OrderManagement - Spectator<nonsensitive>?
+	   		ProcessSalesChannelOrder.OrderObserver
 	   		CustomerSearch.CustomerConsumer<NameAndId>
 	   		//do we need events for customer creation, etc?
 	    }
