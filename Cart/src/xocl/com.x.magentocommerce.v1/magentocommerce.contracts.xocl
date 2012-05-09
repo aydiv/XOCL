@@ -19,7 +19,7 @@ package com.x.cart.v1{
 	 		WebStoreMetadataProvision.WebStoreMetadataProvider
 	 		WebStoreOfferSearch.WebStoreOfferManager
 	 		OrderSearch.OrderManager<NonSensitive>
-	 		ProcessSalesChannelOrder.OrderProcessor<SalesChannelOrder> 
+	 		ProcessSalesChannelOrder.OrderProcessor<MarketplaceOrder> 
 	 		StockItemLookup.InventoryManager
 	 		StockItemUpdate.InventoryManager
 	 		ProductSearch.ProductInformationManager
