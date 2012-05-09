@@ -56,6 +56,11 @@
 			<artifactId>customer-xocl</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.x.ocl</groupId>
+			<artifactId>ordermanagement-xocl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 
 </project>
