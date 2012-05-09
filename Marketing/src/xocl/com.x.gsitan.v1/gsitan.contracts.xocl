@@ -19,7 +19,7 @@ package com.x.gsitan.v1{
 	 		ProductSearch.ProductInformationConsumer
 	 		ProductLookup.ProductInformationConsumer
 	 		OrderSearch.OrderConsumer<NonSensitive>
-	 		ProcessSalesChannelOrder.OrderObserver<SalesChannelOrder> 
+	 		ProcessSalesChannelOrder.OrderObserver<MarketplaceOrder> 
 	 		CustomerSearch.CustomerConsumer
 	 	    CustomerUpsert.CustomerObserver  
 	    }
