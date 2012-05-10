@@ -42,6 +42,14 @@ package com.x.ordermanagement.v2 {
             }
 		}		
 	}
+	
+	// Notify observers that the order has shipped
+	transaction ObserveOrderShipped<MarketplaceOrder> inform {
+		sender {
+			message ObserveOrderShipped 
+            message<MarketplaceOrder> ObserveMarketplaceOrderShipped 
+		}		
+	}
     
     // Inform observers that an order was created
     transaction OrderCreated inform {
