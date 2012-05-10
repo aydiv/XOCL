@@ -17,7 +17,9 @@ package com.x.marketplace.v3{
 	   		PolicyGroupDeletion.MarketplacePolicyManager 
 	   		PolicyGroupLookup.MarketplacePolicyManager 
 	   		OfferPublication.Marketplace 
+	   		OfferPublicationWithProductData.Marketplace 
 	   		PublishedOfferRevision.Marketplace
+	   		PublishedOfferRevisionWithProductData.Marketplace
 	   		PublishedOfferRevocation.Marketplace
 	   		OfferSearch.Marketplace
 	   		AuthorizedAccountSearch.MarketplaceMetadataProvider
@@ -33,12 +35,36 @@ package com.x.marketplace.v3{
 	    
 	 }
 	
-	contract MarketplaceOfferProducer 
+
+	contract MarketplaceOfferProducer extends MarketplaceOfferProducerBaseRoleSet
     {
-    	// A description defines the purpose of the contract
-    	description "A system that places offers on a marketplace and processes orders from the marketplace"
+    	description "A system that places offers on a marketplace and processes orders from the marketplace, depending on PIM for product data"
+    	roles
+    	{
+	   		//Marketplace  roles 
+	   		OfferPublication.OfferManager
+	   		PublishedOfferRevision.OfferManager
+
+	    }
+	    
+	 }
+	 contract MarketplaceOfferProducerWithProductDataPublication extends MarketplaceOfferProducerBaseRoleSet
+     {
+    	description "A system that places offers on a marketplace and processes orders from the marketplace and passes product data with offer publication"
     	
-    	// A set of roles collectively define the implementer's responsibilities
+    	roles
+    	{
+	   		OfferPublicationWithProductData.OfferManager 
+			PublishedOfferRevisionWithProductData.OfferManager
+	    }
+	    
+	 }
+	 
+	 
+	contract MarketplaceOfferProducerBaseRoleSet 
+    {
+    	description "A base set of roles for use by producer contracts"
+    
     	roles
     	{
 	   		//Marketplace  roles 
@@ -47,8 +73,6 @@ package com.x.marketplace.v3{
 	   		PolicyGroupUpdate.MarketplaceMerchantConsole
 	   		PolicyGroupDeletion.MarketplaceMerchantConsole
 	   		PolicyGroupLookup.MarketplacePolicyManager 
-	   		OfferPublication.OfferManager
-	   		PublishedOfferRevision.OfferManager
 	   		PublishedOfferRevocation.OfferManager
 	   		OfferSearch.OfferManager
 	   		AuthorizedAccountSearch.MarketplaceMetadataConsumer
@@ -62,4 +86,5 @@ package com.x.marketplace.v3{
 	    }
 	    
 	 }
+	 
 }

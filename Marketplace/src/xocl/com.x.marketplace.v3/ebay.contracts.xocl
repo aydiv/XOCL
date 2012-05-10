@@ -16,7 +16,9 @@ package com.x.marketplace.v3{
 	   		PolicyGroupDeletion.MarketplacePolicyManager
 	   		PolicyGroupLookup.MarketplacePolicyManager<Ebay> 
 	   		OfferPublicationWithProductData.Marketplace<Ebay> 
+	   		OfferPublication.Marketplace<Ebay> 
 	   		PublishedOfferRevision.Marketplace<Ebay>
+	   		PublishedOfferRevisionWithProductData.Marketplace<Ebay>
 	   		PublishedOfferRevocation.Marketplace
 	   		OfferSearch.Marketplace<Ebay>
 	   		AuthorizedAccountSearch.MarketplaceMetadataProvider
@@ -34,13 +36,34 @@ package com.x.marketplace.v3{
 	    }
 	    
 	 }
-	 		
-    contract EbayMarketplaceOfferProducer
+	 	
+	contract EbayMarketplaceOfferProducer extends EbayMarketplaceOfferProducerBaseRoleSet
     {
-    	// A description defines the purpose of the contract
-    	description "A system that creates offers on ebay marketplace and processes the orders from the marketplace"
+    	description "A system that creates offers on ebay marketplace and processes the orders from the marketplace and depends on PIM for product data"
     	
-    	// A set of roles collectively define the implementer's responsibilities
+    	roles
+    	{
+	   		OfferPublication.OfferManager<Ebay>  
+	   		PublishedOfferRevision.OfferManager<Ebay>
+	    }
+	    
+	}	
+	
+	contract EbayMarketplaceOfferProducerWithProductDataPublication extends EbayMarketplaceOfferProducerBaseRoleSet
+    {
+    	description "A system that creates offers on ebay marketplace and processes the orders from the marketplace and sends product data with offer publication"
+    	
+    	roles
+    	{
+	   		OfferPublicationWithProductData.OfferManager<Ebay>  
+	   		PublishedOfferRevisionWithProductData.OfferManager<Ebay>
+	    }
+	    
+	}	
+    contract EbayMarketplaceOfferProducerBaseRoleSet
+    {
+    	description "A base role set for ebay marketplace consumers."
+    
     	roles
     	{
 	   		//Marketplace  roles 
@@ -49,9 +72,6 @@ package com.x.marketplace.v3{
 	   		PolicyGroupUpdate.MarketplaceMerchantConsole<Ebay> 
 	   		PolicyGroupDeletion.MarketplaceMerchantConsole
 	   		PolicyGroupLookup.MarketplacePolicyManager<Ebay> 
-	   		OfferPublication.OfferManager<Ebay>  
-	   		//OfferDeactivation.OfferManager
-	   		PublishedOfferRevision.OfferManager<Ebay>
 	   		PublishedOfferRevocation.OfferManager
 	   		OfferSearch.OfferManager<Ebay>
 	   		AuthorizedAccountSearch.MarketplaceMetadataConsumer
