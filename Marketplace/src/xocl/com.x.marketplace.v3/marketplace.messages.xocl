@@ -189,16 +189,6 @@ package com.x.marketplace.v3{
 		ReturnPolicy? returnPolicy;
 		string xAccountId;
 	}
-	
-    record OfferPublicationError {
-		Offer? offer;
-		array<Error> errors;
-	}
-	
-    record OfferUpdateError {
-		Offer offer;
-		array<Error> errors;
-	}
 
 	record CancelOfferError {
 		string offerId;
@@ -398,8 +388,9 @@ package com.x.marketplace.v3{
 	}
 
 	record PublishOfferFailed {
-		OfferPublicationError offerError;
+		OfferDetails offer;
 		string? policyGroupId;
+		array<Error> errors;
 	}
 	
 	record RevisePublishedOffer {
@@ -418,7 +409,8 @@ package com.x.marketplace.v3{
 	}
 	
 	record RevisePublishedOfferFailed {
-		OfferUpdateError errors;
+		OfferDetails updatedOffer;
+		array<Error>errors;
 		string? policyGroupId;
 	}
 	

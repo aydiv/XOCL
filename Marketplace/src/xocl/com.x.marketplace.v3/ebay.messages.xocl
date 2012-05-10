@@ -68,16 +68,7 @@
 		string? policyGroupId;
 		array<Error> errors;
 	}
-	
-    record EbayOfferPublicationError {
-		EbayOffer offer;
-		array<Error> errors;
-	}
-	
-    record EbayOfferUpdateError {
-		EbayOffer offer;
-		array<Error> errors;
-	}
+
 	
 	record ReviseEbayPublishedOffer {
 		EbayOfferDetails update; //must have channelOfferId
