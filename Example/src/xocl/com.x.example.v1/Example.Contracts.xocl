@@ -86,8 +86,8 @@ package com.x.example.v1
     	description "A capability that performs shipment functions"
     	roles {
 	        OrderShipment.ShippingManager
-	        OrderShipment.ShippingManager<WithAuthorization>
-	        OrderShipment.ShippingManager<WithConfiguration>
+	       //OrderShipment.ShippingManager<WithAuthorization>
+	       //OrderShipment.ShippingManager<WithConfiguration>
         }
     }
     
@@ -99,8 +99,8 @@ package com.x.example.v1
 	         *   workflow implements the specified process.
 	         */
 	        OrderShipment.ShippingManager(OrderDropShipment)
-	        OrderShipment.ShippingManager<WithAuthorization>(OrderDropShipment)
-	        OrderShipment.ShippingManager<WithConfiguration>(OrderDropShipment)
+	        //OrderShipment.ShippingManager<WithAuthorization>(OrderDropShipment)
+	        //OrderShipment.ShippingManager<WithConfiguration>(OrderDropShipment)
         }
     }
     
