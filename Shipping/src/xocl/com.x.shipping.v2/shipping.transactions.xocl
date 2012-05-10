@@ -1,0 +1,187 @@
+/** This file includes the transactions that are part of the
+ *  shipping domain
+ */
+package com.x.shipping.v2 {
+	import com.x.shipping.v2.*
+	
+	// Get shipping rates for a speicific shipment
+	transaction CalculateShippingRates response {
+		sender {
+			message CalculateShippingRates {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}		
+		receiver {
+			success CalculateShippingRatesSucceeded {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+			failure CalculateShippingRatesFailed {
+				timeouts(receipt=30s)
+			}
+		}
+	}
+	
+	// Create shipping labels and its associated tracking information
+	transaction CreateShippingLabel response {
+		sender {
+			message CreateShippingLabel {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}		
+		receiver {
+			success CreateShippingLabelSucceeded {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+			failure CreateShippingLabelFailed {
+				timeouts(receipt=30s)
+			}
+		}
+	}
+	
+	// Cancel an existing shipment
+	transaction CancelShipment response {
+		sender {
+			message CancelShipment {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}		
+		receiver {
+			success CancelShipmentSucceeded {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+			failure CancelShipmentFailed {
+				timeouts(receipt=30s)
+			}
+		}
+	}
+	
+	// Get tracking information for a package that has shipped
+	transaction GetTrackingInformation response {
+		sender {
+			message GetTrackingInformation {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}		
+		receiver {
+			success GetTrackingInformationSucceeded {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+			failure GetTrackingInformationFailed {
+				timeouts(receipt=30s)
+			}
+		}
+	}
+
+	// Request shipment pickup
+	transaction RequestShipmentPickup notify {
+		sender {
+			message RequestShipmentPickup {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}		
+	}
+	
+	// Locate offices where I can find carriers
+	transaction FindCarrierOffices response {
+		sender {
+			message FindCarrierOffices {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}		
+		receiver {
+			success FindCarrierOfficesSucceeded {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+			failure FindCarrierOfficesFailed {
+				timeouts(receipt=30s)
+			}
+		}
+	}
+	
+	// Validate a shipping address
+	transaction ValidateShippingAddress response {
+		sender {
+			message ValidateShippingAddress {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}		
+		receiver {
+			success ValidateShippingAddressSucceeded {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+			failure ValidateShippingAddressFailed {
+				timeouts(receipt=30s)
+			}
+		}
+	}
+	
+	// Get the services that are supported by a carrier
+	transaction GetShippingServices response {
+		sender {
+			message GetShippingServices {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}		
+		receiver {
+			success GetShippingServicesSucceeded {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+			failure GetShippingServicesFailed {
+				timeouts(receipt=30s)
+			}
+		}
+	}
+	
+	// Get the special services that are supported by a carrier
+	transaction GetCarrierSpecialServices response {
+		sender {
+			message GetCarrierSpecialServices {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}		
+		receiver {
+			success GetCarrierSpecialServicesSucceeded {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+			failure GetCarrierSpecialServicesFailed {
+				timeouts(receipt=30s)
+			}
+		}
+	}
+	
+	// Get the shipment handoff types that are supported by a carrier
+	transaction GetCarrierHandoffTypes response {
+		sender {
+			message GetCarrierHandoffTypes {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}		
+		receiver {
+			success GetCarrierHandoffTypesSucceeded {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+			failure GetCarrierHandoffTypesFailed {
+				timeouts(receipt=30s)
+			}
+		}
+	}
+}

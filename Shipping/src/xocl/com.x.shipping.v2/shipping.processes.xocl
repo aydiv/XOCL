@@ -1,0 +1,72 @@
+/** This file includes the processes that are part of the
+ *  shipping domain
+ */
+package com.x.shipping.v2 {
+	import com.x.shipping.v2.*
+	
+	entity Shipment {
+    	state TrackingAssigned[Shipped]
+    	state Shipped
+    }
+    
+    // Process the assignment of shipping and tracking information
+    process ProcessShipment {
+    	
+        description "An shipment is quoted, packaged, shipped, and tracked"
+        
+        roles(Consumer, ShippingCarrier, OrderProcessor)
+    
+	    workflow {
+	    	any {	
+	    		// Get rates for a package
+	       	 	transaction CalculateShippingRates {
+	        		roles(Consumer, ShippingCarrier)
+	        	}
+	        	
+       	    	transaction FindCarrierOffices {
+        			roles(OrderProcessor, ShippingCarrier)
+       			}
+
+       	    	transaction ValidateShippingAddress {
+        			roles(OrderProcessor, ShippingCarrier)
+       			}
+
+       	    	transaction GetShippingServices {
+        			roles(OrderProcessor, ShippingCarrier)
+       			}	
+
+       	    	transaction GetCarrierSpecialServices {
+        			roles(OrderProcessor, ShippingCarrier)
+       			}	
+
+       	    	transaction GetCarrierHandoffTypes {
+        			roles(OrderProcessor, ShippingCarrier)
+       			}	
+
+	        }
+        	
+   			// Creeate the label and its associated tracking information
+       	    transaction CreateShippingLabel {
+        		roles(OrderProcessor, ShippingCarrier)
+       		}
+       		
+       		any {
+	       		// Send a request to the carrier to have them come to your location
+	       		// to pickup your shipment
+	       	    transaction RequestShipmentPickup {
+	        		roles(OrderProcessor, ShippingCarrier)
+	       		}
+	       		// Get tracking information about a shipment
+	       	    transaction GetTrackingInformation {
+	        		roles(OrderProcessor, ShippingCarrier)
+	       		}
+	       		
+	       		// Cancel an existing shipment
+	       	    transaction CancelShipment {
+	        		roles(OrderProcessor, ShippingCarrier)
+	       		}
+       		}       		
+
+       	}
+	}
+}

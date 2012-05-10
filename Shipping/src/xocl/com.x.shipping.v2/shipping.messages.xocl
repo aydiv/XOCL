@@ -1,0 +1,305 @@
+
+/** This file includes the messages that are part of the
+ *  shipping domain
+ */
+package com.x.shipping.v2 {
+	import com.x.shipping.v2.* 
+	import com.x.core.v1.*
+		
+	enum DimensionUnitType {
+	    INCHES,
+   	 	CENTIMETERS
+	}
+	
+	enum WeightUnitType {
+	    POUNDS,
+    	KILOGRAMS
+    }
+
+	enum PackagingMethodType {
+    	TOGETHER,
+    	SEPARATELY
+	}
+	
+	enum SignatureOptionType {
+    	SIGNATURE_REQURED,
+    	NO_SIGNATURE_REQUIRED,
+    	DIRECT,
+    	INDIRECT
+	}
+	
+	enum PackageType {
+    	BOX,
+    	ENVELOPE,
+    	TUBE,
+    	OTHER
+    }
+
+	enum PackageSizeType {
+    	REGULAR,
+    	LARGE,
+    	OVERSIZE
+	}
+	
+	enum HandoffModeType {
+	    PICKUP,
+   	 	DROPOFF
+	}
+	
+	enum ServiceClassType {
+	    NEXT_DAY_AIR,
+   		SECOND_DAY_AIR,
+    	THIRD_DAY,
+    	STANDARD_AIR,
+    	GROUND
+    }
+    
+    enum PrinterType {
+    	THERMAL,
+    	INKJET,
+    	LASER
+    }
+
+	enum LabelImageType {
+		ENCODED_STRING,
+		URL
+	}
+	
+	record Package {
+		string packageDescription
+		double weight
+		WeightUnitType weightUnit
+		double length
+		double width
+		double height
+		DimensionUnitType dimensionUnit
+		CurrencyAmount declaredValue
+		PackageType type
+		PackageSizeType sizeClassification
+	}
+
+	record Recipient {
+		Name name
+		string title
+		Address address
+		boolean isResidential
+		string phoneNumber
+		string phoneExtension
+		string emailAddress
+	}
+	
+	record CustomsItem {
+		string originCountry
+		double weightMajor
+		double weightMinor
+		WeightUnitType weightUnit
+		CurrencyAmount eachValue
+		string tariffCode
+		int quantity
+		string itemDescription
+	}
+	
+	record CustomsForm {
+		string licenseNumber
+		string itemDetail
+		string itemType
+		string comments
+		string orderNumber
+		string certificateNumber
+		string eelpfc
+		array<CustomsItem> items
+	}
+	
+	record ShippingService {
+		string name
+		string code
+		ServiceClassType serviceClass
+		double maxPackageWeight
+	}
+	
+	
+	record SpecialService {
+		string name
+		string serviceDescription
+		CurrencyAmount fee
+	}
+	
+	record CarrierHandoffMode {
+		string Code
+		string Description
+		HandoffModeType handoffMode
+	}	
+
+	record Shipment {
+		array<Package> packages
+		Address address
+		Recipient recipient
+		int lotSize
+		PackagingMethodType packagingMethod
+		double totalWeight
+		CurrencyAmount totalInsuredValue
+		string shippingInstructions
+		HandoffModeType carrierHandoffMode
+		array<ShippingService> shippingServices
+		array<SpecialService> specialServices
+		string carrierCode		
+	}
+	
+	record ShippingLabelParameters {
+		Shipment shipment
+		long shipDate
+		string referenceCode
+		LabelImageType imageType
+		PrinterType printer
+		boolean showPostage
+		boolean shippingReceipt
+		CustomsForm customs
+	}
+		
+	record ShippingLabel {
+		string trackingNumber
+		LabelImageType imageType
+		string encodedImage
+		string imageUrl
+		CurrencyAmount cost
+	}
+	
+	record CarrierOffice {
+		string? name
+		Address location
+	}
+	
+	record ShippingRate {
+		ServiceClassType service
+		CurrencyAmount rate
+	}
+	
+	record CalculateShippingRates {
+		// The shipment includes all the services and special services
+		// for which you would like to get rates for this specific shipment
+		Shipment shipment
+	}
+	
+	record CalculateShippingRatesSucceeded {
+		// a list of all the prices for each type of service 
+		// that was listed in the shipment rate request
+		array<ShippingRate> rates
+	}
+	
+	record CalculateShippingRatesFailed {
+		Shipment shipment
+		array<Error> errors
+	}
+	
+	record CreateShippingLabel {
+		ShippingLabelParameters labelParameters 
+	}
+	
+	record CreateShippingLabelSucceeded {
+		ShippingLabel label
+	}
+	
+	record CancelShipment {
+		string trackingNumber
+	}
+	
+	record CancelShipmentSucceeded {
+		string trackingNumber
+	}
+	
+	record CancelShipmentFailed {
+		string trackingNumber
+	}
+	
+	record RequestShipmentPickup {
+		// where will the carrier come to pickup the package
+		Address pickupLocation
+	}
+		
+	record GetTrackingInformation {
+		string trackingNumber
+	}
+	
+	record GetTrackingInformationSucceeded {
+		// future version must support more granular detail
+		array<string> trackingDetails
+	}
+
+	record GetTrackingInformationFailed {
+		string trackingNumber
+		array<Error> errors
+	}
+	
+	
+	record CreateShippingLabelFailed {
+		ShippingLabelParameters labelParameters
+		array<Error> errors		
+	}
+	
+	record FindCarrierOffices {
+		// search for locations near this address
+		Address targetAddress
+	}
+	
+	record FindCarrierOfficesSucceeded {
+		array<CarrierOffice> carrierOffices
+	}
+	
+	record FindCarrierOfficesFailed {
+		Address targetAddress
+		array<Error> errors				
+	}
+	
+	record ValidateShippingAddress {
+		Address address
+	}
+	
+	record ValidateShippingAddressSucceeded {
+		Address address
+		boolean isValid
+	}
+	
+	record ValidateShippingAddressFailed {
+		Address address
+		array<Error> errors				
+	}
+
+	record GetShippingServices {
+		// no parameters needed		
+	}
+	
+	record GetShippingServicesSucceeded {
+		array<ShippingService> serviceTypes
+	}
+	
+	record GetShippingServicesFailed {
+		array<Error> errors				
+	}
+	
+	record GetCarrierSpecialServices {
+		// no parameters needed
+	}
+	
+	record GetCarrierSpecialServicesSucceeded {
+		array<SpecialService> specialServices
+	}
+	
+	record GetCarrierSpecialServicesFailed {
+		array<Error> errors				
+	}
+	
+	record GetCarrierHandoffTypes {
+		// no parameters needed		
+	}
+	
+	record GetCarrierHandoffTypesSucceeded {
+		array<CarrierHandoffMode> handoffModes
+	}
+	
+	record GetCarrierHandoffTypesFailed {
+		array<Error> errors				
+	}
+}
+
+
+
