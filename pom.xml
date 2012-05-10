@@ -71,6 +71,7 @@
 		<module>OrderFulfillment</module>
 		<module>ProductInformationManagement</module>
 		<module>ProductTaxonomy</module>
+		<module>Shipping</module>
 		<module>WebStore</module>
 		<module>All</module>
 	</modules>
