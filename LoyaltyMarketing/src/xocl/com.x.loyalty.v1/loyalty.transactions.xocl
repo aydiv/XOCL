@@ -20,7 +20,7 @@ package com.x.loyalty.v1{
     transaction CreateReward response {
         sender {
         	message CreateReward {
-        		timeouts(receipt=30s, response=1m)     		
+        		timeouts(receipt=30s, response=3m)     		
         		retries=3
         	}
         }
@@ -52,7 +52,7 @@ package com.x.loyalty.v1{
     transaction SpendPoints response {
         sender {
         	message SpendPoints {
-        		timeouts(receipt=30s, response=1m)     		
+        		timeouts(receipt=30s, response=3m)     		
         		retries=3
         	}
         }

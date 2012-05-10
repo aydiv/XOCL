@@ -3,24 +3,31 @@ package com.x.loyalty.v1{
 	import com.x.loyalty.v1.*
 	
 	process RewardPointQueryAndUsage{
-		description "This process is used when a customer engages in activity on the web store, they can find their points, predict rewards, and spend points"
+		description "This process is used when a customer engages in activity on the web store, they can find their points and spend points"
 		roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
-		workflow{
-			any{
+		workflow [5h]{ //validate this time out 
 				transaction LookupCustomerRewardData{
-					roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
+						roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
 				}
-				transaction PredictOrderReward{
-					roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
-				}	
-			}
-			any{
-				transaction SpendPoints{
-					roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
+				any{
+					transaction SpendPoints{
+						roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
+					}
 				}
-			}	
 		}
 	}
+	
+	process RewardPointPrediction{
+		description "This process is used when a customer wants to predict rewards earned for a given purchase"
+		roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
+		workflow{
+				transaction PredictOrderReward{
+					roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
+				}
+				
+		}
+	}
+	
 	
 	process LoyaltyReportGet{
 		description "This process is used to retrieve loyalty informaion from the provider"

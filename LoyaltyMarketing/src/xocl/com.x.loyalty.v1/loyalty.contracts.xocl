@@ -12,10 +12,12 @@ package com.x.loyalty.v1{
     	{   		
 			RewardCreation.LoyaltyMarketingProvider
 			RewardPointQueryAndUsage.LoyaltyMarketingProvider
+			RewardPointPrediction.LoyaltyMarketingProvider
 	   		LoyaltyReportGet.LoyaltyMarketingProvider
 	   		ProcessSalesChannelOrder.OrderObserver
 	   		CustomerSearch.CustomerConsumer<NameAndId>
 	   		//do we need events for customer creation, etc?
+	   		//how does the loyalty provider or cart know the conversion ration (points to $)
 	    }
 	    
 	}
@@ -28,10 +30,11 @@ package com.x.loyalty.v1{
     	{   		
 			RewardCreation.LoyaltyMarketingConsumer
 			RewardPointQueryAndUsage.LoyaltyMarketingConsumer
+			RewardPointPrediction.LoyaltyMarketingConsumer
 	    }
 	    
 	}
-	contract LoyaltyMarketingAnalyticsProvider
+	contract MarketingAnalyticsProvider
     {
     	description "A provider of analytics that will consume loyalty information"
     	

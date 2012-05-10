@@ -73,7 +73,7 @@ package com.x.loyalty.v1{
 	    string? channelId;
 	}
 	
-	
+
 	record RewardError {
 		Reward reward;
 		array<Error> errors;
@@ -102,7 +102,7 @@ package com.x.loyalty.v1{
 	}
 		
 	record LookupCustomerRewardDataSucceeded {
-		RewardData rewardData;
+		LoyaltyCustomer customer;
 	}
 	
 	record LookupCustomerRewardDataFailed {
@@ -129,7 +129,7 @@ package com.x.loyalty.v1{
 	
 	record PredictOrderRewardSucceeded{
 		PredictOrderReward request;
-		array<Reward> rewards;
+		array<Points> predictedPoints;
 	}
 	
 	record PredictOrderRewardFailed{
@@ -139,7 +139,7 @@ package com.x.loyalty.v1{
 	
 	record SpendPoints{
 		 union{guid, EntityId} customerId;
-		 Balance originalBalance;
+		 Balance originalBalance;  //this is for optimistic update.  We can detect if the balance is updated.
 		 long pointToSpend;
 	}
 	record SpendPointsSucceeded{
