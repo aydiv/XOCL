@@ -136,10 +136,6 @@ package com.x.ordermanagement.v2 {
 		array<Error> errors
 	}
 	
-	record ShippingInformationUpdate extends TrackingDetail {
-		string? orderNumber
-		string? orderLineId
-	}
 	
 	record PaymentInfo {
 		PaymentMethod method
