@@ -56,21 +56,22 @@ package com.x.ordermanagement.v2 {
 	    			roles(OrderProcessor, SalesChannel)
 	    		}
 	    		
-	    		transaction ShippingInformationUpdate<MarketplaceOrder> {
-	    			roles(SalesChannel, OrderProcessor)
-	    		}
-	    		
 	    		transaction OrderAdjust {
 	    			roles(OrderProcessor, OrderObserver)
 	    		}
 	    	}
-	   
-	        one {     
-	        	// An order processor updates shipment tracking information for an order
-	        	transaction OrderShipped<MarketplaceOrder> {
-	        		roles(OrderProcessor, SalesChannel)
-	        	}
-	       
+	    	
+	        one {
+	        	all {  
+		        	// An order processor updates shipment tracking information for an order
+		        	transaction OrderShipped<MarketplaceOrder> {
+		        		roles(OrderProcessor, SalesChannel)
+		        	}
+		        	
+		        	transaction ObserveOrderShipped<MarketplaceOrder> {
+		        		roles(OrderProcessor, OrderObserver)
+		        	}
+		        }
         	
 	        	do {
 		        	any {
