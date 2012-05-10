@@ -44,7 +44,7 @@ package com.x.comparisonshopping.v1
 	    workflow {
 	        transaction UpdateProductFeed
 	        {
-	        	roles(PublishProductFeed.TrafficGenerationManager, PublishProductFeed.ComparisonShoppingPublisher)
+	        	roles(TrafficGenerationManager, ComparisonShoppingPublisher)
 	        }
 	    }
 	    
