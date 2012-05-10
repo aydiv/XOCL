@@ -69,7 +69,6 @@
 		array<Error> errors;
 	}
 
-	
 	record ReviseEbayPublishedOffer {
 		EbayOfferDetails update; //must have channelOfferId
 		string? policyGroupId;
