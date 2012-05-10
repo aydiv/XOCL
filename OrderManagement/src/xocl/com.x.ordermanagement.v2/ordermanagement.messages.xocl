@@ -338,6 +338,7 @@ package com.x.ordermanagement.v2 {
 	
 	record OrderShipped {
 		string orderNumber
+		guid id
 		string shipmentId
 		array<TrackingDetail>? trackingDetails
 		string sourceId
@@ -346,6 +347,14 @@ package com.x.ordermanagement.v2 {
 	record MarketplaceOrderShipped extends OrderShipped {
 		string accountId
 		string? siteCode
+	}
+	
+	record ObserveOrderShipped {
+		OrderShipped orderShipped
+	}
+	
+	record ObserveMarketplaceOrderShipped {
+		MarketplaceOrderShipped marketplaceOrderShipped
 	}
 	
     record CreateOrder {
@@ -382,6 +391,7 @@ package com.x.ordermanagement.v2 {
 	
 	record CancelOrder {
 		array<string> orderNumbers
+		array<guid> orderIds
 	}
 	
 	record CancelMarketplaceOrder extends CancelOrder {
@@ -399,6 +409,7 @@ package com.x.ordermanagement.v2 {
 	
 	record CancelOrderFailed {
 		string orderNumber
+		guid id
 		array<Error> errors
 	}
 	
