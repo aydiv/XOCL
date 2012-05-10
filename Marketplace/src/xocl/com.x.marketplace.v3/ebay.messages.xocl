@@ -29,6 +29,7 @@
 		Product product;
 	}
 
+
 	record EbayOffer {
 		OfferChannelData channelData;
 		EbayOfferDetails offerDetails;	
@@ -63,9 +64,11 @@
 	}
 
 	record PublishEbayOfferFailed {
-		EbayOfferPublicationError offerError;
+		EbayOfferDetails offer;
 		string? policyGroupId;
+		array<Error> errors;
 	}
+	
     record EbayOfferPublicationError {
 		EbayOffer offer;
 		array<Error> errors;
@@ -80,18 +83,21 @@
 		EbayOfferDetails update; //must have channelOfferId
 		string? policyGroupId;
 	}
+	
 	record ReviseEbayPublishedOfferWithProductData {
 		EbayOfferDetailsWithProductData update; //must have channelOfferId
 		string? policyGroupId;
 	}
+	
 	record ReviseEbayPublishedOfferSucceeded {
 		EbayOffer updatedOffer; 
 		string? policyGroupId;
 	}
 	
 	record ReviseEbayPublishedOfferFailed {
-		EbayOfferUpdateError errors;
+		EbayOfferDetails update;
 		string? policyGroupId;
+		array<Error> errors;
 	}
 
 	record LookupEbayPolicyGroupSucceeded {
