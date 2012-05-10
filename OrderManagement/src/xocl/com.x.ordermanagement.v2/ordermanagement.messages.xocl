@@ -255,23 +255,23 @@ package com.x.ordermanagement.v2 {
 		CurrencyAmount grandTotal
 		
 		/** The grand total minus any non-shipping discounts */
-		CurrencyAmount netMerchandiseValue
+		CurrencyAmount? netMerchandiseValue
 	
 		/** Total of all the items -- without taxes, fees, etc. */
 		CurrencyAmount itemPriceTotal
 
 		/** Breakdown of the total of all related fees that influence the price */		
-		CurrencyAmount totalInsuranceCost
-		CurrencyAmount totalTaxAmount
-		CurrencyAmount totalDiscountAmount
-		array<AdditionalCost> additionalCosts
+		CurrencyAmount? totalInsuranceCost
+		CurrencyAmount? totalTaxAmount
+		CurrencyAmount? totalDiscountAmount
+		array<AdditionalCost>? additionalCosts
 		
 		/** The sum of the shipping fees from each of the associated shipments */
-		CurrencyAmount totalShippingFees
+		CurrencyAmount? totalShippingFees
 		
 		
 		/** A collection of all the promotional discounts that were applied at the order level */
-		array<PromotionalDiscount> discounts
+		array<PromotionalDiscount>? discounts
 				
 		/** The channel where this order originated (ebay, amazon, etc.) */
 		string sourceId
