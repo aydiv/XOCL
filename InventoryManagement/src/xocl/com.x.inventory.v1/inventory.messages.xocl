@@ -12,19 +12,22 @@ package com.x.inventory.v1
 	
 	record LookupStockItem
 	{
-		description "Looks up a stock item."
+		summary "Look up stock items."
+		description "Looks up one or more stock item by their SKU."
 		array<string> skus "The SKUs of the stock items to be retrieved.";
 	}
 
 	record LookupStockItemSucceeded
 	{
-		description "Returns one or more stock items."
+		summary "Returns details for one or more stock items."
+		description "Returns details for one or more stock items matching the submitted SKUs. A match must be found or every submitted SKU for the request to succeed."
 		array<StockItem> stockItems "The stock items that were looked up.";
 	}
 	
 	record LookupStockItemFailed
 	{
-		description "Signals that the request to look up a stock item has failed."
+		summary "Report error details for a failed attempt to look up stock items."
+		description "Signals that the request to look up a stock item has failed. The failure message contains information about cause of the failure."
 		array<InventoryLookupError> errors "The array of InventoryLookupErrors related to the failed lookup of stock items. Human-readable.";
 	}
 	
@@ -37,18 +40,21 @@ package com.x.inventory.v1
 	
 	record UpdateStockItem
 	{
+		summary "Update details for one or more stock items."
 		description "Requests that the capability update information related to one or more stock items."
 		array<StockItem> stockItems "The stock items whose information is to be updated.";
 	}
 	
 	record UpdateStockItemSucceeded
 	{
+		summary "Returns details about about stock items that were updated."
 		description "Returns stock items whose information is successfully updated."
 		array<StockItem> stockItems "The stock items whose information was successfully updated.";
 	}
 	
 	record UpdateStockItemFailed
 	{
+		summary "Report error details for a failed attempt to update one or more stock items."
 		description "Signals that a request to update information related to one or more stock items has failed."
 		array<InventoryError> errors "The errors specifying why the update failed. Human-readable.";
 	}
@@ -62,12 +68,14 @@ package com.x.inventory.v1
 
     record StockItemUpdated
 	{
+		summary "Informs observers of changes in information for one or more stock items. "
 		description "An event sent to observers to inform them of a change in information about one or more stock items. Includes the array of updated stock items."
 		array<StockItem> stockItems "The stock items whose information was successfully updated.";
 	}
 
     record OutOfStock
 	{
+		summary "Informs observers that an inventory item is out of stock. "
 		description "Informs an Inventory Observer that a stock item quantity has gone to zero."
 		StockItem stockItem "Informs an Inventory Observer that a stock item quantity has gone to zero.";
 	}
