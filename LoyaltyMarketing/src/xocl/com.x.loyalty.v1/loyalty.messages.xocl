@@ -152,7 +152,7 @@ package com.x.loyalty.v1{
 	}
 	
 	record GetLoyaltyReport{
-		long timeInDays;
+		long numberOfDays;
 		datetime? endDate;
 	}
 	
@@ -167,7 +167,7 @@ package com.x.loyalty.v1{
 	}
 	
 	record LoyaltyReport{
-		long timeInDays	"unit time (in days)"
+		long numberOfDays	"unit time (in days)"
 		double averageTransactionFrequency  "Average # of customer purchases / unit time"
 		double retentionRate "% of customers who return to purchase / unit time" 
 		double averageTransactionValue "Average shopping cart value"
