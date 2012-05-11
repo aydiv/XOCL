@@ -5,8 +5,8 @@ package com.x.inventory.v1{
     {
     		description "The InventoryManager contract models a standard inventory system."
     		roles{
-	 			StockItemLookup.InventoryManager "The inventory manager maintains inventory stocking information and reports stocking information to inventory consumers and observers."
-	 			StockItemUpdate.InventoryManager "The inventory manager maintains inventory stocking information and reports stocking information to inventory consumers and observers."
+	 			StockItemLookup.InventoryManager
+	 			StockItemUpdate.InventoryManager
 	 		}
 	}
     
@@ -14,8 +14,8 @@ package com.x.inventory.v1{
     {
     		description "The InventoryConsumer contract models a read-only system for a consumer and observer of inventory data."
     		roles{
-	 			StockItemLookup.InventoryConsumer "The inventory consumer needs to know inventory details. In the context of the StockItemLookup process, the inventory consumer needs to understand stock item properties for uses in other business processes, such as the creation of a marketing offer."
-	 			StockItemUpdate.InventoryObserver "The inventory observer is like the inventory consumer. The inventory observer likes to be informed of inventory changes, but does not query for the information. In the context of the StockItemUpdate process, the inventory observer sends no messages, but gets informed of stock updates and when an item is out of stock."
+	 			StockItemLookup.InventoryConsumer
+	 			StockItemUpdate.InventoryObserver
 	 		}
 	}
 
