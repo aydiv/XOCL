@@ -4,130 +4,145 @@ package com.x.producttaxonomy.v1{
 	 * Locale contains a combination of ISO language code, country code and optional variant
 	 */
 	record Locale {
-		string language;
-		string country;
-		string? variant;
+		description "The locale is used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). Default: If not provided on input, defaults to en_US."
+		string language "A 2-letter language code (see ISO 639-1 Registration Authority Home).";
+		string country "A 2-letter country code (see ISO 3166 Maintenance agency home).";
+		string? variant "A variant based of the Locale based on the vendor or operating system.";
 	}
 
 	record Error {
-		int code;
-		string _AVDL_message;
-		array<string>? parameters;
+		description "A unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message."
+		int code "A code associated with an error.";
+		string _AVDL_message "An AVDL message associated with an error.";
+		array<string>? parameters "Parameters associated with an error.";
 	}
 
 	record Filter {
+		description "A filter using channelIDs or detaillevel."
 		// we support two levels currently: 1 for summary and 2 for details
 		// the summary product type information contains id, version name, and productClassIds
-		int? detailLevel;
+		int? detailLevel "A filter that determines the level of detail. Two levels of details are supported: 1) summary information only (id, version, name, productClassID) 2) all product type details.";
 		// To specify a list of channels this product type is intended for. This will filter
 		// attributes so that only attributes and recommended values of attribute that are relevant 
 		// to the list of channels will be returned.
-		array<string>? channelIds;
+		array<string>? channelIds "A filter that determines whether product type details are returned for specific channels.";
 	}
 	
 	record ChannelValueDecoration {
+		description "Specific channels within a product taxonomy."
 		// Serialized representation of Channel, e.g. ebay_US
-		string channelId;
+		string channelId "An ID associated with a specific channel within a product taxonomy.";
 	}
 
 	record StringAttributeValue {
-		string valueId;
-		string localizedValue;
+		description "A value of a string ProductType attribute."
+		string valueId "A string ID of a value.";
+		string localizedValue "A localized string ID of a value.";
 		// some values may only apply to certain channels, if the channelValueDecorations array is null or empty, the value applies to all channels
-		array<ChannelValueDecoration>? channelValueDecorations;
+		array<ChannelValueDecoration>? channelValueDecorations "An array of ChannelAttributeDecorations.";
 	}
 	
 	record SearchQuery {
-		string productClassId;
+		description "A product class search query."
+		string productClassId "A unique product class ID.";
 	}
 	
 	record ChannelAttributeDecoration {
-		string channelId;
-		boolean? required;
-		boolean? supportsVariation;
+		description "An array of ChannelAttributeDecorations."
+		string channelId "An ID associated with a specific channel within a product taxonomy.";
+		boolean? required "A boolean determining whether a particular attribute is required.";
+		boolean? supportsVariation "A boolean determining whether variations to an attribute are allowed.";
 	}
 	
 	record StringEnumerator {
-		string id;
+		description "A string enumeration."
+		string id "A string enumeration ID.";
 		// localized name
-		string name;
+		string name "A name associated with a string enumeration.";
 		// some values may only apply to certain channels, if the channelValueDecorations array is null or empty, the value applies to all channels
-		array<ChannelValueDecoration>? channelValueDecorations;
+		array<ChannelValueDecoration>? channelValueDecorations "Specific channels within a product taxonomy.";
 	}
 
 	record StringEnumerationAttribute {
 		// Attribute identifier, unique within a product type
-		string id;
+		description "A string enumeration attribute, which is unique within an product type."
+		string id "A string enumeration ID.";
 		// localized name
-		string name;
+		string name "A name associated with a string enumeration.";
 		// channel specific decorations, e.g., required or optional, whether an attribute is enabled as variation variable
 		// if there is no decoration for a channel, the attribute is not applicable to that channel
-		array<ChannelAttributeDecoration>? channelAttributeDecorations;
-		string? _AVDL_description;
+		array<ChannelAttributeDecoration>? channelAttributeDecorations "Specific channels within a product taxonomy.";
+		string? _AVDL_description "An AVDL description for a string enumeration attribute.";
 
 		// id(s) of default value(s)
 		union {null, string, array<string>} defaultValue = null;
-		array<StringEnumerator> enumerators;
+		array<StringEnumerator> enumerators "A list of string enumerations.";
 		// Indicates if multiple values are allowed.
-		boolean allowMultipleValues;
+		boolean allowMultipleValues "A boolean field that determines whether an attribute can have multiple values.";
 	}
 
 	record BooleanAttribute {
-		string id;
-		string name;
-		array<ChannelAttributeDecoration>? channelAttributeDecorations;
-		string? _AVDL_description;
+		description "A boolean attribute."
+		string id "An ID for a boolean attribute";
+		string name "A name for a boolean attribute.";
+		array<ChannelAttributeDecoration>? channelAttributeDecorations "Specific channels within a product taxonomy.";
+		string? _AVDL_description "An AVDL description for a string enumeration attribute.";
 		
 		// default value
-	    boolean? defaultValue;
+	    boolean? defaultValue "A default value for a boolean attribute.";
 	}
 
 	record StringAttribute {
-		string id;
-		string name;
-		 array<ChannelAttributeDecoration>? channelAttributeDecorations;
-		string? _AVDL_description;
+		description "A string attribute of a product type."
+		string id "An ID for a string attribute.";
+		string name "A name for a string attribute";
+		 array<ChannelAttributeDecoration>? channelAttributeDecorations "Specific channels within a product taxonomy.";
+		string? _AVDL_description "An AVDL description for a string attribute.";
 		
-		int? minLength;
-		int? maxLength;
-		string? defaultValue;
+		int? minLength "The minimum length of a string attribute.";
+		int? maxLength "The maximum length of a string attribute.";
+		string? defaultValue "The default value of a string attribute.";
 		// recommended attribute values.
-		array<StringAttributeValue>? recommendedValues;
+		array<StringAttributeValue>? recommendedValues "The recommended values for a string attribute.";
 	}
 	
 	record ProductTypeIdVersion {
-		string productTypeId;
+		description "A combination of a productTypeID and its associated version."
+		string productTypeId "An ID associated with a productTypeID.";
 		// Format: <major>.<minor>
-		string version;
+		string version "A version associated with a productTypeID.";
 	}
 
 	record ProductClass {
-		string id;
+		description "A product class within the Product Taxonomy contains related product types. The product class can contain other subClasses."
+		string id "A unique product class ID.";
 		// localized name
-		string name;
+		string name "A unique product class name.";
 		// productClass may contain sub productClasses. 
 		// Leaf node will not contain sub classes and can be associated with product types
-		array<ProductClass>? subClasses;
-		array<ProductTypeIdVersion>? productTypeIdVersions;
+		array<ProductClass>? subClasses "An array of classes within a top-level Product Class";
+		array<ProductTypeIdVersion>? productTypeIdVersions "An array of ProductTypeIDVersions.";
 	}
 	
 	record ProductType {
-		string id;
-		string? version;
+		description "A versioned data-structure containing various product attributes. A product type can exist in multiple product classes."
+		string id "An ID associated with a product type.";
+		string? version "A version associated with a product type.";
 
 		// localized product name.
-		string? name;
-		string? _AVDL_description;
+		string? name "A name associated with a product type.";
+		string? _AVDL_description "An AVDL description associated with a product type.";
 		// List of product category ids which the product type is associated with
-		array<string>? productClassIds;
+		array<string>? productClassIds "A list of product class IDs.";
 		// Attribute can be StringAttribute, StringEnumerationAttribute or BooleanAttribute
-		array<union {StringAttribute, StringEnumerationAttribute, BooleanAttribute}>? attributes;
+		array<union {StringAttribute, StringEnumerationAttribute, BooleanAttribute}>? attributes "An arrary of attributes.";
 	}
 	
 	record ProductTaxonomy {
-		array<ProductClass> productClasses;
+		description "A root-level ProductTaxonomy. A ProductTaxonomy can contain one or more productClasses and has its own version."
+		array<ProductClass> productClasses "An array of classes within a top-level Product Class.";
 		// Format (ISO 8601): YYYY-MM-DDTHH:MMZ
-		string version;
+		string version "A version of a ProductTaxonomy.";
 	}
 
 	//-----------------------------------------------------------------------------------------------------
@@ -138,49 +153,56 @@ package com.x.producttaxonomy.v1{
 	//-----------------------------------------------------------------------------------------------------
 
 	record SearchProductType {
+		description "Retrieve product type details for a specified product class."
 		// search criteria
-		SearchQuery criteria;
+		SearchQuery criteria "The criteria used for the SearchProductType search. The criteria is the corresponding productClassId.";
 		// The locale en_US will be the default if no locale is supplied in the message.
-		Locale? locale;
+		Locale? locale "The locale is used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). Default: If not provided on input, defaults to en_US.";
 		// optional filter, by default, only product type summary will be returned
-		Filter? filter;		
+		Filter? filter "A filter that determines the level of detail. Two levels of details are supported: 1) summary information only (id, version, name, productClassID) 2) all product type details";		
 	}
 
 	record SearchProductTypeSucceeded {
+		description "Confirm successful retrieval of product type details for a specified product class."
 		array<ProductType> productTypes;
 		// search criteria used
-		SearchQuery criteria;
+		SearchQuery criteria "The criteria used for the SearchProductType search. The criteria is the corresponding productClassId.";
 		// locale used for localized strings
-		Locale locale;
+		Locale locale "The locale used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). Default: If not provided on input, defaults to en_US.";
 		// filter used
-	    Filter? filter;		
+	    Filter? filter "A filter using channelIDs or detaillevel.";		
 	}
 	
 	record SearchProductTypeFailed {
-		array<Error> errors;
+		description "Report error details related to the failed retrieval failed retrieval of product type details for a specified product class."
+		array<Error> errors "A unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
 	}
 
 	//-----------------------------------------------------------------------------------------------------
 	// Request & Response: Product Taxonomy Message
 	//-----------------------------------------------------------------------------------------------------
 	record GetProductTaxonomy {
+		description "Retrieve all known product classes by locale. If no locale is provided, en_US is the default."
 		//    - The locale en_US will be the default if no locale is supplied in the message.
-		Locale? locale;
+		Locale? locale "The locale used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). Default: If not provided on input, defaults to en_US.";
 	}
 	
 	record GetProductTaxonomySucceeded {
-		ProductTaxonomy productTaxonomy;
+		description "Confirm successful retrieval of product classes by locale."
+		ProductTaxonomy productTaxonomy "A root-level ProductTaxonomy. A ProductTaxonomy can contain one or more productClasses and has its own version.";
 		// locale for the localized string
-		Locale locale;
+		Locale locale "The locale is used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). Default: If not provided on input, defaults to en_US.";
 	}
 
 	record GetProductTaxonomyFailed{
-		array<Error> errors;
+		description "Report error details related to the failed retrieval of known product classes by locale."
+		array<Error> errors "A unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
 	}	
 	
 	record ProductTaxonomyUpdated{
+		description "Confirm that updates have been made to the ProductTaxonomy. This includes updates to ProductClass, ProductType, or details within a Producttype. This confirmation includes a version in the form of a time based on ISO 8601."
 		// Format (ISO 8601): YYYY-MM-DDTHH:MMZ
-		datetime version;
+		datetime version "A version of a ProductTaxonomy.";
 	}
 
 	//-----------------------------------------------------------------------------------------------------
@@ -191,24 +213,27 @@ package com.x.producttaxonomy.v1{
 	// 	- GetProductTypeFailed- error message
 	//-----------------------------------------------------------------------------------------------------
 	record GetProductType {
+		description "Retrieve details for a specified product type. More than one product type can be included."
 		// if the productTypeIds field is null, all productTypes will be returned
-		array<string>? productTypeIds;
+		array<string>? productTypeIds "An array of ProductTypeIDs.";
 		// optional locale, default to en_US
-	    Locale? locale;
+	    Locale? locale "The locale is used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). Default: If not provided on input, defaults to en_US.";
 		// if filter is omitted, the default behavior is to return all detailed information
-		Filter? filter;
+		Filter? filter "A filter using channelIDs or detaillevel.";
 	}
 
 	record GetProductTypeSucceeded {
+		description "Confirm the successful retrieval of details for a specified product type or types."
 		// list of product types
-		array<ProductType> productTypes;
+		array<ProductType> productTypes "A versioned data-structure containing various product.";
 		// locale for the localized string
-		Locale locale;
+		Locale locale "The locale is used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). Default: If not provided on input, defaults to en_US.";
 		// filter applied
-		Filter? filter;		
+		Filter? filter "A filter using channelIDs or detaillevel.";		
 	}
 
 	record GetProductTypeFailed {
+		description "Report error details for a failed retrieval of details for a specified product type or types."
 		array<Error> errors;
 	}
 	
