@@ -164,7 +164,7 @@ package com.x.producttaxonomy.v1{
 
 	record SearchProductTypeSucceeded {
 		description "Confirm successful retrieval of product type details for a specified product class."
-		array<ProductType> productTypes;
+		array<ProductType> productTypes "An array of the products matching the search criteria.";
 		// search criteria used
 		SearchQuery criteria "The criteria used for the SearchProductType search. The criteria is the corresponding productClassId.";
 		// locale used for localized strings
