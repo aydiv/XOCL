@@ -170,13 +170,13 @@ package com.x.ordermanagement.v2 {
 		Tax taxAmount
 
 	    /** The sum all of the discount that were applied to this order line */
-		CurrencyAmount totalDiscountAmount
+		CurrencyAmount? totalDiscountAmount
 
 		/** A collection of all the discounts that were appled to this order line */		
-		array<PromotionalDiscount> allDiscounts
+		array<PromotionalDiscount>? allDiscounts
 		
 		/** A collection of additional costs that were associated with this order line  */
-		array<AdditionalCost> additionalCosts
+		array<AdditionalCost>? additionalCosts
 	}
 	
 	record ReturnOrderLineData {
@@ -215,7 +215,7 @@ package com.x.ordermanagement.v2 {
 		OrderStatus status
 		
 		/** This is quantity * unit price */
-		OrderLinePrice price
+		CurrencyAmount price
 			
 		datetime? dateCancelled
 		datetime? dateDelivered
