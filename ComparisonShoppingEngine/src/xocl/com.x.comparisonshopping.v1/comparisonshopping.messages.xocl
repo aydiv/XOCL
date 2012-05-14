@@ -14,14 +14,14 @@ package com.x.comparisonshopping.v1 {
 		Thumbnail
 	}
 	
-	// Determine how the bacground will be shown for the product image
+	// Determine how the background will be shown for the product image
 	enum ImageBackgroundType {
 		HasBackground,
 		NoBackground,
 		Unknown
 	}
 	
-	// The avaialability that will be represented for each offered product
+	// The availability that will be represented for each offered product
 	enum AvailabilityType {
 		InStock,
 		AvailableForOrder,
@@ -38,7 +38,8 @@ package com.x.comparisonshopping.v1 {
 	// This is a general structure for capturing the various label/value
 	// pairs that are collected and associated with products 
 	record ProductAttribute {
-		string id
+		description "An attribute of a product."
+		string id "Unique ID assigned by the originator of the offer."
 		string label
 		string value
 	}
@@ -46,7 +47,8 @@ package com.x.comparisonshopping.v1 {
 	// This record brings together all the information needed to represent
 	// a product image
 	record ProductImage {
-		string imageUrl
+		description "An image of a product."
+		string imageUrl "The URL to the image file."
 		ImagePurpose imagePurpose
 		ImageBackgroundType backgroundType
 	}
@@ -54,6 +56,7 @@ package com.x.comparisonshopping.v1 {
 	// This record holds basic information used to determine taxes associated
 	// with an offered product
 	record TaxRate {
+		description "The rate at which a product is taxed according to country or region."
 		string country
 		string region
 		double rate
@@ -63,49 +66,53 @@ package com.x.comparisonshopping.v1 {
 	// This record holds basic information used to represent the shipping
 	// information associated with an offered product
 	record Shipping {
-	 	string country
+	 	description "The type of service used to ship a product."
+	 	string country "The country where the product will be shipped from."
 	 	string region
-	 	string service
+	 	string service "The shipping service that will be used to ship the product."
 	 	CurrencyAmount price
 	 }
 
 	// This define the information that is used to represent each value
 	// that can be associated with a given variation	
 	record VariationValue {
+		description "The the information used to represent each value that can be associated with a given variation."
 		CurrencyAmount price
-		string sku
-		array<ProductImage> imageUrls
+		string sku "The SKU (Stock Keeping Unit) of the variation."
+		array<ProductImage> imageUrls "An array of URL to the images for a specific variation."
 		string value
 	}
 	
 	// This represents a single variation and its corresponding value
 	record Variation {
-		string id
-		array<VariationValue> values
+		description "A single variation and its corresponding value."
+		string id "The ID of a single variation."
+		array<VariationValue> values "An array of the variation values for the product."
 	}
 	
 	// The product information needed to represent a product on a CSE
 	record Product {
-		string sku
+		description "The record that contains all the product information needed to represent a product on a comparison shopping engine site."
+		string sku "The SKU (Stock Keeping Unit) of the product."
 		CurrencyAmount price;
-		int quantity;
-   		string title
-   		string productDescription;
-   		string manufacturer
-   		string? mpn
-   		string? gtin
-   		string brand
-   		string category
-   		string? xProductTypeId  // Product type id as defined by the taxonomy manager.
+		int quantity "The number of this product in stock.";
+   		string title "The title for the product."
+   		string productDescription "The description of the product.";
+   		string manufacturer "The manufacturer/supplier of the product."
+   		string? mpn "The manufacturer product number of the product."
+   		string? gtin "The GTIN (Global Trade Item Number)."
+   		string brand "The brand name of the product."
+   		string category "The category for the product."
+   		string? xProductTypeId  "The product type ID as defined by the taxonomy manager." // Product type id as defined by the taxonomy manager.
    		array<string>? productTypes
-   		array<ProductImage> images
+   		array<ProductImage> images  "An array of the image files."
    		string link
    		CurrencyAmount originalPrice
    		AvailabilityType availability
    		TaxRate? taxRate
    		Shipping? shipping
-   		double? shippingWeight
-   		array<ProductAttribute> attributes
+   		double? shippingWeight "The weight of the product."
+   		array<ProductAttribute> attributes "An array of all the attributes for the product."
    		array<Variation>? variations
    		CurrencyAmount? cpc
    		string channelId
@@ -113,46 +120,51 @@ package com.x.comparisonshopping.v1 {
 	
 	// A mapping from the product SKU to the cse-assigned product id
 	record MappedProductId {
-		string sku;
-		string cseProductId;
+		description "The record that maps the product SKU to the (comparison shopping engine) CSE-assigned product ID."
+		string sku "The SKU (Stock Keeping Unit) of the product.";
+		string cseProductId "The CSE (Comparison Shopping Engine) ID of the product.";
 	}
 	
-	// The collection of products to be published on a comparison
-	// shopping engine
+	// The collection of products to be published on a comparison shopping engine
 	record PublishProductFeed {
-		array<Product> products
+		description "The record contains all the products to be published by a (CSE) comparison shopping engine"
+		array<Product> products "An array of the products to be published by a (CSE) comparison shopping engine."
 		ProductFeedType feedType
 		string xAccountId
-		string siteId
+		string siteId "The ID of the comparison shopping engine."
 		string? feedName
 	}
 	
-	// The information assigned by the CSE when the feed was successfully
-	// published
+	// The information assigned by the CSE when the feed was successfully published
 	record PublishProductFeedSuccess {
+		description "The information assigned by the CSE (Comparison Shopping Engine) when the feed was successfully published"
 		array<MappedProductId> cseProductIds;
 	}
 	
 	// The CSE was unable to publish the product feed
 	record PublishProductFeedFailure {
-		string errorCode;
+		description "The publishing of the product data feed failed."
+		string errorCode "The error code of the publish failure.";
 	}
 	
 	// The collection of products to be updated
 	record UpdateProductFeed {
-		array<Product> products;
+		description "The products to be updated."
+		array<Product> products "An array of the products to be updated on a CSE (Comparison Shopping Engine).";
 		string xAccountId; 
-		string siteId;
-		string? feedName;
+		string siteId "The ID of the CSE (Comparison Shopping Engine).";
+		string? feedName
 	}
 	
 	// A list of cseId's are returned with update success
 	record UpdateProductFeedSuccess {
+		description "The products were successfully updated."
 		array<MappedProductId> cseProductIds;
 	}
 	
 	// The CSE was unable to update the products
 	record UpdateProductFeedFailure {
-		string errorCode;
+		description "The updating of the product data fed failed."
+		string errorCode "The error code of the update failure.";
 	}
 }
