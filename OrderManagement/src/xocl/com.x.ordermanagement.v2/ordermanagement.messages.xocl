@@ -172,7 +172,7 @@ package com.x.ordermanagement.v2 {
 	    /** The sum all of the discount that were applied to this order line */
 		CurrencyAmount? totalDiscountAmount
 
-		/** A collection of all the discounts that were appled to this order line */		
+		/** A collection of all the discounts that were appled to this order line item */		
 		array<PromotionalDiscount>? allDiscounts
 		
 		/** A collection of additional costs that were associated with this order line  */
@@ -216,7 +216,10 @@ package com.x.ordermanagement.v2 {
 		
 		/** This is quantity * unit price */
 		CurrencyAmount price
-			
+		
+		/** A collection of all the discounts that were appled to this order line data */		
+		array<PromotionalDiscount>? allDiscounts		
+
 		datetime? dateCancelled
 		datetime? dateDelivered
 		datetime? dateShipped
@@ -281,17 +284,20 @@ package com.x.ordermanagement.v2 {
 		/** The list of shipments that were created to ship one or more of the items in this order */
 		array<Shipment>? shipments
 		
+		/** The marketing source that referred this order */
+		string? referralSource
+		
 	}
 	
 	record SimpleOrder extends OrderDetails {
+		//id is created by the system that creates the record.	
+		union{guid, EntityId} customerId
+		
 		array<SimpleOrderLineData> orderLines
 	}
 	
 	record NonSensitiveOrderData extends OrderDetails {
 		array<OrderLineData> orderLines
-		
-		/** The marketing source that referred this order */
-		string? referralSource
 	}
 	
 	record OrderData extends NonSensitiveOrderData {
