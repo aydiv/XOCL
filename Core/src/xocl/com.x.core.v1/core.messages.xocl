@@ -1,0 +1,15 @@
+package com.x.core.v1 {
+	import com.x.core.v1.*
+	
+	message TransactionCancelled {
+		topic "/com.x.core.v1/TransactionCancelled"
+	}
+	
+	message MessageReceived {
+		topic "/com.x.core.v1/MessageReceived"
+	}
+	
+	message MessageValidated {
+		topic "/com.x.core.v1/MessageValidated"
+	}
+}
