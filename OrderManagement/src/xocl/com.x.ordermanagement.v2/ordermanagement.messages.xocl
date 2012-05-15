@@ -99,7 +99,7 @@ package com.x.ordermanagement.v2 {
 	record ShipTo confidential {
 		Name name
 		Address address
-		GiftTag giftTag
+		GiftTag? giftTag
 	}
 	
 	record AdditionalCost {
