@@ -91,7 +91,9 @@ protocol com_x_core_v1 {
 		SHIPPING,
 		BILLING_AND_SHIPPING
 	}
-
+	
+	@topics("/com.x.core.v1/MessageReceived")
+	@version("1.0.0")
 	record MessageReceived {
  	}
 
@@ -113,7 +115,9 @@ protocol com_x_core_v1 {
 		union{null,string} endTime = null;
  		union{CampaignStatus, string} status;
   	}
-
+	
+	@topics("/com.x.core.v1/MessageValidated")
+	@version("1.0.0")
 	record MessageValidated {
  	}
 
@@ -222,7 +226,9 @@ protocol com_x_core_v1 {
 		ResponseOutOfSequence,
 		MessageOutOfSequence
 	}
-
+	
+	@topics("/com.x.core.v1/TransactionCancelled")
+	@version("1.0.0")
 	record TransactionCancelled {
 		Reason reason;
  		union{null,array<Error>} errors = null;
