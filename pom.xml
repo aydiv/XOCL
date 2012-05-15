@@ -156,9 +156,10 @@
 			        <inherited>true</inherited>
                		 	<groupId>org.apache.maven.plugins</groupId>
                			<artifactId>maven-compiler-plugin</artifactId>
+               			<version>2.4</version>
                 		<configuration>
                     		<excludes>
-					<exclude>**/com_x_*.java</exclude>
+								<exclude>**/com_x_*.java</exclude>
                     		</excludes>
                			 </configuration>
              		</plugin>
