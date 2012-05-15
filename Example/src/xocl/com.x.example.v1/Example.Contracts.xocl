@@ -82,10 +82,12 @@ package com.x.example.v1
     	}
     }
     
+    
+    
     contract ShippingManager {
     	description "A capability that performs shipment functions"
     	roles {
-	        OrderShipment.ShippingManager
+	        OrderShipment.ShippingManager(OrderShipment)
 	       //OrderShipment.ShippingManager<WithAuthorization>
 	       //OrderShipment.ShippingManager<WithConfiguration>
         }
