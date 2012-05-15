@@ -1,0 +1,8 @@
+/*
+ * This file contains a sample of the X.commerce Open Commerce Language (XOCL).
+ * By convention, version and status information for a domain reside in the file <domain>.Version.xocl
+ */
+
+package com.x.example.v1 2.0 workingdraft {	
+	import com.x.example.v1.* 
+}

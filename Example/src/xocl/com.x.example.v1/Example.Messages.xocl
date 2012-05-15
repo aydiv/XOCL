@@ -21,8 +21,7 @@ package com.x.example.v1
 	 * An enumerated type is a list of literals. Literal values are integers starting at zero as in AVDL.
 	 * An enumerated type maps directly to the AVDL equivalent and has the same semantics.
 	 */
-    enum OrderType 
-    {
+    enum OrderType {
     	InHouse 
     	OutSourced
     	DropShipped
@@ -32,8 +31,7 @@ package com.x.example.v1
 	 * A record is a structured type containing a set of named properties.
 	 * A record type maps directly to the AVDL equivalent and has the same semantics.
 	 */
-	record Order
-	{
+	record Order {
     	/*
     	 * A property is defined using the pattern <type><name>.
     	 * An optional assignment expression may be used to define the default value of the property.
@@ -51,8 +49,7 @@ package com.x.example.v1
 	/*
 	 * Messages are defined by records. This record defines a message for transaction OrderCreated.
 	 */
-    record OrderCreated
-    {
+    record OrderCreated {
     	/*
     	 * A record type may contain instances of other record types by value.
     	 * Embedded records map directly to the AVDL equivalent and have the same semantics.
@@ -67,8 +64,7 @@ package com.x.example.v1
      * This record is used by a variant of transaction OrderCreated.
      * By convention, messages for variants use the naming pattern <default_message_name><variant>.
      */
-    record OrderCreatedWithCreationMetadata extends OrderCreated 
-    {
+    record OrderCreatedWithCreationMetadata extends OrderCreated {
     	/*
     	 * The ? operator in the following declaration indicates that the property is optional.
     	 * An optional property maps to a union{type, null} with a default of null in AVDL.
@@ -83,8 +79,7 @@ package com.x.example.v1
     	bytes metadata
     }
     
-    record OrderCreatedWithAuthorization extends OrderCreatedWithCreationMetadata 
-    {
+    record OrderCreatedWithAuthorization extends OrderCreatedWithCreationMetadata {
     	
     	/*
     	 * The map and fixed types map directly to the AVDL equivalents and have the same semantics.
@@ -93,8 +88,7 @@ package com.x.example.v1
     	//map<fixed(256)> tokens
     }
 
-	record OrderCancelled 
-	{
+	record OrderCancelled {
 		guid orderID
 	}
 
@@ -103,8 +97,7 @@ package com.x.example.v1
 	 *   A search takes explicitly supplied search criteria and returns an array of objects.
 	 *   A lookup takes an object identifier and returns the object.
 	 */
-    record SearchOrder
-    {
+    record SearchOrder {
 		/*
 		 * By convention, a search includes an optional limit on the number of items returned.
 		 * If not specified, the number of items returned in not limited.
@@ -122,8 +115,7 @@ package com.x.example.v1
  	/*
  	 * By convention, search results include the search criteria.
  	 */
-    record SearchOrderSucceeded extends SearchOrder
-    {
+    record SearchOrderSucceeded extends SearchOrder {
 		/*
 		 * By convention, search results are returned as an array of records.
     	 * The array type maps directly to the AVDL equivalent and has the same semantics.
@@ -131,40 +123,35 @@ package com.x.example.v1
         array<Order> results;
     }
  
-    record SearchOrderFailed extends SearchOrder
-    {
+    record SearchOrderFailed extends SearchOrder {
 	 	/*
 	 	 * By convention, a failure message contains an array of Error records.
 	 	 */
         array<Error> errors;
     }
     
-    record LookupOrder
-    {
+    record LookupOrder {
 	    /*
 	     * By convention, a lookup includes the ID of the object being requested.
 	     */
         guid orderID;
     }
  
-    record LookupOrderSucceeded extends LookupOrder
-    {
+    record LookupOrderSucceeded extends LookupOrder {
     	/*
     	 * By convention, a lookup returns the entire object that was requested.
     	 */
     	Order order;
     }
     
-    record LookupOrderFailed extends LookupOrder
-    {
+    record LookupOrderFailed extends LookupOrder {
         array<Error> errors;
     }
     
     /*
      * This record defines a message for transaction PrepareOrder.
      */
-    record PrepareOrder
-    {
+    record PrepareOrder {
     	guid orderID
     }    
 
@@ -181,8 +168,7 @@ package com.x.example.v1
 	 */
 	record PrepareOrderFailed extends PrepareOrder {} 
 
-    record ShipOrder
-    {
+    record ShipOrder {
     	guid orderID
     	
     	/*
@@ -196,26 +182,22 @@ package com.x.example.v1
 		double estimatedWeight = 0.0    	
     }
     
-    record ShipOrderSucceeded extends ShipOrder
-    {
+    record ShipOrderSucceeded extends ShipOrder {
     	/*
     	 * A success message for a response transaction may return data the sender.
     	 */
     	string TrackingNumber 
     }
     
-    record ShipOrderFailed extends ShipOrder
-    {
+    record ShipOrderFailed extends ShipOrder {
         array<Error> errors;
     }
     
-    record OrderShipped
-    {
+    record OrderShipped {
     	guid orderID;
     }
     
-    record UpdateInventory
-    {
+    record UpdateInventory {
 		string SKU
 		int StockLevel = 0
     }
@@ -224,8 +206,7 @@ package com.x.example.v1
     
     record UpdateInventoryFailure {}
     
-    record InventoryUpdated
-	{
+    record InventoryUpdated {
 		string SKU
 		int StockLevel = 0
 	}

@@ -7,8 +7,7 @@
  * One AVDL file is generated for every package that contains a workflow.
  * The package name becomes the name of the AVDL file and also its namespace.
  */
-package com.x.example.v1
-{	
+package com.x.example.v1 {	
 	import com.x.example.v1.*
 	
     /*
@@ -18,8 +17,7 @@ package com.x.example.v1
      * A process references an entity by passing it to a transaction or a workflow.
      * By convention, processes use the naming pattern <noun><verb_as_noun>.
      */
-    process OrderShipment(Order order)
-    {
+    process OrderShipment(Order order) {
         description "OrderManager requests shipment and updates inventory"
         
         /*
@@ -40,8 +38,7 @@ package com.x.example.v1
          * The state of every parameter with a state machine must be unambiguously defined
          *   when the process ends.
          */
-        postconditions
-        {
+        postconditions {
 	    	/*
 	    	 * When the process succeeds, all referenced orders must be in state Order.Shipped.
 	    	 */
@@ -57,8 +54,7 @@ package com.x.example.v1
     /*
      * A workflow implements a process the way a class implements an interface.
      */
-    workflow OrderShipment [2d] implements OrderShipment
-    {
+    workflow OrderShipment [2d] implements OrderShipment {
     	/*
 	     * A workflow may have an optional timeout, specified in square brackets.
 		 * A timeout starts when the first transaction called directly or indirectly by the workflow starts.
@@ -70,8 +66,7 @@ package com.x.example.v1
     	 * In a workflow, each action is triggered by a preceding action, except the first action, 
     	 *   which starts the workflow.
     	 */
-        transaction ShipOrder(order)
-        {
+        transaction ShipOrder(order) {
         	/*
         	 * A transaction call binds process roles to transaction roles.
         	 * The first role binds to the sender, the second role binds to the receiver.
@@ -90,8 +85,7 @@ package com.x.example.v1
     	 * Like all other blocks, a do block may have an optional timeout, specified in square brackets.
     	 * The format and semantics of a block timeout are the same as for a workflow timeout.
     	 */
-		 do [1d]
-		 {
+		 do [1d] {
 			/*
 			 * The following action is an any block, which lets one or more nested actions run in parallel.
 			 * The any block succeeds when any of the nested actions succeeds, and fails only if all of 
@@ -102,16 +96,13 @@ package com.x.example.v1
 			 *   OrderManager did not first send UpdateInventory, because, for example, the inventory might 
 			 *   have been updated through the user interface of the InventoryManager.
 		     */
-		    any
-		    {
-		        transaction UpdateInventory
-		        {
+		    any {
+		        transaction UpdateInventory {
 		        	roles(OrderManager, InventoryManager)
 		        }
 		    }
 		    
-		    transaction InventoryUpdated
-		    {
+		    transaction InventoryUpdated {
 		    	roles(InventoryManager, OfferManager)
 		    }
         }
@@ -121,15 +112,12 @@ package com.x.example.v1
      * A process can be implemented by multiple workflows. This workflow also implements OrderShipment.
      * This workflow is similar to the OrderShipment workflow, except that it omits the last transaction. 
      */
-    workflow OrderDropShipment implements OrderShipment
-    {
-        transaction ShipOrder
-        {
+    workflow OrderDropShipment implements OrderShipment {
+        transaction ShipOrder {
         	roles(OrderShipment.OrderManager, OrderShipment.ShippingManager)
         }
         
-        transaction UpdateInventory
-        {
+        transaction UpdateInventory {
         	roles(OrderShipment.OrderManager, OrderShipment.InventoryManager)
         }
     }
@@ -138,8 +126,7 @@ package com.x.example.v1
      * A process can have variants. Process variants control the inclusion or exclusion of workflow 
      *   features, and can bind to transaction variants.
      */
-    process OrderFulfillment<WithConfiguration, WithAuthorization>(Order order)
-    {
+    process OrderFulfillment<WithConfiguration, WithAuthorization>(Order order) {
         description "Merchant fulfills the sales-channel order from Buyer using Merchant Console"
         
         roles(OrderManager, OrderObserver, InventoryManager, WarehouseManager, ShippingManager, OfferManager)
@@ -149,21 +136,18 @@ package com.x.example.v1
 		/*
 		 * A single default workflow with the same name as the process may be specified within a process.
 		 */
-	    workflow [5d]
-	    {
+	    workflow [5d] {
 			/*
 			 * An all block is like an any block, except that it succeeds only when all of the nested actions 
 			 *   succeed, and fails when any of them fail. Actions in an all block must occur.
 			 */
-	    	all [1d]
-	    	{
+	    	all [1d] {
 		    	/*
 		    	 * This transaction call maps workflow variants to transaction variants - 
 		    	 *   For process variant WithConfiguration, the workflow calls the first transaction variant. 
 		    	 *   For process variant WithAuthorization, the workflow calls the second transaction variant.
 		    	 */
-		        transaction OrderCreated<OrderFulfillment.WithConfiguration, OrderFulfillment.WithAuthorization>
-		        {
+		        transaction OrderCreated<OrderFulfillment.WithConfiguration, OrderFulfillment.WithAuthorization> {
 		        	roles(OrderManager, OrderObserver)
 		        }
 		        
@@ -172,10 +156,8 @@ package com.x.example.v1
 		         *   be played by same capability or by different capabilities. If they are different, then the 
 		         *   interaction will go over the wire, but if they are the same, then it will be internal.
 		         */
-		        any
-		        {
-			        transaction PrepareOrder(order)
-			        {
+		        any {
+			        transaction PrepareOrder(order) {
 			        	roles(OrderManager, WarehouseManager)
 			        }
 		        }
@@ -185,26 +167,22 @@ package com.x.example.v1
         	 * A one block succeeds when any of the nested actions succeeds. Only one of the actions in a one block 
         	 *   may occur. In this example, the order manager may ship the order or cancel it and notify observers.
         	 */
-	        one [3d]
-	        {     
+	        one [3d] {     
             	/*
             	 * A workflow can call other workflows, passing arguments and binding process roles positionally.
             	 */
-                workflow OrderShipment(order) 
-                {
+                workflow OrderShipment(order) {
                 	roles(OrderManager, InventoryManager, ShippingManager, OfferManager)
                 }
     	
-                workflow OrderDropShipment(order) 
-                {
+                workflow OrderDropShipment(order) {
                 	roles(OrderManager, InventoryManager, ShippingManager, OfferManager)
                 }
     	
 				/*
 				 * The order manager informs observers that the order was cancelled
 				 */
-				transaction OrderCancelled
-				{
+				transaction OrderCancelled {
 				   	roles(OrderManager, OrderObserver)
 				}
 			}	
@@ -219,14 +197,11 @@ package com.x.example.v1
 	         *     currently supported is exists(), which takes a parameter as an argument, and returns true if and only 
 	         *     if all of the objects bound to the parameter exist.
 	         */
-            if (order[Order.Shipped])
-            {
-            	transaction OrderShipped
-            	{
+            if (order[Order.Shipped]) {
+            	transaction OrderShipped {
             		roles(OrderManager, OrderObserver)
             	}
-            } else
-            {
+            } else {
             	/*
             	 * The boolean statements success and failure are valid actions and may appear in any workflow block.
             	 */
@@ -234,8 +209,7 @@ package com.x.example.v1
             }
 	    }
 	    
-        postconditions
-        {
+        postconditions {
           success(order[Order.Shipped])
           failure(order[Order.Cancelled])
         }

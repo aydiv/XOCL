@@ -3,16 +3,14 @@
  * By convention, entities and transactions for a domain reside in the file <domain>.Transactions.xocl
  */
 
-package com.x.example.v1
-{	
+package com.x.example.v1 {	
 	import com.x.example.v1.* 
 	
  	/*
  	 * The identity and lifecycle of an entity are shared but its structure is private. 
  	 * Information about the entity is communicated by messages.
  	 */
-    entity Order
-    {
+    entity Order {
     	/*
     	 * An entity may have an optional state machine that defines its leficycle.
     	 * Each state has a name and an optional list of valid transitions to other states.
@@ -27,8 +25,7 @@ package com.x.example.v1
         state Completed // A Completed Order cannot be processed any further.
     }
     
-    entity InventoryReservation
-    {
+    entity InventoryReservation {
         state Requested[Committed, Cancelled]
         state Committed
         state Cancelled
@@ -43,8 +40,7 @@ package com.x.example.v1
      * An inform transaction, also called an event, is a one way interaction with no return messages.
 	 * By convention, an event uses the naming pattern <noun><past_tense_verb>.
      */
-    transaction InventoryUpdated inform
-    {
+    transaction InventoryUpdated inform {
     	/*
     	 * Every transaction has exacty two roles: sender and receiver. One or more capabilities may
     	 *   play the receiver role at the same time in an event or broadcast transaction.
@@ -59,8 +55,7 @@ package com.x.example.v1
 	     *     or response, must set
 	     *   the X-XC-TRANSACTION-ID header to the value it had on the immediately preceding message.
     	 */
-        sender
-        {
+        sender {
         	/*
         	 * The following line defines the message sent to start the transaction.
         	 * This message uses the default message name, which is the transaction name.
@@ -89,8 +84,7 @@ package com.x.example.v1
 	 * By convention, a notification uses the naming pattern <noun><past_tense_verb>.
 	 * This transaction has variants, which are specified in angle brackets.
 	 */
-    transaction OrderCreated<WithCreationMetadata, WithAuthorization> notify 
-    { 
+    transaction OrderCreated<WithCreationMetadata, WithAuthorization> notify { 
     	/*
     	 * The sender of a notification or command must perform the following actions:
     	 *   Send the appropriate message to start the transaction on the appropriate topic.
@@ -105,15 +99,13 @@ package com.x.example.v1
 		 *       If retries exhausted, send com.x.core.v1.TransactionCancelled to the receiver on topic 
 		 *         com.x.core.v1/TransactionCancelled with reason ValidationTimedOut.
     	 */
-        sender
-        {        	
+        sender {        	
         	/*
 			 * The receiver of a notification or command must send acknowledgements to the sender.
 			 * If an acknowledgement is received out of order, then the sender may send a cancellation
 			 *   to abort the transaction, with the Reason set to ReceiptOutOfSequence or ValidationOutOfSequence.
         	 */
-        	message OrderCreated
-        	{
+        	message OrderCreated {
         		/*
         		 * Acknowledgements are subject to timeouts.
 				 * A timeout is measured from the start of the transaction to the receipt of the acknowledgement.
@@ -157,9 +149,8 @@ package com.x.example.v1
         	 * A variant message may have a different type and/or different SLAs than the default message.
     	     * By convention, variant messages use the naming pattern <default_message_name><variant>.
         	 */
-        	message<WithCreationMetadata> OrderCreatedWithCreationMetadata 
-        	{
-        		timeouts(receipt = 30s, validation=1d)
+        	message<WithCreationMetadata> OrderCreatedWithCreationMetadata {
+        		timeouts(receipt = 30s, validation=1h)
         		retries=5
         	}
         	
@@ -169,6 +160,8 @@ package com.x.example.v1
 	         */
         	message<WithAuthorization> OrderCreatedWithAuthorization {
         		topic "this_string/overrides_the_default/topic_name"
+        		timeouts(receipt = 30s, validation=1h)
+        		retries=5
         	}
         }
         
@@ -192,8 +185,7 @@ package com.x.example.v1
      * A response transaction, also called a command, is a two way interaction asking the receiver to take action.
 	 * By convention, a command uses the naming pattern <verb><noun>.
      */
-    transaction PrepareOrder response
-    {
+    transaction PrepareOrder response {
     	/*
     	 * After the actions required for a notification, the sender of a command must perform 
     	 *     the following additional actions:
@@ -211,10 +203,8 @@ package com.x.example.v1
 		 *     Send com.x.core.v1.TransactionCancelled to the receiver on topic 
 		 *       com.x.core.v1/TransactionCancelled with reason ValidatonError.
     	 */
-        sender
-        {
-        	message PrepareOrder
-        	{					
+        sender {
+        	message PrepareOrder {					
 				/*
 				 * The receiver of a command must send a response or a cancellation to the sender.
 			     * A response must be routed only to the transaction sender by setting the
@@ -259,8 +249,7 @@ package com.x.example.v1
     	 *       If retries exhausted, send com.x.core.v1.TransactionCancelled to the sender on topic 
     	 *         com.x.core.v1/TransactionCancelled with reason ValidationTimedOut.
          */
-        receiver
-        {
+        receiver {
         	/*
         	 * One or more response messages may be specified. Only one may be used in a given interaction.
         	 * A response message must indicate whether the transaction succeeded or failed.
@@ -269,8 +258,7 @@ package com.x.example.v1
         	/* 
 			 * By convention, the default success message uses the naming pattern <default_message_name>Succeeded.
         	 */
-        	success PrepareOrderSucceeded
-        	{
+        	success PrepareOrderSucceeded {
         		/*
 	        	 * A response message may have timeouts requiring acknowledgements from the sender.
 	        	 * They are implemented as above, but apply to the response message, not the request message.
@@ -283,7 +271,10 @@ package com.x.example.v1
 			 * By convention, the default failure message uses the naming pattern <default_message_name>Failed.
 			 * If no SLAs are required for a message, then the SLA specification block can be omitted.
         	 */
-            failure PrepareOrderFailed
+            failure PrepareOrderFailed {
+            	timeouts(receipt=30s)
+            	retries=3
+            }
         }
     }
         
@@ -292,8 +283,7 @@ package com.x.example.v1
      * A parameter binds to all entities of the specified type referenced by the transaction.
      * A transaction references an entity by using its identity in a message.
      */
-    transaction ShipOrder(Order order) response
-    {
+    transaction ShipOrder(Order order) response {
     	/*
     	 * The sender and receiver declarations are optional. By default, for a command:
     	 *   The sender sends the default message without acknowledgements or retries.
@@ -308,7 +298,7 @@ package com.x.example.v1
         
         sender {
         	message ShipOrder {
-        		timeouts(receipt=30s, validation=3m, response=1h)
+        		timeouts(receipt=30s, validation=3m, response=30m)
         		retries = 3
         	}
         }
@@ -317,7 +307,10 @@ package com.x.example.v1
         		timeouts(receipt=30s, validation=3m)
         		retries = 3
         	}
-        	failure ShipOrderFailed
+        	failure ShipOrderFailed {
+        		timeouts(receipt=30s)
+        		retries = 3
+        	}
         }
         /*
          * All success postconditions must be true when the transaction succeeds.
@@ -346,16 +339,19 @@ package com.x.example.v1
     transaction UpdateInventory response {
     	sender {
     		message UpdateInventory {
-        		timeouts(receipt=30s, validation=3m, response=1h)
+        		timeouts(receipt=30s, response=30m)
         		retries = 3
     		}
     	}
     	receiver {
     		success UpdateInventorySuccess {
-        		timeouts(receipt=30s, validation=3m)
+        		timeouts(validation=3m)
         		retries = 3
     		}
-    		failure UpdateInventoryFailure
+    		failure UpdateInventoryFailure {
+        		timeouts(validation=3m)
+        		retries = 3
+    		}
     	}
     }
 
@@ -385,7 +381,7 @@ package com.x.example.v1
         {
         	message SearchOrder
         	{
-        		 timeouts(response=30s)     		
+        		 timeouts(receipt=30s, response=3m)     		
         	}
         }
         receiver
@@ -407,7 +403,7 @@ package com.x.example.v1
         {
         	message LookupOrder
         	{
-        		timeouts(response=30s)     		
+        		timeouts(validation=30s, response=3m)     		
         	}
         }
         receiver

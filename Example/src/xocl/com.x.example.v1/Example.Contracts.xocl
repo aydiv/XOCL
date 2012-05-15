@@ -3,8 +3,7 @@
  * By convention, contracts for a domain reside in the file <domain>.Contracts.xocl
  */
 
-package com.x.example.v1
-{	
+package com.x.example.v1 {	
 	import com.x.example.v1.*
 	
 	/*
@@ -81,8 +80,6 @@ package com.x.example.v1
         	OrderFulfillment.OfferManager<WithConfiguration>
     	}
     }
-    
-    
     
     contract ShippingManager {
     	description "A capability that performs shipment functions"
