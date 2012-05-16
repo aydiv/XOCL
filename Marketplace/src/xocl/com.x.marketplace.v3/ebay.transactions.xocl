@@ -8,7 +8,8 @@
         {
         	message LookupStore
         	{
-        		 timeouts(response=30s)     		
+        		 timeouts(response=30s)
+        		 retries=3     		
         	}
         }
         receiver
@@ -18,6 +19,29 @@
         		retries=3
         	}
         	failure LookupStoreFailed{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}          
+        } 
+    }
+    
+    transaction LookupAccountProfile query
+    {
+        sender
+        {
+        	message LookupAccountProfile
+        	{
+        		 timeouts(response=30s)
+        		 retries=3     		
+        	}
+        }
+        receiver
+        {
+        	success LookupAccountProfileSucceeded{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+        	failure LookupAccountProfileFailed{
         		timeouts(receipt=30s)   		
         		retries=3
         	}          
