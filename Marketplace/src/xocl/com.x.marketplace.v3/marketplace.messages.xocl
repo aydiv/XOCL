@@ -254,8 +254,8 @@ package com.x.marketplace.v3{
 		array<string>? marketCategories;
 
 		//Following data can override data in a specified profile
-		PaymentPolicy? payment;
-		ShippingPolicy? shipping;
+		PaymentPolicy? paymentPolicy;
+		ShippingPolicy? shippingPolicy;
 	    ReturnPolicy? returnPolicy;
 	    array<Sku> skus;
 	    array<string>? customCategories;
@@ -441,6 +441,7 @@ package com.x.marketplace.v3{
 		array<string>? skus;
 		datetime? startTime;
 		datetime? endTime;
+		string? xAccountId;
 	}	
 	record SearchOffersSucceeded{	
 		array<Offer> offers;
