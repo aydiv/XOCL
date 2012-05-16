@@ -207,6 +207,7 @@
 										</versionRange>
 										<goals>
 											<goal>xocltoavdl</goal>
+											<goal>xocltolocaljson</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
