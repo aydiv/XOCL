@@ -143,36 +143,36 @@ package com.x.orderfulfillment.v1 {
 	 
 	 process ProcessReceiving (Receiving receiving) {
 	 	description "A merchant advises a fulfillment provider of a forthcoming inventory replenishment (a.k.a. receiving). On receipt the inventory is put away and deemed complete unless it is cancelled"
-	 	roles(ReceivingManager, ThirdPartyFulfillmentProcessor)
+	 	roles(ReceivingInformationProvider, ReceivingProcessor)
 	 	workflow {
 		 	transaction CreateReceiving {
-		 		roles(ReceivingManager, ThirdPartyFulfillmentProcessor)
+		 		roles(ReceivingInformationProvider, ReceivingProcessor)
 		 	}
 		 	do(*) {	 	 
 		 		any {
-		 		   //A merchant wants to give a fulfillment provider more or updated information about a previously communicated receiving
+		 		   //A merchant wants to give updated information about a previously communicated receiving
 		 		   //such as expected date, carrier being used, waybill/tracking number, or manifest/packing list information
 			 		transaction UpdateReceiving {
-			 			roles (ReceivingManager, ThirdPartyFulfillmentProcessor)
+			 			roles (ReceivingInformationProvider, ReceivingProcessor)
 			 		}
 			 		//A merchant wants to lookup onventory received
 			 		transaction SearchReceived {
-			 			roles (ReceivingManager, ThirdPartyFulfillmentProcessor)
+			 			roles (ReceivingInformationProvider, ReceivingProcessor)
 			 		}
 			 		//Notifies when inventory is delivered or status updates like delivered/put away etc
 			 		transaction ReceivedUpdate {
-			 			roles (ThirdPartyFulfillmentProcessor, ReceivingManager)
+			 			roles (ReceivingInformationProvider, ReceivingInformationProvider)
 			 		}
 			 		//A merchant wants to cancel receiving
 			 		transaction CancelReceiving{
-			 			roles (ReceivingManager, ThirdPartyFulfillmentProcessor)			 			
+			 			roles (ReceivingInformationProvider, ReceivingProcessor)			 			
 			 		}
 			 		
 		 		}
 		 	}
 		 	//Merchant is informed that receiving is completed
 		 	transaction ReceivingComplete {
-		 		roles (ThirdPartyFulfillmentProcessor, ReceivingManager)
+		 		roles (ReceivingProcessor, ReceivingInformationProvider)
 		 	}
 		 		
 		 }
