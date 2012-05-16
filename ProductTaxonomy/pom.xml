@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.x.ocl</groupId>
 		<artifactId>xocl-contracts</artifactId>
-		<version>0.0.7</version>
+		<version>0.0.8-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>product-taxonomy-xocl</artifactId>
@@ -12,7 +12,7 @@
 		The ProductTaxonomy XOCL domain
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/tags/xocl-contracts-0.0.7/ProductTaxonomy</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/ProductTaxonomy</connection>
 	</scm>
 
 	<repositories>
