@@ -16,5 +16,19 @@
 		}
 	}
  	
+ 	process AccountProfileLookup
+	{
+		description "A merchant looks up profiles they have set up in eBay"
+		roles(MarketplaceMarketplaceMetadataConsumer, MarketplaceMarketplaceMetadataProvider)
+	
+		workflow
+		{
+			transaction LookupAccountProfile
+			{
+				roles(MarketplaceMarketplaceMetadataConsumer, MarketplaceMarketplaceMetadataProvider)
+			}
+		}
+	}
+ 	
  	
  }
