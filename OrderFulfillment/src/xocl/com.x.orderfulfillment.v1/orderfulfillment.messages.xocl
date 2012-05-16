@@ -8,41 +8,93 @@ package com.x.orderfulfillment.v1 {
 		
 	record FulfillmentOrder {
 				
-		guid orderId		
-		FulfillmentOrderData order
+		guid fulfillmentOrderId		
+		FulfillmentData fulfillment
 	}
 	
-	record FulfillmentOrderData {
+	record DropShipperFulfillmentOrder {
+				
+		guid fulfillmentOrderId		
+		DropshipperFulfillmentData fulfillment
+	}
+	
+	record DropshipperFulfillmentData extends FulfillmentData{
+		string supplierId
+	}
+	
+	record FulfillmentData {
 		
-		/** Unique identifier that is assigned by the originator of this order once created.*/
+		/** Identifier of the order from which the fulfillment order got created.*/
 		string orderNumber 
 		
-		array<FulfillmentOrderLineData> orderLines
+		array<FulfillmentLineData> fulfillmentLines
 		
-		FulfillmentOrderStatus status 
+		FulfillmentStatus status 
 		string dateOrdered 
 
 		/** The total paid by the customer (total of items, fees, taxes, etc.) */ 
-		CurrencyAmount? grandTotal
+		CurrencyAmount grandTotal
+		
+		/** The grand total minus any non-shipping discounts */
+		CurrencyAmount netMerchandiseValue
+	
+		/** Total of all the items -- without taxes, fees, etc. */
+		CurrencyAmount itemPriceTotal
+
+		/** Breakdown of the total of all related fees that influence the price */		
+		CurrencyAmount totalInsuranceCost
+		CurrencyAmount totalTaxAmount
+		CurrencyAmount totalDiscountAmount
+		array<AdditionalCost> additionalCosts
+		/** A collection of all the promotional discounts that were applied at the order level */
+		array<PromotionalDiscount> discounts
 				
-		/** The channel where this order originated (ebay, amazon, etc.) */
+		/** The channel where this fulfillment originated (ebay, amazon, etc.) */
 		string sourceId
 		
-		/** The id of the group that classifies source (web, print, email, etc.) */
-		string sourceGroupId
+		/** The list of shipments that were created to ship one or more of the items in this fulfillment */
+		array<Shipment>? shipments
 				
 		/** Default shipping for entire order that can be overridden by each order item */
 		DateRange? expectedShipDate
-		CustomerInfo customer
-		Address billingAddress	
 		
 		/** if not provided, use ShipTo in the associated OrderLine */
-		ShipTo destination		
+		ShipTo? destination
+		
+		CustomerInfo? customer
+		Address? billingAddress		
+		
+	}
+	
+	record Shipment {
+		/** only need to be unique to the order like 1, 2, 3, etc...*/
+		string shipmentId		
+		ShipmentDetails shipmentDetails
 	}	
 	
-	record FulfillmentOrderLineData {
+	record ShipmentDetails {
+		/** Items in the shipment */
+		array<string> fulfillmentLineIds
+		/** The fees for this shipment */
+		CurrencyAmount shippingFees
+		
+		CurrencyAmount? additionalCost
+		CurrencyAmount? packagingHandlingCost
+		CurrencyAmount? surcharge  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
+
+		array<TrackingDetail>? trackingDetails		
+		/** Next day, ground, etc. */
+		string shippingMethod		
+		
+		DateRange? deliveryWindow
+		DateRange? shippingWindow
+		
+		string? shippingMessage
+	}
+	
+	record FulfillmentLineData {
 		/* The unique id of this item */
-		string orderLineId
+		string fulfillmentLineId
 		
 		/* The ordered index of this item (also referred to as line number) */
 		string? itemId
@@ -54,12 +106,9 @@ package com.x.orderfulfillment.v1 {
 		string productSku
 		string itemDescription
 		
-		/** Optionally provided with each item, overriding order */
-		DateRange? expectedShipDate
-		
 		CurrencyAmount? unitPrice
 
-		FulfillmentOrderStatus status
+		FulfillmentStatus status
 		
 		/** This is quantity * unit price */
 		CurrencyAmount? price
@@ -67,12 +116,13 @@ package com.x.orderfulfillment.v1 {
 		datetime? dateCancelled
 		datetime? dateDelivered
 		datetime? dateShipped
-		
-		ShipTo destination
 	}
 	
-	enum FulfillmentOrderStatus {
-		NEW,
+	enum FulfillmentStatus {
+		CREATED,
+		PICKED,
+		ON_HOLD,
+		RELEASED,
 		READY_TO_SHIP,
 		PARTIALLY_SHIPPED,
 		SHIPPED,
@@ -94,6 +144,25 @@ package com.x.orderfulfillment.v1 {
 		GiftTag giftTag
 	}
 	
+	record AdditionalCost {
+		string costDescription
+		CurrencyAmount amount
+	}
+	
+	record PromotionalDiscount {
+		string code
+		string promoDescription
+		PromotionDiscountType type
+		CurrencyAmount amount
+	}
+	
+	enum PromotionDiscountType {
+		STOREWIDE_SALE,
+		SHIPPING_DISCOUNT,
+		PRODUCT_DISCOUNT,
+		OTHER
+	}
+	
 	record GiftTag {
 		string? from
 		string? to
@@ -101,34 +170,23 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record DropShipSupplierComment {
-		guid orderId
-		string? orderLineId
+		guid fulfillmentOrderId
+		array<string> fulfillmentLineIds
 		string comment 
 	}
 	
 	record ItemExpectedShipDate {
-		guid orderId
-		string orderLineId	
+		guid fulfillmentOrderId
+		array <string> fulfillmentLineIds
 		DateRange expectedShipDate
 	}
 	
 	record ItemShipped {
-		string shipmentId
-		guid orderId
-		string orderLineId
-		int quantity		
-		datetime dateShipped
-		ShippingDetail shippingDetails
-		TrackingDetail? trackingDetails
+		guid fulfillmentOrderId
+		array<Shipment> shipments
+		datetime dateShipped		
+	}
 		
-	}
-	
-	record ShippingDetail {
-		/** Next day, ground, etc. */
-		string shippingMethod
-		string? shippingMessage
-	}
-	
 	record TrackingDetail {
 		array<string> trackingNumbers
 		string carrier
@@ -137,16 +195,22 @@ package com.x.orderfulfillment.v1 {
 	
 		
 	record ItemCancelled {
-		guid orderId
-		FulfillmentOrderLineData orderLine
+		guid fulfillmentOrderId
+		array <FulfillmentLineData> fulfillmentLines
 		string? reasonCode
 		string? cancelMessage
 	}
 	
+	record CancelFulfillment {
+		guid fulfillmentOrderId
+		array <FulfillmentLineData> fulfillmentLines
+		string? reasonCode
+		string? cancelMessage
+	}
 		
 	record MerchantComment {
-		guid orderId
-		string? orderLineId
+		guid fulfillmentOrderId
+		array<string> fulfillmentLineIds
 		string comment 
 	}
 	
@@ -154,9 +218,171 @@ package com.x.orderfulfillment.v1 {
 		FulfillmentOrder order
 	}
 	
+	record FulfillDropshipOrder {
+		DropShipperFulfillmentOrder order
+	}
+	
 	record OrderFulfilled {
 		FulfillmentOrder order
 	}
+	
+	record ShippingRateQuery {
+		FulfillmentOrder order
+	}
+	
+	record ShippingRateQueryResults {
+		guid fulfillmentOrderId
+		/** breakup of fulfillment order into shipments and their associated rates */
+		array<ShipmentDetails> shippingRates
+		//@TODO any other costs involved?
+	}
+	
+	record ShippingRateQueryFailed {
+		ShippingRateQuery shippingRateQuery
+		array<Error> errors
+	}
+	
+	record FulfillmentHold {
+		guid fulfillmentOrderId
+		string? reasonCode
+		string? holdMessage
+	}
+	
+	
+	record FulfillmentRelease {
+		guid fulfillmentOrderId
+		string? reasonCode
+		string? releaseMessage
+	}
+	
+	
+	record ShippingInformationUpdate {
+		FulfillmentOrder fulfillment
+		/** all shipments made for a  fulfillment order*/
+		array<Shipment> shippingInfoUpdates
+	}
+	
+	record FulfillmentOrderStatusUpdate {
+		guid fulfillmentOrderId
+		FulfillmentStatus status
+		string comment 
+	}
+	
+	record SearchFulfillment {
+		string orderNumber
+	}
+	
+	record SearchFulfillmentSucceeded {
+    	string orderNumber		
+		array<FulfillmentOrder> orders
+	}
+	
+	record SearchFulfillmentFailed {
+		SearchFulfillment search
+		array<Error> errors
+	}
+	
+	enum ReceivingStatus {
+		NEW		
+		PARTIALLY_CANCELLED
+		PARTIALLY_DELIVERED
+		DELIVERED
+		PARTIALLY_PUT_AWAY
+		PUT_AWAY
+		COMPLETE
+		CANCELLED	
+	}
+	
+	record ReceivingLineData {
+		//Master Purchase Order #
+		string purchaseOrderNumber
+		string? purchaseOrderLineNumber
+		//purchase order # or ASN #
+		string invoiceNumber
+		//item part number or sku
+		string clientPartNumber
+		int expectedQty
+		array<TrackingDetail>? trackingDetails	
+		string? shippingMethod
+		DateRange? deliveryWindow
+		string? shippingMessage		
+		datetime? deliveredDate
+		//mandatory if receipt is to be managed as ASN
+		//Identifies the carton # for ASN's, typically 20 digit bar code in UCC-128 format.
+		string? cartonId
+		//Product Lot number if needed to send on PO
+		string? lotNumber
+		
+	}
+		
+	record ReceivingData {
+		//details of supplier 
+		string? supplierId
+		string? supplierName
+		//Master Purchase Order #
+		string purchaseOrderNumber
+		//Purchase Order
+		string invoiceNumber
+		DateRange? expectedDeliveryDate
+		//Shipped Date for PO
+		datetime? shippedDate
+		//Comments for a Purchase Order
+		string? comments
+		//Receiving line data
+		array<ReceivingLineData> receivingLines
+		ReceivingStatus status
+	}
+	
+		
+	record Receiving {
+		guid receivingId
+		ReceivingData receiving
+	}
+	
+	record CreateReceiving {
+		ReceivingData receiving
+	}
+	
+	record UpdateReceiving {
+		ReceivingData receiving
+	}
+	
+	record SearchReceived {
+		guid receivingId
+	}
+	
+	record SearchReceivedSuceeded {
+		guid receivingId
+		//all inventory received so far
+		array<ReceivingLineData> receivingLines
+		//status of receiving
+		ReceivingStatus status
+	}
+	
+	record SearchReceivedFailed {
+		guid receivingId
+		array<Error> errors
+	}
+	
+	record ReceivedUpdate {
+		guid receivingId
+		//all inventory received so far
+		array<ReceivingLineData> receivingLines
+		//status of receiving
+		ReceivingStatus status
+	}
+	
+	record ReceivingComplete {
+		Receiving receiving
+	}
+	
+	record CancelReceiving {
+		guid receivingId
+		array<ReceivingLineData> receivingLines
+		string? reasonCode
+		string? cancelMessage
+	}
+	
 	
 }
 

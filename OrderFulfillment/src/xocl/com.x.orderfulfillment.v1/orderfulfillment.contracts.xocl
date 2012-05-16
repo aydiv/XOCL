@@ -4,14 +4,24 @@ package com.x.orderfulfillment.v1 {
     contract DropShipManager {
     	description "A capability that performs drop shipment functions"
     	roles {
-	        OrderFulfillment.DropShipManager
+	        ProcessFulfillment.DropShipManager<Dropship>
 	    }
     }
     
-    contract OrderManager {
-    	description "A capability that performs order management functions"
+    contract ThirdPartyShippingManager {
+    	description "A capability that performs third party shipping functions"
     	roles {
-	        OrderFulfillment.OrderManager
+	        ProcessFulfillment.ThirdPartyFulfillmentProcessor
+	        ShippingRateSearch.ThirdPartyFulfillmentProcessor
 	    }
     }
+    
+    contract OrderProcessor {
+    	description "A capability that does order processing"
+    	roles {
+	        ProcessFulfillment.OrderProcessor<Dropship>
+	        ProcessFulfillment.OrderProcessor<ThirdParty>
+	    }
+    }
+  
 }
