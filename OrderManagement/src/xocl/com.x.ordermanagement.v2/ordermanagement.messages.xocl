@@ -287,6 +287,15 @@ package com.x.ordermanagement.v2 {
 		/** The marketing source that referred this order */
 		string? referralSource
 		
+		/** Additional comments/instructions that the buyer may want to convey to the merchant */
+		string? buyerComments
+		
+		/** These attributes provide information that can be used to construct a link
+		 *  to the product on the sales channel where it was purchased
+		 */
+		string? offerId
+		string? offerUrl
+		
 	}
 	
 	record SimpleOrder extends OrderDetails {
@@ -341,8 +350,7 @@ package com.x.ordermanagement.v2 {
 	record OrderShipped {
 		string orderNumber
 		guid id
-		string shipmentId
-		array<TrackingDetail>? trackingDetails
+		Shipment shipment
 		string sourceId
 	}
 	
