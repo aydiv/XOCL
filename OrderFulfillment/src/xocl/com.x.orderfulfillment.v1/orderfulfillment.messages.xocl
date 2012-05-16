@@ -226,19 +226,19 @@ package com.x.orderfulfillment.v1 {
 		FulfillmentOrder order
 	}
 	
-	record ShippingRateQuery {
+	record ShippingRateRequest {
 		FulfillmentOrder order
 	}
 	
-	record ShippingRateQueryResults {
+	record ShippingRateResponse {
 		guid fulfillmentOrderId
 		/** breakup of fulfillment order into shipments and their associated rates */
 		array<ShipmentDetails> shippingRates
 		//@TODO any other costs involved?
 	}
 	
-	record ShippingRateQueryFailed {
-		ShippingRateQuery shippingRateQuery
+	record ShippingRateRequestFailed {
+		ShippingRateRequest request
 		array<Error> errors
 	}
 	
@@ -256,10 +256,14 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	
-	record ShippingInformationUpdate {
-		FulfillmentOrder fulfillment
-		/** all shipments made for a  fulfillment order*/
+	record FulfillmentInformationUpdate {
+		guid fulfillmentOrderId
+		FulfillmentStatus status 
+		// changed expected ship date
+		DateRange? expectedShipDate
+		/** All shipments shipped for a  fulfillment order*/
 		array<Shipment> shippingInfoUpdates
+		string? comment
 	}
 	
 	record FulfillmentOrderStatusUpdate {
@@ -268,17 +272,17 @@ package com.x.orderfulfillment.v1 {
 		string comment 
 	}
 	
-	record SearchFulfillment {
+	record FulfillmentLookup {
 		string orderNumber
 	}
 	
-	record SearchFulfillmentSucceeded {
+	record FulfillmentLookupSucceeded {
     	string orderNumber		
 		array<FulfillmentOrder> orders
 	}
 	
-	record SearchFulfillmentFailed {
-		SearchFulfillment search
+	record FulfillmentLookupFailed {
+		string orderNumber
 		array<Error> errors
 	}
 	
@@ -367,9 +371,10 @@ package com.x.orderfulfillment.v1 {
 	record ReceivedUpdate {
 		guid receivingId
 		//all inventory received so far
-		array<ReceivingLineData> receivingLines
+		array<ReceivingLineData> receivedLines
 		//status of receiving
 		ReceivingStatus status
+		string? comment
 	}
 	
 	record ReceivingComplete {

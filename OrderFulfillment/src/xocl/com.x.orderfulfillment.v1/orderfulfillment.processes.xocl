@@ -4,7 +4,7 @@
 package com.x.orderfulfillment.v1 {
 	import com.x.orderfulfillment.v1.*
 	
-	   
+	// Entity that represents the various states of a fulfillment order
     entity Fulfillment
     {
         state Created [OnHold, Shipped, Cancelled]
@@ -16,6 +16,7 @@ package com.x.orderfulfillment.v1 {
         state Cancelled
     }
     
+    // Entity that represents the various states of inventory that is expected to be received <a.k.a receiving>
     entity Receiving
     {
     	state Created [Cancelled, Delivered, PutAway, Complete]
@@ -30,11 +31,11 @@ package com.x.orderfulfillment.v1 {
 	process ProcessFulfillment<Dropship>(Fulfillment fulfillment) {
 		description "An order is submitted to dropshipper for fulfillment and is either shipped or cancelled"
 	 
-	 	roles(OrderProcessor, DropShipManager)
+	 	roles(OrderProcessor, DropshipProcessor)
 	 	
 	 	 workflow { 
 	 	 	transaction FulfillOrder<Dropship> {
-	        	roles(OrderProcessor, DropShipManager)
+	        	roles(OrderProcessor, DropshipProcessor)
         	}
         	
 	 	    do(*) {	 	    		 	    	
@@ -42,30 +43,30 @@ package com.x.orderfulfillment.v1 {
 		 	 			 	 		
 			 	 	//Dropship manager may notify change in expected ship date
 			 	 	transaction ItemExpectedShipDate {
-		        		roles(DropShipManager, OrderProcessor)
+		        		roles(DropshipProcessor, OrderProcessor)
 		        	}
 		        	
 		        	transaction DropShipSupplierComment {
-		        		roles(DropShipManager, OrderProcessor)
+		        		roles(DropshipProcessor, OrderProcessor)
 		        	}
 		        	
 		        	transaction MerchantComment {
-		        		roles(OrderProcessor, DropShipManager)
+		        		roles(OrderProcessor, DropshipProcessor)
 		        	}
 		        	
         			// A supplier may choose to cancel the order		
         			transaction ItemCancelled {
-	        			roles(DropShipManager, OrderProcessor)
+	        			roles(DropshipProcessor, OrderProcessor)
 	        		}
 	        	
         			// Order shipped notification is sent in parts as items get shipped
 	        		transaction ItemShipped {
-        				roles(DropShipManager, OrderProcessor)
+        				roles(DropshipProcessor, OrderProcessor)
         			}		        		
 	        	}
         	}        	
         	transaction OrderFulfilled {
-		 		roles(DropShipManager, OrderProcessor)
+		 		roles(DropshipProcessor, OrderProcessor)
 		 	}
 	 	}
 	 	
@@ -79,7 +80,7 @@ package com.x.orderfulfillment.v1 {
 	 	description "A merchant requests for shipping quotes for a fulfillment order"	 
 	 	roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
 	 	 workflow { 
-	 	 	transaction ShippingRateQuery {
+	 	 	transaction ShippingRateRequest {
 	        	roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
         	}        	
         }
@@ -114,17 +115,17 @@ package com.x.orderfulfillment.v1 {
 	        			roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
 	        		}
 	        		
-	        		//A merchant may choose to lookup all fulfillments in progress for an order
-	        		transaction SearchFulfillment {
+	        		//A merchant may choose to lookup all fulfillments for an order
+	        		transaction FulfillmentLookup {
 	        			roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
 	        		}
 	        		
 	        		//A merchant is informed of changes to a fulfillment’s status as they occur, such as when the order is picked, ready for shipment, or tendered to a shipping carrier
-	        		transaction ShippingInformationUpdate {
+	        		transaction FulfillmentInformationUpdate {
 	        			roles(ThirdPartyFulfillmentProcessor, OrderProcessor)
 	        		}
 	        	
-        			//merchant is notified as shipments for the order get shipped
+        			//merchant is notified as shipments for the fulfillment order get shipped
 	        		transaction ItemShipped {
         				roles(ThirdPartyFulfillmentProcessor, OrderProcessor)
         			}		        		
@@ -155,7 +156,7 @@ package com.x.orderfulfillment.v1 {
 			 		transaction UpdateReceiving {
 			 			roles (ReceivingInformationProvider, ReceivingProcessor)
 			 		}
-			 		//A merchant wants to lookup onventory received
+			 		//A merchant wants to lookup inventory received
 			 		transaction SearchReceived {
 			 			roles (ReceivingInformationProvider, ReceivingProcessor)
 			 		}

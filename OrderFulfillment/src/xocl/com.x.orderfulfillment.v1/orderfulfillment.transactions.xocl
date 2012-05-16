@@ -95,15 +95,15 @@ package com.x.orderfulfillment.v1 {
         }
     }
     
-    transaction ShippingRateQuery query {
+    transaction ShippingRateRequest response {
     	sender {
-    		message ShippingRateQuery{
+    		message ShippingRateRequest{
     			timeouts(response=30s)   
     		}
     	}
     	receiver {
-        	success ShippingRateQueryResults   
-        	failure ShippingRateQueryFailed
+        	success ShippingRateResponse   
+        	failure ShippingRateRequestFailed
         }
     }
     
@@ -130,23 +130,23 @@ package com.x.orderfulfillment.v1 {
 		}
     }
     
-    transaction ShippingInformationUpdate notify {
+    transaction FulfillmentInformationUpdate notify {
     	sender{
-    		message ShippingInformationUpdate{
+    		message FulfillmentInformationUpdate{
     			timeouts(receipt=30s, validation=3m) 
     		}
     	}
     }
     
-    transaction SearchFulfillment query {
+    transaction FulfillmentLookup query {
     	sender {
-    		message SearchFulfillment{
+    		message FulfillmentLookup{
     			timeouts(response=30s)   
     		}
     	}
     	receiver {
-        	success SearchFulfillmentSucceeded   
-        	failure SearchFulfillmentFailed
+        	success FulfillmentLookupSucceeded   
+        	failure FulfillmentLookupFailed
         }
     }
     
@@ -158,12 +158,15 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-    transaction CreateReceiving notify {
+    transaction CreateReceiving(Receiving receiving) notify {
     	sender{
     		message CreateReceiving{
     			timeouts(receipt=30s, validation=3m) 
     		}
     	}
+    	postconditions {
+	 		success(receiving[Receiving.Created])	 		
+	 	}
     }
     
     transaction UpdateReceiving notify {
@@ -200,7 +203,7 @@ package com.x.orderfulfillment.v1 {
     
     transaction SearchReceived query {
     	sender {
-    		message ShippingRateQuery{
+    		message SearchReceived{
     			timeouts(response=30s)   
     		}
     	}

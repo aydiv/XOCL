@@ -1,15 +1,15 @@
 package com.x.orderfulfillment.v1 {	
 	import com.x.orderfulfillment.v1.*
 	
-    contract DropShipManager {
+    contract DropShipFulfillmentProvider {
     	description "A capability that performs drop shipment functions"
     	roles {
-	        ProcessFulfillment.DropShipManager<Dropship>
+	        ProcessFulfillment.DropshipProcessor<Dropship>
 	        ProcessReceiving.ReceivingProcessor
 	    }
     }
     
-    contract ThirdPartyShippingManager {
+    contract ThirdPartyFulfillmentProvider {
     	description "A capability that performs third party shipping functions"
     	roles {
 	        ProcessFulfillment.ThirdPartyFulfillmentProcessor
