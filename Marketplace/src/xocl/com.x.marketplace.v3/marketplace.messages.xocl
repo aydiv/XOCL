@@ -184,8 +184,8 @@ package com.x.marketplace.v3{
 		//Site the item should be listed to.  In most cases, this will be the ISO country code.
 		string? siteCode;
 		
-		PaymentPolicy? payment;
-		ShippingPolicy? shipping;
+		PaymentPolicy? paymentPolicy;
+		ShippingPolicy? shippingPolicy;
 		ReturnPolicy? returnPolicy;
 		string xAccountId;
 	}
