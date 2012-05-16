@@ -19,9 +19,10 @@
 		// Product Details (additional field)
 		string? postalCode;
 		string? location;
-
 		string? imageVariationName;	
-	
+		string? domesticShippingDiscountProfileId "References the id of the profile already created on ebay for domestic shipping discounts.  Overrides the value in the policy group"; 
+		string? internationalShippingDiscountProfileId "References the id of the profile already created on ebay for international shipping discounts. Overrides the value in the policy group";
+		boolean? applyDomesticPromotionalShippingRule "Indicates whether to use the domestic Promotional Shipping Rule set up in MyeBay, overrides the value in the policy group"
 	}
 	
 	record EbayOfferDetailsWithProductData{
@@ -29,19 +30,21 @@
 		Product product;
 	}
 
-
 	record EbayOffer {
 		OfferChannelData channelData;
 		EbayOfferDetails offerDetails;	
 	}
 	
-	record EbayPolicyGroupData extends PolicyGroupData {
+	record EbayPolicyGroupData extends PolicyGroupData {	
 		string? location;
 		string? postalCode;
 		string countryCode;
 		string? payPalEmailAddress;
 		int? handlingTime;
 		boolean? useTaxTable;
+		string? domesticShippingDiscountProfileId "References the id of the profile already created on ebay for domestic shipping discounts"; 
+		string? internationalShippingDiscountProfileId "References the id of the profile already created on ebay for international shipping discounts.";
+		boolean? applyDomesticPromotionalShippingRule "Indicates whether to use the domestic Promotional Shipping Rule set up in MyeBay"
 	}
 	
 	record EbayPolicyGroup extends EbayPolicyGroupData{
@@ -134,6 +137,28 @@
 
 	record LookupStoreFailed {
 		LookupStore request;
+		array<Error> errors;
+	}
+	
+	record AccountProfile{
+		array<string>? domesticShippingDiscountProfileIds "The ids of the profile already created on ebay for domestic shipping discounts"; 
+		array<string>? internationalShippingDiscountProfileIds "The ids of the profile already created on ebay for international shipping discounts.";
+	}
+	
+	record LookupAccountProfile {
+		string? xAccountId;
+		string? userMarketplaceId;
+		string? siteCode;
+		string? environmentName;
+	}
+
+	record LookupAccountProfileSucceeded {
+		AccountProfile store;
+		LookupAccountProfile request;
+	}
+
+	record LookupAccountProfileFailed {
+		LookupAccountProfile request;
 		array<Error> errors;
 	}
     
