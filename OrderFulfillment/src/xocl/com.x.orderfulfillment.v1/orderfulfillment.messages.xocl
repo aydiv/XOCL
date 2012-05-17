@@ -6,25 +6,25 @@ package com.x.orderfulfillment.v1 {
 	import com.x.core.v1.*
 	
 		
-	record FulfillmentOrder {
+	record Fulfillment {
 				
-		guid fulfillmentOrderId		
+		guid fulfillmentId		
 		FulfillmentData fulfillment
 	}
 	
-	record DropShipperFulfillmentOrder {
+	record DropShipFulfillment {
 				
-		guid fulfillmentOrderId		
-		DropshipperFulfillmentData fulfillment
+		guid fulfillmenId		
+		DropshipFulfillmentData fulfillment
 	}
 	
-	record DropshipperFulfillmentData extends FulfillmentData{
+	record DropshipFulfillmentData extends FulfillmentData{
 		string supplierId
 	}
 	
 	record FulfillmentData {
 		
-		/** Identifier of the order from which the fulfillment order got created.*/
+		/** Identifier of the order from which the fulfillment  got created.*/
 		string orderNumber 
 		
 		array<FulfillmentLineData> fulfillmentLines
@@ -55,11 +55,10 @@ package com.x.orderfulfillment.v1 {
 		/** The list of shipments that were created to ship one or more of the items in this fulfillment */
 		array<Shipment>? shipments
 				
-		/** Default shipping for entire order that can be overridden by each order item */
+		/** Default shipping for entire fulfillment that can be overridden by each fulfillment line data */
 		DateRange? expectedShipDate
 		
-		/** if not provided, use ShipTo in the associated OrderLine */
-		ShipTo? destination
+		ShipTo destination
 		
 		CustomerInfo? customer
 		Address? billingAddress		
@@ -67,7 +66,7 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record Shipment {
-		/** only need to be unique to the order like 1, 2, 3, etc...*/
+		/** only need to be unique to the fulfillment like 1, 2, 3, etc...*/
 		string shipmentId		
 		ShipmentDetails shipmentDetails
 	}	
@@ -99,7 +98,7 @@ package com.x.orderfulfillment.v1 {
 		/* The ordered index of this item (also referred to as line number) */
 		string? itemId
 		
-		/* Reference to FulfillmentOrderData.orderNumber */
+		/* Reference to FulfillmentData.orderNumber */
 		string? orderNumber
 		
 		float quantity
@@ -170,19 +169,19 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record DropShipSupplierComment {
-		guid fulfillmentOrderId
+		guid fulfillmentId
 		array<string> fulfillmentLineIds
 		string comment 
 	}
 	
-	record ItemExpectedShipDate {
-		guid fulfillmentOrderId
+	record FulfillmentExpectedShipDateUpdated {
+		guid fulfillmentId
 		array <string> fulfillmentLineIds
 		DateRange expectedShipDate
 	}
 	
-	record ItemShipped {
-		guid fulfillmentOrderId
+	record FulfillmentShipped {
+		guid fulfillmentId
 		array<Shipment> shipments
 		datetime dateShipped		
 	}
@@ -194,44 +193,42 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 		
-	record ItemCancelled {
-		guid fulfillmentOrderId
+	record FulfillmentCancelled {
+		guid fulfillmentId
 		array <FulfillmentLineData> fulfillmentLines
-		string? reasonCode
 		string? cancelMessage
 	}
 	
 	record CancelFulfillment {
-		guid fulfillmentOrderId
+		guid fulfillmentId
 		array <FulfillmentLineData> fulfillmentLines
-		string? reasonCode
 		string? cancelMessage
 	}
 		
 	record MerchantComment {
-		guid fulfillmentOrderId
+		guid fulfillmentId
 		array<string> fulfillmentLineIds
-		string comment 
+		string merchantComment 
 	}
 	
-	record FulfillOrder {
-		FulfillmentOrder order
+	record ProcessThirdPartyFulfillment {
+		Fulfillment fulfillment
 	}
 	
-	record FulfillDropshipOrder {
-		DropShipperFulfillmentOrder order
+	record ProcessDropshipFulfillment {
+		DropShipFulfillment fulfillment
 	}
 	
-	record OrderFulfilled {
-		FulfillmentOrder order
+	record FulfillmentCompleted {
+		Fulfillment fulfillment
 	}
 	
 	record LookupShippingRate {
-		FulfillmentOrder order
+		Fulfillment fulfillment
 	}
 	
 	record LookupShippingRateSucceeded extends LookupShippingRate {
-		/** breakup of fulfillment order into shipments and their associated rates */
+		/** breakup of fulfillment into shipments and their associated rates */
 		array<ShipmentDetails> shippingRates
 		
 		//@TODO any other costs involved?
@@ -241,62 +238,53 @@ package com.x.orderfulfillment.v1 {
 		array<Error> errors
 	}
 	
-	record FulfillmentHold {
-		guid fulfillmentOrderId
-		string? reasonCode
+	record HoldFulfillment {
+		guid fulfillmentId
+		array <string> fulfillmentLineIds
 		string? holdMessage
 	}
 	
 	
-	record FulfillmentRelease {
-		guid fulfillmentOrderId
-		string? reasonCode
+	record ReleaseFulfillment {
+		guid fulfillmentId
+		array <string> fulfillmentLineIds
 		string? releaseMessage
 	}
 	
 	
-	record FulfillmentInformationUpdate {
-		guid fulfillmentOrderId
+	record FulfillmentInformationUpdated {
+		guid fulfillmentId
 		FulfillmentStatus status 
 		// changed expected ship date
 		DateRange? expectedShipDate
-		/** All shipments shipped for a  fulfillment order*/
+		/** All shipments shipped for a  fulfillment */
 		array<Shipment> shippingInfoUpdates
 		string? comment
 	}
 	
-	record FulfillmentOrderStatusUpdate {
-		guid fulfillmentOrderId
-		FulfillmentStatus status
-		string comment 
-	}
 	
 	record LookupFulfillments {
 		string orderNumber
 	}
 	
 	record LookupFulfillmentsSucceeded extends LookupFulfillments{
-		array<FulfillmentOrder> orders
+		array<Fulfillment> fulfillments
 	}
 	
 	record LookupFulfillmentsFailed extends LookupFulfillments {
 		array<Error> errors
 	}
 	
-	enum ReceivingStatus {
-		NEW		
-		PARTIALLY_CANCELLED
-		PARTIALLY_DELIVERED
+	enum InventoryStatus {
+		NEW	
 		DELIVERED
-		PARTIALLY_PUT_AWAY
 		PUT_AWAY
-		COMPLETE
 		CANCELLED	
 	}
 	
 	record ReceivingLineData {
 		//Master Purchase Order #
-		string purchaseOrderNumber
+		string masterPurchaseOrderNumber
 		string? purchaseOrderLineNumber
 		//purchase order # or ASN #
 		string invoiceNumber
@@ -313,6 +301,8 @@ package com.x.orderfulfillment.v1 {
 		string? cartonId
 		//Product Lot number if needed to send on PO
 		string? lotNumber
+		//status of inventory
+		InventoryStatus status
 		
 	}
 		
@@ -321,9 +311,7 @@ package com.x.orderfulfillment.v1 {
 		string? supplierId
 		string? supplierName
 		//Master Purchase Order #
-		string purchaseOrderNumber
-		//Purchase Order
-		string invoiceNumber
+		string masterPurchaseOrderNumber
 		DateRange? expectedDeliveryDate
 		//Shipped Date for PO
 		datetime? shippedDate
@@ -331,7 +319,6 @@ package com.x.orderfulfillment.v1 {
 		string? comments
 		//Receiving line data
 		array<ReceivingLineData> receivingLines
-		ReceivingStatus status
 	}
 	
 		
@@ -340,36 +327,30 @@ package com.x.orderfulfillment.v1 {
 		ReceivingData receiving
 	}
 	
-	record CreateReceiving {
-		ReceivingData receiving
+	record ProcessReceiving {
+		Receiving receiving
 	}
 	
 	record UpdateReceiving {
-		ReceivingData receiving
+		Receiving receiving
 	}
 	
-	record LookupReceived {
-		guid receivingId
+	record LookupReceivings {
+		string masterPurchaseOrderNumber
 	}
 	
-	record LookupReceivedSuceeded extends LookupReceived{
-		//all inventory received so far
-		array<ReceivingLineData> receivedLines
-		//status of receiving
-		ReceivingStatus status
+	record LookupReceivingsSuceeded extends LookupReceivings{		
+		array<ReceivingLineData> receivings
 	}
 	
-	record LookupReceivedFailed extends LookupReceived{
+	record LookupReceivingsFailed extends LookupReceivings{
 		array<Error> errors
 	}
 	
-	record ReceivedUpdate {
+	record ReceivingInventoryStatusUpdated {
 		guid receivingId
-		//all inventory received so far
-		array<ReceivingLineData> receivedLines
-		//status of receiving
-		ReceivingStatus status
-		string? comment
+		//inventory for which update occured
+		array<ReceivingLineData> receivingLines
 	}
 	
 	record ReceivingComplete {

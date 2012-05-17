@@ -5,7 +5,6 @@ package com.x.orderfulfillment.v1 {
     	description "A capability that performs drop shipment functions"
     	roles {
 	        ProcessFulfillment.DropshipProcessor<Dropship>
-	        ProcessReceiving.ReceivingProcessor
 	    }
     }
     
