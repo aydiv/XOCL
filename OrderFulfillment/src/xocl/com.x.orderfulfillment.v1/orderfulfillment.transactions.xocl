@@ -5,15 +5,10 @@ package com.x.orderfulfillment.v1 {
 	import com.x.orderfulfillment.v1.*
 	
 	// Notifies that a dropship fulfillment needs to be processed
-	transaction ProcessFulfillment<Dropship, ThirdParty>(Fulfillment fulfillment) notify {
+	transaction ProcessDropshipFulfillment(Fulfillment fulfillment) notify {
 		sender
 		{	
-			message <ThirdParty>  ProcessThirdPartyFulfillment {
-            	timeouts(receipt=30s, validation=3m)
-            	retries=3
-            }
-			
-			message <Dropship> ProcessDropshipFulfillment {
+			message ProcessDropshipFulfillment {
             	timeouts(receipt=30s, validation=3m)
             	retries=3
             }
@@ -22,6 +17,22 @@ package com.x.orderfulfillment.v1 {
 	 		success(fulfillment[Fulfillment.Created])	 		
 	 	}
 	}
+	
+	// Notifies third party fulfillment needs to be processed
+	transaction ProcessThirdPartyFulfillment(Fulfillment fulfillment) notify {
+		sender
+		{	
+			message ProcessThirdPartyFulfillment {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }            
+        }		
+	 	postconditions {
+	 		success(fulfillment[Fulfillment.Created])	 		
+	 	}
+		
+	}
+	
 	
 	// Notifies that fulfillment processing was completed
 	transaction FulfillmentCompleted(Fulfillment fulfillment) notify {
