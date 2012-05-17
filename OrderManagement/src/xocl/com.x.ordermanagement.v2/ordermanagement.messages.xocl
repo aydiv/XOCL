@@ -230,6 +230,12 @@ package com.x.ordermanagement.v2 {
 		
 		/** A reference to the shipment that was used to ship this item */
 		string? shipmentId
+						
+		/** These attributes provide information that can be used to construct a link
+		 *  to the product on the sales channel where it was purchased
+		 */
+		string? offerId
+		string? offerUrl
 	}
 	
 	record OrderLineData extends SimpleOrderLineData {	
@@ -290,12 +296,6 @@ package com.x.ordermanagement.v2 {
 		/** Additional comments/instructions that the buyer may want to convey to the merchant */
 		string? buyerComments
 		
-		/** These attributes provide information that can be used to construct a link
-		 *  to the product on the sales channel where it was purchased
-		 */
-		string? offerId
-		string? offerUrl
-		
 	}
 	
 	record SimpleOrder extends OrderDetails {
@@ -311,7 +311,7 @@ package com.x.ordermanagement.v2 {
 	
 	record OrderData extends NonSensitiveOrderData {
 		CustomerInfo customer
-		Address billingAddress
+		Address? billingAddress
 		
 		array<PaymentInfo> paymentMethods
 		
