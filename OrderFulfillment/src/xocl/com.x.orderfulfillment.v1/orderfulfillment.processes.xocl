@@ -80,7 +80,7 @@ package com.x.orderfulfillment.v1 {
 	 	description "A merchant requests for shipping quotes for a fulfillment order"	 
 	 	roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
 	 	 workflow { 
-	 	 	transaction ShippingRateRequest {
+	 	 	transaction LookupShippingRate {
 	        	roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
         	}        	
         }
@@ -116,7 +116,7 @@ package com.x.orderfulfillment.v1 {
 	        		}
 	        		
 	        		//A merchant may choose to lookup all fulfillments for an order
-	        		transaction FulfillmentLookup {
+	        		transaction LookupFulfillments {
 	        			roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
 	        		}
 	        		
@@ -157,7 +157,7 @@ package com.x.orderfulfillment.v1 {
 			 			roles (ReceivingInformationProvider, ReceivingProcessor)
 			 		}
 			 		//A merchant wants to lookup inventory received
-			 		transaction SearchReceived {
+			 		transaction LookupReceived {
 			 			roles (ReceivingInformationProvider, ReceivingProcessor)
 			 		}
 			 		//Notifies when inventory is delivered or status updates like delivered/put away etc

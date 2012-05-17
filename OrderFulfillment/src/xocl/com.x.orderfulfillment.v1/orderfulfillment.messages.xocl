@@ -226,19 +226,18 @@ package com.x.orderfulfillment.v1 {
 		FulfillmentOrder order
 	}
 	
-	record ShippingRateRequest {
+	record LookupShippingRate {
 		FulfillmentOrder order
 	}
 	
-	record ShippingRateResponse {
-		guid fulfillmentOrderId
+	record LookupShippingRateSucceeded extends LookupShippingRate {
 		/** breakup of fulfillment order into shipments and their associated rates */
 		array<ShipmentDetails> shippingRates
+		
 		//@TODO any other costs involved?
 	}
 	
-	record ShippingRateRequestFailed {
-		ShippingRateRequest request
+	record LookupShippingRateFailed extends LookupShippingRate {
 		array<Error> errors
 	}
 	
@@ -272,17 +271,15 @@ package com.x.orderfulfillment.v1 {
 		string comment 
 	}
 	
-	record FulfillmentLookup {
+	record LookupFulfillments {
 		string orderNumber
 	}
 	
-	record FulfillmentLookupSucceeded {
-    	string orderNumber		
+	record LookupFulfillmentsSucceeded extends LookupFulfillments{
 		array<FulfillmentOrder> orders
 	}
 	
-	record FulfillmentLookupFailed {
-		string orderNumber
+	record LookupFulfillmentsFailed extends LookupFulfillments {
 		array<Error> errors
 	}
 	
@@ -351,20 +348,18 @@ package com.x.orderfulfillment.v1 {
 		ReceivingData receiving
 	}
 	
-	record SearchReceived {
+	record LookupReceived {
 		guid receivingId
 	}
 	
-	record SearchReceivedSuceeded {
-		guid receivingId
+	record LookupReceivedSuceeded extends LookupReceived{
 		//all inventory received so far
-		array<ReceivingLineData> receivingLines
+		array<ReceivingLineData> receivedLines
 		//status of receiving
 		ReceivingStatus status
 	}
 	
-	record SearchReceivedFailed {
-		guid receivingId
+	record LookupReceivedFailed extends LookupReceived{
 		array<Error> errors
 	}
 	

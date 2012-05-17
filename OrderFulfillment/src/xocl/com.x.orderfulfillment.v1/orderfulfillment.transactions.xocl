@@ -95,15 +95,15 @@ package com.x.orderfulfillment.v1 {
         }
     }
     
-    transaction ShippingRateRequest response {
+    transaction LookupShippingRate response {
     	sender {
-    		message ShippingRateRequest{
+    		message LookupShippingRate{
     			timeouts(response=30s)   
     		}
     	}
     	receiver {
-        	success ShippingRateResponse   
-        	failure ShippingRateRequestFailed
+        	success LookupShippingRateSucceeded  
+        	failure LookupShippingRateFailed
         }
     }
     
@@ -138,15 +138,15 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-    transaction FulfillmentLookup query {
+    transaction LookupFulfillments query {
     	sender {
-    		message FulfillmentLookup{
+    		message LookupFulfillments{
     			timeouts(response=30s)   
     		}
     	}
     	receiver {
-        	success FulfillmentLookupSucceeded   
-        	failure FulfillmentLookupFailed
+        	success LookupFulfillmentsSucceeded   
+        	failure LookupFulfillmentsFailed
         }
     }
     
@@ -201,15 +201,15 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-    transaction SearchReceived query {
+    transaction LookupReceived query {
     	sender {
-    		message SearchReceived{
+    		message LookupReceived{
     			timeouts(response=30s)   
     		}
     	}
     	receiver {
-        	success SearchReceivedSuceeded
-        	failure SearchReceivedFailed
+        	success LookupReceivedSuceeded
+        	failure LookupReceivedFailed
         }
     }
     
