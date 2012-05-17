@@ -141,9 +141,7 @@ package com.x.marketplace.v3{
 					roles(Marketplace, OfferManager)
 				}
 			}
-	}
-	
-
+		}
 	}
 		
     process OfferPublicationWithProductData<Ebay>(Offer offer) {
@@ -236,7 +234,7 @@ package com.x.marketplace.v3{
 	
 	process OfferSearch<Ebay> {
 	    
-	    description "Offer Manager queries Sales Channel to reconcile offer data"
+	    description "Offer Manager queries the marketplace to reconcile offer data"
 		
 		roles( OfferManager, Marketplace)
 		
@@ -246,6 +244,20 @@ package com.x.marketplace.v3{
 				}	
 		}
 	}
+	
+	process TopSellingProductSearch {
+	    
+	    description "Metadata consumer queries the marketplace to retrieve the top selling products"
+		
+		roles( MarketplaceMetadataConsumer, Marketplace)
+		
+		workflow {
+				transaction SearchTopSellingProducts {
+						roles(MarketplaceMetadataConsumer, Marketplace)
+				}	
+		}
+	}
+	
     
     process AuthorizedAccountSearch (Authorization auth) {
 		description "A merchant retrieves their account information"
