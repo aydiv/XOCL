@@ -33,7 +33,7 @@ package com.x.core.v1
      */
 	record TransactionCancelled {
 	    Reason reason // The reason for cancellation.
-	    array<Error> errors // Any errors related to the cancellation.
+	    array<Error>? errors // Any errors related to the cancellation.
 	}
 	
     /*
