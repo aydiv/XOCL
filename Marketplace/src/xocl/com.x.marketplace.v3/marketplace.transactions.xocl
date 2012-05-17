@@ -367,4 +367,23 @@ package com.x.marketplace.v3{
         	}
         } 
     } 
+    transaction SearchTopSellingProducts query {
+        sender {
+        	message SearchTopSellingProducts {
+        		 timeouts(response=30s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success SearchTopSellingProductsSucceeded{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}      	        
+            failure SearchTopSellingProductsFailed{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+        } 
+    } 
+    
 }
