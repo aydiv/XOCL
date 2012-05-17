@@ -32,7 +32,54 @@ package com.x.orderfulfillment.v1 {
     	state Complete
     }
     
-    workflow ProcessThirdPartyFulfillment implements ProcessFulfillment{		
+   
+   
+	process ProcessFulfillment (Fulfillment fulfillment) {		
+	 description "An order is submitted for fulfillment and is either shipped or cancelled"
+	 
+	 	roles(OrderProcessor, DropshipProcessor, ThirdPartyFulfillmentProcessor)
+	 	postconditions {
+          	success(fulfillment[Fulfillment.Shipped], fulfillment[Fulfillment.Cancelled])          		
+        }
+     }
+	 	
+ 	 workflow ProcessDropshipFulfillment implements ProcessFulfillment{
+ 	 	
+ 	 	// An dropshipper is asked to fulfill all or parts of an order 	 	 
+ 	 	transaction ProcessDropshipFulfillment {
+        	roles(ProcessFulfillment.OrderProcessor, ProcessFulfillment.DropshipProcessor)
+    	}
+    	
+ 	    do(*) {	 	    		 	    	
+	 	 	any {
+	 	 			 	 		
+		 	 	transaction FulfillmentExpectedShipDateUpdated {
+	        		roles(ProcessFulfillment.DropshipProcessor, ProcessFulfillment.OrderProcessor)
+	        	}
+	        	
+	        	transaction DropShipSupplierComment {
+	        		roles(ProcessFulfillment.DropshipProcessor, ProcessFulfillment.OrderProcessor)
+	        	}
+	        	
+	        	transaction MerchantComment {
+	        		roles(ProcessFulfillment.OrderProcessor, ProcessFulfillment.DropshipProcessor)
+	        	}
+	        	
+    			transaction FulfillmentCancelled {
+        			roles(ProcessFulfillment.DropshipProcessor, ProcessFulfillment.OrderProcessor)
+        		}
+        	
+    			transaction FulfillmentShipped {
+    				roles(ProcessFulfillment.DropshipProcessor, ProcessFulfillment.OrderProcessor)
+    			}		        		
+        	}
+    	}        	
+    	transaction FulfillmentCompleted {
+	 		roles(ProcessFulfillment.DropshipProcessor, ProcessFulfillment.OrderProcessor)
+	 	}
+ 	}
+ 	
+ 	 workflow ProcessThirdPartyFulfillment implements ProcessFulfillment{		
  	 	
  	 	// A merchant wants to direct a fulfillment provider to ship all or part of an order to an end customer
  	 	transaction ProcessThirdPartyFulfillment {
@@ -77,50 +124,6 @@ package com.x.orderfulfillment.v1 {
 	 	}	 	
 	 	
 	 }
-   
-	process ProcessFulfillment (Fulfillment fulfillment) {
-		description "An order is submitted to dropshipper for fulfillment and is either shipped or cancelled"
-	 
-	 	roles(OrderProcessor, DropshipProcessor, ThirdPartyFulfillmentProcessor)
-	 	postconditions {
-          	success(fulfillment[Fulfillment.Shipped], fulfillment[Fulfillment.Cancelled])          		
-        }
-     }
-	 	
- 	 workflow ProcessDropshipFulfillment implements ProcessFulfillment{
- 	 	 
- 	 	transaction ProcessDropshipFulfillment {
-        	roles(ProcessFulfillment.OrderProcessor, ProcessFulfillment.DropshipProcessor)
-    	}
-    	
- 	    do(*) {	 	    		 	    	
-	 	 	any {
-	 	 			 	 		
-		 	 	transaction FulfillmentExpectedShipDateUpdated {
-	        		roles(ProcessFulfillment.DropshipProcessor, ProcessFulfillment.OrderProcessor)
-	        	}
-	        	
-	        	transaction DropShipSupplierComment {
-	        		roles(ProcessFulfillment.DropshipProcessor, ProcessFulfillment.OrderProcessor)
-	        	}
-	        	
-	        	transaction MerchantComment {
-	        		roles(ProcessFulfillment.OrderProcessor, ProcessFulfillment.DropshipProcessor)
-	        	}
-	        	
-    			transaction FulfillmentCancelled {
-        			roles(ProcessFulfillment.DropshipProcessor, ProcessFulfillment.OrderProcessor)
-        		}
-        	
-    			transaction FulfillmentShipped {
-    				roles(ProcessFulfillment.DropshipProcessor, ProcessFulfillment.OrderProcessor)
-    			}		        		
-        	}
-    	}        	
-    	transaction FulfillmentCompleted {
-	 		roles(ProcessFulfillment.DropshipProcessor, ProcessFulfillment.OrderProcessor)
-	 	}
- 	}
  	
  	
 	 	
