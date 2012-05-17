@@ -35,7 +35,7 @@ package com.x.orderfulfillment.v1 {
     workflow ProcessThirdPartyFulfillment implements ProcessFulfillment{		
  	 	
  	 	// A merchant wants to direct a fulfillment provider to ship all or part of an order to an end customer
- 	 	transaction ProcessFulfillment<ProcessFulfillment.ThirdParty> {
+ 	 	transaction ProcessThirdPartyFulfillment {
         	roles(ProcessFulfillment.OrderProcessor, ProcessFulfillment.ThirdPartyFulfillmentProcessor)
     	}
     	
@@ -78,7 +78,7 @@ package com.x.orderfulfillment.v1 {
 	 	
 	 }
    
-	process ProcessFulfillment<Dropship, ThirdParty> (Fulfillment fulfillment) {
+	process ProcessFulfillment (Fulfillment fulfillment) {
 		description "An order is submitted to dropshipper for fulfillment and is either shipped or cancelled"
 	 
 	 	roles(OrderProcessor, DropshipProcessor, ThirdPartyFulfillmentProcessor)
@@ -89,7 +89,7 @@ package com.x.orderfulfillment.v1 {
 	 	
  	 workflow ProcessDropshipFulfillment implements ProcessFulfillment{
  	 	 
- 	 	transaction ProcessFulfillment<ProcessFulfillment.Dropship> {
+ 	 	transaction ProcessDropshipFulfillment {
         	roles(ProcessFulfillment.OrderProcessor, ProcessFulfillment.DropshipProcessor)
     	}
     	
