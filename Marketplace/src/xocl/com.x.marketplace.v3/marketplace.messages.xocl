@@ -461,7 +461,6 @@ package com.x.marketplace.v3{
 		string productId "An Id for the product defined by the marketplace"
 		string productTitle "The title of this product"
 		int rank "a number between 1 and n where 1 is the highest ranking product, the ranking determined by the marketplace";
-		//string catalogName;
 		string? imageURL "A product may or may not have an image";		
 		CurrencyAmount? minPrice "Minimum price of this product"; 
 		CurrencyAmount? maxPrice "Maximum price of this product";
