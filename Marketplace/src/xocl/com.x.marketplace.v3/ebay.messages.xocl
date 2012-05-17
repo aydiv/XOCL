@@ -141,8 +141,18 @@
 	}
 	
 	record AccountProfile{
-		array<string>? domesticShippingDiscountProfileIds "The ids of the profile already created on ebay for domestic shipping discounts"; 
-		array<string>? internationalShippingDiscountProfileIds "The ids of the profile already created on ebay for international shipping discounts.";
+		array<ShippingDiscountProfile>? shippingDiscountProfiles;
+	}
+	
+	enum ShippingDiscountProfileType{
+		FLAT
+		CALCULATED
+	}
+	
+	record ShippingDiscountProfile{
+		string shippingDiscountProfileId;
+		string titleProfile "The user's title for the profile"
+		ShippingDiscountProfileType type;
 	}
 	
 	record LookupAccountProfile {
@@ -165,6 +175,15 @@
     record SearchEbayOffersSucceeded{	
 		array<EbayOffer> offers;
 		SearchOffers request;
+	}
+	
+	record EbayTopSellingProduct extends TopSellingProduct{
+		string? catalogName "The Ebay Catalog that this product belongs to";
+	}
+
+	record SearchEbayTopSellingProductsSucceeded{
+		array<EbayTopSellingProduct> products "The products are returned in order from highest sales rank to lowest";
+		SearchTopSellingProducts request;
 	}
 	
 }

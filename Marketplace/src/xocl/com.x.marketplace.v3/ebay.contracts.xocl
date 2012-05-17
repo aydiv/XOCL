@@ -23,9 +23,11 @@ package com.x.marketplace.v3{
 	   		OfferSearch.Marketplace<Ebay>
 	   		AuthorizedAccountSearch.MarketplaceMetadataProvider
 	   		AuthorizationRevoke.MarketplaceMetadataProvider
+	   		TopSellingProductSearch.Marketplace<Ebay>
 	   		
 	   		//Ebay roles
 	        StoreLookup.MarketplaceMarketplaceMetadataProvider
+			AccountProfileLookup.MarketplaceMarketplaceMetadataProvider
 	        
 	   		//Order roles
 	   		ProcessSalesChannelOrder.SalesChannel<MarketplaceOrder> 

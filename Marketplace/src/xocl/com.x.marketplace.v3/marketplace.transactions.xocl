@@ -367,7 +367,8 @@ package com.x.marketplace.v3{
         	}
         } 
     } 
-    transaction SearchTopSellingProducts query {
+    
+    transaction SearchTopSellingProducts<Ebay> query {
         sender {
         	message SearchTopSellingProducts {
         		 timeouts(response=30s)
@@ -378,7 +379,11 @@ package com.x.marketplace.v3{
         	success SearchTopSellingProductsSucceeded{
         		timeouts(receipt=30s)   		
         		retries=3
-        	}      	        
+        	} 
+        	success <Ebay>SearchEbayTopSellingProductsSucceeded{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}       	        
             failure SearchTopSellingProductsFailed{
         		timeouts(receipt=30s)   		
         		retries=3

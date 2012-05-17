@@ -245,14 +245,14 @@ package com.x.marketplace.v3{
 		}
 	}
 	
-	process TopSellingProductSearch {
+	process TopSellingProductSearch<Ebay> {
 	    
 	    description "Metadata consumer queries the marketplace to retrieve the top selling products"
 		
 		roles( MarketplaceMetadataConsumer, Marketplace)
 		
 		workflow {
-				transaction SearchTopSellingProducts {
+				transaction SearchTopSellingProducts<Ebay> {
 						roles(MarketplaceMetadataConsumer, Marketplace)
 				}	
 		}

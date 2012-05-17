@@ -24,6 +24,7 @@ package com.x.marketplace.v3{
 	   		OfferSearch.Marketplace
 	   		AuthorizedAccountSearch.MarketplaceMetadataProvider
 	   		AuthorizationRevoke.MarketplaceMetadataProvider
+	   		TopSellingProductSearch.Marketplace
 	   
 	   		//Order roles
 	   		ProcessSalesChannelOrder.SalesChannel<MarketplaceOrder> 
