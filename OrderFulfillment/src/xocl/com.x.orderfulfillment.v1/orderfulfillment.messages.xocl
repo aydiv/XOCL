@@ -380,8 +380,7 @@ package com.x.orderfulfillment.v1 {
 		guid fulfillmentId
 		/** Same as sales order number */
 		string orderNumber
-		/** RMA */
-		string returnOrderNumber
+		string? returnOrderNumber
 		/* A collection containing the items and quantities that were returned. It may
 		 * not include all items for a fulfillment.*/
 		array<ReturnLineData> returnedItems
