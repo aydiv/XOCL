@@ -6,7 +6,6 @@ package com.x.ordermanagement.v2 {
 	import com.x.customer.v1.*
 	
 	entity Order {
-    	state Created[Submitted]
     	state Submitted[Cancelled, Shipped]
     	state Shipped[Cancelled, Returned]
     	state Cancelled
@@ -29,7 +28,7 @@ package com.x.ordermanagement.v2 {
     }
     
     // Process orders that originate from a sales channel
-    process ProcessSalesChannelOrder<MarketplaceOrder> {
+    process ProcessSalesChannelOrder<MarketplaceOrder>(Order order) {
     	
         description "An order is submitted for processing and is adjusted, shipped, or cancelled"
         
@@ -42,51 +41,62 @@ package com.x.ordermanagement.v2 {
         		roles(SalesChannel, OrderProcessor)
         	}
         	
+	        any {
+	        	workflow CustomerUpsert {
+	    			roles(OrderProcessor, CustomerManager)
+	    		}
+	    	}
+	    	
    			// Notify observers that an order was created
        	    transaction OrderCreated {
         		roles(SalesChannel, OrderObserver)
        		}
        		
-	        any {
-	        	workflow CustomerUpsert {
-	    			roles(OrderProcessor, CustomerManager)
-	    		}
-	    		
-	    		transaction ShippingInformationUpdate<MarketplaceOrder> {
-	    			roles(OrderProcessor, SalesChannel)
-	    		}
-	    		
-	    		transaction OrderAdjust {
-	    			roles(OrderProcessor, OrderObserver)
-	    		}
-	    	}
 	    	
-	        one {
-	        	all {  
-		        	// An order processor updates shipment tracking information for an order
-		        	transaction OrderShipped<MarketplaceOrder> {
-		        		roles(OrderProcessor, SalesChannel)
-		        	}
-		        	
-		        	transaction ObserveOrderShipped<MarketplaceOrder> {
-		        		roles(OrderProcessor, OrderObserver)
-		        	}
-		        }
-        	
-	        	do {
-		        	any {
-						// A canceller asks the processer to cancel its order 
-						transaction CancelOrder<MarketplaceOrder> {
-						   	roles(SalesChannel, OrderProcessor)
+	    	do (!order[Order.Cancelled] && !order[Order.Shipped] && !order[Order.Returned]) {
+	    		any {	
+		    		transaction ShippingInformationUpdate<MarketplaceOrder> {
+		    			roles(OrderProcessor, SalesChannel)
+		    		}
+		    		
+		    		transaction OrderAdjust {
+		    			roles(OrderProcessor, OrderObserver)
+		    		}
+		    		
+		    		transaction OrderReturn {
+		    			roles(OrderProcessor, OrderObserver)
+		    		}
+		    	
+		    		transaction PartialOrderReturn {
+		    			roles(OrderProcessor, OrderObserver)
+		    		}
+		    		
+		        	all {  
+			        	// An order processor updates shipment tracking information for an order
+			        	transaction OrderShipped<MarketplaceOrder> {
+			        		roles(OrderProcessor, SalesChannel)
+			        	}
+			        	
+			        	transaction ObserveOrderShipped<MarketplaceOrder> {
+			        		roles(OrderProcessor, OrderObserver)
+			        	}
+			        }
+	        	
+		        	do {
+			        	any {
+							// A canceller asks the processer to cancel its order 
+							transaction CancelOrder<MarketplaceOrder> {
+							   	roles(SalesChannel, OrderProcessor)
+							}
+						}
+						
+						// The order processor informs observers that an order was cancelled
+						transaction OrderCancelled<MarketplaceOrder> {
+						   	roles(OrderProcessor, OrderObserver)
 						}
 					}
-					
-					// The order processor informs observers that an order was cancelled
-					transaction OrderCancelled<MarketplaceOrder> {
-					   	roles(OrderProcessor, OrderObserver)
-					}
 				}
-			}	
+			}
 		}
     }
 }

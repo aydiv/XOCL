@@ -29,7 +29,9 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	// Update the shipping tracking information for an order
-	transaction OrderShipped<MarketplaceOrder> notify {
+	transaction OrderShipped<MarketplaceOrder>(Order order) notify {
+		preconditions(order[Order.Submitted])
+		
 		sender
 		{
 			message OrderShipped {
@@ -39,8 +41,12 @@ package com.x.ordermanagement.v2 {
             message<MarketplaceOrder> MarketplaceOrderShipped {
             	timeouts(receipt=30s, validation=3m)
             	retries=3
-            }
-		}		
+            }            
+		}
+		
+		postconditions {
+			success(order[Order.Shipped])
+		}
 	}
 	
 	// Notify observers that the order has shipped
@@ -60,6 +66,8 @@ package com.x.ordermanagement.v2 {
     
     // Cancel the content of an order
 	transaction CancelOrder<MarketplaceOrder>(Order order) response {
+		preconditions(order[Order.Submitted])
+		
         sender {
         	message CancelOrder {
         		timeouts(receipt=30s, response=3m)     		
@@ -133,15 +141,23 @@ package com.x.ordermanagement.v2 {
         }
     }
     
-    transaction OrderReturn inform {
+    transaction OrderReturn(Order order) inform {
     	sender {
     		message OrderReturn
     	}
+    	
+    	postconditions {
+    		success(order[Order.Returned])
+    	}
     }
     
-    transaction PartialOrderReturn inform {
+    transaction PartialOrderReturn(Order order) inform {
     	sender {
     		message PartialOrderReturn
+    	}
+    	
+    	postconditions {
+    		success(order[Order.Returned])
     	}
     }
     
