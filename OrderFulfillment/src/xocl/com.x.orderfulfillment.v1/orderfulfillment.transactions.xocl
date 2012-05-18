@@ -227,38 +227,38 @@ package com.x.orderfulfillment.v1 {
     }
     
      //Notifies of a return advance shipping notice that needs to be processed
-     transaction ProcessReturnsASN notify {
+     transaction ProcessReturnAdvanceShipmentNotice notify {
     	sender{
-    		message ProcessReturnsASN{
+    		message ProcessReturnAdvanceShipmentNotice{
     			timeouts(receipt=30s, validation=3m) 
     		}
     	}
     }
     
     //Notifies of a return ASN previously sent that needs to be updated
-    transaction UpdateReturnsASN (Returns returns) notify {
+    transaction UpdateReturnAdvanceShipmentNotice (Returns returns) notify {
     	preconditions (returns[Returns.Expected])
     	sender{
-    		message UpdateReturnsASN{
+    		message UpdateReturnAdvanceShipmentNotice{
     			timeouts(receipt=30s, validation=3m) 
     		}
     	}
     }
     
     //Notifies of a return ASN previously sent that needs to be cancelled
-    transaction CancelReturnsASN (Returns returns) notify {
+    transaction CancelReturnAdvanceShipmentNotice (Returns returns) notify {
     	preconditions (returns[Returns.Expected])
     	sender{
-    		message CancelReturnsASN{
+    		message CancelReturnAdvanceShipmentNotice{
     			timeouts(receipt=30s, validation=3m) 
     		}
     	}
     }
     
     //Notifies that product was returned with or without ASN
-    transaction ReturnsReceived notify {
+    transaction ReturnReceived notify {
     	sender{
-    		message ReturnsReceived{
+    		message ReturnReceived{
     			timeouts(receipt=30s, validation=3m) 
     		}
     	}

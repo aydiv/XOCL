@@ -151,7 +151,7 @@ package com.x.orderfulfillment.v1 {
 	 
 	 
 	 process ProcessReceiving (Receiving receiving) {
-	 	description "A merchant advises a fulfillment provider of a forthcoming inventory replenishment (a.k.a. receiving). On receipt the inventory is put away and deemed complete unless it is cancelled"
+	 	description "A merchant notifies a fulfillment provider of a future inventory receipt. The fulfillment provider notifies when the receipt is processed (received, put away)"
 	 	roles(ReceivingInformationProvider, ReceivingProcessor)
 	 	workflow {
 		 	transaction ProcessReceiving {
@@ -192,7 +192,7 @@ package com.x.orderfulfillment.v1 {
 	 //Represents the state machine for returns initated for fulfillments that are completed
 	 entity Returns {
 	 	//Beginning state. Triggered when return ASN is received
-	  	state Expected [Cancelled, Received, Complete]
+	  	state Expected [Cancelled, Received]
     	//reached if after a ASN was sent, the return ASN is cancelled
     	state Cancelled [Complete]
     	//reached if the return is received with ASN or some return is received unexpectedly
@@ -203,26 +203,26 @@ package com.x.orderfulfillment.v1 {
 	 }
 	 
 	  process ProcessReturns (Returns returns) {
-	  	description "Ususally a return is initiated by customer/merchant on behalf of customer and return ASN is sent. The fulfillment provider notifies when the return is received"
+	  	description "Usually a return is initiated by customer/merchant on behalf of customer and return ASN is sent. The fulfillment provider notifies when the return is processed (received, disposition - put away or discarded)"
 	  	roles(ReturnsInformationProvider, ReturnsProcessor)
 	 	workflow {
 	 		//An end customer (or a merchant acting on their behalf) wishes to arrange for a return of all or part of a previously fulfilled shipment.
-	 		transaction ProcessReturnsASN {
+	 		transaction ProcessReturnAdvanceShipmentNotice {
 	 			roles(ReturnsInformationProvider, ReturnsProcessor)
 	 		}
 	 		do (!returns[Returns.Complete]) {	
 	 			any {
 	 				noop
-		 			transaction UpdateReturnsASN {
+		 			transaction UpdateReturnAdvanceShipmentNotice {
 		 				roles(ReturnsInformationProvider, ReturnsProcessor)
 		 			}
 		 		 }
 		 		one {
-		 			transaction CancelReturnsASN {
+		 			transaction CancelReturnAdvanceShipmentNotice {
 		 				roles(ReturnsInformationProvider, ReturnsProcessor)
 		 		    }
 		 			
-		 			transaction ReturnsReceived {
+		 			transaction ReturnReceived {
 		 				roles(ReturnsProcessor, ReturnsInformationProvider)
 		 			}
 		 		}

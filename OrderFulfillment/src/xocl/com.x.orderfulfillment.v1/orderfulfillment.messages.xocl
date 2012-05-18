@@ -365,66 +365,66 @@ package com.x.orderfulfillment.v1 {
 		string? cancelMessage
 	}
 	
-	enum ReturnedInventoryCondition {
+	enum ReturnItemsCondition {
 		DAMAGED
 		GOOD
 	}
 	
-	record ReturnsData {
-		/** identifier of fulfillment that is being returned */
-		guid fulfillmentId
-		string orderNumber
-		string returnOrderNumber
-		/** details of supplier */
-		string? supplierId
-		string? supplierName
-		
-		/* A collectiong containing the items and quantities that were returned. It may
-		 * not include all items for a fulfillment.*/
-		array<ReturnsLineData> returnedItems
-		string customerReturnReason
+	record Return {
+		guid returnId
+		ReturnData returnDetails
 	}
 	
-	record ReturnsLineData {
+	record ReturnData {
+		/** identifier of fulfillment that is being returned */
+		guid fulfillmentId
+		/** Same as sales order number */
+		string orderNumber
+		/** RMA */
+		string returnOrderNumber
+		/* A collection containing the items and quantities that were returned. It may
+		 * not include all items for a fulfillment.*/
+		array<ReturnLineData> returnedItems
+		string customerReturnReason
+		ReturnItemsCondition condition
+	}
+	
+	record ReturnLineData {
 		/* unique id for the returned item */
 		string ReturntLineId		
 		/* The ordered index of this item (also referred to as order line number) */
 		string? itemId
 		string productSku
 		float quantity
-		string itemDescription
-		TrackingDetail? trackingDetail
-		string? shippingMethod		
-		string? shippingMessage	
-		ReturnedInventoryCondition condition
+		string itemDescription		
 		/* Reference to the shipment that was used to ship this item */
 		string shipmentId
 	}
 	
-	record ReturnsReceived {
-		ReturnsData returnedData
+	record ReturnReceived {
+		ReturnData returnedData
 		datetime dateReceived
 	}
 	
-	record ReturnsASN {
-		ReturnsData returnedData
+	record ReturnAdvanceShipmentNotice {
+		ReturnData returnedData
 		DateRange? expectedDeliveryDate
 	}
 	
-	record ProcessReturnsASN {
-		ReturnsASN asn
+	record ProcessReturnAdvanceShipmentNotice {
+		ReturnAdvanceShipmentNotice asn
 	}
 	
-	record UpdateReturnsASN {
-		ReturnsASN asn
+	record UpdateReturnAdvanceShipmentNotice {
+		ReturnAdvanceShipmentNotice asn
 	}
 	
-	record CancelReturnsASN {
-		ReturnsASN asn
+	record CancelReturnAdvanceShipmentNotice {
+		ReturnAdvanceShipmentNotice asn
 	}
 	
 	record ReturnsProcessCompleted {
-		ReturnsData returnedData
+		ReturnData returnedData
 	}
 		
 }
