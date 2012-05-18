@@ -422,7 +422,7 @@ package com.x.orderfulfillment.v1 {
 		ReturnAdvanceShipmentNotice asn
 	}
 	
-	record ReturnsProcessCompleted {
+	record ReturnProcessCompleted {
 		ReturnData returnedData
 	}
 		

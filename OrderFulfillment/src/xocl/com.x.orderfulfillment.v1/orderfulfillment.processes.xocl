@@ -190,7 +190,7 @@ package com.x.orderfulfillment.v1 {
 	 }
 	 
 	 //Represents the state machine for returns initated for fulfillments that are completed
-	 entity Returns {
+	 entity Return {
 	 	//Beginning state. Triggered when return ASN is received
 	  	state Expected [Cancelled, Received]
     	//reached if after a ASN was sent, the return ASN is cancelled
@@ -202,7 +202,7 @@ package com.x.orderfulfillment.v1 {
     	state Complete
 	 }
 	 
-	  process ProcessReturns (Returns returns) {
+	  process ProcessReturn (Return return) {
 	  	description "Usually a return is initiated by customer/merchant on behalf of customer and return ASN is sent. The fulfillment provider notifies when the return is processed (received, disposition - put away or discarded)"
 	  	roles(ReturnsInformationProvider, ReturnsProcessor)
 	 	workflow {
@@ -210,7 +210,7 @@ package com.x.orderfulfillment.v1 {
 	 		transaction ProcessReturnAdvanceShipmentNotice {
 	 			roles(ReturnsInformationProvider, ReturnsProcessor)
 	 		}
-	 		do (!returns[Returns.Complete]) {	
+	 		do (!return[Return.Complete]) {	
 	 			any {
 	 				noop
 		 			transaction UpdateReturnAdvanceShipmentNotice {
@@ -227,14 +227,14 @@ package com.x.orderfulfillment.v1 {
 		 			}
 		 		}
 		 			
-		 		transaction ReturnsProcessCompleted {
+		 		transaction ReturnProcessCompleted {
 		 			roles(ReturnsProcessor, ReturnsInformationProvider)
 		 		}
 	 				 			
 	 		}	 		
 	 	}
 	 	postconditions {
-          	success(returns[Returns.Complete])          		
+          	success(return[Return.Complete])          		
         }
 	  }
 	

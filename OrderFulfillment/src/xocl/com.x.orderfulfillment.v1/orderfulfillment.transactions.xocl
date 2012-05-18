@@ -236,8 +236,8 @@ package com.x.orderfulfillment.v1 {
     }
     
     //Notifies of a return ASN previously sent that needs to be updated
-    transaction UpdateReturnAdvanceShipmentNotice (Returns returns) notify {
-    	preconditions (returns[Returns.Expected])
+    transaction UpdateReturnAdvanceShipmentNotice (Return returns) notify {
+    	preconditions (returns[Return.Expected])
     	sender{
     		message UpdateReturnAdvanceShipmentNotice{
     			timeouts(receipt=30s, validation=3m) 
@@ -246,8 +246,8 @@ package com.x.orderfulfillment.v1 {
     }
     
     //Notifies of a return ASN previously sent that needs to be cancelled
-    transaction CancelReturnAdvanceShipmentNotice (Returns returns) notify {
-    	preconditions (returns[Returns.Expected])
+    transaction CancelReturnAdvanceShipmentNotice (Return returns) notify {
+    	preconditions (returns[Return.Expected])
     	sender{
     		message CancelReturnAdvanceShipmentNotice{
     			timeouts(receipt=30s, validation=3m) 
@@ -265,15 +265,15 @@ package com.x.orderfulfillment.v1 {
     }
     
     //Notifies that returns processing is complete
-    transaction ReturnsProcessCompleted(Returns returns) notify {
-    	preconditions (returns[Returns.Cancelled], returns[Returns.Received])
+    transaction ReturnProcessCompleted(Return returns) notify {
+    	preconditions (returns[Return.Cancelled], returns[Return.Received])
     	sender{
-    		message ReturnsProcessCompleted{
+    		message ReturnProcessCompleted{
     			timeouts(receipt=30s, validation=3m) 
     		}
     	}
     	postconditions {
-          	success(returns[Returns.Complete])          		
+          	success(returns[Return.Complete])          		
         }
     }
 
