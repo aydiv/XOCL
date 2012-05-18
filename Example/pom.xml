@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.x.ocl</groupId>
 		<artifactId>xocl-contracts</artifactId>
-		<version>0.0.9</version>
+		<version>0.0.10-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>example</artifactId>
@@ -12,7 +12,7 @@
 		An example xocl project
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/tags/xocl-contracts-0.0.9/Example</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/Example</connection>
 	</scm>
 
 	<repositories>
