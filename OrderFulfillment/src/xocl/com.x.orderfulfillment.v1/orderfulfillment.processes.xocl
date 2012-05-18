@@ -13,9 +13,11 @@ package com.x.orderfulfillment.v1 {
         // reached when all of the uncancelled/unshipped items are released from hold
         state Released [Shipped, Cancelled]
         // reached when all the uncancelled items get shipped
-        state Shipped
+        state Shipped [Complete]
         // reached when all items get cancelled
-        state Cancelled
+        state Cancelled [Complete]
+        // reached if all of the uncancelled items are shipped or cancelled
+        state Complete
     }
     
     // Entity that represents the various states of inventory that is expected to be received <a.k.a receiving>
@@ -31,101 +33,109 @@ package com.x.orderfulfillment.v1 {
     	//reached if all of the uncancelled receiving is putaway or cancelled
     	state Complete
     }
-    
    
-   
-	process ProcessFulfillment (Fulfillment fulfillment) {		
-	 description "An order is submitted for fulfillment and is either shipped or cancelled"
+	process ProcessDropshipFulfillment (Fulfillment fulfillment) {		
+	 description "An order is submitted to dropshipper for fulfillment and is either shipped or cancelled"
 	 
-	 	roles(OrderProcessor, DropshipProcessor, ThirdPartyFulfillmentProcessor)
+	 	roles(OrderProcessor, DropshipProcessor)
+        
+	        workflow {
+	 	 	
+	 	 	// An dropshipper is asked to fulfill all or parts of an order 	 	 
+	 	 	transaction ProcessDropshipFulfillment {
+	        	roles(OrderProcessor, DropshipProcessor)
+	    	}
+	    	
+	 	    do(!fulfillment[Fulfillment.Complete]) {	 	    		 	    	
+		 	 	any {
+		 	 			 	 		
+			 	 	transaction FulfillmentExpectedShipDateUpdated {
+		        		roles(DropshipProcessor, OrderProcessor)
+		        	}
+		        	
+		        	transaction DropShipSupplierComment {
+		        		roles(DropshipProcessor, OrderProcessor)
+		        	}
+		        	
+		        	transaction MerchantComment {
+		        		roles(OrderProcessor, DropshipProcessor)
+		        	}
+		        	//A supplier may cancel all/parts of the fulfillment
+	    			transaction FulfillmentCancelled {
+	        			roles(DropshipProcessor, OrderProcessor)
+	        		}
+	        	
+	    			transaction FulfillmentShipped {
+	    				roles(DropshipProcessor, OrderProcessor)
+	    			}
+	    			
+	    			transaction FulfillmentCompleted {
+			 			roles(DropshipProcessor, OrderProcessor)
+			 		}	        		
+	        	} 		
+	    	}        	
+	    	
+	 	}
 	 	postconditions {
-          	success(fulfillment[Fulfillment.Shipped], fulfillment[Fulfillment.Cancelled])          		
+          	success(fulfillment[Fulfillment.Complete])          		
         }
      }
 	 	
- 	 workflow ProcessDropshipFulfillment implements ProcessFulfillment{
+ 	 
+ 	process ProcessThirdPartyFulfillment (Fulfillment fulfillment) {		
+	 description "An order is submitted to third party for fulfillment and is either shipped or cancelled"
+	 
+	 	roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
+ 		 workflow{		
  	 	
- 	 	// An dropshipper is asked to fulfill all or parts of an order 	 	 
- 	 	transaction ProcessDropshipFulfillment {
-        	roles(ProcessFulfillment.OrderProcessor, ProcessFulfillment.DropshipProcessor)
+	 	 	// A merchant wants to direct a fulfillment provider to ship all or part of an order to an end customer
+	 	 	transaction ProcessThirdPartyFulfillment {
+	        	roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
+	    	}
+	    	
+	 	    do(!fulfillment[Fulfillment.Complete]) {	 	    		 	    	
+		 	 	any {		 	 			 		
+			 	 	//A merchant wants to hold a shipment to prevent it from shipping temporarily
+			 	 	transaction HoldFulfillment {
+			 	 		roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
+			 	 	}
+			 	 	
+			 	 	//A merchant wants to release a shipment previously held
+			 	 	transaction ReleaseFulfillment {
+			 	 		roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
+			 	 	}
+		        	
+	    			//A merchant may choose to cancel fulfillment in progress		
+	    			transaction CancelFulfillment {
+	        			roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
+	        		}
+	        		
+	        		//A merchant may choose to lookup all fulfillments for an order
+	        		transaction LookupFulfillments {
+	        			roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
+	        		}
+	        		
+	        		//A merchant is informed of changes to a fulfillment’s status as they occur, such as when the order is picked, ready for shipment, or tendered to a shipping carrier
+	        		transaction FulfillmentInformationUpdated {
+	        			roles(ThirdPartyFulfillmentProcessor, OrderProcessor)
+	        		}
+	        	
+	    			//merchant is notified as shipments for the fulfillment order get shipped
+	        		transaction FulfillmentShipped {
+	    				roles(ThirdPartyFulfillmentProcessor, OrderProcessor)
+	    			}	
+	    			
+	    			
+	    			transaction FulfillmentCompleted {
+		 				roles(ThirdPartyFulfillmentProcessor, OrderProcessor)		 			
+	    			}	        		
+	        	}	        	 
+    		}  	
     	}
-    	
- 	    do(*) {	 	    		 	    	
-	 	 	any {
-	 	 			 	 		
-		 	 	transaction FulfillmentExpectedShipDateUpdated {
-	        		roles(ProcessFulfillment.DropshipProcessor, ProcessFulfillment.OrderProcessor)
-	        	}
-	        	
-	        	transaction DropShipSupplierComment {
-	        		roles(ProcessFulfillment.DropshipProcessor, ProcessFulfillment.OrderProcessor)
-	        	}
-	        	
-	        	transaction MerchantComment {
-	        		roles(ProcessFulfillment.OrderProcessor, ProcessFulfillment.DropshipProcessor)
-	        	}
-	        	
-    			transaction FulfillmentCancelled {
-        			roles(ProcessFulfillment.DropshipProcessor, ProcessFulfillment.OrderProcessor)
-        		}
-        	
-    			transaction FulfillmentShipped {
-    				roles(ProcessFulfillment.DropshipProcessor, ProcessFulfillment.OrderProcessor)
-    			}		        		
-        	}
-    	}        	
-    	transaction FulfillmentCompleted {
-	 		roles(ProcessFulfillment.DropshipProcessor, ProcessFulfillment.OrderProcessor)
-	 	}
- 	}
- 	
- 	 workflow ProcessThirdPartyFulfillment implements ProcessFulfillment{		
- 	 	
- 	 	// A merchant wants to direct a fulfillment provider to ship all or part of an order to an end customer
- 	 	transaction ProcessThirdPartyFulfillment {
-        	roles(ProcessFulfillment.OrderProcessor, ProcessFulfillment.ThirdPartyFulfillmentProcessor)
-    	}
-    	
- 	    do(*) {	 	    		 	    	
-	 	 	any {		 	 			 		
-		 	 	//A merchant wants to hold a shipment to prevent it from shipping temporarily
-		 	 	transaction HoldFulfillment {
-		 	 		roles(ProcessFulfillment.OrderProcessor, ProcessFulfillment.ThirdPartyFulfillmentProcessor)
-		 	 	}
-		 	 	
-		 	 	//A merchant wants to release a shipment previously held
-		 	 	transaction ReleaseFulfillment {
-		 	 		roles(ProcessFulfillment.OrderProcessor, ProcessFulfillment.ThirdPartyFulfillmentProcessor)
-		 	 	}
-	        	
-    			//A merchant may choose to cancel fulfillment in progress		
-    			transaction CancelFulfillment {
-        			roles(ProcessFulfillment.OrderProcessor, ProcessFulfillment.ThirdPartyFulfillmentProcessor)
-        		}
-        		
-        		//A merchant may choose to lookup all fulfillments for an order
-        		transaction LookupFulfillments {
-        			roles(ProcessFulfillment.OrderProcessor, ProcessFulfillment.ThirdPartyFulfillmentProcessor)
-        		}
-        		
-        		//A merchant is informed of changes to a fulfillment’s status as they occur, such as when the order is picked, ready for shipment, or tendered to a shipping carrier
-        		transaction FulfillmentInformationUpdated {
-        			roles(ProcessFulfillment.ThirdPartyFulfillmentProcessor, ProcessFulfillment.OrderProcessor)
-        		}
-        	
-    			//merchant is notified as shipments for the fulfillment order get shipped
-        		transaction FulfillmentShipped {
-    				roles(ProcessFulfillment.ThirdPartyFulfillmentProcessor, ProcessFulfillment.OrderProcessor)
-    			}		        		
-        	}
-    	}        	
-    	transaction FulfillmentCompleted {
-	 		roles(ProcessFulfillment.ThirdPartyFulfillmentProcessor, ProcessFulfillment.OrderProcessor)
-	 	}	 	
-	 	
+    	postconditions {
+          	success(fulfillment[Fulfillment.Complete])   
+    	} 	
 	 }
- 	
- 	
 	 	
 	 
 	 
@@ -140,8 +150,6 @@ package com.x.orderfulfillment.v1 {
 	 }
 	 
 	 
-	 
-	 
 	 process ProcessReceiving (Receiving receiving) {
 	 	description "A merchant advises a fulfillment provider of a forthcoming inventory replenishment (a.k.a. receiving). On receipt the inventory is put away and deemed complete unless it is cancelled"
 	 	roles(ReceivingInformationProvider, ReceivingProcessor)
@@ -149,10 +157,11 @@ package com.x.orderfulfillment.v1 {
 		 	transaction ProcessReceiving {
 		 		roles(ReceivingInformationProvider, ReceivingProcessor)
 		 	}
-		 	do(*) {	 	 
+		 	
+		 	do(!receiving[Receiving.Complete]) {	 	 
 		 		any {
 		 		   //A merchant wants to give updated information about a previously communicated receiving
-		 		   //such as expected date, carrier being used, waybill/tracking number, or manifest/packing list information
+		 		   //such as expected date, carrier being used, tracking number, or packaging information
 			 		transaction UpdateReceiving {
 			 			roles (ReceivingInformationProvider, ReceivingProcessor)
 			 		}
@@ -160,27 +169,73 @@ package com.x.orderfulfillment.v1 {
 			 		transaction LookupReceivings {
 			 			roles (ReceivingInformationProvider, ReceivingProcessor)
 			 		}
-			 		//Notifies when inventory is delivered or status updates like delivered/put away etc
+			 		//Notification to merchant when inventory is delivered or put away
 			 		transaction ReceivingInventoryStatusUpdated {
-			 			roles (ReceivingInformationProvider, ReceivingInformationProvider)
+			 			roles (ReceivingProcessor, ReceivingInformationProvider)
 			 		}
 			 		//A merchant wants to cancel receiving
 			 		transaction CancelReceiving{
 			 			roles (ReceivingInformationProvider, ReceivingProcessor)			 			
 			 		}
-			 		
-		 		}
-		 	}
-		 	//Merchant is informed that receiving is completed
-		 	transaction ReceivingCompleted {
-		 		roles (ReceivingProcessor, ReceivingInformationProvider)
-		 	}
-		 		
+			 		//Merchant is informed that receiving is completed
+			 		transaction ReceivingCompleted {
+			 			roles (ReceivingProcessor, ReceivingInformationProvider)
+			 		}			 		
+		 		}		 		
+		 	}		 		
 		 }
 		 postconditions {
-          	success(receiving[Receiving.Complete], receiving[Receiving.Cancelled])          		
-        }	 	
-	 
+          	success(receiving[Receiving.Complete])          		
+        }		 
 	 }
+	 
+	 //Represents the state machine for returns initated for fulfillments that are completed
+	 entity Returns {
+	 	//Beginning state. Triggered when return ASN is received
+	  	state Expected [Cancelled, Received, Complete]
+    	//reached if after a ASN was sent, the return ASN is cancelled
+    	state Cancelled [Complete]
+    	//reached if the return is received with ASN or some return is received unexpectedly
+    	// It is possible to begin with this state
+    	state Received [Complete]
+    	//reached if entire return is in Cancelled or Received state
+    	state Complete
+	 }
+	 
+	  process ProcessReturns (Returns returns) {
+	  	description "Ususally a return is initiated by customer/merchant on behalf of customer and return ASN is sent. The fulfillment provider notifies when the return is received"
+	  	roles(ReturnsInformationProvider, ReturnsProcessor)
+	 	workflow {
+	 		//An end customer (or a merchant acting on their behalf) wishes to arrange for a return of all or part of a previously fulfilled shipment.
+	 		transaction ProcessReturnsASN {
+	 			roles(ReturnsInformationProvider, ReturnsProcessor)
+	 		}
+	 		do (!returns[Returns.Complete]) {	
+	 			any {
+	 				noop
+		 			transaction UpdateReturnsASN {
+		 				roles(ReturnsInformationProvider, ReturnsProcessor)
+		 			}
+		 		 }
+		 		one {
+		 			transaction CancelReturnsASN {
+		 				roles(ReturnsInformationProvider, ReturnsProcessor)
+		 		    }
+		 			
+		 			transaction ReturnsReceived {
+		 				roles(ReturnsProcessor, ReturnsInformationProvider)
+		 			}
+		 		}
+		 			
+		 		transaction ReturnsProcessCompleted {
+		 			roles(ReturnsProcessor, ReturnsInformationProvider)
+		 		}
+	 				 			
+	 		}	 		
+	 	}
+	 	postconditions {
+          	success(returns[Returns.Complete])          		
+        }
+	  }
 	
 }

@@ -19,7 +19,9 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record DropshipFulfillmentData extends FulfillmentData{
+		/** details of supplier */
 		string supplierId
+		string supplierName
 	}
 	
 	record FulfillmentData {
@@ -125,7 +127,6 @@ package com.x.orderfulfillment.v1 {
 		READY_TO_SHIP,
 		PARTIALLY_SHIPPED,
 		SHIPPED,
-		PARTIALLY_CANCELLED,
 		CANCELLED,
 		COMPLETED
 	}
@@ -255,7 +256,7 @@ package com.x.orderfulfillment.v1 {
 	record FulfillmentInformationUpdated {
 		guid fulfillmentId
 		FulfillmentStatus status 
-		// changed expected ship date
+		/** Updated expected ship date */
 		DateRange? expectedShipDate
 		/** All shipments shipped for a  fulfillment */
 		array<Shipment> shippingInfoUpdates
@@ -275,7 +276,7 @@ package com.x.orderfulfillment.v1 {
 		array<Error> errors
 	}
 	
-	enum InventoryStatus {
+	enum ReceivingInventoryStatus {
 		NEW	
 		DELIVERED
 		PUT_AWAY
@@ -283,41 +284,41 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record ReceivingLineData {
-		//Master Purchase Order #
+		/** Master Purchase Order # */
 		string masterPurchaseOrderNumber
 		string? purchaseOrderLineNumber
-		//purchase order # or ASN #
+		/** purchase order # or ASN # */
 		string invoiceNumber
-		//item part number or sku
-		string clientPartNumber
+		/** item part number or sku */
+		string productSku
 		int expectedQty
-		array<TrackingDetail>? trackingDetails	
+		TrackingDetail? trackingDetail	
 		string? shippingMethod
 		DateRange? deliveryWindow
 		string? shippingMessage		
 		datetime? deliveredDate
-		//mandatory if receipt is to be managed as ASN
-		//Identifies the carton # for ASN's, typically 20 digit bar code in UCC-128 format.
+		/** mandatory if receipt is to be managed as ASN 
+		Identifies the carton # for ASN's, typically 20 digit bar code in UCC-128 format. */
 		string? cartonId
-		//Product Lot number if needed to send on PO
+		/** Product Lot number if needed to send on PO */
 		string? lotNumber
-		//status of inventory
-		InventoryStatus status
+		/** status of receiving inventory */
+		ReceivingInventoryStatus status
 		
 	}
 		
 	record ReceivingData {
-		//details of supplier 
+		/** details of supplier */
 		string? supplierId
 		string? supplierName
-		//Master Purchase Order #
+		/** Master Purchase Order # */
 		string masterPurchaseOrderNumber
 		DateRange? expectedDeliveryDate
-		//Shipped Date for PO
+		/** Shipped Date for PO */
 		datetime? shippedDate
-		//Comments for a Purchase Order
+		/** Comments for a Purchase Order */
 		string? comments
-		//Receiving line data
+		/** Receiving line data */
 		array<ReceivingLineData> receivingLines
 	}
 	
@@ -353,7 +354,7 @@ package com.x.orderfulfillment.v1 {
 		array<ReceivingLineData> receivingLines
 	}
 	
-	record ReceivingComplete {
+	record ReceivingCompleted {
 		Receiving receiving
 	}
 	
@@ -364,7 +365,68 @@ package com.x.orderfulfillment.v1 {
 		string? cancelMessage
 	}
 	
+	enum ReturnedInventoryCondition {
+		DAMAGED
+		GOOD
+	}
 	
+	record ReturnsData {
+		/** identifier of fulfillment that is being returned */
+		guid fulfillmentId
+		string orderNumber
+		string returnOrderNumber
+		/** details of supplier */
+		string? supplierId
+		string? supplierName
+		
+		/* A collectiong containing the items and quantities that were returned. It may
+		 * not include all items for a fulfillment.*/
+		array<ReturnsLineData> returnedItems
+		string customerReturnReason
+	}
+	
+	record ReturnsLineData {
+		/* unique id for the returned item */
+		string ReturntLineId		
+		/* The ordered index of this item (also referred to as order line number) */
+		string? itemId
+		string productSku
+		float quantity
+		string itemDescription
+		TrackingDetail? trackingDetail
+		string? shippingMethod		
+		string? shippingMessage	
+		ReturnedInventoryCondition condition
+		/* Reference to the shipment that was used to ship this item */
+		string shipmentId
+	}
+	
+	record ReturnsReceived {
+		ReturnsData returnedData
+		datetime dateReceived
+	}
+	
+	record ReturnsASN {
+		ReturnsData returnedData
+		DateRange? expectedDeliveryDate
+	}
+	
+	record ProcessReturnsASN {
+		ReturnsASN asn
+	}
+	
+	record UpdateReturnsASN {
+		ReturnsASN asn
+	}
+	
+	record CancelReturnsASN {
+		ReturnsASN asn
+	}
+	
+	record ReturnsProcessCompleted {
+		ReturnsData returnedData
+	}
+		
 }
 
 

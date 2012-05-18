@@ -31,8 +31,7 @@ package com.x.orderfulfillment.v1 {
 	 		success(fulfillment[Fulfillment.Created])	 		
 	 	}
 		
-	}
-	
+	}	
 	
 	// Notifies that fulfillment processing was completed
 	transaction FulfillmentCompleted(Fulfillment fulfillment) notify {
@@ -44,6 +43,9 @@ package com.x.orderfulfillment.v1 {
             	retries=3
             }
 		}
+		postconditions {
+	 		success(fulfillment[Fulfillment.Complete])	 		
+	 	}
     }
 	
 	
@@ -127,9 +129,6 @@ package com.x.orderfulfillment.v1 {
     			timeouts(receipt=30s, validation=3m) 
     		}
     	}
-    	postconditions {
-			success(fulfillment[Fulfillment.Released])
-		}
     }
     
     // Notifies that information got updated for whole/parts of fulfillment
@@ -194,12 +193,15 @@ package com.x.orderfulfillment.v1 {
     }
     
     //Notifies that processing of receiving got completed
-    transaction ReceivingCompleted notify {
+    transaction ReceivingCompleted(Receiving receiving) notify {
     	sender{
-    		message ReceivingComplete{
+    		message ReceivingCompleted{
     			timeouts(receipt=30s, validation=3m) 
     		}
     	}
+    	postconditions {
+	 		success(receiving[Receiving.Created])	 		
+	 	}
     }
     
      //Notifies that whole/part of inventory should be cancelled
@@ -224,5 +226,55 @@ package com.x.orderfulfillment.v1 {
         }
     }
     
+     //Notifies of a return advance shipping notice that needs to be processed
+     transaction ProcessReturnsASN notify {
+    	sender{
+    		message ProcessReturnsASN{
+    			timeouts(receipt=30s, validation=3m) 
+    		}
+    	}
+    }
+    
+    //Notifies of a return ASN previously sent that needs to be updated
+    transaction UpdateReturnsASN (Returns returns) notify {
+    	preconditions (returns[Returns.Expected])
+    	sender{
+    		message UpdateReturnsASN{
+    			timeouts(receipt=30s, validation=3m) 
+    		}
+    	}
+    }
+    
+    //Notifies of a return ASN previously sent that needs to be cancelled
+    transaction CancelReturnsASN (Returns returns) notify {
+    	preconditions (returns[Returns.Expected])
+    	sender{
+    		message CancelReturnsASN{
+    			timeouts(receipt=30s, validation=3m) 
+    		}
+    	}
+    }
+    
+    //Notifies that product was returned with or without ASN
+    transaction ReturnsReceived notify {
+    	sender{
+    		message ReturnsReceived{
+    			timeouts(receipt=30s, validation=3m) 
+    		}
+    	}
+    }
+    
+    //Notifies that returns processing is complete
+    transaction ReturnsProcessCompleted(Returns returns) notify {
+    	preconditions (returns[Returns.Cancelled], returns[Returns.Received])
+    	sender{
+    		message ReturnsProcessCompleted{
+    			timeouts(receipt=30s, validation=3m) 
+    		}
+    	}
+    	postconditions {
+          	success(returns[Returns.Complete])          		
+        }
+    }
 
 }
