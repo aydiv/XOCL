@@ -4,6 +4,7 @@ package com.x.producttaxonomy.v1{
 	import com.x.producttaxonomy.v1.*
 
     transaction SearchProductType query {
+    	description "Searches product type based on the search criteria and returns either a list of product types or failure details."
         sender {
         	message SearchProductType  {
         		topic "/productTaxonomy/productType/search"
@@ -21,6 +22,7 @@ package com.x.producttaxonomy.v1{
     }
 	
 	transaction GetProductTaxonomy query {
+		description "Searches all product classes by locale and returns either a list of product classes or failure details. If no locale is provided, en_US is the default."		
         sender {
         	message GetProductTaxonomy  {
         		topic "/productTaxonomy/get"
@@ -38,6 +40,7 @@ package com.x.producttaxonomy.v1{
     }
 
     transaction GetProductType query {
+    	description "Searches for the details of a specified product type and returns either the product type details or failure details."
         sender {
         	message GetProductType  {
         		topic "/productTaxonomy/productType/get"
@@ -55,6 +58,7 @@ package com.x.producttaxonomy.v1{
     }
     
 	transaction ProductTaxonomyUpdated inform {
+		description "Confirms that updates have been made to the ProductTaxonomy. This includes updates to ProductClass, ProductType, or details within a Producttype. This confirmation includes a version in the form of a time based on ISO 8601."
 		sender {
 			message ProductTaxonomyUpdated{
 				 topic "/productTaxonomy/updated"

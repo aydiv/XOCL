@@ -4,16 +4,16 @@ package com.x.producttaxonomy.v1 {
 	
 	contract ProductTaxonomyManager {
 		
-		description "A product taxonomy system"
+		description "A system used to store the product taxonomy."
     		roles {
-					ProductTaxonomyRetrieval.ProductTaxonomyManager
-					ProductTaxonomyUpdate.ProductTaxonomyManager
+					ProductTaxonomyRetrieval.ProductTaxonomyManager "TBD"
+					ProductTaxonomyUpdate.ProductTaxonomyManager "TBD"
 	 		}			
 	}	
 	
 	contract ProductTaxonomyComsumer {
 		
-		description "A consumer of a product taxonomy system"
+		description "An entity that uses or needs to access the information in the product taxonomy system."
     		roles {
 					ProductTaxonomyRetrieval.ProductTaxonomyConsumer
 					ProductTaxonomyUpdate.ProductTaxonomyObserver

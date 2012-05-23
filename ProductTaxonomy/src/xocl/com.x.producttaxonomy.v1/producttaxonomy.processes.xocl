@@ -2,9 +2,14 @@ package com.x.producttaxonomy.v1{
 	import com.x.producttaxonomy.v1.*
 	
     process ProductTaxonomyRetrieval {
-		description "ProductTaxonomyConsumer searches for product types"	
+		summary "Searches and returns product taxonomy information."
+		description "ProductTaxonomyConsumer searches for product types and the ProductTaxonomyManager returns product types based on the search criteria."	
 			
-		roles(ProductTaxonomyConsumer, ProductTaxonomyManager)
+		roles
+			{
+				ProductTaxonomyConsumer "Searches for product types in the product taxonomy."
+				ProductTaxonomyManager "Returns product types based on the search criteria."
+			}
 		
 		workflow {
 			any{ // we may get the product taxonomy first, unless we already have it and do not need to refresh   
@@ -25,9 +30,14 @@ package com.x.producttaxonomy.v1{
 	}
 	
 	process ProductTaxonomyUpdate{
-		description "ProductTaxonomy is updated, manager notifies observer"	
+		summary "Updates the product taxomony."
+		description "Updates the product taxonomy and notifies the ProductTaxonomyObserver that an updated has been done."	
 
-		roles(ProductTaxonomyManager, ProductTaxonomyObserver)
+		roles
+			{
+				ProductTaxonomyManager "Notifies the ProductTaxonomyObserver that the product taxomony has been updated.."
+				ProductTaxonomyObserver "Receives the product taxomony update notification."
+			}
 		
 		workflow {
 			transaction ProductTaxonomyUpdated {
