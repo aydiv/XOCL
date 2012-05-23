@@ -33,6 +33,19 @@ package com.x.orderfulfillment.v1 {
     	//reached if all of the uncancelled receiving is putaway or cancelled
     	state Complete
     }
+    
+     //Represents the state machine for returns initated for fulfillments that are completed
+	 entity Return {
+	 	//Beginning state. Triggered when return ASN is received
+	  	state Expected [Cancelled, Received]
+    	//reached if after a ASN was sent, the return ASN is cancelled
+    	state Cancelled [Complete]
+    	//reached if the return is received with ASN or some return is received unexpectedly
+    	// It is possible to begin with this state
+    	state Received [Complete]
+    	//reached if entire return is in Cancelled or Received state
+    	state Complete
+	 }
    
 	process ProcessDropshipFulfillment (Fulfillment fulfillment) {		
 	 description "An order is submitted to dropshipper for fulfillment and is either shipped or cancelled"
@@ -152,10 +165,10 @@ package com.x.orderfulfillment.v1 {
 	 
 	 process ProcessReceiving (Receiving receiving) {
 	 	description "A merchant notifies a fulfillment provider of a future inventory receipt. The fulfillment provider notifies when the receipt is processed (received, put away)"
-	 	roles(ReceivingInformationProvider, ReceivingProcessor)
+	 	roles(InventorySupplier, ReceivingProcessor, ReceivingObserver)
 	 	workflow {
 		 	transaction ProcessReceiving {
-		 		roles(ReceivingInformationProvider, ReceivingProcessor)
+		 		roles(InventorySupplier, ReceivingProcessor)
 		 	}
 		 	
 		 	do(!receiving[Receiving.Complete]) {	 	 
@@ -163,23 +176,23 @@ package com.x.orderfulfillment.v1 {
 		 		   //A merchant wants to give updated information about a previously communicated receiving
 		 		   //such as expected date, carrier being used, tracking number, or packaging information
 			 		transaction UpdateReceiving {
-			 			roles (ReceivingInformationProvider, ReceivingProcessor)
+			 			roles (InventorySupplier, ReceivingProcessor)
 			 		}
 			 		//A merchant wants to lookup receiving by purchase order number
 			 		transaction LookupReceivings {
-			 			roles (ReceivingInformationProvider, ReceivingProcessor)
+			 			roles (InventorySupplier, ReceivingProcessor)
 			 		}
 			 		//Notification to merchant when inventory is delivered or put away
 			 		transaction ReceivingInventoryStatusUpdated {
-			 			roles (ReceivingProcessor, ReceivingInformationProvider)
+			 			roles (ReceivingProcessor, ReceivingObserver)
 			 		}
 			 		//A merchant wants to cancel receiving
 			 		transaction CancelReceiving{
-			 			roles (ReceivingInformationProvider, ReceivingProcessor)			 			
+			 			roles (InventorySupplier, ReceivingProcessor)			 			
 			 		}
 			 		//Merchant is informed that receiving is completed
 			 		transaction ReceivingCompleted {
-			 			roles (ReceivingProcessor, ReceivingInformationProvider)
+			 			roles (ReceivingProcessor, ReceivingObserver)
 			 		}			 		
 		 		}		 		
 		 	}		 		
@@ -189,46 +202,35 @@ package com.x.orderfulfillment.v1 {
         }		 
 	 }
 	 
-	 //Represents the state machine for returns initated for fulfillments that are completed
-	 entity Return {
-	 	//Beginning state. Triggered when return ASN is received
-	  	state Expected [Cancelled, Received]
-    	//reached if after a ASN was sent, the return ASN is cancelled
-    	state Cancelled [Complete]
-    	//reached if the return is received with ASN or some return is received unexpectedly
-    	// It is possible to begin with this state
-    	state Received [Complete]
-    	//reached if entire return is in Cancelled or Received state
-    	state Complete
-	 }
+	
 	 
 	  process ProcessReturn (Return return) {
 	  	description "Usually a return is initiated by customer/merchant on behalf of customer and return ASN is sent. The fulfillment provider notifies when the return is processed (received, disposition - put away or discarded)"
-	  	roles(ReturnsInformationProvider, ReturnsProcessor)
+	  	roles(ReturnsInformationManager, ReturnsProcessor, ReturnsObserver)
 	 	workflow {
 	 		//An end customer (or a merchant acting on their behalf) wishes to arrange for a return of all or part of a previously fulfilled shipment.
 	 		transaction ProcessReturnAdvanceShipmentNotice {
-	 			roles(ReturnsInformationProvider, ReturnsProcessor)
+	 			roles(ReturnsInformationManager, ReturnsProcessor)
 	 		}
 	 		do (!return[Return.Complete]) {	
 	 			any {
 	 				noop
 		 			transaction UpdateReturnAdvanceShipmentNotice {
-		 				roles(ReturnsInformationProvider, ReturnsProcessor)
+		 				roles(ReturnsInformationManager, ReturnsProcessor)
 		 			}
 		 		 }
 		 		one {
 		 			transaction CancelReturnAdvanceShipmentNotice {
-		 				roles(ReturnsInformationProvider, ReturnsProcessor)
+		 				roles(ReturnsInformationManager, ReturnsProcessor)
 		 		    }
 		 			
 		 			transaction ReturnReceived {
-		 				roles(ReturnsProcessor, ReturnsInformationProvider)
+		 				roles(ReturnsProcessor, ReturnsObserver)
 		 			}
 		 		}
 		 			
 		 		transaction ReturnProcessCompleted {
-		 			roles(ReturnsProcessor, ReturnsInformationProvider)
+		 			roles(ReturnsProcessor, ReturnsObserver)
 		 		}
 	 				 			
 	 		}	 		
@@ -236,6 +238,16 @@ package com.x.orderfulfillment.v1 {
 	 	postconditions {
           	success(return[Return.Complete])          		
         }
+	  }
+	  
+	  process InventoryAdjustment {
+	  	description "A notification may be sent out to notify adjustment in inventory numbers"
+	  	roles (InventoryStore, InventoryObserver)
+	  	workflow {
+	  		transaction InventoryAdjusted {
+	 			roles(InventoryStore, InventoryObserver)
+	 		}
+	  	}
 	  }
 	
 }

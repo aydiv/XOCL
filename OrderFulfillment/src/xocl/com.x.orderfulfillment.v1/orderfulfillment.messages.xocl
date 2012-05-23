@@ -10,6 +10,9 @@ package com.x.orderfulfillment.v1 {
 				
 		guid fulfillmentId		
 		FulfillmentData fulfillment
+		/** details of merchant to whom inventory belongs */
+		string clientId
+		string? clientName
 	}
 	
 	record DropShipFulfillment {
@@ -19,7 +22,7 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record DropshipFulfillmentData extends FulfillmentData{
-		/** details of supplier */
+		/** details of inventory supplier */
 		string supplierId
 		string supplierName
 	}
@@ -77,9 +80,8 @@ package com.x.orderfulfillment.v1 {
 		/** Items in the shipment */
 		array<string> fulfillmentLineIds
 		/** The fees for this shipment */
-		CurrencyAmount shippingFees
+		CurrencyAmount shippingCost
 		
-		CurrencyAmount? additionalCost
 		CurrencyAmount? packagingHandlingCost
 		CurrencyAmount? surcharge  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
 
@@ -91,23 +93,30 @@ package com.x.orderfulfillment.v1 {
 		DateRange? shippingWindow
 		
 		string? shippingMessage
+		
+		GiftTag? giftTag
+		CustomizationDetail? customizationDetail
 	}
 	
 	record FulfillmentLineData {
 		/* The unique id of this item */
 		string fulfillmentLineId
 		
-		/* The ordered index of this item (also referred to as line number) */
+		/* The ordered index of this item (also referred to as order line number) */
 		string? itemId
 		
 		/* Reference to FulfillmentData.orderNumber */
 		string? orderNumber
 		
-		float quantity
+		int quantity
 		string productSku
 		string itemDescription
 		
 		CurrencyAmount? unitPrice
+		CurrencyAmount? unitTaxAmount
+		CurrencyAmount? unitShippingCost
+		CurrencyAmount? unitInsuranceCost
+		CurrencyAmount? unitDiscountAmount
 
 		FulfillmentStatus status
 		
@@ -141,7 +150,6 @@ package com.x.orderfulfillment.v1 {
 	record ShipTo confidential {
 		Name name
 		Address address
-		GiftTag giftTag
 	}
 	
 	record AdditionalCost {
@@ -167,6 +175,25 @@ package com.x.orderfulfillment.v1 {
 		string? from
 		string? to
 		string giftMessage
+		/** SKU number value of the specific Gift Wrap to be used */
+		string giftwrapSKU
+		CurrencyAmount giftwrapCost
+	}
+	
+	record CustomizationDetail {
+		/** Unique identifier for this customization item. */
+		string customizationItemId
+		// customization Type (e.g. Embroidery, Embossing, Engraving, Tshirt, Jersey)
+		string customizationType
+		// Instructions used to explain where logos and such should beplaced on item (e.g. CF, FB, FONT,COLR, TEXT, LOCN)
+		array <string> instructions
+		//e.g. Center, Front, Back, Name and Number
+		string instructionsDescription
+		//customization Content (e.g. "JOHN DOE, 00", <font type>, <font size>, <font color>) or a SKU number of a logo/patch/sticker (e.g. 3983522)
+		string content
+		//e.g.Large Secondary Logo White, Font type is x, Font size is x
+		string contentDescription
+		CurrencyAmount customizationCost
 	}
 	
 	record DropShipSupplierComment {
@@ -289,7 +316,6 @@ package com.x.orderfulfillment.v1 {
 		string? purchaseOrderLineNumber
 		/** purchase order # or ASN # */
 		string invoiceNumber
-		/** item part number or sku */
 		string productSku
 		int expectedQty
 		TrackingDetail? trackingDetail	
@@ -308,6 +334,9 @@ package com.x.orderfulfillment.v1 {
 	}
 		
 	record ReceivingData {
+		/** details of merchant to whom the inventory belongs */
+		string clientId
+		string? clientName
 		/** details of supplier */
 		string? supplierId
 		string? supplierName
@@ -376,6 +405,9 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record ReturnData {
+		/** details of merchant/supplier to whom inventory is being returned */
+		string clientId
+		string? clientName
 		/** identifier of fulfillment that is being returned */
 		guid fulfillmentId
 		/** Same as sales order number */
@@ -386,15 +418,15 @@ package com.x.orderfulfillment.v1 {
 		array<ReturnLineData> returnedItems
 		string customerReturnReason
 		ReturnItemsCondition condition
+		/** License plate attached to product being processed for customer return ASN */
+		string loadNumber
 	}
 	
 	record ReturnLineData {
 		/* unique id for the returned item */
 		string ReturntLineId		
-		/* The ordered index of this item (also referred to as order line number) */
-		string? itemId
 		string productSku
-		float quantity
+		int quantity
 		string itemDescription		
 		/* Reference to the shipment that was used to ship this item */
 		string shipmentId
@@ -424,6 +456,34 @@ package com.x.orderfulfillment.v1 {
 	
 	record ReturnProcessCompleted {
 		ReturnData returnedData
+	}
+	
+	enum InventoryCondition {
+		SELLABLE
+		UNSELLABLE
+	}
+	
+	enum InventoryAdjustmentReason {
+		CYCLE_COUNT
+		DAMAGED_INVENTORY
+		LIQUIDATION
+	}
+	
+	record InventoryData {
+		/** details of merchant/supplier whose inventory is being adjusted */
+		string clientId
+		string? clientName
+		string productSku
+		int unitQuantity
+		/** stocking unit of measure */
+		string StockingUOM
+		InventoryCondition status		
+	}
+	
+	record InventoryAdjusted {
+		InventoryData adjustedInventory
+		datetime adjustmentDate
+		InventoryAdjustmentReason adjustmentReason
 	}
 		
 }

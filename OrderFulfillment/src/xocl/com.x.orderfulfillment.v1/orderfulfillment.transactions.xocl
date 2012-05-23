@@ -276,5 +276,23 @@ package com.x.orderfulfillment.v1 {
           	success(returns[Return.Complete])          		
         }
     }
+    
+    //Notifies that product was returned with or without ASN
+    transaction ReturnReceived notify {
+    	sender{
+    		message ReturnReceived{
+    			timeouts(receipt=30s, validation=3m) 
+    		}
+    	}
+    }
+    
+    //Notifies that inventory numbers for a client have been adjusted
+    transaction InventoryAdjusted notify {
+    	sender{
+    		message InventoryAdjusted{
+    			timeouts(receipt=30s, validation=3m) 
+    		}
+    	}
+    }
 
 }

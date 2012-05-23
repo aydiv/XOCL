@@ -24,7 +24,6 @@ package com.x.orderfulfillment.v1 {
     	roles {
 	        ProcessThirdPartyFulfillment.OrderProcessor<Dropship>
 	        ProcessDropshipFulfillment.OrderProcessor<ThirdParty>
-	        ProcessReturn.ReturnsInformationProvider
 	    }
     }
   
