@@ -9,24 +9,27 @@ package com.x.comparisonshopping.v1
  	// This entity represents a product feed that can be
  	// published to a comparison shopping engine
     entity ProductFeed
+    	description "Represents a product feed file that can be published to a comparison shopping engine."
     {   
-       	// An Prepared feed can be Published or Denied 
-        state Prepared[Published, Denied]
+       	// An Prepared product feed file can be Published or Denied 
+        state Prepared[Published, Denied] "The state of the product feed file. This can be either Published or Denied."
                 
-        // The feed was successfully published
-        state Published[Updated]
+        // The product feed file was successfully published
+        state Published[Updated] "The product feed file was successfully published."
         
-        // A published product feed was updated
-        state Updated[Denied]
+        // A published product feed file was updated
+        state Updated[Denied] "A published product feed file was updated."
         
-		// A feed was denied by the comparison shopping engine
-        state Denied
+		// A product feed file was denied by the comparison shopping engine
+        state Denied "A product feed file was denied by the comparison shopping engine."
 	} 
     
     // Publish products and get information back from the CSE about
     // the status of each product that was offered
     transaction PublishProductFeed response
     {
+    	description "Publishes the product feed file and receives the status of each product back from the comparison shopping engine."
+    	
     	// Send the list of products to the CSE
         sender
         {
@@ -59,6 +62,8 @@ package com.x.comparisonshopping.v1
     // Update the products that are published on a CSE
     transaction UpdateProductFeed response
     {
+    	description "Updates the products that are published on a comparison shopping engine."
+ 
     	// Send the list of products to the CSE
         sender
         {

@@ -35,7 +35,7 @@ package com.x.comparisonshopping.v1 {
 		summary "Product feed file classification."
 		description "Classifies the product feed file as a Full (complete) or Incremental (partial)."
 		Full "Product feed file contains all the products.",
-		Incremental "Product feed file contains only new products to be added to the (CSE) Comparison Shopping Engine channel."
+		Incremental "Product feed file contains only new products to be added to the comparison shopping engine channel."
 	}
 			
 	record ProductAttribute {
@@ -89,8 +89,8 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	record Product {
-		summary "Product information needed to represent a product on a (CSE) Comparison Shopping Engine channel."
-		description "Captures all the product information needed to represent a product on a (CSE) Comparison Shopping Engine channel."
+		summary "Product information needed to represent a product on a comparison shopping engine channel."
+		description "Captures all the product information needed to represent a product on a comparison shopping engine channel."
 		string sku "SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant."
 		CurrencyAmount price "Price of the product."; 
 		int quantity "How many of this product you have in stock.";
@@ -104,7 +104,7 @@ package com.x.comparisonshopping.v1 {
    		string? xProductTypeId  "Product type ID as defined by the taxonomy manager." 
    		array<string>? productTypes "Product types associated with the product as defined by the taxonomy manager."
    		array<ProductImage> images  "Array of the image files of the product."
-   		string link "URL to the product."
+   		string link "URL to the product in the merchant store."
    		CurrencyAmount originalPrice "Original cost of the product (cost basis)."
    		AvailabilityType availability "Availability status of the product. The values are InStock, AvailableForOrder, or Unknown."
    		TaxRate? taxRate "Tax rate based on the country and region of the product's location (where the product is shipped from)."
@@ -112,30 +112,30 @@ package com.x.comparisonshopping.v1 {
    		double? shippingWeight "Weight of the product."
    		array<ProductAttribute> attributes "Array of all the product attributes."
    		array<Variation>? variations "Array of all the product variations."
-   		CurrencyAmount? cpc "Price for the product on the (CSE) Comparison Shopping Engine channel."
-   		string channelId "ID of the (CSE) Comparison Shopping Engine channel."
+   		CurrencyAmount? cpc "Price for the product on the comparison shopping engine channel."
+   		string channelId "ID of the comparison shopping engine channel."
 	}
 	
 	record MappedProductId {
 		summary "Product SKU to CSE-assigned product ID mappings."
-		description "Maps the merchant product SKU to the (CSE) Comparison Shopping Engine assigned product ID."
+		description "Maps the merchant product SKU to the comparison shopping engine assigned product ID."
 		string sku "SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant.";
 		string cseProductId "(CSE) Comparison Shopping Engine ID for the product."
 	}
 	
 	record PublishProductFeed {
 		summary "Publishes the product feed file."
-		description "Generates and uploads the data feed file to the (CSE) Comparison Shopping Engine channel."
-		array<Product> products "Array of the products to be published by a (CSE) Comparison Shopping Engine."
+		description "Generates and uploads the product feed file to the comparison shopping engine channel."
+		array<Product> products "Array of the products to be published by a comparison shopping engine."
 		ProductFeedType feedType "Type of product feed file, which is either Full (complete) or Incremental (partial)."
-		string xAccountId "Your ID for the (CSE) Comparison Shopping Engine channel."
-		string siteId "ID of the (CSE) Comparison Shopping Engine."
+		string xAccountId "Merchant's ID for the comparison shopping engine channel."
+		string siteId "ID of the comparison shopping engine."
 		string? feedName "Name of the product feed file."
 	}
 	
 	record PublishProductFeedSuccess {
 		summary "Returns the product IDs for each published product when publishing is successful."
-		description "Returns an array of the product IDs and their associated (CSE) Comparison Shopping Engine product IDs when the feed file is successfully published."
+		description "Returns an array of the product IDs and their associated comparison shopping engine product IDs when the product feed file is successfully published."
 		array<MappedProductId> cseProductIds "Array of the product IDs and their associated (CSE) Comparison Shopping Engine product IDs.";
 	}
 	
@@ -147,16 +147,16 @@ package com.x.comparisonshopping.v1 {
 	
 	record UpdateProductFeed {
 		summary "Updates published products."
-		description "Generates and uploads a feed file containing only updates to currently published products."
-		array<Product> products "Array of the products to be updated on a (CSE) Comparison Shopping Engine channel.";
-		string xAccountId "Your ID for the (CSE) Comparison Shopping Engine channel."; 
-		string siteId "ID of the (CSE) Comparison Shopping Engine.";
-		string? feedName "Name of the feed file."
+		description "Generates and uploads a product feed file containing only updates to currently published products."
+		array<Product> products "Array of the products to be updated on a comparison shopping engine channel.";
+		string xAccountId "Merchant's ID for the comparison shopping engine channel."; 
+		string siteId "ID of the comparison shopping engine.";
+		string? feedName "Name of the product feed file."
 	}
 	
 	record UpdateProductFeedSuccess {
 		summary "Returns the product IDs for each updated product."
-		description "Returns an array of product IDs and their associated (CSE) Comparison Shopping Engine product IDs when the products were successfully updated."
+		description "Returns an array of product IDs and their associated comparison shopping engine product IDs when the products were successfully updated."
 		array<MappedProductId> cseProductIds "An array of the product ID and their associated (CSE) Comparison Shopping Engine product ID.";
 	}
 	
