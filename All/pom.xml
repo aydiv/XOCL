@@ -111,6 +111,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.x.ocl</groupId>
+			<artifactId>orderfulfillment-xocl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.x.ocl</groupId>
 			<artifactId>pim-xocl</artifactId>
 			<version>${project.version}</version>
 		</dependency>
