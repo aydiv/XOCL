@@ -12,6 +12,9 @@ package com.x.producttaxonomy.v1{
 			}
 		
 		workflow {
+			summary "TBD"
+			description "TBD"
+			
 			any{ // we may get the product taxonomy first, unless we already have it and do not need to refresh   
 				transaction GetProductTaxonomy {
 					roles(ProductTaxonomyConsumer, ProductTaxonomyManager)
@@ -40,6 +43,9 @@ package com.x.producttaxonomy.v1{
 			}
 		
 		workflow {
+			summary "TBD"
+			description "TBD"
+						
 			transaction ProductTaxonomyUpdated {
 				roles(ProductTaxonomyManager, ProductTaxonomyObserver)
 			}
