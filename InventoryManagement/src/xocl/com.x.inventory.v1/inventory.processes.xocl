@@ -4,6 +4,7 @@ package com.x.inventory.v1
 	
 	process StockItemLookup 
 	{
+		summary "Retrieves specified stock items."
 		description "The inventory consumer queries inventory levels and locations. This process is read-only. Stock item properties are not altered by this process."	
 			
 		roles
@@ -24,6 +25,7 @@ package com.x.inventory.v1
 	
     process StockItemUpdate(StockItem stockItem)
     {
+		summary "Updates stock items and reports on updates."
 		description "The stock item consumer submits stock item updates to the inventory manager."
 		
 		roles
@@ -33,7 +35,10 @@ package com.x.inventory.v1
 			InventoryObserver "The inventory observer is like the inventory consumer. The inventory observer likes to be informed of inventory changes, but does not query for the information. In the context of the StockItemUpdate process, the inventory observer sends no messages, but gets informed of stock updates and when an item is out of stock."
 		}
 		
-		preconditions(exists(stockItem))
+		preconditions
+		{
+			exists(stockItem) "Before a stock item can be updated, it must exist."
+		}
 	
 		workflow
 		{
@@ -65,7 +70,10 @@ package com.x.inventory.v1
 		
 		postconditions
 		{
-			success(exists(stockItem))
+			success
+			{
+				exists(stockItem) "The update process must not result in the deletion of a stock item. "
+			}
 		}
 	}
 }
