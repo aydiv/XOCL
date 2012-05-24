@@ -95,7 +95,7 @@ package com.x.orderfulfillment.v1 {
 		string? shippingMessage
 		
 		GiftTag? giftTag
-		CustomizationDetail? customizationDetail
+		
 	}
 	
 	record FulfillmentLineData {
@@ -126,6 +126,7 @@ package com.x.orderfulfillment.v1 {
 		datetime? dateCancelled
 		datetime? dateDelivered
 		datetime? dateShipped
+		CustomizationDetail? customizationDetail
 	}
 	
 	enum FulfillmentStatus {
@@ -330,7 +331,7 @@ package com.x.orderfulfillment.v1 {
 		string? lotNumber
 		/** status of receiving inventory */
 		ReceivingInventoryStatus status
-		
+		InventoryCondition condition
 	}
 		
 	record ReceivingData {
@@ -394,10 +395,6 @@ package com.x.orderfulfillment.v1 {
 		string? cancelMessage
 	}
 	
-	enum ReturnItemsCondition {
-		DAMAGED
-		GOOD
-	}
 	
 	record Return {
 		guid returnId
@@ -412,12 +409,12 @@ package com.x.orderfulfillment.v1 {
 		guid fulfillmentId
 		/** Same as sales order number */
 		string orderNumber
+		/** aka RMA */
 		string? returnOrderNumber
 		/* A collection containing the items and quantities that were returned. It may
 		 * not include all items for a fulfillment.*/
 		array<ReturnLineData> returnedItems
-		string customerReturnReason
-		ReturnItemsCondition condition
+		string customerReturnReason		
 		/** License plate attached to product being processed for customer return ASN */
 		string loadNumber
 	}
@@ -428,8 +425,7 @@ package com.x.orderfulfillment.v1 {
 		string productSku
 		int quantity
 		string itemDescription		
-		/* Reference to the shipment that was used to ship this item */
-		string shipmentId
+		InventoryCondition condition
 	}
 	
 	record ReturnReceived {

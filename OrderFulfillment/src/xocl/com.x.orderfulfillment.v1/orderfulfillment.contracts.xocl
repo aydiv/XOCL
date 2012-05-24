@@ -4,7 +4,7 @@ package com.x.orderfulfillment.v1 {
     contract DropShipFulfillmentProvider {
     	description "A capability that performs drop shipment functions"
     	roles {
-	        ProcessDropshipFulfillment.DropshipProcessor<Dropship>
+	        ProcessDropshipFulfillment.DropshipProcessor
 	        ProcessReturn.ReturnsProcessor
 	    }
     }
@@ -16,14 +16,15 @@ package com.x.orderfulfillment.v1 {
 	        ShippingRateSearch.ThirdPartyFulfillmentProcessor
 	        ProcessReceiving.ReceivingProcessor
 	        ProcessReturn.ReturnsProcessor
+	        InventoryAdjustment.InventoryStore
 	    }
     }
     
     contract OrderProcessor {
     	description "A capability that does order processing"
     	roles {
-	        ProcessThirdPartyFulfillment.OrderProcessor<Dropship>
-	        ProcessDropshipFulfillment.OrderProcessor<ThirdParty>
+	        ProcessThirdPartyFulfillment.OrderProcessor
+	        ProcessDropshipFulfillment.OrderProcessor
 	    }
     }
   
