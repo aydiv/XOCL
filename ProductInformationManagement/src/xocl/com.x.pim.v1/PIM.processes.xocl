@@ -93,7 +93,10 @@ package com.x.pim.v1 {
 			ProductInformationObserver "The product information observer is informed when new products are created. "
 		}
 		
-		preconditions(!exists(product))
+		preconditions
+		{
+			!exists(product) "A new product cannot be created if it matches an existing product."
+		}
 	
 		workflow  {
 			description "A consumer asks the product information manager to create one or more products and/or the product information manager informs any observers that products were created."
