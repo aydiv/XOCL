@@ -28,7 +28,7 @@ package com.x.ordermanagement.v2 {
     }
     
     // Process orders that originate from a sales channel
-    process ProcessSalesChannelOrder<MarketplaceOrder>(Order order) {
+    process ProcessSalesChannelOrder<MarketplaceOrder, MarketplacePaymentUpdate>(Order order) {
     	
         description "An order is submitted for processing and is adjusted, shipped, or cancelled"
         
@@ -69,6 +69,10 @@ package com.x.ordermanagement.v2 {
 		    	
 		    		transaction PartialOrderReturn {
 		    			roles(OrderProcessor, OrderObserver)
+		    		}
+		    		
+		    		transaction PaymentUpdate<MarketplacePaymentUpdate> {
+		    			roles(SalesChannel, OrderProcessor)
 		    		}
 		    		
 		        	all {  

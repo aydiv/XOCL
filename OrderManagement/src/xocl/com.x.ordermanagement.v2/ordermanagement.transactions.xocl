@@ -167,15 +167,20 @@ package com.x.ordermanagement.v2 {
     	}
     }
     
-    transaction PaymentUpdate response {
+    transaction PaymentUpdate<MarketplacePaymentUpdate> response {
     	sender {
     		message PaymentUpdate {
+    			timeouts(response=30s)    		
+        	}
+        	message <MarketplacePaymentUpdate> MarketplacePaymentUpdate {
     			timeouts(response=30s)    		
         	}
         }
         receiver {
         	success PaymentUpdateSucceeded                       	        
+        	success <MarketplacePaymentUpdate> MarketplacePaymentUpdateSucceeded                       	        
             failure PaymentUpdateFailed
+            failure <MarketplacePaymentUpdate> MarketplacePaymentUpdateFailed
         } 
     }
 }

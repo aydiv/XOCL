@@ -504,13 +504,28 @@ package com.x.ordermanagement.v2 {
 		array<PaymentInfo> paymentInfo
 	}
 	
+	record MarketplacePaymentUpdate extends PaymentUpdate {
+		string? accountId
+		string? siteId
+	}
+	
 	record PaymentUpdateSucceeded {
 		string orderNumber		
+	}
+	
+	record MarketplacePaymentUpdateSucceeded extends PaymentUpdateSucceeded {
+		string? accountId
+		string? siteId
 	}
 	
 	record PaymentUpdateFailed {
 		string orderNumber
 		array<Error> errors
+	}
+	
+	record MarketplacePaymentUpdateFailed extends PaymentUpdateFailed {
+		string? accountId
+		string? siteId
 	}
 
 }
