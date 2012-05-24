@@ -9,8 +9,9 @@ package com.x.comparisonshopping.v1
  	// This entity represents a product feed that can be
  	// published to a comparison shopping engine
     entity ProductFeed
+	{
     	description "Represents a product feed file that can be published to a comparison shopping engine."
-    {   
+   
        	// An Prepared product feed file can be Published or Denied 
         state Prepared[Published, Denied] "The state of the product feed file. This can be either Published or Denied."
                 
