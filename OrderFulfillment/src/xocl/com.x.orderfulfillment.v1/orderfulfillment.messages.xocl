@@ -13,6 +13,8 @@ package com.x.orderfulfillment.v1 {
 		/** details of merchant to whom inventory belongs */
 		string clientId
 		string? clientName
+		/** identifier of warehouse where inventory is stored */
+		string warehouseId
 	}
 	
 	record DropShipFulfillment {
@@ -72,29 +74,27 @@ package com.x.orderfulfillment.v1 {
 	
 	record Shipment {
 		/** only need to be unique to the fulfillment like 1, 2, 3, etc...*/
-		string shipmentId		
-		ShipmentDetails shipmentDetails
-	}	
-	
-	record ShipmentDetails {
-		/** Items in the shipment */
-		array<string> fulfillmentLineIds
-		/** The fees for this shipment */
-		CurrencyAmount shippingCost
-		
+		string shipmentId
+		/** Reference to items in the shipment */
+		array <string> fulfillmentLineIds
+		/** The fees paid by the customer for this shipment */
+		CurrencyAmount shippingFees		
+		/** Total discount amount summarized from all PromotionalDiscount. */
+		CurrencyAmount? discountAmount
+		array<PromotionalDiscount>? discounts
+		CurrencyAmount? additionalCost
 		CurrencyAmount? packagingHandlingCost
 		CurrencyAmount? surcharge  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
 
-		array<TrackingDetail>? trackingDetails		
+		array<TrackingDetail>? trackingDetails
+		
 		/** Next day, ground, etc. */
-		string shippingMethod		
+		string? shippingMethod
 		
 		DateRange? deliveryWindow
 		DateRange? shippingWindow
 		
 		string? shippingMessage
-		
-		GiftTag? giftTag
 		
 	}
 	
@@ -112,11 +112,7 @@ package com.x.orderfulfillment.v1 {
 		string productSku
 		string itemDescription
 		
-		CurrencyAmount? unitPrice
-		CurrencyAmount? unitTaxAmount
-		CurrencyAmount? unitShippingCost
-		CurrencyAmount? unitInsuranceCost
-		CurrencyAmount? unitDiscountAmount
+		LineItemPrice unitPrice
 
 		FulfillmentStatus status
 		
@@ -126,7 +122,48 @@ package com.x.orderfulfillment.v1 {
 		datetime? dateCancelled
 		datetime? dateDelivered
 		datetime? dateShipped
+		
+		GiftWrap? giftwrap
 		CustomizationDetail? customizationDetail
+		
+		/** A reference to the shipment that is used to ship this item */
+		string? shipmentId
+	}
+	
+	record LineItemPrice {
+		/** The total price the customer is paying for this line (sum of price, taxes, fees, additional costs, etc.) */
+		CurrencyAmount totalPrice
+		
+		/** The price the customer is paying for this item (without taxes, fees, addtional costs, etc.) */
+		CurrencyAmount price 
+		
+		CurrencyAmount? insuranceCost
+		
+		/** The tax charges for this item with addtional data about the nature of the tax */
+		Tax taxAmount
+
+	    /** The sum all of the discount that were applied to this order line */
+		CurrencyAmount? totalDiscountAmount
+
+		/** A collection of all the discounts that were appled to this order line item */		
+		array<PromotionalDiscount>? allDiscounts
+		
+		/** A collection of additional costs that were associated with this order line  */
+		array<AdditionalCost>? additionalCosts
+	}
+	
+	record Tax {
+		TaxabilityType? taxability
+		string? taxType
+		double? effectiveRate
+		CurrencyAmount taxesCharged
+	}
+	
+	enum TaxabilityType {
+		TAXABLE,
+		NONTAXABLE,
+		EXEMPT,
+		DEFERRED
 	}
 	
 	enum FulfillmentStatus {
@@ -151,6 +188,7 @@ package com.x.orderfulfillment.v1 {
 	record ShipTo confidential {
 		Name name
 		Address address
+		GiftTag giftTag
 	}
 	
 	record AdditionalCost {
@@ -172,13 +210,16 @@ package com.x.orderfulfillment.v1 {
 		OTHER
 	}
 	
-	record GiftTag {
-		string? from
-		string? to
-		string giftMessage
+	record GiftWrap {
 		/** SKU number value of the specific Gift Wrap to be used */
 		string giftwrapSKU
 		CurrencyAmount giftwrapCost
+	}
+	
+	record GiftTag {
+		string? from
+		string? to
+		string giftMessage		
 	}
 	
 	record CustomizationDetail {
@@ -211,6 +252,8 @@ package com.x.orderfulfillment.v1 {
 	
 	record FulfillmentShipped {
 		guid fulfillmentId
+		/** warehouse that fulfilled the order. Mandatory for a third party fulfillment processor */
+		string? warehouseId
 		array<Shipment> shipments
 		datetime dateShipped		
 	}
@@ -257,10 +300,8 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record LookupShippingRateSucceeded extends LookupShippingRate {
-		/** breakup of fulfillment into shipments and their associated rates */
-		array<ShipmentDetails> shippingRates
-		
-		//@TODO any other costs involved?
+		/** breakup of fulfillment into shipments, each shipment contains its shipping costs */
+		array<Shipment> shipments
 	}
 	
 	record LookupShippingRateFailed extends LookupShippingRate {
@@ -287,7 +328,7 @@ package com.x.orderfulfillment.v1 {
 		/** Updated expected ship date */
 		DateRange? expectedShipDate
 		/** All shipments shipped for a  fulfillment */
-		array<Shipment> shippingInfoUpdates
+		array<Shipment> shipmentUpdates
 		string? comment
 	}
 	
@@ -305,8 +346,9 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	enum ReceivingInventoryStatus {
-		NEW	
-		DELIVERED
+		NOT_RECEIVED
+		TRUCK_CHECKIN	
+		RECEIVED
 		PUT_AWAY
 		CANCELLED	
 	}
@@ -341,6 +383,8 @@ package com.x.orderfulfillment.v1 {
 		/** details of supplier */
 		string? supplierId
 		string? supplierName
+		/** warehouse expected to receive products */
+		string warehouseId
 		/** Master Purchase Order # */
 		string masterPurchaseOrderNumber
 		DateRange? expectedDeliveryDate
@@ -382,6 +426,14 @@ package com.x.orderfulfillment.v1 {
 		guid receivingId
 		//inventory for which update occured
 		array<ReceivingLineData> receivingLines
+		ReceivingUpdateReason updateReason
+	}
+	
+	enum ReceivingUpdateReason {
+		RECEIPT_TRUCK_CHECKIN
+		INVENTORY_RECEIPT
+		INVENTORY_PUT_AWAY
+		CANCELLATION
 	}
 	
 	record ReceivingCompleted {
@@ -410,7 +462,9 @@ package com.x.orderfulfillment.v1 {
 		/** Same as sales order number */
 		string orderNumber
 		/** aka RMA */
-		string? returnOrderNumber
+		string returnOrderNumber
+		/** warehouse expected to receive returned data. Mandatory for a third party fulfillment processor */
+		string? warehouseId
 		/* A collection containing the items and quantities that were returned. It may
 		 * not include all items for a fulfillment.*/
 		array<ReturnLineData> returnedItems
@@ -424,7 +478,8 @@ package com.x.orderfulfillment.v1 {
 		string ReturntLineId		
 		string productSku
 		int quantity
-		string itemDescription		
+		string itemDescription	
+		LineItemPrice price
 		InventoryCondition condition
 	}
 	
@@ -480,6 +535,8 @@ package com.x.orderfulfillment.v1 {
 		InventoryData adjustedInventory
 		datetime adjustmentDate
 		InventoryAdjustmentReason adjustmentReason
+		/** warehouse where the adjustment occured */
+		string warehouseId
 	}
 		
 }
