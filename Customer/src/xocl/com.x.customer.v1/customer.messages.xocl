@@ -66,8 +66,19 @@ package com.x.customer.v1{
 		 SearchCustomer request;
 	}
 	
-
+	record LookupCustomer {
+        union{guid, EntityId} id 
+    }
+ 
+    record LookupCustomerSucceeded {
+        Customer customer
+    }
     
+    record LookupCustomerFailed {
+        union{guid, EntityId} id 
+        array<Error> errors
+    }
+
     record CustomerEmail{
 		
 		Email email;

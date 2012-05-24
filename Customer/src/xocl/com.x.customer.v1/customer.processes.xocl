@@ -17,6 +17,19 @@ package com.x.customer.v1{
 		}
 	}
 	
+	// lookup a single customer
+	process CustomerLookup {
+		description "A consumer looks up a single customer"
+		
+		roles(CustomerConsumer, CustomerManager)
+	
+	    workflow {
+			transaction LookupCustomer {
+				roles(CustomerConsumer, CustomerManager)
+			}
+		}		
+	}
+	
 	
 	//Implementer should assume that, if creating the customer, that he/she is opted-out for marketing purposes. 
 	//Implementer must check to see if the customer is already there before deciding to create or update  
