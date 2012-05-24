@@ -286,10 +286,10 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
-    //Notifies that inventory numbers for a client have been adjusted
-    transaction InventoryAdjusted notify {
+    //Notifies a snapshot inventory numbers for a client was taken
+    transaction InventorySnapshot notify {
     	sender{
-    		message InventoryAdjusted{
+    		message InventorySnapshot{
     			timeouts(receipt=30s, validation=3m) 
     		}
     	}

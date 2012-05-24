@@ -7,7 +7,6 @@ package com.x.orderfulfillment.v1 {
 	
 		
 	record Fulfillment {
-				
 		guid fulfillmentId		
 		FulfillmentData fulfillment
 		/** details of merchant to whom inventory belongs */
@@ -514,14 +513,14 @@ package com.x.orderfulfillment.v1 {
 		UNSELLABLE
 	}
 	
-	enum InventoryAdjustmentReason {
+	enum InventorySnapshotReason {
 		CYCLE_COUNT
 		DAMAGED_INVENTORY
 		LIQUIDATION
 	}
 	
 	record InventoryData {
-		/** details of merchant/supplier whose inventory is being adjusted */
+		/** details of merchant/supplier whose inventory is being snapshot */
 		string clientId
 		string? clientName
 		string productSku
@@ -531,11 +530,11 @@ package com.x.orderfulfillment.v1 {
 		InventoryCondition status		
 	}
 	
-	record InventoryAdjusted {
-		InventoryData adjustedInventory
-		datetime adjustmentDate
-		InventoryAdjustmentReason adjustmentReason
-		/** warehouse where the adjustment occured */
+	record InventorySnapshot {
+		InventoryData inventorySnapshot
+		datetime snapshotDate
+		InventorySnapshotReason snapshotReason
+		/** warehouse where the snapshot was taken */
 		string warehouseId
 	}
 		

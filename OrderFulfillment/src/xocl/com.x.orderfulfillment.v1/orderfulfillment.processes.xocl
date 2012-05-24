@@ -202,7 +202,26 @@ package com.x.orderfulfillment.v1 {
         }		 
 	 }
 	 
-	
+	 process ProcessReturnReceipt (Return return) {
+	 	description "Return is initiated by customer directly so that first intimation of return is its receipt"
+	 	roles(ReturnsProcessor, ReturnsObserver)
+	 	workflow {
+	 		do  {	
+		 		one {
+		 			transaction ReturnReceived {
+		 				roles(ReturnsProcessor, ReturnsObserver)
+		 			}	 			
+		 			
+		 			transaction ReturnProcessCompleted {
+			 			roles(ReturnsProcessor, ReturnsObserver)
+			 		}
+		 		}		 		
+	 		}
+	 	}
+	 	postconditions {
+          	success(return[Return.Complete])          		
+        }
+	 }
 	 
 	  process ProcessReturn (Return return) {
 	  	description "Usually a return is initiated by customer/merchant on behalf of customer and return ASN is sent. The fulfillment provider notifies when the return is processed (received, disposition - put away or discarded)"
@@ -227,8 +246,7 @@ package com.x.orderfulfillment.v1 {
 		 			transaction ReturnReceived {
 		 				roles(ReturnsProcessor, ReturnsObserver)
 		 			}
-		 		}
-		 			
+		 		}		 		
 		 		transaction ReturnProcessCompleted {
 		 			roles(ReturnsProcessor, ReturnsObserver)
 		 		}
@@ -240,11 +258,11 @@ package com.x.orderfulfillment.v1 {
         }
 	  }
 	  
-	  process InventoryAdjustment {
-	  	description "A notification may be sent out to notify adjustment in inventory numbers"
+	  process InventorySnapshot {
+	  	description "A notification may be sent out to notify a snapshot was made of the inventory numbers"
 	  	roles (InventoryStore, InventoryObserver)
 	  	workflow {
-	  		transaction InventoryAdjusted {
+	  		transaction InventorySnapshot {
 	 			roles(InventoryStore, InventoryObserver)
 	 		}
 	  	}

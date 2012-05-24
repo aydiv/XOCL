@@ -16,7 +16,8 @@ package com.x.orderfulfillment.v1 {
 	        ShippingRateSearch.ThirdPartyFulfillmentProcessor
 	        ProcessReceiving.ReceivingProcessor
 	        ProcessReturn.ReturnsProcessor
-	        InventoryAdjustment.InventoryStore
+	        ProcessReturnReceipt.ReturnsProcessor
+	        InventorySnapshot.InventoryStore
 	    }
     }
     
