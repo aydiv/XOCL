@@ -19,13 +19,13 @@ package com.x.comparisonshopping.v1
         		ComparisonShoppingPublisher "Adds the products to the comparison shopping engine channel."
         	}
         
-        preconditions(productFeed[ProductFeed.Prepared]) "Product feed file exists."
+        preconditions(productFeed[ProductFeed.Prepared])
         
 	    // The baseline worflow for processing product feeds
 	    workflow
+		{
 	    	summary "Baseline workflow for processing product feed files."
 	    	description "TBD"
-	    {
 	    	// This transaction publishes the feed to the CSE 
 	        transaction PublishProductFeed
 	        {
