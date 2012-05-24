@@ -35,10 +35,7 @@ package com.x.inventory.v1
 			InventoryObserver "The inventory observer is like the inventory consumer. The inventory observer likes to be informed of inventory changes, but does not query for the information. In the context of the StockItemUpdate process, the inventory observer sends no messages, but gets informed of stock updates and when an item is out of stock."
 		}
 		
-		preconditions
-		{
-			exists(stockItem) "Before a stock item can be updated, it must exist."
-		}
+		preconditions(exists(stockItem))
 	
 		workflow
 		{
@@ -70,10 +67,7 @@ package com.x.inventory.v1
 		
 		postconditions
 		{
-			success
-			{
-				exists(stockItem) "The update process must not result in the deletion of a stock item. "
-			}
+			success(exists(stockItem))
 		}
 	}
 }
