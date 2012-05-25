@@ -4,73 +4,76 @@ package com.x.inventory.v1
 	
     record StockItem 
 	{
-		description "The SKUs of the stock items to be retrieved."
-		string sku "The SKU (Stock Keeping Unit) of the stock item.";
-		int quantity "The quantity of stock items at a location. Note: Quantity is a high-consistency field due to serialization issues.";
-		string locationName "The reference to location based on a unique name.";
+		summary "Stock item information that was retrieved."
+		description "Contains the SKUs, quantity and location of a stock item."
+		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant.";
+		int quantity "Number of stock items at a location. Note: Quantity is a high-consistency field due to serialization issues.";
+		string locationName "Unique name used to reference the location of the stock item.";
 	}
 	
 	record LookupStockItem
 	{
-		summary "Look up stock items."
-		description "Looks up one or more stock item by their SKU."
-		array<string> skus "The SKUs of the stock items to be retrieved.";
+		summary "Searches for stock items."
+		description "Searches for one or more stock item by their SKU."
+		array<string> skus "SKUs of the stock items to be retrieved.";
 	}
 
 	record LookupStockItemSucceeded
 	{
 		summary "Returns details for one or more stock items."
-		description "Returns details for one or more stock items matching the submitted SKUs. A match must be found or every submitted SKU for the request to succeed."
-		array<StockItem> stockItems "The stock items that were looked up.";
+		description "Returns details for one or more stock items matching the submitted SKUs. A match must be found for every submitted SKU in order for the request to succeed."
+		array<StockItem> stockItems "Stock items that were retrieved.";
 	}
 	
 	record LookupStockItemFailed
 	{
-		summary "Report error details for a failed attempt to look up stock items."
-		description "Signals that the request to look up a stock item has failed. The failure message contains information about cause of the failure."
-		array<InventoryLookupError> errors "The array of InventoryLookupErrors related to the failed lookup of stock items. Human-readable.";
+		summary "Error details for a failed attempt to find stock items."
+		description "Signals that the request to find a stock item has failed. The failure message contains information about cause of the failure."
+		array<InventoryLookupError> errors "Array of errors related to the failed search for stock items.";
 	}
 	
 	record InventoryLookupError
 	{
-		description "A container for specific errors related to looking up one or more stock items."
-		string? sku "The SKUs of the stock items involved in the failed lookup.";
-		array<Error> errors "The array of errors related to the failed lookup. Human-readable.";
+		summary "Stock item retrieval errors."
+		description "Contains the errors related to searching for one or more stock items."
+		string? sku "SKUs of the stock items involved in the failed search.";
+		array<Error> errors "Array of errors related to the failed search.";
 	}
 	
 	record UpdateStockItem
 	{
 		summary "Update details for one or more stock items."
 		description "Requests that the capability update information related to one or more stock items."
-		array<StockItem> stockItems "The stock items whose information is to be updated.";
+		array<StockItem> stockItems "Stock items whose information is to be updated.";
 	}
 	
 	record UpdateStockItemSucceeded
 	{
-		summary "Returns details about about stock items that were updated."
+		summary "Details about the stock items that were updated."
 		description "Returns stock items whose information is successfully updated."
-		array<StockItem> stockItems "The stock items whose information was successfully updated.";
+		array<StockItem> stockItems "Stock items whose information was successfully updated.";
 	}
 	
 	record UpdateStockItemFailed
 	{
-		summary "Report error details for a failed attempt to update one or more stock items."
+		summary "Error details for a failed attempt to update one or more stock items."
 		description "Signals that a request to update information related to one or more stock items has failed."
-		array<InventoryError> errors "The errors specifying why the update failed. Human-readable.";
+		array<InventoryError> errors "Errors detailing why the update failed.";
 	}
 
    record InventoryError
 	{
-		description "A container for specific errors related to updating a stock item. A way of grouping error information in StockItemFailed."
+		summary "Stock item update errors."
+		description "Contains errors related to updating a stock item. A way of grouping error information in StockItemFailed."
 		StockItem? stockItem "One or more stock items involved in the failed update operation.";
-		array<Error> errors "The array of errors related to the failed update operation.";
+		array<Error> errors "Array of errors related to the failed update operation.";
 	}
 
     record StockItemUpdated
 	{
-		summary "Informs observers of changes in information for one or more stock items. "
-		description "An event sent to observers to inform them of a change in information about one or more stock items. Includes the array of updated stock items."
-		array<StockItem> stockItems "The stock items whose information was successfully updated.";
+		summary "Informs observers of changes for one or more stock items."
+		description "Event sent to observers to inform them of a change in information for one or more stock items. Includes the array of updated stock items."
+		array<StockItem> stockItems "Stock items whose information was successfully updated.";
 	}
 
     record OutOfStock

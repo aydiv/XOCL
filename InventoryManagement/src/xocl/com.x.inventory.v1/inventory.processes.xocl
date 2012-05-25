@@ -15,6 +15,7 @@ package com.x.inventory.v1
 		
 		workflow 
 		{
+			summary "Retrieves inventory information."
 			description "The inventory consumer queries inventory levels and locations."
 			transaction LookupStockItem
 			{
@@ -39,6 +40,7 @@ package com.x.inventory.v1
 	
 		workflow
 		{
+			summary "Updates stock item."
 			description "Optionally, the stock item consumer tells the inventory manager to update properties for one or more stock items. The inventory manager informs the inventory observer that stock item was updated (updates could occur through the messaging system or via the user interface), and, optionally, if an item is out of stock. The transactions defined in this workflow do not need to occur in a specific sequence."
 			any
 			{
