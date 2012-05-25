@@ -6,8 +6,8 @@ package com.x.producttaxonomy.v1 {
 		
 		description "A system used to store the product taxonomy."
     		roles {
-					ProductTaxonomyRetrieval.ProductTaxonomyManager "TBD"
-					ProductTaxonomyUpdate.ProductTaxonomyManager "TBD"
+					ProductTaxonomyRetrieval.ProductTaxonomyManager "Returns information based on a search of the product taxonomy."
+					ProductTaxonomyUpdate.ProductTaxonomyManager "Updates information in the product taxonomy."
 	 		}			
 	}	
 	
@@ -15,8 +15,8 @@ package com.x.producttaxonomy.v1 {
 		
 		description "An entity that uses or needs to access the information in the product taxonomy system."
     		roles {
-					ProductTaxonomyRetrieval.ProductTaxonomyConsumer
-					ProductTaxonomyUpdate.ProductTaxonomyObserver
+					ProductTaxonomyRetrieval.ProductTaxonomyConsumer "Searches the product taxonomy."
+					ProductTaxonomyUpdate.ProductTaxonomyObserver "Receives notifications when the product taxonomy has been updated."
 	 		}			
 	}
 }

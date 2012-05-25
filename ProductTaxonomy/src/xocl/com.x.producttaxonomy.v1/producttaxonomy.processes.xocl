@@ -12,8 +12,7 @@ package com.x.producttaxonomy.v1{
 			}
 		
 		workflow {
-			summary "TBD"
-			description "TBD"
+			description "Gets or updates the product taxonomy and then does any, all, or none of the following: returns all product classes by locale, returns product type details for a specified product class and searches for product type." 
 			
 			any{ // we may get the product taxonomy first, unless we already have it and do not need to refresh   
 				transaction GetProductTaxonomy {
@@ -33,18 +32,17 @@ package com.x.producttaxonomy.v1{
 	}
 	
 	process ProductTaxonomyUpdate{
-		summary "Updates the product taxomony."
+		summary "Updates the product taxonomy."
 		description "Updates the product taxonomy and notifies the ProductTaxonomyObserver that an updated has been done."	
 
 		roles
 			{
-				ProductTaxonomyManager "Notifies the ProductTaxonomyObserver that the product taxomony has been updated.."
-				ProductTaxonomyObserver "Receives the product taxomony update notification."
+				ProductTaxonomyManager "Notifies the ProductTaxonomyObserver that the product taxonomy has been updated."
+				ProductTaxonomyObserver "Receives the product taxonomy update notification."
 			}
 		
 		workflow {
-			summary "TBD"
-			description "TBD"
+			description "Updates the product taxonomy."
 						
 			transaction ProductTaxonomyUpdated {
 				roles(ProductTaxonomyManager, ProductTaxonomyObserver)
