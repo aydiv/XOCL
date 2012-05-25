@@ -1,5 +1,5 @@
 /*
- * This package defines transactions used by messages in com.x.xocl.coparisonshopping
+ * This package defines transactions used by messages in com.x.xocl.comparisonshopping
  */
 
 package com.x.comparisonshopping.v1
@@ -9,9 +9,9 @@ package com.x.comparisonshopping.v1
  	// This entity represents a product feed that can be
  	// published to a comparison shopping engine
     entity ProductFeed
-	{
-    	description "Represents a product feed file that can be published to a comparison shopping engine."
-   
+    {   
+    	description "Represents a product feed file and its state, which can be published to a comparison shopping engine."
+
        	// An Prepared product feed file can be Published or Denied 
         state Prepared[Published, Denied] "The state of the product feed file. This can be either Published or Denied."
                 
@@ -22,14 +22,14 @@ package com.x.comparisonshopping.v1
         state Updated[Denied] "A published product feed file was updated."
         
 		// A product feed file was denied by the comparison shopping engine
-        state Denied "A product feed file was denied by the comparison shopping engine."
+        state Denied "A product feed file was denied (publishing failed) by the comparison shopping engine."
 	} 
     
     // Publish products and get information back from the CSE about
     // the status of each product that was offered
     transaction PublishProductFeed response
     {
-    	description "Publishes the product feed file and receives the status of each product back from the comparison shopping engine."
+    	description "Sends the product feed file. It will try to send the file a maximum of 3 times. If the publishing of the feed file is successful, you will receive the status of each product back from the comparison shopping engine. Otherwise, an error message is returned."
     	
     	// Send the list of products to the CSE
         sender
@@ -63,7 +63,7 @@ package com.x.comparisonshopping.v1
     // Update the products that are published on a CSE
     transaction UpdateProductFeed response
     {
-    	description "Updates the products that are published on a comparison shopping engine."
+    	description "Updates the products that are published on a comparison shopping engine. It will try to send the file a maximum of 3 times. If the updating is successful, you will receive a list of product SKUs and assigned comparison shopping engine IDs back from the comparison shopping engine. Otherwise, an error message is returned. "
  
     	// Send the list of products to the CSE
         sender

@@ -10,22 +10,23 @@ package com.x.comparisonshopping.v1
     // Publish a set of products on a comparison shopping engine site
     process PublishProductFeed(ProductFeed productFeed)
     {
-        summary "Publishes products to the comparison shopping engine channel."
-        description "Uploads the product feed file and adds the to the comparison shopping engine channel."
+        summary "Publishes (adds) products to a comparison shopping engine."
+        description "Sends a product feed file to a comparison shopping engine and links the products to the merchant's store."
         
         roles 
         	{
-        		TrafficGenerationManager "Uploads a product feed file containing a list of products to a comparison shopping engine channel."
-        		ComparisonShoppingPublisher "Adds the products to the comparison shopping engine channel."
+        		TrafficGenerationManager "Sends a feed file containing a list of products to a comparison shopping engine."
+        		ComparisonShoppingPublisher "Links the products to the merchant's online store."
         	}
         
         preconditions(productFeed[ProductFeed.Prepared])
         
-	    // The baseline worflow for processing product feeds
+	    // The baseline workflow for processing product feeds
 	    workflow
-		{
-	    	summary "Baseline workflow for processing product feed files."
-	    	description "TBD"
+	    	{
+	    	summary "Baseline workflow for publishing products using a product feed file."
+	    	description "This workflow sends a product feed file to a comparison shopping engine, which adds the products to the comparison shopping engine and links the products to the merchant's store. It returns either a success or failure message."
+	    	
 	    	// This transaction publishes the feed to the CSE 
 	        transaction PublishProductFeed
 	        {
@@ -42,18 +43,17 @@ package com.x.comparisonshopping.v1
     
     
     process UpdatePublishedProductFeed(ProductFeed productFeed) {
-        summary "TBD"
-        description "The traffic generation manager updates information about one or more products that have already been published"
+        summary "Updates the information of published products."
+        description "Updates the information for one or more products that have already been published to a comparison shopping engine."
         
         roles(TrafficGenerationManager, ComparisonShoppingPublisher)
         
         preconditions(productFeed[ProductFeed.Published])
         
 	    workflow {
-	    	summary "TBD"
-			description "TBD"
+	    	summary "Updates published products."
+			description "This workflow sends a product feed file, which updates (replaces) the information for one or more products that have already been published and links the product to the merchant's store. It returns either a success or failure message."
 			
-	    	
 	        transaction UpdateProductFeed
 	        {
 	        	roles(TrafficGenerationManager, ComparisonShoppingPublisher)
