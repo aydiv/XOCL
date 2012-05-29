@@ -33,7 +33,6 @@ package com.x.marketplace.v3{
 		array<string> currencies;
 		array<PaymentMethod> methods;
 		array<SupportedCountry> countries;
-		array<Environment> environments;
 		string marketplace;
 	}
 	 /*
@@ -277,7 +276,11 @@ package com.x.marketplace.v3{
 	}
 	
     record GetAllSitesSucceeded {
-		array<Site> sites;
+		array<SiteWithEnvironments> sitesWithEnvironments;
+	}
+	record SiteWithEnvironments{
+		Site site;
+		array<Environment> environments;
 	}
 	
     record GetAllSitesFailed {
@@ -337,7 +340,7 @@ package com.x.marketplace.v3{
 	}
 
 	record CreatePolicyGroupSucceeded {   
-		PolicyGroup p; //id is filled in
+		PolicyGroup p; 
 	}
 	
 	record CreatePolicyGroupFailed {
@@ -346,7 +349,7 @@ package com.x.marketplace.v3{
 	}
 	
 	record UpdatePolicyGroup {
-		PolicyGroup p; //idd must be filled in
+		PolicyGroup p; 
 	}
 
 	record UpdatePolicyGroupSucceeded {
