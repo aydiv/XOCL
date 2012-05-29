@@ -83,7 +83,7 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	record CustomerInfo confidential {
-		union{guid, EntityId} id   //id is created by the system that creates the record.	
+		union{null, guid, EntityId} id = null  //id is created by the system that creates the record.	
 		Name name
 		Email? email
 		Phone? phone
@@ -300,7 +300,7 @@ package com.x.ordermanagement.v2 {
 	
 	record SimpleOrder extends OrderDetails {
 		//id is created by the system that creates the record.	
-		union{guid, EntityId} customerId
+		union{null, guid, EntityId} customerId = null
 		
 		array<SimpleOrderLineData> orderLines
 	}
