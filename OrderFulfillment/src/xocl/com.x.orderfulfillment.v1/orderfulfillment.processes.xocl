@@ -18,7 +18,7 @@ package com.x.orderfulfillment.v1 {
         state Cancelled [Complete]
         // reached if all of the uncancelled items are shipped or cancelled
         state Complete
-    }
+    } 
     
     // Entity that represents the various states of inventory that is expected to be received <a.k.a receiving>
     entity Receiving
@@ -47,7 +47,7 @@ package com.x.orderfulfillment.v1 {
     	state Complete
 	 }
    
-	process ProcessDropshipFulfillment (Fulfillment fulfillment) {		
+	process DropshipFulfillmentProcessing (Fulfillment fulfillment) {	
 	 description "An order is submitted to dropshipper for fulfillment and is either shipped or cancelled"
 	 
 	 	roles(OrderProcessor, DropshipProcessor)
@@ -95,7 +95,7 @@ package com.x.orderfulfillment.v1 {
      }
 	 	
  	 
- 	process ProcessThirdPartyFulfillment (Fulfillment fulfillment) {		
+ 	process ThirdPartyFulfillmentProcessing (Fulfillment fulfillment) {		
 	 description "An order is submitted to third party for fulfillment and is either shipped or cancelled"
 	 
 	 	roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
@@ -106,7 +106,7 @@ package com.x.orderfulfillment.v1 {
 	        	roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
 	    	}
 	    	
-	 	    do(!fulfillment[Fulfillment.Complete]) {	 	    		 	    	
+	 	    do(!fulfillment[Fulfillment.Complete]) {	 	     //is there a timeout?  		 	    	
 		 	 	any {		 	 			 		
 			 	 	//A merchant wants to hold a shipment to prevent it from shipping temporarily
 			 	 	transaction HoldFulfillment {
@@ -138,7 +138,6 @@ package com.x.orderfulfillment.v1 {
 	    				roles(ThirdPartyFulfillmentProcessor, OrderProcessor)
 	    			}	
 	    			
-	    			
 	    			transaction FulfillmentCompleted {
 		 				roles(ThirdPartyFulfillmentProcessor, OrderProcessor)		 			
 	    			}	        		
@@ -155,15 +154,15 @@ package com.x.orderfulfillment.v1 {
 	 process ShippingRateSearch {
 	 	description "A merchant requests for shipping quotes for a fulfillment order"	 
 	 	roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
-	 	 workflow { 
-	 	 	transaction LookupShippingRate {
+	 	workflow { 
+	 	 	transaction SearchShippingRate {
 	        	roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
         	}        	
         }
 	 }
 	 
 	 
-	 process ProcessReceiving (Receiving receiving) {
+	 process ReceivingProcessing (Receiving receiving) {
 	 	description "A merchant notifies a fulfillment provider of a future inventory receipt. The fulfillment provider notifies when the receipt is processed (received, put away)"
 	 	roles(InventorySupplier, ReceivingProcessor, ReceivingObserver)
 	 	workflow {
@@ -171,7 +170,7 @@ package com.x.orderfulfillment.v1 {
 		 		roles(InventorySupplier, ReceivingProcessor)
 		 	}
 		 	
-		 	do(!receiving[Receiving.Complete]) {	 	 
+		 	do(!receiving[Receiving.Complete]) {	 
 		 		any {
 		 		   //A merchant wants to give updated information about a previously communicated receiving
 		 		   //such as expected date, carrier being used, tracking number, or packaging information
@@ -202,18 +201,17 @@ package com.x.orderfulfillment.v1 {
         }		 
 	 }
 	 
-	 process ProcessReturnReceipt (Return return) {
+	 process ReturnReceiptProcessing (Return return) {
 	 	description "Return is initiated by customer directly so that first intimation of return is its receipt"
-	 	roles(ReturnsProcessor, ReturnsObserver)
+	 	roles(FulfillmentProcessor,OrderProcessor)
 	 	workflow {
-	 		do  {	
-		 		one {
-		 			transaction ReturnReceived {
-		 				roles(ReturnsProcessor, ReturnsObserver)
-		 			}	 			
-		 			
+	 		do (!return[Return.Complete]) {	
+		 		any {
+		 			transaction ReturnReceived { // ReturnRecieved can run multiple times before the process completes
+		 				roles(FulfillmentProcessor, OrderProcessor)
+		 			}	 					
 		 			transaction ReturnProcessCompleted {
-			 			roles(ReturnsProcessor, ReturnsObserver)
+			 			roles(FulfillmentProcessor, OrderProcessor)
 			 		}
 		 		}		 		
 	 		}
@@ -223,34 +221,29 @@ package com.x.orderfulfillment.v1 {
         }
 	 }
 	 
-	  process ProcessReturn (Return return) {
+	  process ReturnProcessing (Return return) {  //should be returnProcessing
 	  	description "Usually a return is initiated by customer/merchant on behalf of customer and return ASN is sent. The fulfillment provider notifies when the return is processed (received, disposition - put away or discarded)"
-	  	roles(ReturnsInformationManager, ReturnsProcessor, ReturnsObserver)
+	  	roles(OrderProcessor, FulfillmentProcessor)
 	 	workflow {
 	 		//An end customer (or a merchant acting on their behalf) wishes to arrange for a return of all or part of a previously fulfilled shipment.
 	 		transaction ProcessReturnAdvanceShipmentNotice {
-	 			roles(ReturnsInformationManager, ReturnsProcessor)
+	 			roles(OrderProcessor, FulfillmentProcessor)
 	 		}
-	 		do (!return[Return.Complete]) {	
+	 		do (!return[Return.Complete]) {	  
 	 			any {
-	 				noop
 		 			transaction UpdateReturnAdvanceShipmentNotice {
-		 				roles(ReturnsInformationManager, ReturnsProcessor)
+		 				roles(OrderProcessor, FulfillmentProcessor)
 		 			}
-		 		 }
-		 		one {
 		 			transaction CancelReturnAdvanceShipmentNotice {
-		 				roles(ReturnsInformationManager, ReturnsProcessor)
-		 		    }
-		 			
+		 				roles(OrderProcessor, FulfillmentProcessor)
+		 		    }		
 		 			transaction ReturnReceived {
-		 				roles(ReturnsProcessor, ReturnsObserver)
+		 				roles(FulfillmentProcessor, OrderProcessor)
 		 			}
-		 		}		 		
-		 		transaction ReturnProcessCompleted {
-		 			roles(ReturnsProcessor, ReturnsObserver)
-		 		}
-	 				 			
+		 			transaction ReturnProcessCompleted { //this should happen once to exit the loop
+ 		 				roles(FulfillmentProcessor, OrderProcessor)
+		 			}
+		 		}		 			
 	 		}	 		
 	 	}
 	 	postconditions {
@@ -258,12 +251,13 @@ package com.x.orderfulfillment.v1 {
         }
 	  }
 	  
-	  process InventorySnapshot {
+	  process InventorySnapshotUpdate {     
 	  	description "A notification may be sent out to notify a snapshot was made of the inventory numbers"
-	  	roles (InventoryStore, InventoryObserver)
+	  	roles (FulfillmentProvider, InventoryObserver)
 	  	workflow {
-	  		transaction InventorySnapshot {
-	 			roles(InventoryStore, InventoryObserver)
+	  		transaction UpdateInventorySnapshot {
+	 			roles(FulfillmentProvider, InventoryObserver
+	 			)
 	 		}
 	  	}
 	  }

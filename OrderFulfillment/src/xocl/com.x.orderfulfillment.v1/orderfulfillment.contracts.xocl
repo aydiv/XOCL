@@ -4,29 +4,36 @@ package com.x.orderfulfillment.v1 {
     contract DropShipFulfillmentProvider {
     	description "A capability that performs drop shipment functions"
     	roles {
-	        ProcessDropshipFulfillment.DropshipProcessor
-	        ProcessReturn.ReturnsProcessor
+	        DropshipFulfillmentProcessing.DropshipProcessor
+	        ReturnProcessing.FulfillmentProcessor
 	    }
     }
     
     contract ThirdPartyFulfillmentProvider {
     	description "A capability that performs third party shipping functions"
     	roles {
-	        ProcessThirdPartyFulfillment.ThirdPartyFulfillmentProcessor
+	        ThirdPartyFulfillmentProcessing.ThirdPartyFulfillmentProcessor
 	        ShippingRateSearch.ThirdPartyFulfillmentProcessor
-	        ProcessReceiving.ReceivingProcessor
-	        ProcessReturn.ReturnsProcessor
-	        ProcessReturnReceipt.ReturnsProcessor
-	        InventorySnapshot.InventoryStore
+	        ReceivingProcessing.ReceivingProcessor
+	        ReturnProcessing.FulfillmentProcessor
+	        ReturnReceiptProcessing.FulfillmentProcessor
+	        InventorySnapshotUpdate.FulfillmentProvider
 	    }
     }
     
-    contract OrderProcessor {
+    contract OrderProcessorWithThirdPartyFulfillment {
     	description "A capability that does order processing"
     	roles {
-	        ProcessThirdPartyFulfillment.OrderProcessor
-	        ProcessDropshipFulfillment.OrderProcessor
+	        ThirdPartyFulfillmentProcessing.OrderProcessor   
+	        ReturnProcessing.OrderProcessor
 	    }
     }
-  
+    
+    contract OrderProcessorWithDropShipFulfillment {
+    	description "A capability that does order processing"
+    	roles {
+	        DropshipFulfillmentProcessing.OrderProcessor
+	       	ReturnProcessing.OrderProcessor
+	    }
+    }
 }

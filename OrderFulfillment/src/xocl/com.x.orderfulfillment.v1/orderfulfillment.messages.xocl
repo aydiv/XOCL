@@ -9,9 +9,6 @@ package com.x.orderfulfillment.v1 {
 	record Fulfillment {
 		guid fulfillmentId		
 		FulfillmentData fulfillment
-		/** details of merchant to whom inventory belongs */
-		string clientId
-		string? clientName
 		/** identifier of warehouse where inventory is stored */
 		string warehouseId
 	}
@@ -97,19 +94,48 @@ package com.x.orderfulfillment.v1 {
 		
 	}
 	
-	record FulfillmentLineData {
+    record ShippingQuote {
+    	/** Next day, ground, etc. */
+		string? shippingMethod
+		/** The fees paid by the customer for this shipment */
+		CurrencyAmount shippingFees		
+		
+		CurrencyAmount? packagingHandlingCost
+		CurrencyAmount? surcharge  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
+		
+		DateRange? deliveryWindow
+		DateRange? shippingWindow
+		
+		array<ShippingTag>? shippingTags	
+	}
+	
+	enum ShippingTag{
+		SIGNATURE_REQUIRED
+		DELIVERY_CONFIRMATION
+		TRACKABLE
+		INSURED
+	}
+	
+	record LineData {
 		/* The unique id of this item */
 		string fulfillmentLineId
 		
 		/* The ordered index of this item (also referred to as order line number) */
 		string? itemId
-		
-		/* Reference to FulfillmentData.orderNumber */
-		string? orderNumber
-		
+
 		int quantity
 		string productSku
 		string itemDescription
+		
+		GiftWrap? giftwrap
+		CustomizationDetail? customizationDetail
+	}
+	
+	
+	record FulfillmentLineData extends LineData{
+	
+		/* Reference to FulfillmentData.orderNumber */
+		string? orderNumber
 		
 		LineItemPrice unitPrice
 
@@ -121,9 +147,6 @@ package com.x.orderfulfillment.v1 {
 		datetime? dateCancelled
 		datetime? dateDelivered
 		datetime? dateShipped
-		
-		GiftWrap? giftwrap
-		CustomizationDetail? customizationDetail
 		
 		/** A reference to the shipment that is used to ship this item */
 		string? shipmentId
@@ -294,16 +317,21 @@ package com.x.orderfulfillment.v1 {
 		Fulfillment fulfillment
 	}
 	
-	record LookupShippingRate {
-		Fulfillment fulfillment
+	record SearchShippingRate {		
+		/** details of merchant to whom inventory belongs should come from tenantID */
+		/** identifier of warehouse where inventory is stored */
+		string warehouseId
+		array<LineData> lines  "The item information for which we are looking up shipping rates"
 	}
 	
-	record LookupShippingRateSucceeded extends LookupShippingRate {
+	record SearchShippingRateSucceeded  {
 		/** breakup of fulfillment into shipments, each shipment contains its shipping costs */
-		array<Shipment> shipments
+		array<ShippingQuote> quotes
+		SearchShippingRate request
 	}
 	
-	record LookupShippingRateFailed extends LookupShippingRate {
+	record SearchShippingRateFailed {
+		SearchShippingRate request
 		array<Error> errors
 	}
 	
@@ -333,7 +361,7 @@ package com.x.orderfulfillment.v1 {
 	
 	
 	record LookupFulfillments {
-		string orderNumber
+		string orderNumber    //TN:  What is the order number?  Is it the orderID GUID from order management?  
 	}
 	
 	record LookupFulfillmentsSucceeded extends LookupFulfillments{
@@ -376,9 +404,6 @@ package com.x.orderfulfillment.v1 {
 	}
 		
 	record ReceivingData {
-		/** details of merchant to whom the inventory belongs */
-		string clientId
-		string? clientName
 		/** details of supplier */
 		string? supplierId
 		string? supplierName
@@ -453,9 +478,6 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record ReturnData {
-		/** details of merchant/supplier to whom inventory is being returned */
-		string clientId
-		string? clientName
 		/** identifier of fulfillment that is being returned */
 		guid fulfillmentId
 		/** Same as sales order number */
@@ -474,7 +496,7 @@ package com.x.orderfulfillment.v1 {
 	
 	record ReturnLineData {
 		/* unique id for the returned item */
-		string ReturntLineId		
+		string returntLineId		
 		string productSku
 		int quantity
 		string itemDescription	
@@ -521,16 +543,14 @@ package com.x.orderfulfillment.v1 {
 	
 	record InventoryData {
 		/** details of merchant/supplier whose inventory is being snapshot */
-		string clientId
-		string? clientName
 		string productSku
 		int unitQuantity
 		/** stocking unit of measure */
-		string StockingUOM
+		string stockingUOM
 		InventoryCondition status		
 	}
 	
-	record InventorySnapshot {
+	record UpdateInventorySnapshot {
 		InventoryData inventorySnapshot
 		datetime snapshotDate
 		InventorySnapshotReason snapshotReason
