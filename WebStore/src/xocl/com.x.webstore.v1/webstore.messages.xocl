@@ -3,77 +3,118 @@ package com.x.webstore.v1{
 	import com.x.core.v1.*
 	
 	enum OfferState{
-		PUBLISHED,
-		SUSPENDED
+		summary "Identifies the status of the offer."
+		description "Identifies the offer as being either Published or Suspended."
+		
+		PUBLISHED "Offer has been published to the comparison shopping engine.",
+		SUSPENDED "TBD"
 	}
 	
     record WebStore{
-    	string webStoreName;
-    	string webStoreId;
-		string language;
-		string currencyCode;
-		string url;
+		summary "The online store information."
+		description "Captures the online store name, ID, languaged used, currency accepted and the URL to the store."
+
+    	string webStoreName "Name of the online store.";
+    	string webStoreId "Identifier for the online store.";
+		string language "Languague used for the online store.";
+		string currencyCode "Code for the currency the online store accepts.";
+		string url "Location (URL) of the online store.";
 	}
 	
 	record WebStoreOffer extends WebStoreOfferData{
-		string offerId;
-		OfferState offerState;
+		summary "Offer information."
+		description "Captures the identifier of the offer and its status."
+
+		string offerId "Identifier of the offer.";
+		OfferState offerState "Current status of the offer, which can be Published or Suspended.";
 	}
 	
 	record WebStoreOfferData {
-		string url;
-		CurrencyAmount currentPrice;
-		long quantity;
-		string sku;
-		string webStoreId;
-		array<string>? categoryId;
+		summary "Details offer information."
+		description "Captures the URL and identifier of the online store, and the price, quanity, SKU, and category of the offer.  "
+
+		string url "Location (URL) of the product in the online store.";
+		CurrencyAmount currentPrice "TBD";
+		long quantity "How many of this product are in stock.";
+		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant.";
+		string webStoreId "Identifier for this web store.";
+		array<string>? categoryId "TBD";
 	}
 	
 	record Category {
-		string id;
-		string name;
-		string parentId
-		string? categoryUrl;
+		summary "Category information."
+		description "Captures the identifier, name, and URL of the category and the identifier of the parent category."
+
+		string id "Identifier of the offer category.";
+		string name "Name of the category.";
+		string parentId  "Identifier of the parent category."
+		string? categoryUrl "Location (URL) for the category.";
 	}
 	record GetAllCategory{
-		string webStoreId;
+		summary "All the categories in an online store."
+		description "Retrieves all the product categories defined in the online store."
+
+		string webStoreId "Identifier of a web store.";
 	}  
 	record GetAllCategorySucceeded{
-		string webStoreId;
-		array<Category> categories;
+		summary "Search of product categories succeeded."
+		description "Confirms successful retrieval of the categories in the online store."
+
+		string webStoreId "Identifier for the online store.";
+		array<Category> categories "Array of product categories.";
 	} 
 	record GetAllCategoryFailed{
-		string webStoreId;
-		array<Error> errors;
+		summary "Search of product categories failed."
+		description "Reports error details for a failed category search."
+
+		string webStoreId "Identifier for the online store.";
+		array<Error> errors "Error code and details of the failed category search.";
 	}    
     record GetAllWebStoreProvider {
+		summary "TBD"
+		description "TBD"
+
 
 	}
 	
     record GetAllWebStoreProviderSucceeded {
-		string providerName;
+		summary "TBD"
+		description "TBD"
+
+		string providerName "TBD";
 		 //Caller must get destination ID from header - X-XC-PUBLISHER-ID
 	}
 	
 	record GetAllWebStore {
+		summary "TBD"
+		description "TBD"
+
 	}
 	
     record GetAllWebStoreSucceeded {
+		summary "TBD"
+		description "TBD"
+
 		string providerName;
 	    //Caller must get destination ID from header - X-XC-PUBLISHER-ID
-	    array<WebStore> stores;
+	    array<WebStore> stores "TBD";
 	}
 	
 	
 	record GetAllWebStoreFailed {
-		string providerName;
-	    array<Error> errors;
+		summary "TBD"
+		description "TBD"
+
+		string providerName "TBD";
+	    array<Error> errors "TBD";
 	}
 	
 	
 	record SearchWebStoreOffer{
+		summary "TBD"
+		description "TBD"
   
-    	string? webStoreId;
+    	string? webStoreId "Identifier for the online store.";
 		
 		/* When this field is present, get all customers modified since this date that also match the other criteria */
 		datetime? modifiedSince;
@@ -88,68 +129,113 @@ package com.x.webstore.v1{
 		 * Return the results starting from this zero-based index.
 		 * When null, items will be returned started from the first item
 		 */
-		long? startItemIndex;
+		long? startItemIndex "TBD";
 	}
 	
 	record SearchWebStoreOfferSucceeded{	
-		array<WebStoreOffer> webStoreOffers;
-		long totalItemsFound;
-		SearchWebStoreOffer request;
+		summary "TBD"
+		description "TBD"
+
+		array<WebStoreOffer> webStoreOffers "TBD";
+		long totalItemsFound "TBD";
+		SearchWebStoreOffer request "TBD";
 	}
 	
 	record SearchWebStoreOfferFailed{
-		array<Error> errors;
-		SearchWebStoreOffer request;
+		summary "TBD"
+		description "TBD"
+
+		array<Error> errors "TBD";
+		SearchWebStoreOffer request "TBD";
 	}
 	record CreateWebStoreOffer{
-		WebStoreOfferData offer;
+		summary "TBD"
+		description "TBD"
+
+		WebStoreOfferData offer "TBD";
 	}
     record CreateWebStoreOfferSucceeded{
-		WebStoreOffer offer;
+		WebStoreOffer offer "TBD";
 	}
 	record CreateWebStoreOfferFailed{
-		WebStoreOfferData offer;
-		array<Error> errors;
+		summary "TBD"
+		description "TBD"
+
+		WebStoreOfferData offer "TBD";
+		array<Error> errors "TBD";
 	}
 	record UpdateWebStoreOffer{
-		WebStoreOffer offer;
+		summary "TBD"
+		description "TBD"
+
+		WebStoreOffer offer "TBD";
 	}
     record UpdateWebStoreOfferSucceeded{
-		WebStoreOffer offer;
+		summary "TBD"
+		description "TBD"
+
+		WebStoreOffer offer "TBD";
 	}
 	record UpdateWebStoreOfferFailed{
-		WebStoreOffer offer;
-		array<Error> errors;
+		summary "TBD"
+		description "TBD"
+
+		WebStoreOffer offer "TBD";
+		array<Error> errors "TBD";
 	}
 	record DeleteWebStoreOffer{
-		string offerId;
+		summary "TBD"
+		description "TBD"
+
+		string offerId "TBD";
 	}
 	record DeleteWebStoreOfferSucceeded{
-		string offerId;
+		summary "TBD"
+		description "TBD"
+
+		string offerId "Identifier for the successful offer.";
 	}
 	record DeleteWebStoreOfferFailed{
-		string offerId;
-		array<Error> errors;
+		summary "TBD"
+		description "TBD"
+
+		string offerId "Identifier for the failed offer.";
+		array<Error> errors "TBD";
 	}
 	record WebStoreOfferCreated{
-		WebStoreOffer offer;
+		summary "TBD"
+		description "TBD"
+
+		WebStoreOffer offer "TBD";
 	}
 	record WebStoreOfferUpdated{
-		WebStoreOffer offer;
+		summary "TBD"
+		description "TBD"
+
+		WebStoreOffer offer "TBD";
 	}
 	record WebStoreOfferDeleted{
-		WebStoreOffer offer;
+		summary "TBD"
+		description "TBD"
+
+		WebStoreOffer offer "TBD";
 	}
 	
     record WebStoreOfferPriceUpdated{
-	    string sku;
-		CurrencyAmount currentPrice;
-		string webStoreId;
+		summary "TBD"
+		description "TBD"
+
+	    string sku "TBD";
+		CurrencyAmount currentPrice "TBD";
+		string webStoreId "Identifier for the online store.";
 	}
 	
     record WebStoreOfferQuantityUpdated{
-		string sku;
-		long quantity;
-		string webStoreId;
+		summary "TBD"
+		description "TBD"
+
+		string sku "TBD";
+		long quantity "TBD";
+		string webStoreId "Identifier for the online store.";
 	}
 }

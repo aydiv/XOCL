@@ -4,13 +4,20 @@ package com.x.webstore.v1{
 	
 	process WebStoreMetadataProvision 
 	{
+		summary "TBD"
 		description "A marketing provider or other interested party queries for all available web stores for a particular tenant, then retrieves metadata about those web stores"
 	
-	
-		roles(WebStoreMetadataConsumer,WebStoreMetadataProvider)
+		roles 
+			{
+				WebStoreMetadataConsumer "TBD"
+				WebStoreMetadataProvider "TBD"
+			}
 	
 		workflow
 		{
+			summary "TBD"
+			description "TBD"
+			
 			any{
 				transaction GetAllWebStoreProvider 
 				{
@@ -36,12 +43,19 @@ package com.x.webstore.v1{
 	
     process WebStoreOfferSearch 
 	{
+		summary "TBD"
 		description "A marketing provider or other interested party queries for offers"
 	
-		roles(WebStoreOfferConsumer,WebStoreOfferManager)
-	
+		roles  
+			{
+				WebStoreOfferConsumer "TBD"
+				WebStoreOfferManager "TBD"
+			}
 		workflow
 		{
+			summary "TBD"
+			description "TBD"
+			
 			transaction SearchWebStoreOffer
 			{
 				roles(WebStoreOfferConsumer, WebStoreOfferManager)
@@ -51,12 +65,21 @@ package com.x.webstore.v1{
 	
 	process WebStoreOfferCreation
 	{
+		summary "TBD"
 		description "Creating an offer in a web store"
 	
-		roles(WebStoreOfferConsumer,WebStoreOfferManager, WebStoreOfferObserver)
+		roles
+			{
+				WebStoreOfferConsumer "TBD"
+				WebStoreOfferManager "TBD"
+				WebStoreOfferObserver "TBD"
+			}
 	
 		workflow
 		{
+			summary "TBD"
+			description "TBD"
+			
 			any{
 				transaction CreateWebStoreOffer
 				{
@@ -72,12 +95,16 @@ package com.x.webstore.v1{
 	
 	process WebStoreOfferUpdate
 	{
+		summary "TBD"
 		description "Updating an offer in a web store"
 	
 		roles(WebStoreOfferConsumer,WebStoreOfferManager, WebStoreOfferObserver)
 	
 		workflow
 		{
+			summary "TBD"
+			description "TBD"
+			
 			any{
 				transaction UpdateWebStoreOffer
 				{
@@ -107,12 +134,16 @@ package com.x.webstore.v1{
 	
 	process WebStoreOfferDeletion
 	{
+		summary "TBD"
 		description "Deleting an offer in a web store"
 	
 		roles(WebStoreOfferConsumer,WebStoreOfferManager, WebStoreOfferObserver)
 	
 		workflow
 		{
+			summary "TBD"
+			description "TBD"
+			
 			any{
 				transaction DeleteWebStoreOffer
 				{

@@ -140,6 +140,8 @@ package com.x.webstore.v1{
     }
      transaction UpdateWebStoreOffer response
     {
+    	description "TBD"
+    	
         sender
         {
         	message UpdateWebStoreOffer
@@ -169,6 +171,8 @@ package com.x.webstore.v1{
     
    	transaction WebStoreOfferCreated notify
    	{
+   		description "TBD"
+   		
    		sender
    		{
    			message WebStoreOfferCreated
@@ -181,6 +185,8 @@ package com.x.webstore.v1{
    	
    	transaction WebStoreOfferPriceUpdated notify
    	{
+   		description "TBD"
+   		
    		sender
    		{
    			message WebStoreOfferPriceUpdated
@@ -193,6 +199,8 @@ package com.x.webstore.v1{
    	
    	transaction WebStoreOfferQuantityUpdated notify
    	{
+   		description "TBD"
+   		
    		sender
    		{
    			message WebStoreOfferQuantityUpdated{
@@ -204,6 +212,8 @@ package com.x.webstore.v1{
    	
    	transaction WebStoreOfferDeleted notify
    	{
+   		description "TBD"
+   		
    		sender
    		{
    			message WebStoreOfferDeleted{
@@ -216,6 +226,8 @@ package com.x.webstore.v1{
    	   	
    	transaction WebStoreOfferDeleted notify
    	{
+   		description "TBD"
+   		
    		sender
    		{
    			message WebStoreOfferDeleted{
@@ -227,6 +239,8 @@ package com.x.webstore.v1{
    	   	
    	transaction WebStoreOfferUpdated notify
    	{
+   		description "TBD"
+   		
    		sender
    		{
    			message WebStoreOfferUpdated{
