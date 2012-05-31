@@ -26,8 +26,8 @@ package com.x.marketplace.v3{
 	   		TopSellingProductSearch.Marketplace<Ebay>
 	   		
 	   		//Ebay roles
-	        StoreLookup.MarketplaceMarketplaceMetadataProvider
-			AccountProfileLookup.MarketplaceMarketplaceMetadataProvider
+	        StoreLookup.MarketplaceMetadataProvider
+			AccountProfileLookup.MarketplaceMetadataProvider
 	        
 	   		//Order roles
 	   		ProcessSalesChannelOrder.SalesChannel<MarketplaceOrder> 
@@ -81,7 +81,8 @@ package com.x.marketplace.v3{
 	   		AuthorizationRevoke.MarketplaceMetadataConsumer
 	   		
 	   		//Ebay roles
-	        StoreLookup.MarketplaceMarketplaceMetadataConsumer
+	        StoreLookup.MarketplaceMetadataConsumer
+	        AccountProfileLookup.MarketplaceMetadataConsumer
 	        
 	   		//Order roles
 	   		ProcessSalesChannelOrder.OrderProcessor<MarketplaceOrder> 
