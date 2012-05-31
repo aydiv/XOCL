@@ -86,7 +86,7 @@ package com.x.orderfulfillment.v1 {
 	record ShipmentContainer {
 			description "A shipment container represents a set of items that shipped in a single container with one tracking number"
 			array <string> fulfillmentLineIds "Reference to items in the shipment container"
-			TrackingDetail trackingDetails
+			TrackingDetail trackingDetail
 			string? shippingMethod  "The method used to ship: Next day, ground, etc. "
 			DateRange? deliveryWindow
 			DateRange? shippingWindow
