@@ -3,6 +3,7 @@ package com.x.customer.v1{
 	
 	transaction UpsertCustomer response 
     {
+    	description "Updates customer information or adds a new customer record based on whether the customer exists."
         sender
         {
         	message UpsertCustomer
@@ -33,6 +34,7 @@ package com.x.customer.v1{
     // Inform observers that an customer was created
     transaction CustomerCreated inform
     {
+    	description "Notifies CustomerObserver that a new customer record was created."
         sender
         {
         	message CustomerCreated 
@@ -42,6 +44,7 @@ package com.x.customer.v1{
     // Inform observers that an customer was updated
     transaction CustomerUpdated inform
     {
+    	description "Notifies CustomerObserver that the information about a customer has been updated."
         sender
         {
         	message CustomerUpdated
@@ -51,6 +54,7 @@ package com.x.customer.v1{
     
 	transaction SearchCustomer<Email, NameAndId> query
     {
+    	description "Searches for a customer by email address or name and system ID. System ID is the identifier assigned to the customer by the system that created the customer record."
         sender
         {
         	message SearchCustomer
@@ -74,7 +78,7 @@ package com.x.customer.v1{
     
     transaction LookupCustomer query
     {
-    	description "Retrieve details for one customer based on the supplied customer id."
+    	description "Retrieves details for one customer based on the supplied customer ID (identifier) and returns either the customer information or a failure error message."
         sender
         {
         	message LookupCustomer

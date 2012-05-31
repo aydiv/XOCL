@@ -3,122 +3,152 @@ package com.x.customer.v1{
 	import com.x.core.v1.*
 	
 	record UpsertCustomer{
-		CustomerData data;
+		summary "Updates customer information or adds a customer based on whether the customer exists."
+		description "Searches for the customer. If the customer exists, updates the information about the customer. If the customer does not exist, adds the customer."
+		CustomerData data "Customer information, such as name, address, phone, etc. This is used to either create a new customer or update an existing customer's information.";
 	}
 	record UpsertCustomerSucceeded{
-		Customer data;
+		summary "Adding or updating a customer record succeed."
+		description "Confirms successfully adding a customer or updating the information of an existing customer."
+		Customer data "Information about the customer, such as name, address, phone, etc."; // ??what is this information used for. is it returned in the succeeds message? 
 	}
     record UpsertCustomerFailed{
-		CustomerData data;
-		array<Error> errors;	
+		summary "Failed to add or update a customer record."
+		description "Returns the error details related to the failure of adding a customer or updating customer information."
+		CustomerData data "Customer information, such as name, address, phone, etc."; // ?? what is this used for
+		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";	
 	}
 	
 	enum Gender {
-		MALE,
-		FEMALE
+		summary "Specifies the customer's gender."
+		description "Used to specify the gender of the customer. The values are MALE or FEMALE."
+		MALE "Indicates the customer is male.",
+		FEMALE "Indicates the customer is female."
 	}
 	
 	record CustomerData confidential { 
-		Name fullName ;	   //confidential        
-	    array<Address>? addresses; //confidential  
-		Phone? primaryPhone; //confidential  
-		Email email;  //confidential  
-		Gender? gender;
-		datetime? dateOfBirth;
-		string? company;
-		datetime dateCreated;
-		datetime lastModified;
+		summary "All the information about a customer."
+		description "Captures all the information needed for the customer's record."
+		Name fullName "Confidential: Customer's full name (first and last name).";	 //confidential      
+	    array<Address>? addresses "Confidential: Customer's address."; //confidential  ??is this home or shipping address  you often need both
+		Phone? primaryPhone "Confidential: Customer's primary phone number."; //confidential  
+		Email email "Confidential: Customer's email address.";  //confidential  
+		Gender? gender "Customer's gender. This can be either MALE or FEMALE.";
+		datetime? dateOfBirth "Customer's birthday."; // ??Format
+		string? company "Customer's company name.";
+		datetime dateCreated "Date the customer record was created.";  // ??Format
+		datetime lastModified "Date the customer information was last modified (changed)."; // ??Format
 		/** map of source system to source Id. This is used for audit purposes, to indicate where the customer came from in the flow */
-	    map<string>? sourceIds;
-	    
-	    boolean? doNotCall;   
-		boolean? emailOptOut;
+	    map<string>? sourceIds "Maps the source system name to the customer source identifier (ID)."; // ??Need examples.  why would you need this,  how would it be used
+	    boolean? doNotCall "Indicates that the customer does not want to be contacted by telephone.";   
+		boolean? emailOptOut "Indicates that the customer does not want to receive marketing email (opted-out).";
 	}  
 	
     record Customer confidential extends CustomerData {
-		union{guid, EntityId} id;   //id is created by the system that creates the record.	
+		summary "Adds the system ID to the customer information." // ??I'm guessing about this. 
+		description "Adds the identifier assigned to the customer by the system that created the customer record to the customer information."
+		union{guid, EntityId} id "Identifier assigned to the customer by the system that created the customer record.";   //id is created by the system that creates the record.	
 	} 
 	
 	record SearchCustomer{
+		summary "Adds modification date to the search criteria." // ??Adds to the criteria or is this a filter??
+		description "Returns a list of customers based on the search criteria and customers with a modification date that is equal to or greater than the specified date."
 		
 		/* When this field is present, get all customers modified since this date that also match the other criteria */
-		datetime? modifiedSince;
+		datetime? modifiedSince "Modification date for the search criteria."; //   ??Format
 		
 		/**
 		 * Restrict the number of items return to this many or less.
 		 * When null, it is assumed there is no restriction
 		 */
-		long? itemsRequested;
+		long? itemsRequested "Sets the maximum number of returned items. If this is not set, all items are returned.";
 		
 		/**
 		 * Return the results starting from this zero-based index.
 		 * When null, items will be returned started from the first item
 		 */
-		long? startItemIndex;
+		long? startItemIndex "Returns the results starting from this zero-based index. If this is not set, items will be returned started from the first item.";  //??you would need to use this based on the way the customer system is set up????
 		
 		/*  */
 	}
 	
 	record SearchCustomerSucceeded confidential{
-		
-	     array<Customer> customers;
-		 long totalItemsFound;
-		 SearchCustomer request;
+		summary "Searches for customers."
+		description "Returns a list of customers and the total number of customers returned." // ?? What criteria are used for the search??
+	     array<Customer> customers "Array of customers found.";
+		 long totalItemsFound "Total number of customers returned.";
+		 SearchCustomer request "Includes the record modification date in the search criteria.";  //  ?? I'm guessing. filtering??
 	}
 	
 	record LookupCustomer {
-        union{guid, EntityId} id 
+		summary "Searches for a customer by system ID."
+		description "Searches for a customer using the identifier assigned to the customer by the system that created the customer record."
+        union{guid, EntityId} id "Identifier assigned to the customer by the system that created the customer record." 
     }
  
     record LookupCustomerSucceeded {
-        Customer customer
+		summary "Searches for a customer by system ID succeeded."
+		description "Returns the customer associated with the system ID that was searched for."
+        Customer customer "Customer name associated with the system ID." //??? Guessed on this
     }
     
     record LookupCustomerFailed {
-        union{guid, EntityId} id 
-        array<Error> errors
+		summary "Searches for a customer by system ID failed."
+		description "Returns error details related to the failed retrieval of a customer when searching by the system ID of a customer."
+        union{guid, EntityId} id "Identifier assigned to the customer by the system that created the customer record."
+        array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message."
     }
 
     record CustomerEmail{
-		
-		Email email;
-		
-		datetime lastModifiedDate;
-		
-		union{null,guid,EntityId} customerId = null;
+		summary "Searches for a customer by email and record modification date and returns their system ID." // ??guessing  is record modification date optional?
+		description "Searches for a customer by email address and record modification date and returns their ID. This ID was assigned to the customer by the system that created the customer record."	
+		Email email "Customer's email address.";		
+		datetime lastModifiedDate "Date the customer information was last modified (changed).";		
+		union{null,guid,EntityId} customerId = null "Identifier assigned to the customer by the system that created the customer record.";
 	}
 	
 	record CustomerNameAndId{
-		union{guid,EntityId} customerId;
-		Name fullName ;	   //confidential, but not identifying by itself
-		datetime lastModifiedDate;
+		summary "Searches for a customer by name and record modification date and returns their system ID." // ??guessing
+		description "Searches for a customer by name and record modification date and returns their ID. This ID was assigned to the customer by the system that created the customer record."
+		union{guid,EntityId} customerId "Identifier assigned to the customer by the system that created the customer record.";
+		Name fullName "Customer's first and last name.";  //confidential, but not identifying by itself
+		datetime lastModifiedDate "Date the customer information was last modified (changed).";
 	}
 	
 
  	// NOTE: Email opt-out customers should not appear in this response.
 	record SearchEmailCustomerSucceeded{
-		array<CustomerEmail> customers;
-		long totalItemsFound;
-		SearchCustomer request;
-
+		summary "Returns a list of customers and their email address. List does NOT include customers that have opted-out of email contact."
+		description "Retrieves a list of customers and their email address that can be used to send marketing email. List does NOT include customers that have indicated they do not want to receive marketing email (opted-out). It also returns the total number of customers found."
+		array<CustomerEmail> customers "Array of customers with an email address and who allow the merchant to send them marketing email. In other words, customers who did NOT opt-out.";
+		long totalItemsFound "Total number of customers returned.";
+		SearchCustomer request "Performs the search."; // ??I'm not sure what this is
 	}
 	
 	record SearchNameAndIdCustomerSucceeded{
-		array<CustomerNameAndId> customers;
-		long totalItemsFound;
-		SearchCustomer request;
+		summary "List of customer names and IDs."
+		description "Retrieves a list of customer names and their system identification. It also returns the total number of customers found. "
+		array<CustomerNameAndId> customers "Array of customer name and their system ID.";
+		long totalItemsFound "Total number of customers returned.";
+		SearchCustomer request "Performs the search."; //??guessing
 	}
 	
 	record SearchCustomerFailed{
-		SearchCustomer request;
-		array<Error> errors;
+		summary "Search for a customer failed."
+		description "Returns error details related to the failed retrieval of a customer."
+		SearchCustomer request "Performs the search.";
+		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
 	}
 	
 	record CustomerCreated{
-		Customer data;
+		summary "Creates a new customer."
+		description "Creates a new customer record."
+		Customer data "Information about the customer, such as name, address, phone, etc., which is used to create the customer record.";
 	}
 	record CustomerUpdated{
-		Customer data;
+		summary "Updates customer information."
+		description "Updates the information about a customer."
+		Customer data "Updated information about the customer, such as name, address, phone, etc."; // ??is this the information that was changed? 
 	}
 		
 }
