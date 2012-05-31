@@ -67,41 +67,41 @@ package com.x.orderfulfillment.v1 {
 		Address? billingAddress		
 		
 	}
-	
-	record Shipment {
+	record Shipment { 
+		description "A shipment represents a set of items that shipped, in one or more shipment containers"
+		
 		/** only need to be unique to the fulfillment like 1, 2, 3, etc...*/
 		string shipmentId
-		/** Reference to items in the shipment */
-		array <string> fulfillmentLineIds
-		/** The fees paid by the customer for this shipment */
-		CurrencyAmount shippingFees		
-		/** Total discount amount summarized from all PromotionalDiscount. */
-		CurrencyAmount? discountAmount
+		CurrencyAmount shippingFees	"The fees paid by the customer for this shipment"
+		CurrencyAmount? discountAmount 	"Total discount amount summarized from all PromotionalDiscount."
 		array<PromotionalDiscount>? discounts
 		CurrencyAmount? additionalCost
 		CurrencyAmount? packagingHandlingCost
-		CurrencyAmount? surcharge  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
+		CurrencyAmount? surcharge  "UPS or FedEx to Alaska, Hawaii or Puerto Rico would typically encounter a surcharge."
 
-		array<TrackingDetail>? trackingDetails
-		
-		/** Next day, ground, etc. */
-		string? shippingMethod
-		
-		DateRange? deliveryWindow
-		DateRange? shippingWindow
-		
-		string? shippingMessage
-		
+		array<ShipmentContainer> shipmentContainers;
 	}
 	
+	
+	record ShipmentContainer {
+			description "A shipment container represents a set of items that shipped in a single container with one tracking number"
+			array <string> fulfillmentLineIds "Reference to items in the shipment container"
+			TrackingDetail trackingDetails
+			string? shippingMethod  "The method used to ship: Next day, ground, etc. "
+			DateRange? deliveryWindow
+			DateRange? shippingWindow
+			string? shippingMessage
+			array<ShippingTag>? shippingTags
+	}
+	
+	
     record ShippingQuote {
-    	/** Next day, ground, etc. */
-		string? shippingMethod
-		/** The fees paid by the customer for this shipment */
-		CurrencyAmount shippingFees		
+    	description "A quote for shipping a set of items"
+		string? shippingMethod  "The method used to ship: Next day, ground, etc. "
 		
+		CurrencyAmount shippingFees		"The fees to be paid by the customer for this shipment"		
 		CurrencyAmount? packagingHandlingCost
-		CurrencyAmount? surcharge  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
+		CurrencyAmount? surcharge  "UPS or FedEx to Alaska, Hawaii or Puerto Rico would typically encounter a surcharge."
 		
 		DateRange? deliveryWindow
 		DateRange? shippingWindow
@@ -124,7 +124,7 @@ package com.x.orderfulfillment.v1 {
 		string? itemId
 
 		int quantity
-		string productSku
+		string sku
 		string itemDescription
 		
 		GiftWrap? giftwrap
@@ -335,13 +335,24 @@ package com.x.orderfulfillment.v1 {
 		array<Error> errors
 	}
 	
-	record HoldFulfillment {
+	record MerchantHoldFulfillment {
 		guid fulfillmentId
 		array <string> fulfillmentLineIds
 		string? holdMessage
+	}	
+
+	enum HoldReasonCode{
+		description "The reasons that a hold may occur"
+		INVENTORY_UNAVAILABLE
 	}
-	
-	
+
+	record FulfillmentProcessorHoldFulfillment {
+		guid fulfillmentId
+		array <string> fulfillmentLineIds  "The line items that are in this hold"
+		array<HoldReasonCode>? reasonCodes;
+		string? holdMessage
+	}
+
 	record ReleaseFulfillment {
 		guid fulfillmentId
 		array <string> fulfillmentLineIds
@@ -352,10 +363,8 @@ package com.x.orderfulfillment.v1 {
 	record FulfillmentInformationUpdated {
 		guid fulfillmentId
 		FulfillmentStatus status 
-		/** Updated expected ship date */
-		DateRange? expectedShipDate
-		/** All shipments shipped for a  fulfillment */
-		array<Shipment> shipmentUpdates
+		DateRange? expectedShipDate  "The Updated expected ship date"
+		array<Shipment> shipmentUpdates  "All shipments shipped for a fulfillment"
 		string? comment
 	}
 	

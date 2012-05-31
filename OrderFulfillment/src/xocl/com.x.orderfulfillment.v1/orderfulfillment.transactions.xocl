@@ -111,16 +111,26 @@ package com.x.orderfulfillment.v1 {
         	failure SearchShippingRateFailed
         }
     }
-    
-    // Notifies that whole/parts of fulfillment should be held from further processing
-    transaction HoldFulfillment(Fulfillment fulfillment) notify {
+
+    transaction MerchantHoldFulfillment(Fulfillment fulfillment) notify {
+    	description "Notifies that whole/parts of fulfillment should be held from further processing"
     	sender{
-    		message HoldFulfillment{
+    		message MerchantHoldFulfillment{
     			timeouts(receipt=30s, validation=3m)     		
         		retries=3
     		}
     	}
-    	//TN:  Does this set the state of the fulfillment?
+    }
+    
+        // Notifies that whole/parts of fulfillment should be held from further processing
+    transaction FulfillmentProcessorHoldFulfillment(Fulfillment fulfillment) notify {
+    	description "Notifies that whole/parts of fulfillment should be held from further processing"
+    	sender{
+    		message FulfillmentProcessorHoldFulfillment{
+    			timeouts(receipt=30s, validation=3m)     		
+        		retries=3
+    		}
+    	}
     }
     
     // Notifies that whole/parts of fulfillment should be released for further processing

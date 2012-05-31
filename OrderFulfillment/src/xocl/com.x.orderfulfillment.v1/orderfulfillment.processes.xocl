@@ -3,91 +3,84 @@
  */
 package com.x.orderfulfillment.v1 {
 	import com.x.orderfulfillment.v1.*
+	import com.x.pim.v1.*
 	
-	// Entity that represents the various states of a fulfillment order
-    entity Fulfillment
-    {
+    entity Fulfillment {
+    	description "Entity that represents the various states of a fulfillment order"
         state Created [OnHold, Shipped, Cancelled]
-        // reached when all of the uncancelled/unshipped items are put on hold
-        state OnHold [Released]
-        // reached when all of the uncancelled/unshipped items are released from hold
-        state Released [Shipped, Cancelled]
-        // reached when all the uncancelled items get shipped
-        state Shipped [Complete]
-        // reached when all items get cancelled
-        state Cancelled [Complete]
-        // reached if all of the uncancelled items are shipped or cancelled
-        state Complete
+        state OnHold [Released] "reached when all of the uncancelled/unshipped items are put on hold" 
+        state Released [Shipped, Cancelled] "reached when all of the uncancelled/unshipped items are released from hold"
+        state Shipped [Complete]  "reached when all the uncancelled items get shipped"
+        state Cancelled [Complete]  "reached when all items get cancelled"
+        state Complete    "reached if all of the uncancelled items are shipped or cancelled"
     } 
     
-    // Entity that represents the various states of inventory that is expected to be received <a.k.a receiving>
-    entity Receiving
-    {
+ 
+    entity Receiving {
+    	description   "Entity that represents the various states of inventory that is expected to be received <a.k.a receiving>"
     	state Created [Cancelled, Received, PutAway, Complete]
-    	//reached if all of the receiving is cancelled
-    	state Cancelled [Complete]
-    	//reached if all of the uncancelled receiving is received
-    	state Received [PutAway]
-    	//reached if all of the uncancelled delivered receiving is putaway
-    	state PutAway [Complete]
-    	//reached if all of the uncancelled receiving is putaway or cancelled
-    	state Complete
+    	state Cancelled [Complete]     "reached if all of the receiving is cancelled"
+    	state Received [PutAway] "reached if all of the uncancelled receiving is received"
+    	state PutAway [Complete] "reached if all of the uncancelled delivered receiving is putaway"
+    	state Complete   "reached if all of the uncancelled receiving is putaway or cancelled"
     }
-    
-     //Represents the state machine for returns initated for fulfillments that are completed
+   
 	 entity Return {
-	 	//Beginning state. Triggered when return ASN is received
-	  	state Expected [Cancelled, Received]
-    	//reached if after a ASN was sent, the return ASN is cancelled
-    	state Cancelled [Complete]
-    	//reached if the return is received with ASN or some return is received unexpectedly
-    	// It is possible to begin with this state
-    	state Received [Complete]
-    	//reached if entire return is in Cancelled or Received state
-    	state Complete
+	 	description "Represents the state machine for returns initated for fulfillments that are completed"
+	  	state Expected [Cancelled, Received] "Beginning state. Triggered when return ASN is received"
+    	state Cancelled [Complete] "reached if after a ASN was sent, the return ASN is cancelled"
+    	state Received [Complete] "reached if the return is received with ASN or some return is received unexpectedly. It is possible to begin with this state"
+    	state Complete "reached if entire return is in Cancelled or Received state"
 	 }
    
 	process DropshipFulfillmentProcessing (Fulfillment fulfillment) {	
 	 description "An order is submitted to dropshipper for fulfillment and is either shipped or cancelled"
 	 
-	 	roles(OrderProcessor, DropshipProcessor)
+	 	roles(OrderProcessor, DropshipProcessor, ProductInformationManager)
         
-	        workflow {
-	 	 	
-	 	 	// An dropshipper is asked to fulfill all or parts of an order 	 	 
-	 	 	transaction ProcessDropshipFulfillment {
-	        	roles(OrderProcessor, DropshipProcessor)
-	    	}
-	    	
-	 	    do(!fulfillment[Fulfillment.Complete]) {	 	    		 	    	
-		 	 	any {
-		 	 			 	 		
-			 	 	transaction FulfillmentExpectedShipDateUpdated {
-		        		roles(DropshipProcessor, OrderProcessor)
-		        	}
+	        workflow { 
+		 	 	transaction ProcessDropshipFulfillment {
+		 	 		description "A dropshipper is asked to fulfill all or parts of an order"
+		        	roles(OrderProcessor, DropshipProcessor)
+		    	}
+		    	
+		    	any{
+					workflow ProductLookup {  
+						description "The DropShip processor can get information from PIM, such as customs and shipment related attributes"
+						roles(DropshipProcessor, ProductInformationManager)
+					}
+		    	}
+		    	
+		 	    do(!fulfillment[Fulfillment.Complete]) {
+		 	        description "While the fulfillment is not complete, several things can occur in any order"	 	 	    		 	    	
+			 	 	any {
+			 	 			 	 		
+				 	 	transaction FulfillmentExpectedShipDateUpdated {
+			        		roles(DropshipProcessor, OrderProcessor)
+			        	}
+			        	
+			        	transaction DropShipSupplierComment {
+			        		roles(DropshipProcessor, OrderProcessor)
+			        	}
+			        	
+			        	transaction MerchantComment {
+			        		roles(OrderProcessor, DropshipProcessor)
+			        	}
+		    			transaction FulfillmentCancelled {
+		    				description "A supplier may cancel all/parts of the fulfillment"
+		        			roles(DropshipProcessor, OrderProcessor)
+		        		}
 		        	
-		        	transaction DropShipSupplierComment {
-		        		roles(DropshipProcessor, OrderProcessor)
-		        	}
-		        	
-		        	transaction MerchantComment {
-		        		roles(OrderProcessor, DropshipProcessor)
-		        	}
-		        	//A supplier may cancel all/parts of the fulfillment
-	    			transaction FulfillmentCancelled {
-	        			roles(DropshipProcessor, OrderProcessor)
-	        		}
-	        	
-	    			transaction FulfillmentShipped {
-	    				roles(DropshipProcessor, OrderProcessor)
-	    			}
-	    			
-	    			transaction FulfillmentCompleted {
-			 			roles(DropshipProcessor, OrderProcessor)
-			 		}	        		
-	        	} 		
-	    	}        	
-	    	
+		    			transaction FulfillmentShipped {
+		    				roles(DropshipProcessor, OrderProcessor)
+		    			}
+		    			
+		    			transaction FulfillmentCompleted {
+		    				description "Once the fulfillment is completed, a FulfillmentCompleted message is sent, setting the state to Complete"
+				 			roles(DropshipProcessor, OrderProcessor)
+				 		}	        		
+		        	} 		
+		    	}        		
 	 	}
 	 	postconditions {
           	success(fulfillment[Fulfillment.Complete])          		
@@ -98,47 +91,52 @@ package com.x.orderfulfillment.v1 {
  	process ThirdPartyFulfillmentProcessing (Fulfillment fulfillment) {		
 	 description "An order is submitted to third party for fulfillment and is either shipped or cancelled"
 	 
-	 	roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
+	 	roles(OrderProcessor, ThirdPartyFulfillmentProcessor, ProductInformationManager)
  		 workflow{		
- 	 	
-	 	 	// A merchant wants to direct a fulfillment provider to ship all or part of an order to an end customer
 	 	 	transaction ProcessThirdPartyFulfillment {
+	 	 		description "A merchant wants to direct a fulfillment provider to ship all or part of an order to an end customer"
 	        	roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
 	    	}
-	    	
-	 	    do(!fulfillment[Fulfillment.Complete]) {	 	     //is there a timeout?  		 	    	
+	    	any{
+				workflow ProductLookup {  
+					description "The DropShip processor can get information from PIM, such as customs and shipment related attributes"
+					roles(ThirdPartyFulfillmentProcessor, ProductInformationManager)
+				}
+		    }    	
+	 	    do(!fulfillment[Fulfillment.Complete]) {
+	 	    	description "While the fulfillment is not complete, several things can occur in any order"	 	 		 	    	
 		 	 	any {		 	 			 		
-			 	 	//A merchant wants to hold a shipment to prevent it from shipping temporarily
-			 	 	transaction HoldFulfillment {
+			 	 	transaction MerchantHoldFulfillment {
+			 	 		description "A merchant wants to hold a shipment to prevent it from shipping temporarily"
 			 	 		roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
 			 	 	}
-			 	 	
-			 	 	//A merchant wants to release a shipment previously held
+			 	 	transaction FulfillmentProcessorHoldFulfillment {
+			 	 		description "A fulfillment processor puts a shipment on hold because it cannot be completed"
+			 	 		roles(ThirdPartyFulfillmentProcessor, OrderProcessor)
+			 	 	}
 			 	 	transaction ReleaseFulfillment {
+			 	 		description "A merchant wants to release a shipment previously held"
 			 	 		roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
-			 	 	}
-		        	
-	    			//A merchant may choose to cancel fulfillment in progress		
+			 	 	}	
 	    			transaction CancelFulfillment {
+	    				description "A merchant may choose to cancel fulfillment in progress"
 	        			roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
 	        		}
-	        		
-	        		//A merchant may choose to lookup all fulfillments for an order
 	        		transaction LookupFulfillments {
+	        			description "A merchant may choose to lookup all fulfillments for an order"
 	        			roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
 	        		}
-	        		
-	        		//A merchant is informed of changes to a fulfillment’s status as they occur, such as when the order is picked, ready for shipment, or tendered to a shipping carrier
 	        		transaction FulfillmentInformationUpdated {
+	        			description "A merchant is informed of changes to a fulfillment’s status as they occur, such as when the order is picked, ready for shipment, or tendered to a shipping carrier"
 	        			roles(ThirdPartyFulfillmentProcessor, OrderProcessor)
 	        		}
-	        	
-	    			//merchant is notified as shipments for the fulfillment order get shipped
 	        		transaction FulfillmentShipped {
+	        			description "merchant is notified as shipments for the fulfillment order get shipped"
 	    				roles(ThirdPartyFulfillmentProcessor, OrderProcessor)
 	    			}	
 	    			
 	    			transaction FulfillmentCompleted {
+	    				description "Once the fulfillment is completed, a FulfillmentCompleted message is sent, setting the state to Complete"
 		 				roles(ThirdPartyFulfillmentProcessor, OrderProcessor)		 			
 	    			}	        		
 	        	}	        	 
@@ -172,25 +170,26 @@ package com.x.orderfulfillment.v1 {
 		 	
 		 	do(!receiving[Receiving.Complete]) {	 
 		 		any {
-		 		   //A merchant wants to give updated information about a previously communicated receiving
-		 		   //such as expected date, carrier being used, tracking number, or packaging information
 			 		transaction UpdateReceiving {
+			 			description "A merchant wants to give updated information about a previously communicated receiving such as expected date, carrier being used, tracking number, or packaging information "
 			 			roles (InventorySupplier, ReceivingProcessor)
 			 		}
-			 		//A merchant wants to lookup receiving by purchase order number
+			 	
 			 		transaction LookupReceivings {
+			 			description "A merchant wants to lookup receiving by purchase order number"
 			 			roles (InventorySupplier, ReceivingProcessor)
 			 		}
-			 		//Notification to merchant when inventory status is updated
 			 		transaction ReceivingInventoryStatusUpdated {
+			 			description "Notification to merchant when inventory status is updated "
 			 			roles (ReceivingProcessor, ReceivingObserver)
 			 		}
-			 		//A merchant wants to cancel receiving
 			 		transaction CancelReceiving{
+			 			description "A merchant wants to cancel receiving"
 			 			roles (InventorySupplier, ReceivingProcessor)			 			
 			 		}
-			 		//Merchant is informed that receiving is completed
+			 		
 			 		transaction ReceivingCompleted {
+			 			description "Merchant is informed that receiving is completed"
 			 			roles (ReceivingProcessor, ReceivingObserver)
 			 		}			 		
 		 		}		 		
@@ -207,10 +206,12 @@ package com.x.orderfulfillment.v1 {
 	 	workflow {
 	 		do (!return[Return.Complete]) {	
 		 		any {
-		 			transaction ReturnReceived { // ReturnRecieved can run multiple times before the process completes
+		 			transaction ReturnReceived { 
+		 				description  "ReturnRecieved can run multiple times before the process completes"
 		 				roles(FulfillmentProcessor, OrderProcessor)
 		 			}	 					
 		 			transaction ReturnProcessCompleted {
+		 				description  "ReturnProcessCompleted indicates sucessful completion of the process"
 			 			roles(FulfillmentProcessor, OrderProcessor)
 			 		}
 		 		}		 		
@@ -221,12 +222,13 @@ package com.x.orderfulfillment.v1 {
         }
 	 }
 	 
-	  process ReturnProcessing (Return return) {  //should be returnProcessing
+	  process ReturnProcessing (Return return) { 
 	  	description "Usually a return is initiated by customer/merchant on behalf of customer and return ASN is sent. The fulfillment provider notifies when the return is processed (received, disposition - put away or discarded)"
 	  	roles(OrderProcessor, FulfillmentProcessor)
 	 	workflow {
-	 		//An end customer (or a merchant acting on their behalf) wishes to arrange for a return of all or part of a previously fulfilled shipment.
+	 	
 	 		transaction ProcessReturnAdvanceShipmentNotice {
+	 			description "An end customer (or a merchant acting on their behalf) wishes to arrange for a return of all or part of a previously fulfilled shipment."
 	 			roles(OrderProcessor, FulfillmentProcessor)
 	 		}
 	 		do (!return[Return.Complete]) {	  
@@ -240,12 +242,14 @@ package com.x.orderfulfillment.v1 {
 		 			transaction ReturnReceived {
 		 				roles(FulfillmentProcessor, OrderProcessor)
 		 			}
-		 			transaction ReturnProcessCompleted { //this should happen once to exit the loop
+		 			transaction ReturnProcessCompleted { 
+		 				description "ReturnProcessCompleted indicates sucessful completion of the process"
  		 				roles(FulfillmentProcessor, OrderProcessor)
 		 			}
 		 		}		 			
 	 		}	 		
 	 	}
+	 	
 	 	postconditions {
           	success(return[Return.Complete])          		
         }
