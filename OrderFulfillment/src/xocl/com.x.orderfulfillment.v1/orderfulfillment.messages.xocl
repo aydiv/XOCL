@@ -395,7 +395,7 @@ package com.x.orderfulfillment.v1 {
 		string? purchaseOrderLineNumber
 		/** purchase order # or ASN # */
 		string invoiceNumber
-		string productSku
+		string sku
 		int expectedQty
 		TrackingDetail? trackingDetail	
 		string? shippingMethod
@@ -506,7 +506,7 @@ package com.x.orderfulfillment.v1 {
 	record ReturnLineData {
 		/* unique id for the returned item */
 		string returntLineId		
-		string productSku
+		string sku
 		int quantity
 		string itemDescription	
 		LineItemPrice price
@@ -552,7 +552,7 @@ package com.x.orderfulfillment.v1 {
 	
 	record InventoryData {
 		/** details of merchant/supplier whose inventory is being snapshot */
-		string productSku
+		string sku
 		int unitQuantity
 		/** stocking unit of measure */
 		string stockingUOM
