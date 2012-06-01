@@ -201,7 +201,7 @@ package com.x.orderfulfillment.v1 {
 		COMPLETED
 	}
 	
-	enum FulfillmentLineStatus {
+	enum FulfillmentLineStatus {  //TODO:  Discuss whether and how we handle the status of partial line shipment
 		CREATED,
 		PICKED,
 		ON_HOLD,
