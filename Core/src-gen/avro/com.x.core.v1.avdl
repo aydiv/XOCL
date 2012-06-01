@@ -216,6 +216,8 @@ protocol com_x_core_v1 {
  		union{null,ContactAddressType} addressType = null;
   	}
 
+	@topics("/com.x.core.v1/TransactionCompleted")
+	@version("1.0.1")
 	record TransactionCompleted {
  	}
 
