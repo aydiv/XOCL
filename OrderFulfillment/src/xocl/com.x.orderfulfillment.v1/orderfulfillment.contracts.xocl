@@ -14,7 +14,7 @@ package com.x.orderfulfillment.v1 {
     	roles {
 	        ThirdPartyFulfillmentProcessing.ThirdPartyFulfillmentProcessor
 	        ShippingRateSearch.ThirdPartyFulfillmentProcessor
-	        ReceivingProcessing.ReceivingProcessor
+	        ReceivingProcessing.FulfillmentProcessor
 	        ReturnProcessing.FulfillmentProcessor
 	        ReturnReceiptProcessing.FulfillmentProcessor
 	        InventorySnapshotUpdate.FulfillmentProvider
@@ -22,7 +22,7 @@ package com.x.orderfulfillment.v1 {
     }
     
     contract OrderProcessorWithThirdPartyFulfillment {
-    	description "A capability that does order processing"
+    	description "A capability that does order processing and interacts with third party fulfillment"
     	roles {
 	        ThirdPartyFulfillmentProcessing.OrderProcessor   
 	        ReturnProcessing.OrderProcessor
@@ -31,7 +31,7 @@ package com.x.orderfulfillment.v1 {
     }
     
     contract OrderProcessorWithDropShipFulfillment {
-    	description "A capability that does order processing"
+    	description "A capability that does order processing and interacts with a drop ship fulfillment provider"
     	roles {
 	        DropshipFulfillmentProcessing.OrderProcessor
 	       	ReturnProcessing.OrderProcessor

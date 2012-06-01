@@ -19,7 +19,7 @@ package com.x.orderfulfillment.v1 {
     entity Receiving {
     	description   "Entity that represents the various states of inventory that is expected to be received <a.k.a receiving>"
     	state Created [Cancelled, Received, PutAway, Complete]
-    	state Cancelled [Complete]     "reached if all of the receiving is cancelled"
+    	state Cancelled [Complete]  "reached if all of the receiving is cancelled"
     	state Received [PutAway] "reached if all of the uncancelled receiving is received"
     	state PutAway [Complete] "reached if all of the uncancelled delivered receiving is putaway"
     	state Complete   "reached if all of the uncancelled receiving is putaway or cancelled"
@@ -133,8 +133,7 @@ package com.x.orderfulfillment.v1 {
 	        		transaction FulfillmentShipped {
 	        			description "merchant is notified as shipments for the fulfillment order get shipped"
 	    				roles(ThirdPartyFulfillmentProcessor, OrderProcessor)
-	    			}	
-	    			
+	    			}
 	    			transaction FulfillmentCompleted {
 	    				description "Once the fulfillment is completed, a FulfillmentCompleted message is sent, setting the state to Complete"
 		 				roles(ThirdPartyFulfillmentProcessor, OrderProcessor)		 			
@@ -146,8 +145,6 @@ package com.x.orderfulfillment.v1 {
           	success(fulfillment[Fulfillment.Complete])   
     	} 	
 	 }
-	 	
-	 
 	 
 	 process ShippingRateSearch {
 	 	description "A merchant requests for shipping quotes for a fulfillment order"	 
@@ -162,35 +159,37 @@ package com.x.orderfulfillment.v1 {
 	 
 	 process ReceivingProcessing (Receiving receiving) {
 	 	description "A merchant notifies a fulfillment provider of a future inventory receipt. The fulfillment provider notifies when the receipt is processed (received, put away)"
-	 	roles(InventorySupplier, ReceivingProcessor, ReceivingObserver)
+	 	roles(ProcurementSystem, FulfillmentProcessor, InventoryManager)
 	 	workflow {
 		 	transaction ProcessReceiving {
-		 		roles(InventorySupplier, ReceivingProcessor)
+		 		roles(ProcurementSystem, FulfillmentProcessor)
 		 	}
 		 	
 		 	do(!receiving[Receiving.Complete]) {	 
 		 		any {
 			 		transaction UpdateReceiving {
 			 			description "A merchant wants to give updated information about a previously communicated receiving such as expected date, carrier being used, tracking number, or packaging information "
-			 			roles (InventorySupplier, ReceivingProcessor)
+			 			roles (ProcurementSystem, FulfillmentProcessor)
 			 		}
 			 	
 			 		transaction LookupReceivings {
 			 			description "A merchant wants to lookup receiving by purchase order number"
-			 			roles (InventorySupplier, ReceivingProcessor)
+			 			roles (ProcurementSystem, FulfillmentProcessor)
 			 		}
 			 		transaction ReceivingInventoryStatusUpdated {
-			 			description "Notification to merchant when inventory status is updated "
-			 			roles (ReceivingProcessor, ReceivingObserver)
+			 			description "Fulfillment processor updates the status in the procurement system"
+			 			roles (FulfillmentProcessor, ProcurementSystem)
 			 		}
+					workflow InventoryDeltaUpdate{
+						roles (FulfillmentProcessor, InventoryManager)
+					}
 			 		transaction CancelReceiving{
 			 			description "A merchant wants to cancel receiving"
-			 			roles (InventorySupplier, ReceivingProcessor)			 			
+			 			roles (ProcurementSystem, FulfillmentProcessor)			 			
 			 		}
-			 		
 			 		transaction ReceivingCompleted {
 			 			description "Merchant is informed that receiving is completed"
-			 			roles (ReceivingProcessor, ReceivingObserver)
+			 			roles (FulfillmentProcessor, ProcurementSystem)
 			 		}			 		
 		 		}		 		
 		 	}		 		
@@ -202,14 +201,17 @@ package com.x.orderfulfillment.v1 {
 	 
 	 process ReturnReceiptProcessing (Return return) {
 	 	description "Return is initiated by customer directly so that first intimation of return is its receipt"
-	 	roles(FulfillmentProcessor,OrderProcessor)
+	 	roles(FulfillmentProcessor,OrderProcessor, InventoryManager)
 	 	workflow {
 	 		do (!return[Return.Complete]) {	
 		 		any {
 		 			transaction ReturnReceived { 
 		 				description  "ReturnRecieved can run multiple times before the process completes"
 		 				roles(FulfillmentProcessor, OrderProcessor)
-		 			}	 					
+		 			}	
+		 			workflow InventoryDeltaUpdate{
+						roles (FulfillmentProcessor, InventoryManager)
+					} 					
 		 			transaction ReturnProcessCompleted {
 		 				description  "ReturnProcessCompleted indicates sucessful completion of the process"
 			 			roles(FulfillmentProcessor, OrderProcessor)
@@ -221,10 +223,10 @@ package com.x.orderfulfillment.v1 {
           	success(return[Return.Complete])          		
         }
 	 }
-	 
-	  process ReturnProcessing (Return return) { 
+	
+	 process ReturnProcessing (Return return) { 
 	  	description "Usually a return is initiated by customer/merchant on behalf of customer and return ASN is sent. The fulfillment provider notifies when the return is processed (received, disposition - put away or discarded)"
-	  	roles(OrderProcessor, FulfillmentProcessor)
+	  	roles(OrderProcessor, FulfillmentProcessor, InventoryManager)
 	 	workflow {
 	 	
 	 		transaction ProcessReturnAdvanceShipmentNotice {
@@ -242,6 +244,9 @@ package com.x.orderfulfillment.v1 {
 		 			transaction ReturnReceived {
 		 				roles(FulfillmentProcessor, OrderProcessor)
 		 			}
+					workflow InventoryDeltaUpdate{
+						roles (FulfillmentProcessor, InventoryManager)
+					}
 		 			transaction ReturnProcessCompleted { 
 		 				description "ReturnProcessCompleted indicates sucessful completion of the process"
  		 				roles(FulfillmentProcessor, OrderProcessor)
@@ -257,13 +262,25 @@ package com.x.orderfulfillment.v1 {
 	  
 	  process InventorySnapshotUpdate {     
 	  	description "A notification may be sent out to notify a snapshot was made of the inventory numbers"
-	  	roles (FulfillmentProvider, InventoryObserver)
+	  	roles (FulfillmentProvider, InventoryManager)
 	  	workflow {
 	  		transaction UpdateInventorySnapshot {
-	 			roles(FulfillmentProvider, InventoryObserver
+	 			roles(FulfillmentProvider, InventoryManager
 	 			)
 	 		}
 	  	}
 	  }
+	  	 
+	 process InventoryDeltaUpdate{
+		description "An update of inventory containing change information only"
+	  	roles(InventoryConsumer, InventoryManager)
+
+	 }
+	 workflow InventoryDeltaUpdate implements InventoryDeltaUpdate{
+		 	transaction UpdateInventoryDelta{
+			 	description "Notification to inventory management when inventory amount  is updated"
+			 	roles (InventoryConsumer, InventoryManager)
+			 }
+	 } 	
 	
 }

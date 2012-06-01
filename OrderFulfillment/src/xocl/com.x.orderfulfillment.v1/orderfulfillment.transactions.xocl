@@ -299,5 +299,14 @@ package com.x.orderfulfillment.v1 {
     		}
     	}
     }
+    
+    transaction UpdateInventoryDelta notify {
+    	sender{
+    		message UpdateInventoryDelta{
+    			timeouts(receipt=30s, validation=3m) 
+    		}
+    	}
+    }
+    
 
 }

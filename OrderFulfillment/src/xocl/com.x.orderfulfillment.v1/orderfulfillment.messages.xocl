@@ -81,23 +81,28 @@ package com.x.orderfulfillment.v1 {
 
 		array<ShipmentContainer> shipmentContainers;
 	}
+
+	record ItemQuantity{
+		string sku
+		string fulfillmentLineId
+		int quantity	
+	}
 	
-	
-	record ShipmentContainer {
+	record ShipmentContainer {  //TODO: Can one item be in more than one box? if so does it have multiple tracking #s?
 			description "A shipment container represents a set of items that shipped in a single container with one tracking number"
-			array <string> fulfillmentLineIds "Reference to items in the shipment container"
+			array <ItemQuantity> itemsWithQuantity "Reference to items and quantities in the shipment container"
 			TrackingDetail trackingDetail
 			string? shippingMethod  "The method used to ship: Next day, ground, etc. "
 			DateRange? deliveryWindow
 			DateRange? shippingWindow
 			string? shippingMessage
-			array<ShippingTag>? shippingTags
 	}
 	
 	
     record ShippingQuote {
     	description "A quote for shipping a set of items"
-		string? shippingMethod  "The method used to ship: Next day, ground, etc. "
+		string shippingMethod  "The method used to ship: Next day, ground, etc. "
+		string shippingMethodDescription 
 		
 		CurrencyAmount shippingFees		"The fees to be paid by the customer for this shipment"		
 		CurrencyAmount? packagingHandlingCost
@@ -498,9 +503,15 @@ package com.x.orderfulfillment.v1 {
 		/* A collection containing the items and quantities that were returned. It may
 		 * not include all items for a fulfillment.*/
 		array<ReturnLineData> returnedItems
-		string customerReturnReason		
+		string? returnComment
+		ReturnReason returnReason;	
 		/** License plate attached to product being processed for customer return ASN */
 		string loadNumber
+	}
+	
+	enum ReturnReason{
+		CUSTOMER "The customer initiated the return from either an RMA or return label"
+		UNDELIVERABLE "The shipment was undeliverable"
 	}
 	
 	record ReturnLineData {
@@ -565,6 +576,12 @@ package com.x.orderfulfillment.v1 {
 		InventorySnapshotReason snapshotReason
 		/** warehouse where the snapshot was taken */
 		string warehouseId
+	}
+	
+	record UpdateInventoryDelta {
+		InventoryData inventoryChange
+		datetime date 
+		string warehouseId "warehouse where the inventory change occured"
 	}
 		
 }
