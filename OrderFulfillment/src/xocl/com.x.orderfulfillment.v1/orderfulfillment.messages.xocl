@@ -415,6 +415,7 @@ package com.x.orderfulfillment.v1 {
 		string? shippingMethod
 		string? shippingMessage
 		datetime? deliveredDate
+		
 	}
 		
 	record ReceivingData {
