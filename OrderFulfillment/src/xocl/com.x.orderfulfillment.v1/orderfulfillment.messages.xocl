@@ -395,43 +395,38 @@ package com.x.orderfulfillment.v1 {
 	}
 	
 	record ReceivingLineData {
-		/** Master Purchase Order # */
-		string masterPurchaseOrderNumber
+		string masterPurchaseOrderNumber "Master Purchase Order #" 
 		string? purchaseOrderLineNumber
-		/** purchase order # or ASN # */
-		string invoiceNumber
+		string invoiceNumber  "purchase order # or ASN #"
+		DateRange? deliveryWindow		
+		string? cartonId  "mandatory if receipt is to be managed as ASN Identifies the carton # for ASN's, typically 20 digit bar code in UCC-128 format"
+		string? lotNumber "Product Lot number if needed to send on PO"
+	
+		ReceivingInventoryStatus status	"status of receiving inventory"
+		InventoryCondition condition
+		
+		array<RecievingContainer> recievingContainers;
+	}
+	
+	record RecievingContainer{
 		string sku
 		int expectedQty
 		TrackingDetail? trackingDetail	
 		string? shippingMethod
-		DateRange? deliveryWindow
-		string? shippingMessage		
+		string? shippingMessage
 		datetime? deliveredDate
-		/** mandatory if receipt is to be managed as ASN 
-		Identifies the carton # for ASN's, typically 20 digit bar code in UCC-128 format. */
-		string? cartonId
-		/** Product Lot number if needed to send on PO */
-		string? lotNumber
-		/** status of receiving inventory */
-		ReceivingInventoryStatus status
-		InventoryCondition condition
 	}
 		
 	record ReceivingData {
 		/** details of supplier */
 		string? supplierId
 		string? supplierName
-		/** warehouse expected to receive products */
-		string warehouseId
-		/** Master Purchase Order # */
-		string masterPurchaseOrderNumber
+		string warehouseId "warehouse expected to receive products" 
+		string masterPurchaseOrderNumber "Master Purchase Order #"
 		DateRange? expectedDeliveryDate
-		/** Shipped Date for PO */
-		datetime? shippedDate
-		/** Comments for a Purchase Order */
-		string? comments
-		/** Receiving line data */
-		array<ReceivingLineData> receivingLines
+		datetime? shippedDate "Shipped Date for PO"
+		string? comments "Comments for a Purchase Order"
+		array<ReceivingLineData> receivingLines "Receiving line data"
 	}
 	
 		
