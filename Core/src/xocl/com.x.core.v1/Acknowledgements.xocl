@@ -37,6 +37,23 @@ package com.x.core.v1
 	}
 	
     /*
+     * This message is sent to notify the receiver that a transaction has completed.
+     * It is an optimization that allows the receiver to stop waiting for the transaction 
+     *   to complete. If the receiver is not waiting for the transaction to complete, it 
+     *   should ignore any completions that it may receive.
+	 * A completion uses the standard message type com.x.core.v1.TransactionCompleted. 
+	 * A completion must be sent to the standard topic com.x.core.v1/TransactionCompleted.
+     * A completion must be routed only to the intended recipient by setting the
+     *   X-XC-DESTINATION-ID header to the X-XC-PUBLISHER-PSEUDONYM.
+     *   If the transaction sender sends a completion, then the intended recipient must 
+     *     be the transaction receiver.
+     *   If the transaction receiver sends a completion, then the intended recipient must
+     *     be the transaction sender.
+     */
+	record TransactionCompleted {
+	}
+	
+    /*
      * The following message types are acknowledgements.
      * An acknowledgement must be routed only to the sender of the message being acknowledged
      *   by setting the X-XC-DESTINATION-ID header to the value of the X-XC-PUBLISHER-PSEUDONYM 
