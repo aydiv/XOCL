@@ -1,6 +1,10 @@
 package com.x.core.v1 {
 	import com.x.core.v1.*
 	
+	message TransactionCompleted {
+		topic "/com.x.core.v1/TransactionCompleted"
+	}
+	
 	message TransactionCancelled {
 		topic "/com.x.core.v1/TransactionCancelled"
 	}
