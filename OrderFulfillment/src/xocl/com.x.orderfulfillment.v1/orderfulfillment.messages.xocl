@@ -144,7 +144,7 @@ package com.x.orderfulfillment.v1 {
 		
 		LineItemPrice unitPrice
 
-		FulfillmentStatus status
+		FulfillmentLineStatus status
 		
 		/** This is quantity * unit price */
 		CurrencyAmount? price
@@ -195,15 +195,24 @@ package com.x.orderfulfillment.v1 {
 	
 	enum FulfillmentStatus {
 		CREATED,
+		IN_PROGRESS,
+		ON_HOLD,
+		CANCELLED,
+		COMPLETED
+	}
+	
+	enum FulfillmentLineStatus {
+		CREATED,
 		PICKED,
 		ON_HOLD,
 		RELEASED,
 		READY_TO_SHIP,
-		PARTIALLY_SHIPPED,
 		SHIPPED,
+		UNDELIVERABLE,
 		CANCELLED,
 		COMPLETED
 	}
+	
 	
 	record CustomerInfo confidential {
 		union{guid, EntityId} id;   //id is created by the system that creates the record.	
