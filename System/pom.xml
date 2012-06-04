@@ -1,0 +1,57 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.x.ocl</groupId>
+		<artifactId>xocl-contracts</artifactId>
+		<version>0.0.6-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<groupId>com.x.ocl</groupId>
+	<artifactId>system-xocl</artifactId>
+	<name>System XOCL</name>
+	<description>
+		The System XOCL
+	</description>
+	<scm>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/System</connection>
+	</scm>
+
+	<repositories>
+		<repository>
+			<releases>
+				<enabled>true</enabled>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<checksumPolicy>warn</checksumPolicy>
+			</snapshots>
+			<id>xcommerce</id>
+			<name>x.commerce</name>
+			<url>http://maven.corp.x.com:8080/nexus/content/groups/public</url>
+		</repository>
+	</repositories>
+
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>ontologydeploy</id>
+			<name>Ontology release repository</name>
+			<url>http://maven.corp.x.com:8080/nexus/content/repositories/releases</url>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>ontologydeploy</id>
+			<name>Ontology snapshot repository</name>
+			<url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.x.ocl</groupId>
+			<artifactId>core-xocl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+</project>
