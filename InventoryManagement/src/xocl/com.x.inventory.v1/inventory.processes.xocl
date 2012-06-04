@@ -24,7 +24,7 @@ package com.x.inventory.v1
 		}
 	}
 	
-    process StockItemUpdate(StockItem stockItem)
+    process StockItemUpdate
     {
 		summary "Updates stock items and reports on updates."
 		description "The stock item consumer submits stock item updates to the inventory manager."
@@ -35,8 +35,6 @@ package com.x.inventory.v1
 			InventoryManager "The inventory manager services requests to update stock items and informs inventory observers of inventory updates and out-of-stock conditions."
 			InventoryObserver "The inventory observer is like the inventory consumer. The inventory observer likes to be informed of inventory changes, but does not query for the information. In the context of the StockItemUpdate process, the inventory observer sends no messages, but gets informed of stock updates and when an item is out of stock."
 		}
-		
-		preconditions(exists(stockItem))
 	
 		workflow
 		{
@@ -67,9 +65,5 @@ package com.x.inventory.v1
 			}
 		}
 		
-		postconditions
-		{
-			success(exists(stockItem))
-		}
 	}
 }
