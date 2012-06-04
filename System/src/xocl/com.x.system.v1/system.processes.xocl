@@ -1,0 +1,77 @@
+package com.x.system.v1 { 	
+    import com.x.system.v1.*
+    
+    process VerifyCapabilityHeartbeat {
+		description "Verify that a capability is awake and addressable on the fabric"
+		
+		roles(CapabilityVerifier, Capability)
+	
+		workflow {
+			transaction PingCapability {
+				roles(CapabilityVerifier, Capability)
+			}
+		}
+	}	
+	
+	process ConfigureCapability {
+		description "Configure the setting for a capability"
+		
+		roles(CapabilityConfigurer, Capability)
+	
+		workflow {
+			transaction ConfigureCapability {
+				roles(CapabilityConfigurer, Capability)
+			}
+		}
+	}	
+	
+	// DEPRECATED
+	process UpdateEndpoint {
+		description "Update the endpoint settings for a capability"
+		
+		roles(EndpointUpdater, Capability)
+	
+		workflow {
+			transaction UpdateEndpointMessage {
+				roles(EndpointUpdater, Capability)
+			}
+		}
+	}
+	
+	process UpdateCapabilityEndpoint {
+		description "Configure the setting for a capability"
+		
+		roles(EndpointUpdater, Capability)
+	
+		workflow {
+			transaction UpdateCapabilityEndpoint {
+				roles(EndpointUpdater, Capability)
+			}
+		}
+	}	
+	
+	process TenantRelationshipCreated {
+		description "A new relationship was created between a tenant and a cpability"
+		
+		roles(TenantRelationshipManager, TenantRelationshipConsumer)
+	
+		workflow {
+			transaction TenantRelationshipCreated {
+				roles(TenantRelationshipManager, TenantRelationshipConsumer)
+			}
+		}
+	}
+
+	process TenantRelationshipDeleted {
+		description "An existing tenant-capability relationship was deleted"
+		
+		roles(TenantRelationshipManager, TenantRelationshipConsumer)
+	
+		workflow {
+			transaction TenantRelationshipDeleted {
+				roles(TenantRelationshipManager, TenantRelationshipConsumer)
+			}
+		}
+	}
+
+}

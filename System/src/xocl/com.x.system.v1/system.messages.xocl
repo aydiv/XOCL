@@ -1,0 +1,145 @@
+// Definition of the general-use, system level messages.
+
+// Note: The use of MAY, MUST, OPTIONAL, etc, in all caps are used to indicate
+// implementation expectations.  This is similar to standard RFC word usage.
+
+// All capabilities MUST implement both Ping and Pong messages
+// (that is, accept Ping as an incoming message, and respond with a Pong).
+//
+// Capabilities SHOULD also accept MessageDeliveryFailed messages.  A capability
+// which does not accept the message MUST drop it.  A capability which does
+// accept the message MUST NOT respond with another MessageDeliveryFailed
+// message.
+
+package com.x.system.v1 {
+	import com.x.system.v1.* 
+	import com.x.core.v1.*
+
+	// Ping message for testing a capability's ability to receive messages.
+	// To use this message the sender MUST share a tenant with the recipient
+	// (as for any message) and MUST also specify a Destination ID header to
+	// avoid sending to every capability (versus the one intended).
+	//
+	// The payload is OPTIONAL for the sender.  If the recipient gets a Ping
+	// with a payload, then the corresponding Pong MUST contain that same
+	// payload.
+	//
+	record Ping {
+		string? payload  // Optional, copied to pong, if present
+	}
+
+	// Pong message for responding to pings.  All capabilities MUST respond to
+	// a Ping message with a Pong message, and MUST copy any payload present
+	// from the Ping to the Pong.  The responding capability MUST not alter the
+	// payload in this process.
+	//
+	record Pong {
+		string? payload  // Must be copied from ping (verbatim), if present
+	}
+
+	// Message Delivery Failure notification.  This message indicates that a
+	// message was not delivered to one or more listening capabilities.  A
+	// Capability MAY also choose to send this notification if it cannot parse
+	// a message or cannot execute any business logic to do issues with a
+	// message.  Business level errors MUST NOT use this message and MUST use
+	// the appropriate business-level error instead.  For example, an UpdateFoo
+	// message which cannot be updated would send UpdateFooFailed.
+	//
+	// Error Ids:
+	// 100-199 Range: Did not attempt to deliver message (no httpStatus)
+	// - 100: No Recipients - No capabilities are subscribed to topic
+	// - 101: Recipient Not Enabled - The Recipient's endpoint url has not
+	//        been specified
+	//
+	// 200-299 Range: Connection error during delivery (no httpStatus)
+	// - 200: General delivery exception - Delivery failed for reasons other
+	//        than one of the other reasons in this range
+	// - 201: Connection refused
+	// - 202: Connection timed out
+	// - 203: Message timeout - Message timed out during read or write
+	//
+	// 300-399 Range: Message delivery rejected by receiver (httpStatus provided)
+	// - 300: Message Rejected - httpStatus contains status code, and errorCause
+	//        contains the status line.
+	//
+	// 400-499 Range: Message delivered but failed in process (no httpStatus)
+	// Messages TBD
+	//
+	//
+	// Note to app developers, do not respond to a /message/failed message
+	// with another /message/failed message.
+	record MessageDeliveryFailed {
+		string topicName            // topic of the problem message
+		int errorId                 // Error id, as described above
+		int? httpStatus             // Http Status if available or null if another type of error
+		string errorCause           // Http Status line message or cause of delivery failure
+		string messageGuid          // GUID, as above
+		bytes? _AVDL_message        // Original message body
+	}
+
+	record Configure {
+		string identifier
+		bytes? payload
+	}
+	
+	// XManager related messages start here 
+	
+	// ---------------
+	// Update Endpoint - to be deprecated (replaced by the following)
+	// ---------------
+
+	record UpdateEndpointMessage {
+		string endpoint   // Send an empty string to disable capability
+	}
+
+	// NOTE: If the new endpoint is invalid and nothing is still listening at
+	// the old endpoint, then this message cannot be delivered.
+	record UpdateEndpointResults {
+		string endpoint
+		boolean _AVDL_success
+		union{null,string} _AVDL_message // Null if success is 'true'
+	}
+	
+	// --------------------------
+	// Update Capability Endpoint
+	// --------------------------	
+	record UpdateCapabilityEndpoint {
+		string endpoint   // send an empty string to disable the capability
+	}
+	
+	// "success" (sent to the capability to the new endpoint, listed within the message)
+	record CapabilityEndpointUpdated {
+		string endpoint   // as was sent in the request
+	}
+	
+	// "failure" (sent to the capability using the endpoint before any changes were made)
+	record UpdateCapabilityEndpointFailed {
+		string endpoint   // as was sent in the request
+		string _AVDL_message    // reason
+	}
+
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	
+	// -----------------
+	// Tenant Onboarding
+	// -----------------
+	
+	// Message sent from XManager to the capability that now has this tenant relationship
+	record TenantRelationshipCreated {
+		string tenantPseudonym // value of what my future X-XC-TENANT-ID header will carry when I receive a message for this tenant
+		string bearerToken     // value I need to use in my auth header when sending a message on behalf of this tenant
+		string tenantName      // friendly / pretty name
+		map<string> onboarding // additional key/value pairs that are needed to identify or complete the tenant relationship
+	}
+	
+	// -------------------------
+	// Tenant Onboarding Removed
+	// -------------------------
+	
+	// Message sent from XManager to the capability that no longer has this tenant relationship
+	record TenantRelationshipDeleted {
+		string tenantPseudonym // the tenant whose relationship has been removed
+		string tenantName      // friendly / pretty name
+	}
+}
+	

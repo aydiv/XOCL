@@ -1,0 +1,94 @@
+/** This file includes the transactions that are part of the
+ *  system domain
+ */
+package com.x.system.v1 {
+	import com.x.system.v1.*
+	
+	transaction PingCapability response {
+        sender
+        {
+        	message Ping
+        	{
+        		topic "/message/ping"
+        		timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success Pong {
+        		topic "/message/pong"
+        	}           
+            failure MessageDeliveryFailed {
+            	topic "/message/failed"
+            }
+        } 
+    }
+
+	transaction ConfigureCapability notify {
+        sender
+        {
+        	message Configure {
+        		topic "/capability/configure"
+        	}
+        }
+    }
+    
+    // DEPRECTATED version
+    transaction UpdateEndpointMessage response {
+        sender
+        {
+        	message UpdateEndpointMessage
+        	{
+        		topic "/xfabric/capability/endpoint"
+        		timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success UpdateEndpointResults {
+        		topic "/xfabric/capability/endpoint/results"
+        	}           
+            failure MessageDeliveryFailed {
+            	topic "/message/failed"
+            }
+        } 
+    }
+    
+    transaction UpdateCapabilityEndpoint response {
+        sender
+        {
+        	message UpdateCapabilityEndpoint
+        	{
+        		topic "/system/capability/endpoint/update"
+        		timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success CapabilityEndpointUpdated {
+        		topic "/system/capability/endpoint/updated"
+        	}           
+            failure UpdateCapabilityEndpointFailed {
+            	topic "/system/capability/endpoint/updateFailed"
+            }
+        } 
+    }
+    
+    transaction TenantRelationshipCreated notify {
+        sender
+        {
+        	message TenantRelationshipCreated {
+        		topic "/system/tenant/relationship/created"
+        	}
+        }
+    }
+    
+    transaction TenantRelationshipDeleted notify {
+        sender
+        {
+        	message TenantRelationshipDeleted {
+        		topic "/system/tenant/relationship/deleted"
+        	}
+        }
+    }
+}
