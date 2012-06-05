@@ -4,7 +4,7 @@
 package com.x.shipping.v2 {
 	import com.x.shipping.v2.*
 	
-	// Get shipping rates for a speicific shipment
+	// Get shipping rates for a specific shipment
 	transaction CalculateShippingRates response {
 		sender {
 			message CalculateShippingRates {
