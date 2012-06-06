@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.x.ocl</groupId>
 		<artifactId>xocl-contracts</artifactId>
-		<version>0.0.14</version>
+		<version>0.0.15-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>com.x.ocl</groupId>
@@ -13,7 +13,7 @@
 		The Shipping XOCL
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/tags/xocl-contracts-0.0.14/Shipping</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/Shipping</connection>
 	</scm>
 
 	<repositories>
