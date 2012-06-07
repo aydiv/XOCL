@@ -74,9 +74,9 @@ package com.x.paidsearchadvertising.v1{
             }
 		}
 		postconditions{
-			    success{
+			    success(
 			    	exists(campaign)
-			    }	
+			    )
 		}
     }
     	
@@ -128,9 +128,9 @@ package com.x.paidsearchadvertising.v1{
             }
 		}
 		postconditions{
-			    success{
+			    success(
 			    	campaign[Campaign.Inactive]
-			    }	
+			    )	
 		}
     }
    	transaction ResumeCampaign (Campaign campaign) response {
@@ -156,9 +156,9 @@ package com.x.paidsearchadvertising.v1{
             }
 		}
 		postconditions{
-			    success{
+			    success(
 			    	campaign[Campaign.Active]
-			    }	
+			    )	
 		}
     }
    	transaction AddOffersToCampaign (Campaign campaign) response {
