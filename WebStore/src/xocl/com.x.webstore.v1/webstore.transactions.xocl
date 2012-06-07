@@ -6,6 +6,7 @@ package com.x.webstore.v1{
     
     transaction GetAllWebStoreProvider broadcast query 
     {
+    	description "Searches for all web store providers and either returns a success message or nothing at all. No failure message is returned."
         sender
         {
         	message GetAllWebStoreProvider 
@@ -24,6 +25,7 @@ package com.x.webstore.v1{
         
     transaction GetAllWebStore  query 
     {
+    	description "Searches for all web stores and returns either a succeeded or failed message."
         sender
         {
         	message GetAllWebStore 
@@ -44,6 +46,7 @@ package com.x.webstore.v1{
     
     transaction GetAllCategory  query 
     {
+    	description "Searches for all categories in a web store and returns either a succeeded or failed message."
         sender
         {
         	message GetAllCategory
@@ -65,6 +68,7 @@ package com.x.webstore.v1{
 
     transaction SearchWebStoreOffer query 
     {
+    	description "Searches for all web store offers and returns either a succeeded or failed message."
         sender
         {
         	message SearchWebStoreOffer
@@ -84,6 +88,7 @@ package com.x.webstore.v1{
     
     transaction CreateWebStoreOffer response
     {
+    	description "Attempts to create a web store offer and returns either a succeeded or failed message." 
         sender
         {
         	message CreateWebStoreOffer
@@ -112,6 +117,7 @@ package com.x.webstore.v1{
     
     transaction DeleteWebStoreOffer response
     {
+    	description "Attempts to delete a web store offer and returns either a succeeded or failed message."
         sender
         {
         	message DeleteWebStoreOffer
@@ -140,7 +146,7 @@ package com.x.webstore.v1{
     }
      transaction UpdateWebStoreOffer response
     {
-    	description "TBD"
+    	description "Attempts to update a web store offer and returns either a succeeded or failed message."
     	
         sender
         {
@@ -171,7 +177,7 @@ package com.x.webstore.v1{
     
    	transaction WebStoreOfferCreated notify
    	{
-   		description "TBD"
+   		description "Notification that a web store offer was created."
    		
    		sender
    		{
@@ -185,7 +191,7 @@ package com.x.webstore.v1{
    	
    	transaction WebStoreOfferPriceUpdated notify
    	{
-   		description "TBD"
+   		description "Notification that the price of a web store offer was updated."
    		
    		sender
    		{
@@ -199,7 +205,7 @@ package com.x.webstore.v1{
    	
    	transaction WebStoreOfferQuantityUpdated notify
    	{
-   		description "TBD"
+   		description "Notification that the quantity of a web store offer was updated."
    		
    		sender
    		{
@@ -212,7 +218,7 @@ package com.x.webstore.v1{
    	
    	transaction WebStoreOfferDeleted notify
    	{
-   		description "TBD"
+   		description "Notification that a web store offer was deleted."
    		
    		sender
    		{
@@ -224,7 +230,7 @@ package com.x.webstore.v1{
    		}
    	}  
    	   	
-   	transaction WebStoreOfferDeleted notify
+   	transaction WebStoreOfferDeleted notify  //??is this a duplicate of the above transaction
    	{
    		description "TBD"
    		
@@ -239,7 +245,7 @@ package com.x.webstore.v1{
    	   	
    	transaction WebStoreOfferUpdated notify
    	{
-   		description "TBD"
+   		description "Notification that a web store offer was updated."
    		
    		sender
    		{

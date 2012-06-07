@@ -4,19 +4,19 @@ package com.x.webstore.v1{
 	
 	process WebStoreMetadataProvision 
 	{
-		summary "TBD"
-		description "A marketing provider or other interested party queries for all available web stores for a particular tenant, then retrieves metadata about those web stores"
+		summary "Retrieves the metadata for all available stores."
+		description "A marketing provider or other interested party queries for all available online stores for a particular tenant, then retrieves metadata about those online stores."
 	
 		roles 
 			{
-				WebStoreMetadataConsumer "TBD"
-				WebStoreMetadataProvider "TBD"
+				WebStoreMetadataConsumer "Acts for a tenant and searches for all available providers and their web stores."
+				WebStoreMetadataProvider "Returns the metadata of the providers and web stores found."
 			}
 	
 		workflow
 		{
-			summary "TBD"
-			description "TBD"
+			summary "Returns the metadata for all online stores found."
+			description "Searches for all available online stores and returns the metadata of the stores that were found."
 			
 			any{
 				transaction GetAllWebStoreProvider 
@@ -43,18 +43,18 @@ package com.x.webstore.v1{
 	
     process WebStoreOfferSearch 
 	{
-		summary "TBD"
-		description "A marketing provider or other interested party queries for offers"
+		summary "Searches the offers from the web stores."
+		description "A marketing provider or other interested party queries for offers."
 	
 		roles  
 			{
-				WebStoreOfferConsumer "TBD"
-				WebStoreOfferManager "TBD"
+				WebStoreOfferConsumer "Searches for offers from the available web stores."
+				WebStoreOfferManager "Returns the offers found."
 			}
 		workflow
 		{
-			summary "TBD"
-			description "TBD"
+			summary "Retrieves the offers from the web stores."
+			description "Returns the offers from the web stores."
 			
 			transaction SearchWebStoreOffer
 			{
@@ -65,20 +65,20 @@ package com.x.webstore.v1{
 	
 	process WebStoreOfferCreation
 	{
-		summary "TBD"
-		description "Creating an offer in a web store"
+		summary "Creates an offer."
+		description "Creates an offer for a web store."
 	
 		roles
 			{
-				WebStoreOfferConsumer "TBD"
-				WebStoreOfferManager "TBD"
-				WebStoreOfferObserver "TBD"
+				WebStoreOfferConsumer "Searches for offers from the available web stores."
+				WebStoreOfferManager "Returns the offers found."
+				WebStoreOfferObserver "Sends a message that the offer has been created, updated, or deleted."
 			}
 	
 		workflow
 		{
-			summary "TBD"
-			description "TBD"
+			summary "Creates an offer."
+			description "Creates an offer for a web store."
 			
 			any{
 				transaction CreateWebStoreOffer
@@ -95,15 +95,15 @@ package com.x.webstore.v1{
 	
 	process WebStoreOfferUpdate
 	{
-		summary "TBD"
-		description "Updating an offer in a web store"
+		summary "Updates offer information."
+		description "Updates the offer information, such as price or quantity."
 	
-		roles(WebStoreOfferConsumer,WebStoreOfferManager, WebStoreOfferObserver)
+		roles(WebStoreOfferConsumer, WebStoreOfferManager, WebStoreOfferObserver)
 	
 		workflow
 		{
-			summary "TBD"
-			description "TBD"
+			summary "Updates offer information."
+			description "Updates the offer information, such as price or quantity."
 			
 			any{
 				transaction UpdateWebStoreOffer
@@ -134,15 +134,15 @@ package com.x.webstore.v1{
 	
 	process WebStoreOfferDeletion
 	{
-		summary "TBD"
-		description "Deleting an offer in a web store"
+		summary "Deletes an offer."
+		description "Deletes an offer."
 	
 		roles(WebStoreOfferConsumer,WebStoreOfferManager, WebStoreOfferObserver)
 	
 		workflow
 		{
-			summary "TBD"
-			description "TBD"
+			summary "Deletes an offer."
+			description "Deletes an offer."
 			
 			any{
 				transaction DeleteWebStoreOffer

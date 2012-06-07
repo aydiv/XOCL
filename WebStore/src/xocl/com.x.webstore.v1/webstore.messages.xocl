@@ -6,43 +6,39 @@ package com.x.webstore.v1{
 		summary "Identifies the status of the offer."
 		description "Identifies the offer as being either Published or Suspended."
 		
-		PUBLISHED "Offer has been published to the comparison shopping engine.",
-		SUSPENDED "TBD"
+		PUBLISHED "Offer has been published to a channel.", 
+		SUSPENDED "The offer was not published." //??suspended implies that the offer is "on hold"  what is meant here?
 	}
 	
     record WebStore{
-		summary "The online store information."
-		description "Captures the online store name, ID, languaged used, currency accepted and the URL to the store."
+		summary "Contains the web store information."
+		description "Captures the web store name, ID, language used in the store, currency accepted, and the URL of the store."
 
-    	string webStoreName "Name of the online store.";
-    	string webStoreId "Identifier for the online store.";
-		string language "Languague used for the online store.";
-		string currencyCode "Code for the currency the online store accepts.";
-		string url "Location (URL) of the online store.";
+    	string webStoreName "Name of the web store.";
+    	string webStoreId "Identifier for the web store."; //??how is this ID generated what system/command does this??
+		string language "Language used in the web store."; //??is there a standard for specifying this that we want to suggest
+		string currencyCode "Code for the currency the web store accepts."; //??is there a standard we want to suggest
+		string url "Location (URL) of the web store.";
 	}
-	
 	record WebStoreOffer extends WebStoreOfferData{
-		summary "Offer information."
-		description "Captures the identifier of the offer and its status."
+		summary "Contains the ID of an offer."
+		description "Captures the identifier of an offer."
 
-		string offerId "Identifier of the offer.";
-		OfferState offerState "Current status of the offer, which can be Published or Suspended.";
+		string offerId "Identifier of the offer. This ID is assigned by the channel that published the offer.";
 	}
-	
 	record WebStoreOfferData {
-		summary "Details offer information."
-		description "Captures the URL and identifier of the online store, and the price, quanity, SKU, and category of the offer.  "
+		summary "Contains the detailed information of an offer."
+		description "Captures the URL and identifier of the web store, and the price, quantity, SKU, and category of the offer."
 
-		string url "Location (URL) of the product in the online store.";
-		CurrencyAmount currentPrice "TBD";
+		string url "Location (URL) to the product in the web store.";
+		CurrencyAmount currentPrice "Selling price of the product."; 
 		long quantity "How many of this product are in stock.";
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant.";
-		string webStoreId "Identifier for this web store.";
-		array<string>? categoryId "TBD";
+		string webStoreId "Identifier for the web store offering the product.";
+		array<string>? categoryId "Identifiers for the categories in the web store in which the product belongs."; // ??right?
 	}
-	
 	record Category {
-		summary "Category information."
+		summary "Contains the category information."
 		description "Captures the identifier, name, and URL of the category and the identifier of the parent category."
 
 		string id "Identifier of the offer category.";
@@ -51,191 +47,170 @@ package com.x.webstore.v1{
 		string? categoryUrl "Location (URL) for the category.";
 	}
 	record GetAllCategory{
-		summary "All the categories in an online store."
-		description "Retrieves all the product categories defined in the online store."
+		summary "Searches for all the categories in a web store."
+		description "Searches for all the product categories defined in the specified web store."
 
 		string webStoreId "Identifier of a web store.";
 	}  
 	record GetAllCategorySucceeded{
-		summary "Search of product categories succeeded."
-		description "Confirms successful retrieval of the categories in the online store."
+		summary "Retrieves the product categories in a web store."
+		description "Returns the web store ID and all the categories used in this web store."
 
-		string webStoreId "Identifier for the online store.";
-		array<Category> categories "Array of product categories.";
+		string webStoreId "Identifier for the web store containing the categories.";
+		array<Category> categories "Array of product categories in the web store.";
 	} 
 	record GetAllCategoryFailed{
-		summary "Search of product categories failed."
-		description "Reports error details for a failed category search."
+		summary "Indicates that no product categories were found."
+		description "Returns the web store ID and error details related to the failed category search."
 
-		string webStoreId "Identifier for the online store.";
-		array<Error> errors "Error code and details of the failed category search.";
+		string webStoreId "Identifier of the web store.";
+		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
 	}    
     record GetAllWebStoreProvider {
-		summary "TBD"
-		description "TBD"
-
-
+		summary "Searches for web store providers." 
+		description "Searches for all the web store providers."
 	}
-	
     record GetAllWebStoreProviderSucceeded {
-		summary "TBD"
-		description "TBD"
+		summary "Retrieves a web store provider."
+		description "Returns the name of a web store provider."
 
-		string providerName "TBD";
-		 //Caller must get destination ID from header - X-XC-PUBLISHER-ID
+		string providerName "Name of the web store provider found."; //??Regarding the comment below, why do you need the destination ID for? Is provider name and destination ID the same thing?
+		 //Caller must get destination ID from header - X-XC-PUBLISHER-ID 
 	}
-	
-	record GetAllWebStore {
-		summary "TBD"
-		description "TBD"
-
+	record GetAllWebStore {  
+		summary "Searches for web stores."
+		description "Searches for all web stores."
 	}
-	
     record GetAllWebStoreSucceeded {
-		summary "TBD"
-		description "TBD"
+		summary "Returns a list of web stores for a specific provider."
+		description "Retrieves a list of web stores associated with the specified provider."
 
-		string providerName;
+		string providerName; "Name of provider." //??Regarding the comment below, why do you need the destination ID for? Is provider name and destination ID the same thing?
 	    //Caller must get destination ID from header - X-XC-PUBLISHER-ID
-	    array<WebStore> stores "TBD";
+	    array<WebStore> stores "Array of web stores that use the specified provider.";
 	}
-	
-	
 	record GetAllWebStoreFailed {
-		summary "TBD"
-		description "TBD"
+		summary "Indicates that no web stores were found for the specified provider."
+		description "Returns the provider name and error details related to the failed web store search."
 
-		string providerName "TBD";
-	    array<Error> errors "TBD";
+		string providerName "Name of the web store provider.";
+	    array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
 	}
-	
-	
 	record SearchWebStoreOffer{
-		summary "TBD"
-		description "TBD"
+		summary "Searches for offers from a specific web store."
+		description "Searches for offers based on the web store ID and optionally the modification date."
   
-    	string? webStoreId "Identifier for the online store.";
-		
-		/* When this field is present, get all customers modified since this date that also match the other criteria */
-		datetime? modifiedSince;
-		
-		/**
-		 * Restrict the number of items return to this many or less.
-		 * When null, it is assumed there is no restriction
-		 */
-		long? itemsRequested;
-		
-		/**
-		 * Return the results starting from this zero-based index.
-		 * When null, items will be returned started from the first item
-		 */
-		long? startItemIndex "TBD";
+    	string? webStoreId "Identifier for the web store.";
+		datetime? modifiedSince; "Date the offer information was last modified (changed). This is used along with the other search criteria to restrict the search to offers modified since this date." 
+		long? itemsRequested; "Sets the maximum number of returned items. If this is not set, all items are returned."
+		long? startItemIndex "Returns the results starting from a zero-based index. If this is not set, items will be returned started from the first item.";  //??when do you use this? what do developers need to know about using this?
 	}
-	
 	record SearchWebStoreOfferSucceeded{	
-		summary "TBD"
-		description "TBD"
+		summary "Returns the offers for a specific web store."
+		description "Retrieves the offers and the total number of offers returned for a specific web store."
 
-		array<WebStoreOffer> webStoreOffers "TBD";
-		long totalItemsFound "TBD";
-		SearchWebStoreOffer request "TBD";
+		array<WebStoreOffer> webStoreOffers "Array of offers found and the details of these offers.";
+		long totalItemsFound "Total number of offers returned.";
+		SearchWebStoreOffer request "Searches for web store offers.";
 	}
-	
 	record SearchWebStoreOfferFailed{
-		summary "TBD"
-		description "TBD"
+		summary "Indicates that no offers were found for the specified web store."
+		description "Returns error details related to the failed offer search."
 
-		array<Error> errors "TBD";
-		SearchWebStoreOffer request "TBD";
+		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
+		SearchWebStoreOffer request "Searches for web store offers.";
 	}
-	record CreateWebStoreOffer{
-		summary "TBD"
-		description "TBD"
+	record CreateWebStoreOffer{ 
+		summary "Creates a web store offer."
+		description "Creates a web store offer using the offer data."
 
-		WebStoreOfferData offer "TBD";
+		WebStoreOfferData offer "Data that defines the web store offer.";
 	}
     record CreateWebStoreOfferSucceeded{
-		WebStoreOffer offer "TBD";
+    	summary "Indicates an offer was created."
+    	description "Returns the offer ID from the channel."
+    	
+		WebStoreOffer offer "Identifier of the offer. This ID is assigned by the channel that published the offer.";  
 	}
 	record CreateWebStoreOfferFailed{
-		summary "TBD"
-		description "TBD"
+		summary "Indicates that the attempt to create an offer failed."
+		description "Returns the error details related to the failed attempt to create an offer."
 
-		WebStoreOfferData offer "TBD";
-		array<Error> errors "TBD";
+		WebStoreOfferData offer "Data that defines the web store offer that failed to be created."; 
+		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
 	}
 	record UpdateWebStoreOffer{
-		summary "TBD"
-		description "TBD"
+		summary "Updates an offer."
+		description "Changes the information of an offer." 
 
-		WebStoreOffer offer "TBD";
+		WebStoreOffer offer "Identifier of the offer to be updated. This ID is assigned by the channel that published the offer.";
 	}
     record UpdateWebStoreOfferSucceeded{
-		summary "TBD"
-		description "TBD"
+		summary "Indicates an offer was updated."
+		description "Returns the ID of the offer that was updated."
 
-		WebStoreOffer offer "TBD";
+		WebStoreOffer offer "Identifier of the offer that was updated. This ID is assigned by the channel that published the offer.";
 	}
 	record UpdateWebStoreOfferFailed{
-		summary "TBD"
-		description "TBD"
+		summary "Indicates that updating an offer failed."
+		description "Returns the offer ID and the error details related to the failed attempt to update an offer."
 
-		WebStoreOffer offer "TBD";
-		array<Error> errors "TBD";
+		WebStoreOffer offer "Identifier of the offer that failed to be updated. This ID is assigned by the channel that published the offer."; 
+		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
 	}
 	record DeleteWebStoreOffer{
-		summary "TBD"
-		description "TBD"
+		summary "Deletes an offer."
+		description "Removes an offer from a channel using the offer ID."
 
-		string offerId "TBD";
+		string offerId "Identifier of the offer to be deleted."; 
 	}
 	record DeleteWebStoreOfferSucceeded{
-		summary "TBD"
-		description "TBD"
+		summary "Indicates an offer was deleted."
+		description "Returns the ID of the offer that was deleted."
 
-		string offerId "Identifier for the successful offer.";
+		string offerId "Identifier of the offer that was deleted.";
 	}
 	record DeleteWebStoreOfferFailed{
-		summary "TBD"
-		description "TBD"
+		summary "Indicates that deleting an offer failed."
+		description "Returns the offer ID and the error details related to the failed attempt to delete an offer."
 
-		string offerId "Identifier for the failed offer.";
-		array<Error> errors "TBD";
+		string offerId "Identifier of the failed offer.";
+		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
 	}
-	record WebStoreOfferCreated{
-		summary "TBD"
-		description "TBD"
+	record WebStoreOfferCreated{ 
+		summary "Notification that an offer was created."
+		description "Returns the ID of the offer that was created."
 
-		WebStoreOffer offer "TBD";
+		WebStoreOffer offer "Identifier of the offer. This ID is assigned by the channel that published the offer."; 
 	}
 	record WebStoreOfferUpdated{
-		summary "TBD"
-		description "TBD"
+		summary "Notification that an offer was updated."
+		description "Returns the ID of the offer that was updated."
 
-		WebStoreOffer offer "TBD";
+		WebStoreOffer offer "Identifier of the offer. This ID is assigned by the channel that published the offer.";
 	}
 	record WebStoreOfferDeleted{
-		summary "TBD"
-		description "TBD"
+		summary "Notification that an offer was deleted."
+		description "Returns the ID of the offer that was deleted."
 
-		WebStoreOffer offer "TBD";
+		WebStoreOffer offer "Identifier of the offer. This ID is assigned by the channel that published the offer.";
 	}
 	
     record WebStoreOfferPriceUpdated{
-		summary "TBD"
-		description "TBD"
+		summary "Notification that the price information of an offer was updated."
+		description "Changes the selling price of an offer."
 
-	    string sku "TBD";
-		CurrencyAmount currentPrice "TBD";
-		string webStoreId "Identifier for the online store.";
+	    string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant.";
+		CurrencyAmount currentPrice "New selling price for the offer.";
+		string webStoreId "Identifier for the web store.";
 	}
 	
     record WebStoreOfferQuantityUpdated{
-		summary "TBD"
-		description "TBD"
+		summary "Notification that the quantity of an offer was changed."
+		description "Changes the number of items in inventory of an offer."
 
-		string sku "TBD";
-		long quantity "TBD";
-		string webStoreId "Identifier for the online store.";
+		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant.";
+		long quantity "New value for how many of this product are in stock.";
+		string webStoreId "Identifier for the web store.";
 	}
 }
