@@ -28,10 +28,10 @@ package com.x.paidsearchadvertising.v1{
     }
 
 	transaction CreateCampaign (Campaign campaign) response {
-        preconditions {
+        preconditions (
         	!exists(campaign)
         	
-        }
+        )
         sender {
         	message CreateCampaign {
         		timeouts(receipt=5s, response=15s)     		
@@ -52,10 +52,10 @@ package com.x.paidsearchadvertising.v1{
     }
     	
 	transaction DeleteCampaign (Campaign campaign) response {
-        preconditions {
+        preconditions (
       		exists(campaign)
         	
-        }
+        )
         sender{
         	message DeleteCampaign {
         		timeouts(receipt=5s, response=15s)     	
@@ -81,10 +81,9 @@ package com.x.paidsearchadvertising.v1{
     }
     	
 	transaction UpdateCampaign (Campaign campaign) response {
-        preconditions {
-        	exists(campaign)
-        	
-        }
+        preconditions (
+        	exists(campaign)	
+        )
         sender{
         	message UpdateCampaign {
         		timeouts(receipt=5s, response=15s)     		
@@ -107,9 +106,9 @@ package com.x.paidsearchadvertising.v1{
     
         	
 	transaction SuspendCampaign (Campaign campaign) response {
-        preconditions {
+        preconditions (
         	campaign[Campaign.Active]
-        }
+        )
         sender{
         	message SuspendCampaign {
         		timeouts(receipt=5s, response=15s)     	
@@ -135,10 +134,9 @@ package com.x.paidsearchadvertising.v1{
 		}
     }
    	transaction ResumeCampaign (Campaign campaign) response {
-        preconditions {
-        	exists(campaign)
-        	
-        }
+        preconditions (
+        	exists(campaign)        	
+        )
         sender{
         	message ResumeCampaign {
         		timeouts(receipt=5s, response=15s)     		
@@ -164,10 +162,9 @@ package com.x.paidsearchadvertising.v1{
 		}
     }
    	transaction AddOffersToCampaign (Campaign campaign) response {
-        preconditions {
-        	exists(campaign)
-        	
-        }
+        preconditions (
+        	exists(campaign)	
+        )
         sender{
         	message AddOffersToCampaign {
         		timeouts(receipt=5s, response=15s)     		
