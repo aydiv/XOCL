@@ -69,6 +69,7 @@
 		<module>Marketplace</module>
 		<module>OrderManagement</module>
 		<module>OrderFulfillment</module>
+		<module>PaidSearchAdvertising</module>
 		<module>ProductInformationManagement</module>
 		<module>ProductTaxonomy</module>
 		<module>Shipping</module>
