@@ -347,6 +347,24 @@ package com.x.ordermanagement.v2 {
 		array<Error> errors
 	}
 	
+	record SubmitOrder {
+		OrderData order
+	}
+	
+	record SubmitMarketplaceOrder extends SubmitOrder {
+		string? accountId
+		string? siteCode		
+	}
+	
+	record SubmitOrderSucceeded {
+		Order order
+	}
+	
+	record SubmitOrderFailed {
+		OrderData order
+		array<Error> errors
+	}
+	
 	record OrderShipped {
 		string orderNumber
 		guid id

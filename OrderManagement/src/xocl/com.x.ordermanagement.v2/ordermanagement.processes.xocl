@@ -27,6 +27,21 @@ package com.x.ordermanagement.v2 {
     	}
     }
     
+    
+    // Submit an order that is in an already shipped state
+    process SubmitShippedOrder<MarketplaceOrder>(Order order) {
+    	
+    	description "Submit an order to the OrderProcessor that has already been shipped"
+    	
+    	roles (SalesChannel, OrderProcessor)
+    	
+    	workflow {
+    		transaction SubmitOrder<MarketplaceOrder> {
+    			roles (SalesChannel, OrderProcessor)
+    		}   
+    	}
+    }
+    
     // Process orders that originate from a sales channel
     process ProcessSalesChannelOrder<MarketplaceOrder, MarketplacePaymentUpdate>(Order order) {
     	
@@ -36,10 +51,15 @@ package com.x.ordermanagement.v2 {
     
 	    workflow {
 	    	 	
-    		// An order submitter submits an order to an order processor
-       	 	transaction ProcessOrder<MarketplaceOrder> {
-        		roles(SalesChannel, OrderProcessor)
-        	}
+	    	// A new order may already have arrived at the OrderProcessor
+	    	// via a separate flow (SearchOrder, for example). That means the 
+	    	// ProcessOrder transaction may not be required to start the workflow.
+	        any {
+		        // An order submitter submits an order to an order processor
+	       	 	transaction ProcessOrder<MarketplaceOrder> {
+	        		roles(SalesChannel, OrderProcessor)
+	        	}
+	        }
         	
 	        any {
 	        	workflow CustomerUpsert {

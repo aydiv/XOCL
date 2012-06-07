@@ -28,6 +28,32 @@ package com.x.ordermanagement.v2 {
 		}
 	}
 	
+	// Submit a shipped order to the order processor
+	transaction SubmitOrder<MarketplaceOrder>(Order order) response {
+		preconditions(order[Order.Shipped])
+		
+		sender {
+			message SubmitOrder {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+			message<MarketplaceOrder> SubmitMarketplaceOrder {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+		}
+		
+		receiver {
+			success SubmitOrderSucceeded {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+			failure SubmitOrderFailed{
+				timeouts(receipt=30s)
+			}
+		}
+	}
+	
 	// Update the shipping tracking information for an order
 	transaction OrderShipped<MarketplaceOrder>(Order order) notify {
 		preconditions(order[Order.Submitted])
