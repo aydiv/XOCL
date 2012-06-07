@@ -73,6 +73,16 @@ package com.x.system.v1 {
             }
         } 
     }
+	
+	// DEPRECTATED version
+	transaction NewTenantAuthorization notify {
+        sender
+        {
+        	message NewTenantAuthorization {
+        		topic "/xfabric/tenant/updated"
+        	}
+        }
+    }
     
     transaction TenantRelationshipCreated notify {
         sender

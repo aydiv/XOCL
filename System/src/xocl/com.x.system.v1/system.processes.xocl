@@ -48,7 +48,20 @@ package com.x.system.v1 {
 				roles(EndpointUpdater, Capability)
 			}
 		}
-	}	
+	}
+	
+	// DEPRECATED
+	process NewTenantAuthorization {
+		description "A new relationship was created between a tenant and a cpability"
+		
+		roles(TenantRelationshipManager, TenantRelationshipConsumer)
+	
+		workflow {
+			transaction NewTenantAuthorization {
+				roles(TenantRelationshipManager, TenantRelationshipConsumer)
+			}
+		}
+	}
 	
 	process TenantRelationshipCreated {
 		description "A new relationship was created between a tenant and a cpability"
