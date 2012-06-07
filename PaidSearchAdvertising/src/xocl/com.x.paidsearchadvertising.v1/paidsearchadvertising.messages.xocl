@@ -1,0 +1,173 @@
+package com.x.paidsearchadvertising.v1{
+	import com.x.core.v1.*
+	
+	record AdvertiserAccount extends AdvertiserAccountData
+	{
+		string advertiserAccountId;
+	}
+
+	record AdvertiserAccountData
+	{
+		string? currencyCode "3 character ISO 4217 code"
+		Name fullName;	   
+	    Address? addresses;
+	    Phone? primaryPhone;
+		Email? emailAddress;   		
+	}
+	
+	enum CampaignStatus {
+		PENDING,
+		SERVING,
+		SUSPENDED,
+		ENDED,
+		DELETED
+	}
+
+	record OffersAndAttributes { //TODO:  should we really pass sku, quantity, and pricing?  
+		array<string> offerIds;
+		array<string> offerAttributeIds "List of attributes that identifies information that should be used to create ads."
+	}
+
+
+	record PSACampaign extends PSACampaignData{
+		string campaignId;
+		CampaignStatus providerStatus  "Status set by the provider. This is read only and cannot be set by the user" 
+	}
+
+
+	record PSACampaignData {
+		string accountId "The account this campaign belongs to"
+		
+		string name
+		string? _AVDL_description
+
+		datetime startTime
+		datetime endTime
+	
+		CampaignStatus status
+		
+		CurrencyAmount? campaignBudget "Budget for the campaign"
+	}
+	
+	
+
+	record CreateAdvertiserAccount {
+		AdvertiserAccountData advertiserAccountData;
+	}
+
+	record CreateAdvertiserAccountSucceeded {
+		AdvertiserAccount advertiserAccount;
+	}
+
+	record CreateAdvertiserAccountFailed {
+		CreateAdvertiserAccount request;
+		array<Error> errors;
+
+	}
+
+	record CreateCampaign {
+		PSACampaignData campaign;
+	}
+ 
+	record CreateCampaignSucceeded {
+		PSACampaign campaign;
+	}
+
+	record CreateCampaignFailed {
+		PSACampaignData campaign;
+		array<Error> errors;
+	}
+
+	record SearchCampaign {
+		string? accountId 
+		CampaignStatus? status
+	}
+
+	record SearchCampaignSucceeded {
+		array<PSACampaign> campaigns;
+		SearchCampaign request;
+	}
+
+	record SearchCampaignFailed {
+		SearchCampaign request;
+		array<Error> errors;
+	}
+	
+	record UpdateCampaign {
+		PSACampaign campaign;
+	}
+	record UpdateCampaignSucceeded {
+		PSACampaign campaign;
+	}
+
+	record UpdateCampaignFailed {
+		PSACampaign campaign;
+		array<Error> errors;
+	}
+
+	record DeleteCampaign {
+		string campaignId;
+	}
+
+	record DeleteCampaignSucceeded {
+		DeleteCampaign request;
+	}
+
+	record DeleteCampaignFailed {
+		DeleteCampaign request;
+		array<Error> errors;
+	}
+	
+	record SuspendCampaign {
+		string campaignId;
+	}
+
+	record SuspendCampaignSucceeded {
+		SuspendCampaign request;
+	}
+
+	record SuspendCampaignFailed {
+		SuspendCampaign request;
+		array<Error> errors;
+	}
+
+	record ResumeCampaign {
+		string campaignId;
+	}
+
+	record ResumeCampaignSucceeded {
+		ResumeCampaign request;
+	}
+
+	record ResumeCampaignFailed {
+		ResumeCampaign request;
+		array<Error> errors;
+	}
+
+
+	record AddOffersToCampaign {
+		string campaignId;
+		OffersAndAttributes offers;
+	}
+	
+	record AddOffersToCampaignSucceeded {
+		AddOffersToCampaign request;
+	}
+	
+	record AddOffersToCampaignFailed {
+		AddOffersToCampaign request;
+		array<Error> errors;
+	}
+	
+	record LookupCampaignPerformanceReport {
+		
+	}
+
+	record LookupCampaignPerformanceReportSucceeded {
+		//TODO:  What are the fields to return for a performance report?
+	}
+
+	record LookupCampaignPerformanceReportFailed {
+		array<Error> errors;
+	}
+}

@@ -1,0 +1,214 @@
+package com.x.paidsearchadvertising.v1{
+	
+	import com.x.paidsearchadvertising.v1.*
+	
+	entity Campaign {
+    	state Active[Inactive]	
+    	state Inactive[Active]
+    }
+	
+		
+	transaction CreateAdvertiserAccount response {
+        sender {
+        	message CreateAdvertiserAccount {
+        		timeouts(receipt=5s, response=15s)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success CreateAdvertiserAccountSucceeded {
+            	timeouts(receipt=5s)
+            	retries=3
+            }    
+            failure CreateAdvertiserAccountFailed{
+            	timeouts(receipt=5s)
+            	retries=3
+            }
+		}
+    }
+
+	transaction CreateCampaign (Campaign campaign) response {
+        preconditions {
+        	!exists(campaign)
+        	
+        }
+        sender {
+        	message CreateCampaign {
+        		timeouts(receipt=5s, response=15s)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success CreateCampaignSucceeded {
+            	timeouts(receipt=5s)
+            	retries=3
+            }
+            
+            failure CreateCampaignFailed{
+            	timeouts(receipt=5s)
+            	retries=3
+            }
+		}
+    }
+    	
+	transaction DeleteCampaign (Campaign campaign) response {
+        preconditions {
+      		exists(campaign)
+        	
+        }
+        sender{
+        	message DeleteCampaign {
+        		timeouts(receipt=5s, response=15s)     	
+        		retries=3
+        	}
+        }
+        receiver {
+        	success DeleteCampaignSucceeded {
+            	timeouts(receipt=5s)
+            	retries=3
+            }
+            
+            failure DeleteCampaignFailed {
+            	timeouts(receipt=5s)
+            	retries=3
+            }
+		}
+		postconditions{
+			    success{
+			    	exists(campaign)
+			    }	
+		}
+    }
+    	
+	transaction UpdateCampaign (Campaign campaign) response {
+        preconditions {
+        	exists(campaign)
+        	
+        }
+        sender{
+        	message UpdateCampaign {
+        		timeouts(receipt=5s, response=15s)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success UpdateCampaignSucceeded
+        	{
+            	timeouts(receipt=5s)
+            	retries=3
+            }
+            
+            failure UpdateCampaignFailed{
+            	timeouts(receipt=5s)
+            	retries=3
+            }
+		}
+    }
+    
+        	
+	transaction SuspendCampaign (Campaign campaign) response {
+        preconditions {
+        	campaign[Campaign.Active]
+        }
+        sender{
+        	message SuspendCampaign {
+        		timeouts(receipt=5s, response=15s)     	
+        		retries=3
+        	}
+        }
+        receiver {
+        	success SuspendCampaignSucceeded
+        	{
+            	timeouts(receipt=5s)
+            	retries=3
+            }
+            
+            failure SuspendCampaignFailed{
+            	timeouts(receipt=5s)
+            	retries=3
+            }
+		}
+		postconditions{
+			    success{
+			    	campaign[Campaign.Inactive]
+			    }	
+		}
+    }
+   	transaction ResumeCampaign (Campaign campaign) response {
+        preconditions {
+        	exists(campaign)
+        	
+        }
+        sender{
+        	message ResumeCampaign {
+        		timeouts(receipt=5s, response=15s)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success ResumeCampaignSucceeded
+        	{
+            	timeouts(receipt=5s)
+            	retries=3
+            }
+            
+            failure ResumeCampaignFailed{
+            	timeouts(receipt=5s)
+            	retries=3
+            }
+		}
+		postconditions{
+			    success{
+			    	campaign[Campaign.Active]
+			    }	
+		}
+    }
+   	transaction AddOffersToCampaign (Campaign campaign) response {
+        preconditions {
+        	exists(campaign)
+        	
+        }
+        sender{
+        	message AddOffersToCampaign {
+        		timeouts(receipt=5s, response=15s)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success AddOffersToCampaignSucceeded
+        	{
+            	timeouts(receipt=5s)
+            	retries=3
+            }
+            
+            failure AddOffersToCampaignFailed{
+            	timeouts(receipt=5s)
+            	retries=3
+            }
+		}
+    }
+	
+	
+	transaction LookupCampaignPerformanceReport query {
+        sender{
+        	message LookupCampaignPerformanceReport {
+        		timeouts(response=5s)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success LookupCampaignPerformanceReportSucceeded
+        	{
+            	timeouts(receipt=5s)
+            	retries=3
+            }
+            
+            failure LookupCampaignPerformanceReportFailed{
+            	timeouts(receipt=5s)
+            	retries=3
+            }
+		}
+    }
+	
+	
+}

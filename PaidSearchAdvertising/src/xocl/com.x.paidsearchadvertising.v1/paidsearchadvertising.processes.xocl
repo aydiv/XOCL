@@ -1,0 +1,102 @@
+package com.x.paidsearchadvertising.v1{
+	
+	import com.x.paidsearchadvertising.v1.*
+	
+	process AdvertiserAccountCreation {
+		description "Create an advertiser account"
+		
+		roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+	
+		workflow {
+		    transaction CreateAdvertiserAccount {
+				  	roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+			}
+		}
+	}
+
+    process CampaignCreation {
+		description "Create a campaign"
+		
+		roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+	
+		workflow {
+		    transaction CreateCampaign {
+				  	roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+			}
+		}
+	}
+
+	process CampaignUpdate {
+		description "Update a campaign"
+		
+		roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+	
+		workflow {
+		    transaction UpdateCampaign {
+				  	roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+			}
+		}
+	}
+ 	
+ 	process CampaignSuspension {
+		description "Suspend a campaign"
+		
+		roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+	
+		workflow {
+		    transaction SuspendCampaign {
+				  	roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+			}
+		}
+	}
+	
+	process CampaignResumption {
+		description "Resume a campaign"
+		
+		roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+	
+		workflow {
+		    transaction ResumeCampaign {
+				  	roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+			}
+		}
+	}
+		
+	process CampaignDeletion {
+		description "Delete a campaign"
+		
+		roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+	
+		workflow {
+		    transaction DeleteCampaign {
+				  	roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+			}
+		}
+	}
+	
+	process CampaignPerformanceReportLookup {
+		description "Retrieve a performance report"
+		
+		roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+	
+		workflow {
+		    transaction LookupCampaignPerformanceReport {
+				  	roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+			}
+		}
+	}
+	
+	process AddOffersToCampaign {
+		description "Add offers to an existing campaign"
+		
+		roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+	
+		workflow {
+		    transaction AddOffersToCampaign {
+				  	roles(PaidSearchAdvertisingAdmin, PaidSearchAdvertisingProvider)
+			}
+		}
+	}
+	
+	
+}
