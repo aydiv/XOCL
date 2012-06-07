@@ -85,7 +85,7 @@ package com.x.webstore.v1{
 		summary "Returns a list of web stores for a specific provider."
 		description "Retrieves a list of web stores associated with the specified provider."
 
-		string providerName; "Name of provider." //??Regarding the comment below, why do you need the destination ID for? Is provider name and destination ID the same thing?
+		string providerName "Name of provider." //??Regarding the comment below, why do you need the destination ID for? Is provider name and destination ID the same thing?
 	    //Caller must get destination ID from header - X-XC-PUBLISHER-ID
 	    array<WebStore> stores "Array of web stores that use the specified provider.";
 	}
@@ -101,8 +101,8 @@ package com.x.webstore.v1{
 		description "Searches for offers based on the web store ID and optionally the modification date."
   
     	string? webStoreId "Identifier for the web store.";
-		datetime? modifiedSince; "Date the offer information was last modified (changed). This is used along with the other search criteria to restrict the search to offers modified since this date." 
-		long? itemsRequested; "Sets the maximum number of returned items. If this is not set, all items are returned."
+		datetime? modifiedSince "Date the offer information was last modified (changed). This is used along with the other search criteria to restrict the search to offers modified since this date." 
+		long? itemsRequested "Sets the maximum number of returned items. If this is not set, all items are returned."
 		long? startItemIndex "Returns the results starting from a zero-based index. If this is not set, items will be returned started from the first item.";  //??when do you use this? what do developers need to know about using this?
 	}
 	record SearchWebStoreOfferSucceeded{	
