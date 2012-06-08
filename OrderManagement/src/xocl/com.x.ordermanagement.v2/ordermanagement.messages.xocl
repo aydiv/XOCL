@@ -370,6 +370,8 @@ package com.x.ordermanagement.v2 {
 		guid id
 		Shipment shipment
 		string sourceId
+		string? referralSource
+    	array<OrderLineData>? orderLines
 	}
 	
 	record MarketplaceOrderShipped extends OrderShipped {
@@ -491,6 +493,10 @@ package com.x.ordermanagement.v2 {
 	record OrderReturn {
 		string orderNumber
 		datetime? dateReturned
+		
+		union{null, guid, EntityId} customerId = null
+		datetime? dateOrdered
+		array<ReturnOrderLineData>? orderLines
 	}
 	
 	record PartialOrderReturn {
@@ -500,6 +506,8 @@ package com.x.ordermanagement.v2 {
 		 * not include the remaining items.
 		 */
 		array<ReturnOrderLineData> returnedItems
+		union{null, guid, EntityId} customerId = null
+		datetime? dateOrdered
 	}
 	
 	/** OrderAdjusted capatures information about orders that were changed in ways that
