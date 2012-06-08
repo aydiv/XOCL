@@ -83,6 +83,8 @@ package com.x.system.v1 {
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	
+	// warning: this message *might* not be needed, but is included here for
+	//          backward compatibility
 	record Configure {
 		string identifier
 		bytes? payload
