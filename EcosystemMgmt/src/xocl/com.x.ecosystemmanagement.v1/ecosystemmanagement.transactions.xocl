@@ -1,0 +1,41 @@
+/** This file includes the transactions that are part of the
+ *  ecosystemmanagement domain
+ */
+package com.x.ecosystemmanagement.v1 {
+	import com.x.ecosystemmanagement.v1.*
+	
+	transaction PingCapability response {
+        sender
+        {
+        	message Ping
+        	{
+        		timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success Pong {
+        	}           
+            failure MessageDeliveryFailed {
+            }
+        } 
+    }
+   
+    transaction UpdateCapabilityEndpoint response {
+        sender
+        {
+        	message UpdateCapabilityEndpoint
+        	{
+        		timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success CapabilityEndpointUpdated {
+        	}           
+            failure UpdateCapabilityEndpointFailed {
+            }
+        } 
+    }
+
+}

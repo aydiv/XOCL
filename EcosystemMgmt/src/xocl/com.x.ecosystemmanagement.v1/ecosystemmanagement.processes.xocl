@@ -1,0 +1,28 @@
+package com.x.ecosystemmanagement.v1 { 	
+    import com.x.ecosystemmanagement.v1.*
+    
+    process VerifyCapabilityHeartbeat {
+		description "Verify that a capability is awake and addressable on the fabric"
+		
+		roles(CapabilityVerifier, Capability)
+	
+		workflow {
+			transaction PingCapability {
+				roles(CapabilityVerifier, Capability)
+			}
+		}
+	}
+	
+	process UpdateCapabilityEndpoint {
+		description "Configure the setting for a capability"
+		
+		roles(EndpointUpdater, Capability)
+	
+		workflow {
+			transaction UpdateCapabilityEndpoint {
+				roles(EndpointUpdater, Capability)
+			}
+		}
+	}
+
+}
