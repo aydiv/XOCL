@@ -62,6 +62,7 @@
 		<module>Cart</module>
 		<module>ComparisonShoppingEngine</module>
 		<module>Customer</module>
+		<module>EcosystemMgmt</module>
 		<module>Example</module>
 		<module>InventoryManagement</module>
 		<module>LoyaltyMarketing</module>
