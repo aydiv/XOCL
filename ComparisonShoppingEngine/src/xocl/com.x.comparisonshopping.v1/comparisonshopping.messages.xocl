@@ -141,7 +141,7 @@ package com.x.comparisonshopping.v1 {
 
 		array<Product> products "Array of the products to be published to a comparison shopping engine."
 		ProductFeedType feedType "Type of product feed file, which is either Full (complete) or Incremental (partial)."
-		string xAccountId "Merchant's account identifier for the comparison shopping engine."
+		string xAccountId "Unique X.commerce identifier for the merchant account. This value is assigned to a merchant account when it is created at the end of the authorization work flow and is returned in the message published to the /cse/authorization/completed topic."
 		string siteId "Identifier of the comparison shopping engine."
 		string? feedName "Name of the product feed file."
 	}
@@ -165,7 +165,7 @@ package com.x.comparisonshopping.v1 {
 		description "Generates and sends a product feed file containing only updates to currently published products."
 
 		array<Product> products "Array of the products to be updated on a comparison shopping engine channel.";
-		string xAccountId "Merchant's account identifier for the comparison shopping engine channel."; 
+		string xAccountId "Unique X.commerce identifier for the merchant account. This value is assigned to a merchant account when it is created at the end of the authorization work flow and is returned in the message published to the /cse/authorization/completed topic."; 
 		string siteId "Identifier of the comparison shopping engine.";
 		string? feedName "Name of the product feed file."
 	}
