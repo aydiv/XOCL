@@ -29,8 +29,11 @@ package com.x.customer.v1{
 		summary "Searches for a single customer."
 		description "A CustomerConsumer looks up a single customer and CustomerManager returns the results."
 		
-		roles(CustomerConsumer, CustomerManager)
-	
+		roles
+			{
+				CustomerConsumer "Searches the customer management system for a specific customer."
+				CustomerManager "Returns the customer and their information based on the search criteria."
+			}
 	    workflow {
 			summary "Search for a single customer."
 			description "A CustomerConsumer looks up a single customer and CustomerManager returns the results."
