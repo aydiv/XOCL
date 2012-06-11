@@ -12,16 +12,9 @@ package com.x.comparisonshopping.v1
     {   
     	description "Represents a product feed file and its state, which can be published to a comparison shopping engine."
 
-       	// An Prepared product feed file can be Published or Denied 
-        state Prepared[Published, Denied] "The state of the product feed file. This can be either Published or Denied."
-                
-        // The product feed file was successfully published
-        state Published[Updated] "The product feed file was successfully published."
-        
-        // A published product feed file was updated
-        state Updated[Denied] "A published product feed file was updated."
-        
-		// A product feed file was denied by the comparison shopping engine
+        state Prepared[Published, Denied] "The state of the product feed file. This can be either Published or Denied."           
+        state Published[Updated] "The product feed file was successfully published."        
+        state Updated[Denied] "A published product feed file was updated."        
         state Denied "A product feed file was denied (publishing failed) by the comparison shopping engine."
 	} 
     

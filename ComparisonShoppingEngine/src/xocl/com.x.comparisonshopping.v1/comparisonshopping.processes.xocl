@@ -30,7 +30,8 @@ package com.x.comparisonshopping.v1
 	    	// This transaction publishes the feed to the CSE 
 	        transaction PublishProductFeed
 	        {
-	        	roles(PublishProductFeed.TrafficGenerationManager, PublishProductFeed.ComparisonShoppingPublisher)
+	        	roles
+	        	(PublishProductFeed.TrafficGenerationManager, PublishProductFeed.ComparisonShoppingPublisher)
 	        }
 	    }
 	    
@@ -46,7 +47,13 @@ package com.x.comparisonshopping.v1
         summary "Updates the information of published products."
         description "Updates the information for one or more products that have already been published to a comparison shopping engine."
         
-        roles(TrafficGenerationManager, ComparisonShoppingPublisher)
+        roles
+            {
+        		TrafficGenerationManager "Sends a feed file containing updates to the products to a comparison shopping engine."
+        		ComparisonShoppingPublisher "Links the products to the merchant's online store."
+        	}
+        
+
         
         preconditions(productFeed[ProductFeed.Published])
         

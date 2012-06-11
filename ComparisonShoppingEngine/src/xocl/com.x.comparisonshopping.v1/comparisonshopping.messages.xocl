@@ -147,14 +147,14 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	record PublishProductFeedSuccess {
-		summary "Returns the product IDs for each published product when publishing is successful."
+		summary "Retrieves the product IDs for each published product when publishing is successful."
 		description "Returns an array of the product IDs and their associated comparison shopping engine product IDs when the product feed file is successfully published."
 
 		array<MappedProductId> cseProductIds "Array of the product IDs and their associated (CSE) Comparison Shopping Engine product IDs.";
 	}
 	
 	record PublishProductFeedFailure {
-		summary "Publishing products failed."
+		summary "Indicates that publishing products failed."
 		description "Returns the error code and details of the product publishing failure."
 
 		string errorCode "Error code and details of the publishing failure.";
@@ -171,16 +171,16 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	record UpdateProductFeedSuccess {
-		summary "Returns the product IDs for each updated product."
+		summary "Retrieves the product IDs for each updated product."
 		description "Returns an array of product IDs and their associated comparison shopping engine product IDs when the products are successfully updated."
 
 		array<MappedProductId> cseProductIds "An array of the product identifiers and their associated (CSE) Comparison Shopping Engine product identifier.";
 	}
 	
 	record UpdateProductFeedFailure {
-		summary "Products failed to be updated."
-		description "Error code and details for the product updating failure."
+		summary "Indicates that products failed to be updated."
+		description "Returns the error code and details for the product updating failure."
 
-		string errorCode "The error code and details of the update failure.";
+		string errorCode "Error code and details of the update failure.";
 	}
 }

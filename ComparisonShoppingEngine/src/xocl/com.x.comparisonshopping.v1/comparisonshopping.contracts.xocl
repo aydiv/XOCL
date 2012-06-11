@@ -16,7 +16,7 @@ package com.x.comparisonshopping.v1
     	// A set of roles collectively define the implementer's responsibilities
     	roles
     	{
-	        PublishProductFeed.ComparisonShoppingPublisher "Using a product feed file, publishes (adds) products to a comparison shopping engine and links the products to the merchant's online store."
+	        PublishProductFeed.ComparisonShoppingPublisher
 	    }
     }
 }
