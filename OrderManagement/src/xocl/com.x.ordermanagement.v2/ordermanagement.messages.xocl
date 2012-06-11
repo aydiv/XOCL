@@ -7,6 +7,7 @@ package com.x.ordermanagement.v2 {
 	import com.x.core.v1.*
 	
 	enum TaxabilityType {
+		description "Defines the values that can be used to specify the type of tax that applies to a given order line item."
 		TAXABLE,
 		NONTAXABLE,
 		EXEMPT,
@@ -14,6 +15,7 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	enum OrderStatus {
+		description "Defines the values that can be used to specify the status of an order line item."
 		NEW,
 		ON_HOLD,
 		BACKORDERED,
@@ -29,6 +31,7 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	enum ShippingServiceType {
+		description "Defines the values that can be used to specify the type of service used to deliver the purchased goods."
 		MERCHANT_SHIPPED,
 		DROP_SHIP,
 		SHIPPING_SERVICE,
@@ -36,6 +39,7 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	enum PromotionDiscountType {
+		description "Defines the values that can be used to specify the type of promotional discount that has been applied (if any) to the order."
 		STOREWIDE_SALE,
 		SHIPPING_DISCOUNT,
 		PRODUCT_DISCOUNT,
@@ -43,6 +47,7 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	enum PaymentStatus {
+		description "Defines the values that can be used to specify the payment processing status for a an order."
 		AUTHORIZED,
 		PAID,
 		NOT_AUTHORIZED,
@@ -52,26 +57,20 @@ package com.x.ordermanagement.v2 {
 	
 
 	record Shipment {
-		/** only need to be unique to the order like 1, 2, 3, etc...*/
-		string shipmentId
-				
-		/** The fees paid by the customer for this shipment */
-		CurrencyAmount shippingFees
-		
-		/** Total discount amount summarized from all PromotionalDiscount. */
-		CurrencyAmount? discountAmount
-		array<PromotionalDiscount>? discounts
-		CurrencyAmount? additionalCost
-		CurrencyAmount? packagingHandlingCost
-		CurrencyAmount? surcharge  // UPS or FedEx to Alaska, Hawaii or Puerto Rico only.
-
-		array<TrackingDetail>? trackingDetails
+		string shipmentId "A unique identifier for a given shipment. The value must be unique within a given order only (e.g,. 1, 2, 3, and so on). "
+		CurrencyAmount shippingFees "The fees paid by the customer for this shipment."
+		CurrencyAmount? discountAmount "Total discount amount associated with a shipment. This value is calculated from the individual promotional discounts applied to the shipment."
+		array<PromotionalDiscount>? discounts "Container shipping discount information for one or more specific types of promotional discounts."
+		CurrencyAmount? additionalCost "The sum of any additional fees applied to this shipment. For example, if the order consists of multiple items from the same offer, this specifies the cost of shipping each additional item beyond the first item."
+		CurrencyAmount? packagingHandlingCost "Fees a merchant will assess for the shipping of the item (in addition to whatever the shipping service might charge)."
+		CurrencyAmount? surcharge  "An additional fee to charge US buyers who have the purchased goods shipped via UPS or FedEx to Alaska, Hawaii or Puerto Rico. Only returned if set. Applies to flat-rate shipping only."
+		array<TrackingDetail>? trackingDetails "The collection of tracking details, such as carrier and tracking numbers, for this shipment."
 		
 		/** Next day, ground, etc. */
-		string? shippingMethod
+		string? shippingMethod ""
 		
-		DateRange? deliveryWindow
-		DateRange? shippingWindow
+		DateRange? deliveryWindow ""
+		DateRange? shippingWindow ""
 		
 		string? shippingMessage
 	}
