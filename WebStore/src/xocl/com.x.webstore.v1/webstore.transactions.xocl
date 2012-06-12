@@ -230,18 +230,6 @@ package com.x.webstore.v1{
    		}
    	}  
    	   	
-   	transaction WebStoreOfferDeleted notify  //??is this a duplicate of the above transaction
-   	{
-   		description "TBD"
-   		
-   		sender
-   		{
-   			message WebStoreOfferDeleted{
-   			    timeouts(receipt=30s)     		
-        		retries=3
-        	}
-   		}
-   	}
    	   	
    	transaction WebStoreOfferUpdated notify
    	{
