@@ -2,14 +2,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.x.ocl</groupId>
 	<artifactId>xocl-contracts</artifactId>
-	<version>0.0.16-SNAPSHOT</version>
+	<version>0.0.16</version>
 	<name>XOCL Contracts</name>
 	<packaging>pom</packaging>
 	<description>
 		The parent pom of all XOCL contracts.
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/tags/xocl-contracts-0.0.16</connection>
 	</scm>
 
 	<repositories>
