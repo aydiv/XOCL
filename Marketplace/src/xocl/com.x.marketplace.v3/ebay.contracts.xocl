@@ -87,6 +87,7 @@ package com.x.marketplace.v3{
 	        
 	   		//Order roles
 	   		ProcessSalesChannelOrder.OrderProcessor<MarketplaceOrder> 
+	   		OrderSearch.OrderManager<MarketplaceOrderSearch> 
 	   		
 	   		//Auth roles
 	   		AuthorizationGrant.AuthorizedUser
