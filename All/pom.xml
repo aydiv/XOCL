@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.x.ocl</groupId>
 	<artifactId>all-contracts</artifactId>
-	<version>0.0.16</version>
+	<version>0.0.17-SNAPSHOT</version>
 	<name>All XOCL Contracts</name>
 	<packaging>jar</packaging>
 	<description>
@@ -10,7 +10,7 @@
 		for tools that requires all avdl to be in one central location.
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/tags/xocl-contracts-0.0.16/All</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/All</connection>
 	</scm>
 
 	<repositories>

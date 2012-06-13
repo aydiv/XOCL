@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.x.ocl</groupId>
 		<artifactId>xocl-contracts</artifactId>
-		<version>0.0.16</version>
+		<version>0.0.17-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>inventory-xocl</artifactId>
@@ -12,7 +12,7 @@
 		The InventoryManagement XOCL domain
 	</description>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/tags/xocl-contracts-0.0.16/InventoryManagement</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/InventoryManagement</connection>
 	</scm>
 
 	<repositories>
