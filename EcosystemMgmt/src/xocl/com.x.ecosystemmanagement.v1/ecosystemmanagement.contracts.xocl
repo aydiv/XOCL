@@ -1,0 +1,31 @@
+package com.x.ecosystemmanagement.v1 { 	
+    import com.x.ecosystemmanagement.v1.*
+       
+    contract Capability {
+    	description "What every capability must implement."
+    	roles
+    	{
+    		PingPong.Ponger "Responds with a Pong message after it receives a Ping message."
+    		UpdateCapabilityEndpoint.Capability "Requests that it's endpoint is updated."
+    	}
+    }
+    
+    contract XManager {
+    	description "The special capability that manages the Fabric."
+    	roles
+    	{
+    		// note: MUST also have the "Capability" contract since it itself is a capability
+    		UpdateCapabilityEndpoint.XManager "Does the work of updating a capability's endpoint."
+    	}
+    }
+    
+    contract Pinger {
+    	description "A capability that can send a Ping message."
+    	roles
+    	{
+    		// note: MUST also have the "Capability" contract since it itself is a capability
+    		PingPong.Pinger "Sends a Ping message to a capability."
+    	}
+    }
+
+}

@@ -1,10 +1,10 @@
-/** This file includes the transactions that are part of the
- *  ecosystemmanagement domain
- */
+// Definition of ecosystemmanagement transactions
 package com.x.ecosystemmanagement.v1 {
 	import com.x.ecosystemmanagement.v1.*
 	
+	// this is suppose to be a very simple transaction.  no fancy stuff.
 	transaction PingCapability response {
+		description "A capability sends a Ping message to a different capability in hopes to receive a corresponding Pong message."
         sender
         {
         	message Ping
@@ -14,14 +14,14 @@ package com.x.ecosystemmanagement.v1 {
         }
         receiver
         {
-        	success Pong {
-        	}           
-            failure MessageDeliveryFailed {
-            }
+        	// one of these two messages must be sent back to the sender as a response
+        	success Pong 
+            failure MessageDeliveryFailed 
         } 
     }
    
     transaction UpdateCapabilityEndpoint response {
+    	description "A capability needs to update its URL where the Fabric delivers its messages."
         sender
         {
         	message UpdateCapabilityEndpoint
@@ -31,10 +31,9 @@ package com.x.ecosystemmanagement.v1 {
         }
         receiver
         {
-        	success CapabilityEndpointUpdated {
-        	}           
-            failure UpdateCapabilityEndpointFailed {
-            }
+        	// one of these two messages must be sent back to the sender as a response
+        	success CapabilityEndpointUpdated
+            failure UpdateCapabilityEndpointFailed
         } 
     }
 

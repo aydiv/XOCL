@@ -1,26 +1,36 @@
 package com.x.ecosystemmanagement.v1 { 	
     import com.x.ecosystemmanagement.v1.*
     
-    process VerifyCapabilityHeartbeat {
-		description "Verify that a capability is awake and addressable on the fabric"
+    process PingPong {
+		description "Verify that a capability is awake and addressable on the Fabric"
 		
-		roles(CapabilityVerifier, Capability)
+		roles
+		{
+			Pinger "Sender of a Ping message, who awaits for the Pong"
+			Ponger "Responder using a Pong message"
+		}
 	
 		workflow {
+			summary "Pings a capability."
 			transaction PingCapability {
-				roles(CapabilityVerifier, Capability)
+				roles(Pinger, Ponger)
 			}
 		}
 	}
 	
 	process UpdateCapabilityEndpoint {
-		description "Configure the setting for a capability"
+		description "Configure the endpoint URL setting for a capability"
 		
-		roles(EndpointUpdater, Capability)
+		roles
+		{
+			Capability "The capability can inform the Fabric that it has a new endpoint URL."
+			XManager "The special capability that manages the Fabric."
+		}
 	
 		workflow {
+			summary "Configure a capability's endpoint URL setting."
 			transaction UpdateCapabilityEndpoint {
-				roles(EndpointUpdater, Capability)
+				roles(Capability,XManager)
 			}
 		}
 	}
