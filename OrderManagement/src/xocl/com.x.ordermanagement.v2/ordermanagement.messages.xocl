@@ -165,9 +165,6 @@ package com.x.ordermanagement.v2 {
 		
 		CurrencyAmount? insuranceCost
 		
-		/** The tax charges for this item with addtional data about the nature of the tax */
-		Tax taxAmount
-
 	    /** The sum all of the discount that were applied to this order line */
 		CurrencyAmount? totalDiscountAmount
 
@@ -188,6 +185,9 @@ package com.x.ordermanagement.v2 {
 		float quantity
 		string productSku
 		string itemDescription
+		
+		/** The total taxes associated with this line */
+		CurrencyAmount? totalTaxAmount
 		
 		datetime dateReturned		
 		OrderLinePrice price
@@ -210,6 +210,9 @@ package com.x.ordermanagement.v2 {
 		string itemDescription
 				
 		OrderLinePrice unitPrice
+		
+		/** The total taxes associated with this line */
+		CurrencyAmount? totalTaxAmount
 
 		OrderStatus status
 		
@@ -266,13 +269,14 @@ package com.x.ordermanagement.v2 {
 
 		/** Breakdown of the total of all related fees that influence the price */		
 		CurrencyAmount? totalInsuranceCost
-		CurrencyAmount? totalTaxAmount
 		CurrencyAmount? totalDiscountAmount
 		array<AdditionalCost>? additionalCosts
+				
+		/** The total taxes charged for this order */
+		CurrencyAmount? totalTaxAmount
 		
 		/** The sum of the shipping fees from each of the associated shipments */
 		CurrencyAmount? totalShippingFees
-		
 		
 		/** A collection of all the promotional discounts that were applied at the order level */
 		array<PromotionalDiscount>? discounts
@@ -496,6 +500,12 @@ package com.x.ordermanagement.v2 {
 		union{null, guid, EntityId} customerId = null
 		datetime? dateOrdered
 		array<ReturnOrderLineData>? orderLines
+		
+		/** The grand total associated with the items being returned */
+		CurrencyAmount totalAmountOfReturn
+		
+		/** The total taxes associated with the items being returned */
+		CurrencyAmount totalTaxAmountOfReturn
 	}
 	
 	record PartialOrderReturn {
@@ -507,6 +517,12 @@ package com.x.ordermanagement.v2 {
 		array<ReturnOrderLineData> returnedItems
 		union{null, guid, EntityId} customerId = null
 		datetime? dateOrdered
+		
+		/** The grand total associated with the items being returned */
+		CurrencyAmount totalAmountOfReturn
+		
+		/** The total taxes associated with the items being returned */
+		CurrencyAmount totalTaxAmountOfReturn
 	}
 	
 	/** OrderAdjusted capatures information about orders that were changed in ways that
