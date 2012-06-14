@@ -11,7 +11,7 @@ package com.x.producttaxonomy.v1 {
 	 		}			
 	}	
 	
-	contract ProductTaxonomyComsumer {
+	contract ProductTaxonomyConsumer {
 		
 		description "An entity that uses or needs to access the information in the product taxonomy system."
     		roles {
