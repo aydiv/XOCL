@@ -100,7 +100,7 @@ package com.x.comparisonshopping.v1 {
 	
 	record Product {
 		summary "Product information needed to represent a product on a comparison shopping engine channel."
-		description "Captures all the product information needed to represent a product on a comparison shopping engine channel."
+		description "Captures all the product information needed to represent a product on a comparison shopping engine channel, such as quantity, title, SKU, category, etc."
 
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant."
 		CurrencyAmount price "Price to purchase the product."; 
