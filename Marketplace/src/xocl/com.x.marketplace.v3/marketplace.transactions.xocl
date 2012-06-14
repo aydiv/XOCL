@@ -102,7 +102,7 @@ package com.x.marketplace.v3{
     transaction SearchCategories query {
         sender {
         	message SearchCategories {
-        		 timeouts(response=30s)
+        		 timeouts(response=1m)   //1m per Jay Rutten's request
         		 retries=3     		
         	}
         }
