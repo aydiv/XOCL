@@ -4,8 +4,8 @@
 package com.x.ordermanagement.v2 {
 	import com.x.ordermanagement.v2.*
 	
-	// Tell an order processor to process an order 
 	transaction ProcessOrder<MarketplaceOrder> response {
+		description "Requests an order processor to process an order."
 		sender {
 			message ProcessOrder {
             	timeouts(receipt=30s, response=30s)
@@ -28,8 +28,8 @@ package com.x.ordermanagement.v2 {
 		}
 	}
 	
-	// Submit a shipped order to the order processor
 	transaction SubmitOrder<MarketplaceOrder>(Order order) response {
+		description "Submits a shipped order to the order processor."
 		preconditions(order[Order.Shipped])
 		
 		sender {
@@ -54,8 +54,8 @@ package com.x.ordermanagement.v2 {
 		}
 	}
 	
-	// Update the shipping tracking information for an order
 	transaction OrderShipped<MarketplaceOrder>(Order order) notify {
+		description "Updates the shipping tracking information for an order."
 		preconditions(order[Order.Submitted])
 		
 		sender
@@ -75,23 +75,23 @@ package com.x.ordermanagement.v2 {
 		}
 	}
 	
-	// Notify observers that the order has shipped
 	transaction ObserveOrderShipped<MarketplaceOrder> inform {
+		description "Notifies observers that an order has shipped."
 		sender {
 			message ObserveOrderShipped 
             message<MarketplaceOrder> ObserveMarketplaceOrderShipped 
 		}		
 	}
     
-    // Inform observers that an order was created
     transaction OrderCreated inform {
+    	description "Notifies observers that an order was created."
         sender {
         	message OrderCreated
         }
     }
     
-    // Cancel the content of an order
 	transaction CancelOrder<MarketplaceOrder>(Order order) response {
+		description "Cancels an order."
 		preconditions(order[Order.Submitted])
 		
         sender {
@@ -127,8 +127,8 @@ package com.x.ordermanagement.v2 {
 		}
     }
     
-    // Inform observers that an order was cancelled
     transaction OrderCancelled<MarketplaceOrder> inform {
+    	description "Notifies observers that an order was cancelled."
         sender {
         	message OrderCancelled
         	message<MarketplaceOrder> MarketplaceOrderCancelled
@@ -136,6 +136,7 @@ package com.x.ordermanagement.v2 {
     }
       
     transaction SearchOrder<NonSensitive, MarketplaceOrderSearch> query {
+    	description "Searches for an order."
         sender {
         	message SearchOrder {
         		 timeouts(response=30s)     		
@@ -155,6 +156,7 @@ package com.x.ordermanagement.v2 {
     }
     
     transaction ShippingInformationUpdate<MarketplaceOrder> notify {
+    	description "Updates the shipping information with accountID, siteCode, and sourceID of the marketplace."
         sender {
         	message ShippingInformationUpdate {
             	timeouts(receipt=30s, validation=3m)
@@ -168,6 +170,7 @@ package com.x.ordermanagement.v2 {
     }
     
     transaction OrderReturn(Order order) inform {
+    	description "Notifies observers that an order has been returned."
     	sender {
     		message OrderReturn
     	}
@@ -178,6 +181,7 @@ package com.x.ordermanagement.v2 {
     }
     
     transaction PartialOrderReturn(Order order) inform {
+    	description "Notifies observers that part of an order was returned."
     	sender {
     		message PartialOrderReturn
     	}
@@ -188,12 +192,14 @@ package com.x.ordermanagement.v2 {
     }
     
     transaction OrderAdjust inform {
+    	description "Notifies observers that an order was adjusted."
     	sender {
     		message OrderAdjust
     	}
     }
     
     transaction PaymentUpdate<MarketplacePaymentUpdate> response {
+    	description "Updates the payment information."
     	sender {
     		message PaymentUpdate {
     			timeouts(response=30s)    		

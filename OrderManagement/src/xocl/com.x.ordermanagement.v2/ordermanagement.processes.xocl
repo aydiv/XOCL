@@ -6,21 +6,30 @@ package com.x.ordermanagement.v2 {
 	import com.x.customer.v1.*
 	
 	entity Order {
-    	state Submitted[Cancelled, Shipped]
-    	state Shipped[Cancelled, Returned]
-    	state Cancelled
-    	state Returned
+    	state Submitted[Cancelled, Shipped] "TBD"
+    	state Shipped[Cancelled, Returned] "TBD"
+    	state Cancelled "TBD"
+    	state Returned "TBD"
     }
     
     // A new process for marketing channels and analytics.  Non-PII only, no customer information.  
     // Search only for now
     process OrderSearch<NonSensitive, MarketplaceOrderSearch> {
     	
+    	summary "TBD"
     	description "A marketing or analytics provider searches for orders modified since a timestamp"
     	
-    	roles (OrderManager, OrderConsumer)
+    	roles {
+    		OrderManager "TBD"
+    		OrderConsumer "TBD"
+    		
+    	}
     	
     	workflow {
+    		    		
+    		summary "TBD"
+    		description "TBD"
+    		
     		transaction SearchOrder<NonSensitive, MarketplaceOrderSearch> {
     			roles (OrderManager, OrderConsumer)
     		}   
@@ -31,11 +40,20 @@ package com.x.ordermanagement.v2 {
     // Submit an order that is in an already shipped state
     process SubmitShippedOrder<MarketplaceOrder>(Order order) {
     	
+    	summary "TBD"
     	description "Submit an order to the OrderProcessor that has already been shipped"
     	
-    	roles (SalesChannel, OrderProcessor)
+    	roles {
+    		
+    		SalesChannel "TBD"
+    		OrderProcessor "TBD"
+    	}
     	
     	workflow {
+    		
+    		summary "TBD"
+    		description "TBD"
+    		
     		transaction SubmitOrder<MarketplaceOrder> {
     			roles (SalesChannel, OrderProcessor)
     		}   
@@ -45,12 +63,22 @@ package com.x.ordermanagement.v2 {
     // Process orders that originate from a sales channel
     process ProcessSalesChannelOrder<MarketplaceOrder, MarketplacePaymentUpdate>(Order order) {
     	
+    	summary "TBD"
         description "An order is submitted for processing and is adjusted, shipped, or cancelled"
         
-        roles(SalesChannel, OrderProcessor, OrderObserver, CustomerManager)
+        roles {
+        	SalesChannel "TBD"
+        	OrderProcessor "TBD"
+        	OrderObserver "TBD"
+        	CustomerManager "TBD"
+        
+        }
     
 	    workflow {
-	    	 	
+	    	    		
+    		summary "TBD"
+    		description "TBD"
+	    	
 	    	// A new order may already have arrived at the OrderProcessor
 	    	// via a separate flow (SearchOrder, for example). That means the 
 	    	// ProcessOrder transaction may not be required to start the workflow.
@@ -63,6 +91,10 @@ package com.x.ordermanagement.v2 {
         	
 	        any {
 	        	workflow CustomerUpsert {
+	        		    		
+    				summary "TBD"
+    				description "TBD"
+	        		
 	    			roles(OrderProcessor, CustomerManager)
 	    		}
 	    	}

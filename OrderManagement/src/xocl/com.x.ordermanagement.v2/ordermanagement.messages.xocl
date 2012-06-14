@@ -8,369 +8,463 @@ package com.x.ordermanagement.v2 {
 	
 	enum TaxabilityType {
 		description "Defines the values that can be used to specify the type of tax that applies to a given order line item."
-		TAXABLE,
-		NONTAXABLE,
-		EXEMPT,
-		DEFERRED
+		TAXABLE "Indicates tax should be applied to the item.",
+		NONTAXABLE "Indicates tax should not be applied to the item.",
+		EXEMPT "Indicates that the customer has tax exempt status, such as a non-profit orginazation.",
+		DEFERRED "Indicates that the tax will be paid at a later date."
 	}
 	
 	enum OrderStatus {
 		description "Defines the values that can be used to specify the status of an order line item."
-		NEW,
-		ON_HOLD,
-		BACKORDERED,
-		PENDING_PAYMENT,
-		READY_TO_SHIP,
-		PARTIALLY_SHIPPED,
-		SHIPPED,
-		PROCESSING_RETURN,
-		EXCHANGED,
-		CANCELLED,
-		COMPLETED,
-		PAID
+		NEW "Indicates that the order has just been created.",
+		ON_HOLD "Indicates that the progress of the order is stopped.",
+		BACKORDERED "Indicates that an item on the order is not available and the order is waiting until the merchant receives the item. ",
+		PENDING_PAYMENT "Indicates that the order is waiting for the customer's payment.",
+		READY_TO_SHIP "Indicates that the order is paid for and the items are available for shipping.",
+		PARTIALLY_SHIPPED "Indicates that some of the items on the order have been shipped.",
+		SHIPPED "Indicates that all the items on the order have been shipped.",
+		PROCESSING_RETURN "Indicates that at least one item on the order has been received as a return.",
+		EXCHANGED "Indicates that at least one item on the order has been received for an exchange.",
+		CANCELLED "Indicates that the order was cancelled.",
+		COMPLETED "Indicates that all processes for the order have been completed.",
+		PAID "Indicates that payment for the order was received."
 	}
 	
 	enum ShippingServiceType {
 		description "Defines the values that can be used to specify the type of service used to deliver the purchased goods."
-		MERCHANT_SHIPPED,
-		DROP_SHIP,
-		SHIPPING_SERVICE,
-		WILL_CALL
+		MERCHANT_SHIPPED "Indicates that the merchant shipped the order themselves.",
+		DROP_SHIP "Indicates that the merchant used a drop ship service to ship the order.",
+		SHIPPING_SERVICE "Indicates that the merchant used a shipping servie to ship the item.",
+		WILL_CALL "Indicates that the customer will pick the item up from the merchant."
 	}
 	
 	enum PromotionDiscountType {
 		description "Defines the values that can be used to specify the type of promotional discount that has been applied (if any) to the order."
-		STOREWIDE_SALE,
-		SHIPPING_DISCOUNT,
-		PRODUCT_DISCOUNT,
-		OTHER
+		STOREWIDE_SALE "Indicates that the promotion was a store wide sale.",
+		SHIPPING_DISCOUNT "Indicates that the promotion was a shipping discount.",
+		PRODUCT_DISCOUNT "Indicates that the promotion was a product discount.",
+		OTHER "Indicates that that the promotion was something other than a store wide sale, a shipping discount or a product discount."
 	}
 	
 	enum PaymentStatus {
 		description "Defines the values that can be used to specify the payment processing status for a an order."
-		AUTHORIZED,
-		PAID,
-		NOT_AUTHORIZED,
-		PARTIAL,
-		NONE
+		AUTHORIZED "Indicates that the order payment has been authorized.",
+		PAID "Indicates that the order has been paid for.",
+		NOT_AUTHORIZED "Indicates that the payment for the order is waiting to be authorized.",
+		PARTIAL "Indicates that a some payment has been received but that the order has not been completely paid for.",
+		NONE "Indicates that no payment has been received for the order."
 	}
 	
 
 	record Shipment {
-		string shipmentId "A unique identifier for a given shipment. The value must be unique within a given order only (e.g,. 1, 2, 3, and so on). "
-		CurrencyAmount shippingFees "The fees paid by the customer for this shipment."
+		summary "Shipping information for an order."
+		description "Captures all the shipping information for an order, such as shipping method, shipping fees, surcharge, tracking details"
+		
+		string shipmentId "Unique identifier for a given shipment. The value must be unique within a given order only (e.g,. 1, 2, 3, and so on). "
+		CurrencyAmount shippingFees "Fees paid by the customer for this shipment."
 		CurrencyAmount? discountAmount "Total discount amount associated with a shipment. This value is calculated from the individual promotional discounts applied to the shipment."
 		array<PromotionalDiscount>? discounts "Container shipping discount information for one or more specific types of promotional discounts."
-		CurrencyAmount? additionalCost "The sum of any additional fees applied to this shipment. For example, if the order consists of multiple items from the same offer, this specifies the cost of shipping each additional item beyond the first item."
+		CurrencyAmount? additionalCost "Sum of any additional fees applied to this shipment. For example, if the order consists of multiple items from the same offer, this specifies the cost of shipping each additional item beyond the first item."
 		CurrencyAmount? packagingHandlingCost "Fees a merchant will assess for the shipping of the item (in addition to whatever the shipping service might charge)."
-		CurrencyAmount? surcharge  "An additional fee to charge US buyers who have the purchased goods shipped via UPS or FedEx to Alaska, Hawaii or Puerto Rico. Only returned if set. Applies to flat-rate shipping only."
-		array<TrackingDetail>? trackingDetails "The collection of tracking details, such as carrier and tracking numbers, for this shipment."
+		CurrencyAmount? surcharge  "Additional fee to charge US buyers who have the purchased goods shipped via UPS or FedEx to Alaska, Hawaii or Puerto Rico. Only returned if set. Applies to flat-rate shipping only."
+		array<TrackingDetail>? trackingDetails "Array of tracking details, such as carrier and tracking numbers, for this shipment."
 		
-		/** Next day, ground, etc. */
-		string? shippingMethod ""
+		string? shippingMethod  "Shipping method used, such as new day, ground, etc."
 		
-		DateRange? deliveryWindow ""
-		DateRange? shippingWindow ""
+		DateRange? deliveryWindow  "Period of time within which the order will be delivered."
+		DateRange? shippingWindow  "Period of time within which the order will be shipped."
 		
-		string? shippingMessage
+		string? shippingMessage "Additional information for the customer."
 	}
 
 	record GiftTag {
-		string? from
-		string? to
-		string giftMessage
+		summary "Information for the gift tag."
+		description "Captures the information used on a gift tag."
+	
+		string? from "Name of the person sending the item."
+		string? to "Name of the person this item is for."
+		string giftMessage "Message to the person receiving the item, such as Happy Birthday."
 	}
 	
 	record CustomerInfo confidential {
-		union{null, guid, EntityId} id = null  //id is created by the system that creates the record.	
-		Name name
-		Email? email
-		Phone? phone
+		summary "Contact information of the customer placing the order."
+		description "Captures the ID, name, email address and phone number of the customer who placed the order."
+	
+		union{null, guid, EntityId} id = null "Unique customer identifier assigned by the system that created the customer."	
+		Name name "Customer's name."
+		Email? email "Customer's email address."
+		Phone? phone "Customer's phone number."
 	}
 	
 	record PromotionalDiscount {
-		string code
-		string promoDescription
-		PromotionDiscountType type
-		CurrencyAmount amount
+		summary "Information about the promotional discount applied to an order."
+		description "Captures the code, promotional description, type, and discount amount of the promotional discount applied to an order."
+	
+		string code "Code that identifies this promotional discount."
+		string promoDescription "Information that describes the promotional discount, such as Labor Day Sale."
+		PromotionDiscountType type "Type of discount applied. The valid values are: STOREWIDE_SALE, SHIPPING_DISCOUNT, PRODUCT_DISCOUNT, OTHER."
+		CurrencyAmount amount "Amount of the discount to apply."
 	}
 	
 	record ShipTo confidential {
-		Name name
-		Address address
-		GiftTag? giftTag
+		summary "Contact information of the person the order is being shipped to."
+		description "Captures the name and address of the person the order is being shipped to and the gift tag information "
+	
+		Name name "Name of the person the order is being shipped to."
+		Address address "Address of the person the order is being shipped to."
+		GiftTag? giftTag "Information from the GiftTag record for the shippment."
 	}
 	
 	record AdditionalCost {
-		string costDescription
-		CurrencyAmount amount
+		summary "Additional shipping cost information."
+		description "Captures the description and amount of any additional shipping costs."
+	
+		string costDescription "Describes what the additional shippings costs were for."
+		CurrencyAmount amount "Amount of the additional shipping costs."
 	}
 	
 	record TrackingDetail {
-		array<string>? trackingNumbers
-		string? carrier
-		string? service
-		ShippingServiceType? serviceType
+		summary "Shipment tracking information for the order."
+		description "Captures the shipment tracking number, carrier or service used and the shipping type."
+	
+		array<string>? trackingNumbers "Order tracking numbers generated by the carrier or service."
+		string? carrier "Name of the company that is shipping the order, such as a trucking company."
+		string? service "Name of the shipping service that is shipping the order, such as FedEx."
+		ShippingServiceType? serviceType "Type of service used. Valid values are: MERCHANT_SHIPPED,	DROP_SHIP,  SHIPPING_SERVICE, and WILL_CALL."
 	}
 	
 	record ShippingInformationUpdate extends TrackingDetail {
-		string? orderNumber
-		string? orderLineId
+		summary "Additional information to the TrackingDetail record."
+		description "Contains the order number and order line ID, which is added to the TrackingDetail record."
+	
+		string? orderNumber "TBD"
+		string? orderLineId "TBD"
 	}
 	
 	record MarketplaceShippingInformationUpdate extends ShippingInformationUpdate {
-		string? accountId
-		string? siteCode
-		string? sourceId	
+		summary "TBD"
+		description "TBD"
+	
+		string? accountId "Unique account identifier assigned by the system that created the account."
+		string? siteCode "Name that identifies the marketplace that is processing the order."  //?? guessing
+		string? sourceId "Unique identifier of the marketplace that is processing the order." //?? guessing
 	}
 	
 	record ShippingInformationUpdateSucceeded {
-		string? orderNumber
-		string? orderLineId
+		summary "Signals the update of the TrackingDetail record."
+		description "Confirms that the TrackingDetail record was updated with the order number and order line ID contained in this record."
+	
+		string? orderNumber "TBD"
+		string? orderLineId "TBD"
 	}
 	
 	record ShippingInformationUpdateFailed {
-		string? orderNumber
-		string? orderLineId
-		array<Error> errors
+		summary "TBD"
+		description "TBD"
+	
+		string? orderNumber "TBD"
+		string? orderLineId "TBD"
+		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
 	
 	
 	record PaymentInfo {
-		PaymentMethod method
+		summary "TBD"
+		description "TBD"
+	
+		PaymentMethod method "TBD"
 
-		string datePaid
+		string datePaid "TBD"
 
-		string? transactionId
-		string? transactionStatus
+		string? transactionId "TBD"
+		string? transactionStatus "TBD"
 		
-		CurrencyAmount? processingFee
-		PaymentStatus paymentStatus = NONE
+		CurrencyAmount? processingFee "TBD"
+		PaymentStatus paymentStatus = NONE "TBD"
 	}
 	
 	record Tax {
-		TaxabilityType? taxability
-		string? taxType
-		double? effectiveRate
-		CurrencyAmount taxesCharged
-	}
+		summary "TBD"
+		description "TBD"
 	
+		TaxabilityType? taxability "TBD"
+		string? taxType "TBD"
+		double? effectiveRate "TBD"
+		CurrencyAmount taxesCharged "TBD"
+	}
 		
 	record OrderLinePrice {
+		summary "TBD"
+		description "TBD"
+	
 		/** The total price the customer is paying for this line (sum of price, taxes, fees, additional costs, etc.) */
-		CurrencyAmount totalPrice
+		CurrencyAmount totalPrice "TBD"
 		
 		/** The price the customer is paying for this item (without taxes, fees, addtional costs, etc.) */
-		CurrencyAmount price 
+		CurrencyAmount price "TBD"
 		
-		CurrencyAmount? insuranceCost
+		CurrencyAmount? insuranceCost "TBD"
 		
 	    /** The sum all of the discount that were applied to this order line */
-		CurrencyAmount? totalDiscountAmount
+		CurrencyAmount? totalDiscountAmount "TBD"
 
 		/** A collection of all the discounts that were appled to this order line item */		
-		array<PromotionalDiscount>? allDiscounts
+		array<PromotionalDiscount>? allDiscounts "TBD"
 		
 		/** A collection of additional costs that were associated with this order line  */
-		array<AdditionalCost>? additionalCosts
+		array<AdditionalCost>? additionalCosts "TBD"
 	}
 	
 	record ReturnOrderLineData {
+		summary "TBD"
+		description "TBD"
+	
 		/* The unique id of this item */
-		string? orderLineId
+		string? orderLineId "TBD"
 		
 		/* The ordered index of this item (also referred to as line number) */
-		string? itemId
+		string? itemId "TBD"
 		
-		float quantity
-		string productSku
-		string itemDescription
+		float quantity "TBD"
+		string productSku "TBD"
+		string itemDescription "TBD"
 		
 		/** The total taxes associated with this line */
-		CurrencyAmount? totalTaxAmount
+		CurrencyAmount? totalTaxAmount "TBD"
 		
-		datetime dateReturned		
-		OrderLinePrice price
+		datetime dateReturned "TBD"		
+		OrderLinePrice price "TBD"
 		
 		/** A reference to the shipment that was used to ship this item */
-		string? shipmentId
+		string? shipmentId "TBD"
 	}
 
 	record SimpleOrderLineData {
+		summary "TBD"
+		description "TBD"
+	
 		/* The unique id of this item */
-		string? orderLineId
+		string? orderLineId "TBD"
 		
 		/* The ordered index of this item (also referred to as line number) */
-		string? itemId
+		string? itemId "TBD"
 		
-		string? orderNumber
+		string? orderNumber "TBD"
 		
-		float quantity
-		string productSku
-		string itemDescription
+		float quantity "TBD"
+		string productSku "TBD"
+		string itemDescription "TBD"
 				
-		OrderLinePrice unitPrice
+		OrderLinePrice unitPrice "TBD"
 		
 		/** The total taxes associated with this line */
-		CurrencyAmount? totalTaxAmount
+		CurrencyAmount? totalTaxAmount "TBD"
 
-		OrderStatus status
+		OrderStatus status "TBD"
 		
 		/** This is quantity * unit price */
-		CurrencyAmount price
+		CurrencyAmount price "TBD"
 		
 		/** A collection of all the discounts that were appled to this order line data */		
-		array<PromotionalDiscount>? allDiscounts		
+		array<PromotionalDiscount>? allDiscounts "TBD"		
 
-		datetime? dateCancelled
-		datetime? dateDelivered
-		datetime? dateShipped
-		datetime? dateReturned
-		datetime? dateInvoiced
+		datetime? dateCancelled "TBD"
+		datetime? dateDelivered "TBD"
+		datetime? dateShipped "TBD"
+		datetime? dateReturned "TBD"
+		datetime? dateInvoiced "TBD"
 		
-		ShipTo destination
+		ShipTo destination "TBD"
 		
 		/** A reference to the shipment that was used to ship this item */
-		string? shipmentId
+		string? shipmentId "TBD"
 						
 		/** These attributes provide information that can be used to construct a link
 		 *  to the product on the sales channel where it was purchased
 		 */
-		string? offerId
-		string? offerUrl
+		string? offerId "TBD"
+		string? offerUrl "TBD"
 	}
 	
-	record OrderLineData extends SimpleOrderLineData {	
-		string? lineMessage
+	record OrderLineData extends SimpleOrderLineData {
+		summary "TBD"
+		description "TBD"
 		
-		boolean? bundle = false
-		boolean? expandBundle = false
-		boolean? soloShip = false
-		boolean? autoShip = false
-		boolean? autoSubstitution = false
+		string? lineMessage "TBD"
+		
+		boolean? bundle = false "TBD"
+		boolean? expandBundle = false "TBD"
+		boolean? soloShip = false "TBD"
+		boolean? autoShip = false "TBD"
+		boolean? autoSubstitution = false "TBD"
 	}
 
 	record OrderDetails {
+		summary "TBD"
+		description "TBD"
+	
 			    
 		/** Unique identifier that is assigned by the originator of this order once created.*/
-		string? orderNumber 
+		string? orderNumber  "TBD"
 		
-		OrderStatus status 
-		string dateOrdered 
+		OrderStatus status  "TBD"
+		string dateOrdered  "TBD"
 
 		/** The total paid by the customer (total of items, fees, taxes, etc.) */ 
-		CurrencyAmount grandTotal
+		CurrencyAmount grandTotal "TBD"
 		
 		/** The grand total minus any non-shipping discounts */
-		CurrencyAmount? netMerchandiseValue
+		CurrencyAmount? netMerchandiseValue "TBD"
 	
 		/** Total of all the items -- without taxes, fees, etc. */
-		CurrencyAmount itemPriceTotal
+		CurrencyAmount itemPriceTotal "TBD"
 
 		/** Breakdown of the total of all related fees that influence the price */		
-		CurrencyAmount? totalInsuranceCost
-		CurrencyAmount? totalDiscountAmount
-		array<AdditionalCost>? additionalCosts
+		CurrencyAmount? totalInsuranceCost "TBD"
+		CurrencyAmount? totalDiscountAmount "TBD"
+		array<AdditionalCost>? additionalCosts "TBD"
 				
 		/** The total taxes charged for this order */
-		CurrencyAmount? totalTaxAmount
+		CurrencyAmount? totalTaxAmount "TBD"
 		
 		/** The sum of the shipping fees from each of the associated shipments */
-		CurrencyAmount? totalShippingFees
+		CurrencyAmount? totalShippingFees "TBD"
 		
 		/** A collection of all the promotional discounts that were applied at the order level */
-		array<PromotionalDiscount>? discounts
+		array<PromotionalDiscount>? discounts "TBD"
 				
 		/** The channel where this order originated (ebay, amazon, etc.) */
-		string sourceId
+		string sourceId "TBD"
 		
 		/** The id of the group that classifies source (web, print, email, etc.) */
-		string sourceGroupId
+		string sourceGroupId "TBD"
 		
 		/** An optional collection of related orders numbers */
-		array<string>? relatedOrderNumbers
+		array<string>? relatedOrderNumbers "TBD"
 				
 		/** The list of shipments that were created to ship one or more of the items in this order */
-		array<Shipment>? shipments
+		array<Shipment>? shipments "TBD"
 		
 		/** The marketing source that referred this order */
-		string? referralSource
+		string? referralSource "TBD"
 		
 		/** Additional comments/instructions that the buyer may want to convey to the merchant */
-		string? buyerComments
+		string? buyerComments "TBD"
 		
 	}
 	
 	record SimpleOrder extends OrderDetails {
+		summary "TBD"
+		description "TBD"
+	
 		//id is created by the system that creates the record.	
-		union{null, guid, EntityId} customerId = null
+		union{null, guid, EntityId} customerId = null "Identifier assigned to the customer by the system that created the customer record."
 		
-		array<SimpleOrderLineData> orderLines
+		array<SimpleOrderLineData> orderLines "TBD"
 	}
 	
 	record NonSensitiveOrderData extends OrderDetails {
-		array<OrderLineData> orderLines
+		summary "TBD"
+		description "TBD"
+	
+		array<OrderLineData> orderLines "TBD"
 	}
 	
 	record OrderData extends NonSensitiveOrderData {
-		CustomerInfo customer
-		Address? billingAddress
+		summary "TBD"
+		description "TBD"
+	
+		CustomerInfo customer "TBD"
+		Address? billingAddress "TBD"
 		
 		array<PaymentInfo> paymentMethods
 		
 		/** if not provided, use ShipTo in the associated OrderLine */
-		ShipTo destination
+		ShipTo destination "TBD"
 		
-		string? purchaseOrder
+		string? purchaseOrder "TBD"
 	}
 	
 	record NonSensitiveOrder extends NonSensitiveOrderData {
-		guid id
+		summary "TBD"
+		description "TBD"
+	
+		guid id "Unique identifier assigned by the system that created the order."
 	}
 	
 	record Order extends OrderData {
-		guid id
+		summary "TBD"
+		description "TBD"
+	
+		guid id "Unique identifier assigned by the system that created the record."
 	}
 	
 	record ProcessOrder {
-		OrderData order
+		summary "TBD"
+		description "TBD"
+	
+		OrderData order "TBD"
 	}
 	
 	record ProcessMarketplaceOrder extends ProcessOrder {
-		string? accountId
+		summary "TBD"
+		description "TBD"
+	
+		string? accountId "Unique account identifier assigned by the system that created the account."
 		string? siteCode
 	}
 	
 	record ProcessOrderSucceeded {
+		summary "TBD"
+		description "TBD"
+	
 		Order order
 	}
 	
 	record ProcessOrderFailed {
+		summary "TBD"
+		description "TBD"
+	
 		OrderData order
-		array<Error> errors
+		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
 	
 	record SubmitOrder {
+		summary "TBD"
+		description "TBD"
+	
 		OrderData order
 	}
 	
 	record SubmitMarketplaceOrder extends SubmitOrder {
-		string? accountId
+		summary "TBD"
+		description "TBD"
+	
+		string? accountId "Unique account identifier assigned by the system that created the account."
 		string? siteCode		
 	}
 	
 	record SubmitOrderSucceeded {
+		summary "TBD"
+		description "TBD"
+	
 		Order order
 	}
 	
 	record SubmitOrderFailed {
+		summary "TBD"
+		description "TBD"
+	
 		OrderData order
-		array<Error> errors
+		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
 	
 	record OrderShipped {
+		summary "TBD"
+		description "TBD"
+	
 		string orderNumber
-		guid id
+		guid id "Unique identifier assigned by the system that created the record."
 		Shipment shipment
 		string sourceId
 		string? referralSource
@@ -378,126 +472,204 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	record MarketplaceOrderShipped extends OrderShipped {
-		string accountId
+		summary "TBD"
+		description "TBD"
+	
+		string accountId "Unique account identifier assigned by the system that created the account."
 		string? siteCode
 	}
 	
 	record ObserveOrderShipped {
+		summary "TBD"
+		description "TBD"
+	
 		OrderShipped orderShipped
 	}
 	
 	record ObserveMarketplaceOrderShipped {
+		summary "TBD"
+		description "TBD"
+	
 		MarketplaceOrderShipped marketplaceOrderShipped
 	}
 	
     record CreateOrder {
+		summary "TBD"
+		description "TBD"
+    
 		OrderData orderData
 	}
 	
     record CreateMarketplaceOrder extends CreateOrder {
-		string accountId
+		summary "TBD"
+		description "TBD"
+    
+		string accountId "Unique account identifier assigned by the system that created the account."
 		string? siteCode
 	}
 	
 	record CreateOrderSucceeded {
+		summary "TBD"
+		description "TBD"
+	
 		string orderNumber
 	}
 	
 	record SalesChannelCreateOrderSucceeded extends CreateOrderSucceeded {
-		string accountId
+		summary "TBD"
+		description "TBD"
+	
+		string accountId "Unique account identifier assigned by the system that created the account."
 		string? siteCode
 	}
 	
 	record CreateOrderFailed {
+		summary "TBD"
+		description "TBD"
+	
 		string orderNumber
-		array<Error> errors
+		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
 	
 	record SalesChannelCreateOrderFailed extends CreateOrderFailed {
-		string accountId
+		summary "TBD"
+		description "TBD"
+	
+		string accountId "Unique account identifier assigned by the system that created the account."
 		string? siteCode
 	}
 	
 	record OrderCreated {
+		summary "TBD"
+		description "TBD"
+	
 		SimpleOrder simpleOrder
 	}
 	
 	record CancelOrder {
+		summary "TBD"
+		description "TBD"
+	
 		array<string> orderNumbers
-		array<guid> orderIds
+		array<guid> orderIds "Unique order identifier assigned by the system that created the order."
 	}
 	
 	record CancelMarketplaceOrder extends CancelOrder {
-		string accountId
+		summary "TBD"
+		description "TBD"
+	
+		string accountId "Unique account identifier assigned by the system that created the account."
 		string? siteCode
 	}
 	
 	record CancelOrderSucceeded extends CancelOrder {
+		summary "TBD"
+		description "TBD"
+	
 	}
 	
 	record CancelMarketplaceOrderSucceeded extends CancelOrderSucceeded {
-		string accountId
+		summary "TBD"
+		description "TBD"
+	
+		string accountId "Unique account identifier assigned by the system that created the account."
 		string? siteCode
 	}
 	
 	record CancelOrderFailed {
+		summary "TBD"
+		description "TBD"
+	
 		string orderNumber
-		guid id
-		array<Error> errors
+		guid id "Unique order identifier assigned by the system that created the order."
+		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
 	
 	record CancelMarketplaceOrderFailed {
+		summary "TBD"
+		description "TBD"
+	
 		array<string> failedOrderNumbers
-		array<Error> errors
+		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
 	
 	record OrderCancelled {
+		summary "TBD"
+		description "TBD"
+	
 		array<SimpleOrder> cancelledOrders
 	}
 	
 	record MarketplaceOrderCancelled {
+		summary "TBD"
+		description "TBD"
+	
 		array<Order> cancelledOrders
 	}
 	
     record SearchOrder {
+		summary "TBD"
+		description "TBD"
+    
     	Query _AVDL_query
 	}
 	
 	record MarketplaceSearchOrder extends SearchOrder {
+		summary "TBD"
+		description "TBD"
+	
 		string? siteCode
-		string? sellerAccountId
+		string? sellerAccountId "Unique identifier for the seller's account assigned by the system that created the account."
 	}
 
 	record SearchOrderSucceeded {
+		summary "TBD"
+		description "TBD"
+	
     	Query _AVDL_query		
 		array<Order> orders
 	}
 
 	record MarketplaceSearchOrderSucceeded extends SearchOrderSucceeded {
+		summary "TBD"
+		description "TBD"
+	
 		string? siteCode
-		string? sellerAccountId
+		string? sellerAccountId "Unique identifier for the seller's account assigned by the system that created the account."
 	}
 	
 	record SearchNonSensitiveOrderSucceeded {
+		summary "TBD"
+		description "TBD"
+	
     	Query _AVDL_query		
         array<NonSensitiveOrder> orders        	
 	}
 	
 	record SearchOrderFailed {
+		summary "TBD"
+		description "TBD"
+	
 		SearchOrder search
-		array<Error> errors
+		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
 	
 	record MarketplaceSearchOrderFailed extends SearchOrderFailed {
+		summary "TBD"
+		description "TBD"
+	
 		string? siteCode
-		string? sellerAccountId
+		string? sellerAccountId "Unique identifier for the seller's account assigned by the system that created the account."
 	}
 	
 	record OrderReturn {
+		summary "TBD"
+		description "TBD"
+	
 		string orderNumber
 		datetime? dateReturned
 		
-		union{null, guid, EntityId} customerId = null
+		union{null, guid, EntityId} customerId = null "Unique customer identifier assigned by the system that created the customer."
 		datetime? dateOrdered
 		array<ReturnOrderLineData>? orderLines
 		
@@ -509,26 +681,29 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	record PartialOrderReturn {
+		summary "Information about the returned items from an order where only some of the items were returned."
+		description "Contains item, cost, and tax information about the returned items from an order where only some of the items were returned. As well as, the customer ID and the date of the order."
+	
 		string orderNumber
 		
 		/* A collectiong containing the items and quantities that were returned. It does
 		 * not include the remaining items.
 		 */
 		array<ReturnOrderLineData> returnedItems
-		union{null, guid, EntityId} customerId = null
-		datetime? dateOrdered
+		union{null, guid, EntityId} customerId = null "Unique customer identifier assigned by the system that created the customer."
+		datetime? dateOrdered "Date the order was placed."
 		
-		/** The grand total associated with the items being returned */
-		CurrencyAmount totalAmountOfReturn
-		
-		/** The total taxes associated with the items being returned */
-		CurrencyAmount totalTaxAmountOfReturn
+		CurrencyAmount totalAmountOfReturn "Total of the returned items."
+		CurrencyAmount totalTaxAmountOfReturn "Total of the tax for the returned items."
 	}
 	
 	/** OrderAdjusted capatures information about orders that were changed in ways that
 	 *  effect the overall price of the product.
 	 */
 	record OrderAdjust {
+		summary "TBD"
+		description "TBD"
+	
 		string? orderNumber
 		
 		/** A collection of the lines that were adjusted/updated. This does
@@ -540,32 +715,50 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	record PaymentUpdate {
+		summary "TBD"
+		description "TBD"
+	
 		string? orderNumber
 		
 		array<PaymentInfo> paymentInfo
 	}
 	
 	record MarketplacePaymentUpdate extends PaymentUpdate {
-		string? accountId
+		summary "TBD"
+		description "TBD"
+	
+		string? accountId "Unique account identifier assigned by the system that created the account."
 		string? siteId
 	}
 	
 	record PaymentUpdateSucceeded {
+		summary "TBD"
+		description "TBD"
+	
 		string orderNumber		
 	}
 	
 	record MarketplacePaymentUpdateSucceeded extends PaymentUpdateSucceeded {
-		string? accountId
+		summary "TBD"
+		description "TBD"
+	
+		string? accountId "Unique account identifier assigned by the system that created the account"
 		string? siteId
 	}
 	
 	record PaymentUpdateFailed {
+		summary "TBD"
+		description "TBD"
+	
 		string orderNumber
-		array<Error> errors
+		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
 	
 	record MarketplacePaymentUpdateFailed extends PaymentUpdateFailed {
-		string? accountId
+		summary "TBD"
+		description "TBD"
+	
+		string? accountId "Unique account identifier assigned by the system that created the account."
 		string? siteId
 	}
 
