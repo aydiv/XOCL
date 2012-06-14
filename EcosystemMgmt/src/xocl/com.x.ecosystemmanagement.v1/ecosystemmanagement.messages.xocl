@@ -11,6 +11,8 @@
 // accept the message MUST NOT respond with another MessageDeliveryFailed
 // message.
 
+// TODO: what if just one of the messages below needs to be changed/versioned --
+// does that mean that *all* of the messages are forced to go to version++ ??
 package com.x.ecosystemmanagement.v1 {
 	import com.x.ecosystemmanagement.v1.* 
 	import com.x.core.v1.*
@@ -86,20 +88,76 @@ package com.x.ecosystemmanagement.v1 {
 	
 	// --------------------------
 	// Update Capability Endpoint
-	// --------------------------	
+	// --------------------------
+	
+	// sent from a Capability to the XManager
 	record UpdateCapabilityEndpoint {
 		string endpoint   // send an empty string to disable the capability
 	}
 	
-	// "success" (sent to the capability to the new endpoint, listed within the message)
+	// "success" - sent to the Capability at the new endpoint, listed within the message
 	record CapabilityEndpointUpdated {
 		string endpoint   // as was sent in the request
 	}
 	
-	// "failure" (sent to the capability using the endpoint before any changes were made)
+	// "failure" - sent to the Capability using the endpoint before any changes were made
 	record UpdateCapabilityEndpointFailed {
 		string endpoint   // as was sent in the request
 		string _AVDL_message    // reason
 	}
+	
+	
+	// ----------------------------------------------------------------------------------------------
+	// New Tenant Authorization: Collection of onboarding values (for 1+ Capabilities simultaneously)
+	// ----------------------------------------------------------------------------------------------
+	record TenantOnboardingDetails {
+		summary "For a given Capability, map of <onboardingKey, onboardingValue> entries."
+		string destinationId          // the capability
+		map<string> tenantOnboarding  // <onboardingKey, onboardingValue>
+	}
+	
+	// sent from the XManager to AppStore
+	record CollectTenantRelationships {
+		// note that the X-XC-TENANT-ID header has the AppStore's self-tenant identifier
+		// (and *not* the tenant pseudonymn within the message, below)
+		string  tenantPseudonym  // as seen from the point-of-view of the AppStore
+		string  tenantName       // friendly / pretty name
+		array<TenantOnboardingDetails> setOfTenantOnboardingDetails  // the onboardingValues are empty
+	}
+	
+	// sent from AppStore to the XManager
+	record TenantRelationshipsCollected {
+		// note that the X-XC-TENANT-ID header has the AppStore's self-tenant identifier
+		// (and *not* the tenant pseudonymn within the message, below)
+		string  tenantPseudonym  // as seen from the point-of-view of the AppStore
+		string? tenantName       // friendly / pretty name
+		array<TenantOnboardingDetails> setOfTenantOnboardingDetails  // the onboardingValues are filled in
+	}
+	
+	// ---------------------------------------------------------------
+	// New Tenant Authorization: Validate credentials (per Capability)
+	// ---------------------------------------------------------------
+	
+	// sent from XManager to a specific Capability
+	record TenantRelationshipCreated {
+		// note that the X-XC-TENANT-ID header has the receiving capability's self-tenant identifier
+		// (and *not* the tenant pseudonymn within the message, below)
+		string      tenantPseudonym  // value of what my future X-XC-TENANT-ID header will carry when I receive a message for this tenant
+		string      bearerToken      // value I need to use in my auth header when sending a message on behalf of this tenant
+		string      tenantName       // friendly / pretty name
+		map<string> onboarding       // additional key/value pairs that can be used to identify or complete the tenant relationship
+	}
+	
+	// "success" - sent from a Capability to the XManager
+	record AcceptTenantRelationship {
+		// the requesting capability will use its auth token to indicate the tenant
+	}
+	
+	// "failure" - sent from a Capability to the XManager	
+	record RejectTenantRelationship {
+		// the requesting capability will use its auth token to indicate the tenant
+		string? reason  // an explanation
+	}
+
 }
 	

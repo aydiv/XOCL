@@ -3,6 +3,7 @@ package com.x.ecosystemmanagement.v1 {
 	import com.x.ecosystemmanagement.v1.*
 	
 	// this is suppose to be a very simple transaction.  no fancy stuff.
+	// TODO: mark as: unicast
 	transaction PingCapability response {
 		description "A capability sends a Ping message to a different capability in hopes to receive a corresponding Pong message."
         sender
@@ -19,7 +20,8 @@ package com.x.ecosystemmanagement.v1 {
             failure MessageDeliveryFailed 
         } 
     }
-   
+    
+    // TODO: mark as: unicast
     transaction UpdateCapabilityEndpoint response {
     	description "A capability needs to update its URL where the Fabric delivers its messages."
         sender
