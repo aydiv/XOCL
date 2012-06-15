@@ -55,7 +55,9 @@ package com.x.pim.v1
     	description "The product information manager informs an observer that a product was created."
         sender
         {
-        	message ProductCreated
+        	message ProductCreated{
+        		   topic "/com.x.pim.v1/ProductCreation/ProductCreated"
+        	}
         }
     }
     
@@ -64,7 +66,9 @@ package com.x.pim.v1
     	description "The product information manager informs an observer that a product was updated."
         sender
         {
-        	message ProductUpdated
+        	message ProductUpdated{
+        		   topic "/com.x.pim.v1/ProductUpdate/ProductUpdated"
+        	}
         }
     }
     
@@ -73,7 +77,9 @@ package com.x.pim.v1
     	description "The product information manager informs an observer that a product was deleted."
         sender
         {
-        	message ProductDeleted
+        	message ProductDeleted{
+        		   topic "/com.x.pim.v1/ProductDeletion/ProductDeleted"
+        	}
         }
     }
     

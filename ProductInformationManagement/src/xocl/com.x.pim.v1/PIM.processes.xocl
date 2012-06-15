@@ -49,8 +49,6 @@ package com.x.pim.v1 {
 		workflow {
 			description "A consumer asks the product information manager to update a product. A product is updated by one of the following activities: adding a new SKU, revising an existing SKU, deleting an existing SKU, or updating base product information. "
 			one {
-
-				noop
 			
 				// A consumer asks the PIM to update a product.  An update, create, or delete of a SKU is considered a product update
 				transaction UpdateSKU(sku) {
@@ -73,7 +71,7 @@ package com.x.pim.v1 {
 			}
 			
 			// The PIM informs an observer that a product was updated
-			transaction ProductUpdated {
+			workflow ProductUpdated {
 			   	roles(ProductInformationManager, ProductInformationObserver)
 			}
 		}
@@ -82,6 +80,21 @@ package com.x.pim.v1 {
 			success(exists(product))
 		}
 	}
+	
+	process ProductUpdated(Product product){
+		roles
+		{
+			ProductInformationManager "The product information manager updates product and product SKU data and informs observers of changes."
+			ProductInformationObserver "The product information observer is informed when product details are updated."
+		}
+	}
+	
+	workflow ProductUpdated implements ProductUpdated{
+		transaction ProductUpdated {
+			   	roles(ProductInformationManager, ProductInformationObserver)
+		}
+	}
+
 
 	process ProductCreation (Product product) {
 		description "A product is created in the PIM"
@@ -97,16 +110,14 @@ package com.x.pim.v1 {
 	
 		workflow  {
 			description "A consumer asks the product information manager to create one or more products and/or the product information manager informs any observers that products were created."
-			any {
 				// A consumer asks the PIM to create a product
-				transaction CreateProduct {
-				   	roles(ProductInformationConsumer,ProductInformationManager)
-				}
+			transaction CreateProduct {
+				roles(ProductInformationConsumer,ProductInformationManager)
 			}
 				// The PIM informs an observer that a product was created
-				transaction ProductCreated {
-			   		roles(ProductInformationManager, ProductInformationObserver)
-				}
+			workflow ProductCreated {
+			   	roles(ProductInformationManager, ProductInformationObserver)
+			}
 		}
 
 	    postconditions {
@@ -114,6 +125,20 @@ package com.x.pim.v1 {
 			failure(!exists(product))
 		}
 	}	
+	process ProductCreated {
+		description "A product is created in the PIM, observers are informed"
+		
+		roles {
+			ProductInformationManager "The product information manager creates new products and informs observers of added products. "
+			ProductInformationObserver "The product information observer is informed when new products are created. "
+		}
+	}
+	
+	workflow ProductCreated implements ProductCreated{
+		transaction ProductCreated {
+			roles(ProductInformationManager, ProductInformationObserver)
+		}
+	}
 
     process ProductDeletion (Product product) {
 		description "A product is deleted in the product information system."
@@ -128,15 +153,13 @@ package com.x.pim.v1 {
 		preconditions(exists(product))
 	
 		workflow {
-			any {
 				// A consumer asks the PIM to delete a product
-				transaction DeleteProduct {
-				   	roles(ProductInformationConsumer,ProductInformationManager)
-				}
+			transaction DeleteProduct {
+				roles(ProductInformationConsumer,ProductInformationManager)
 			}
 			
 			// The PIM informs an observer that a product was deleted
-			transaction ProductDeleted {
+			workflow ProductDeleted {
 			   	roles(ProductInformationManager, ProductInformationObserver)
 			}
 		}
@@ -146,5 +169,20 @@ package com.x.pim.v1 {
 			failure(exists(product))
 		}
 	}
+	process ProductDeleted{
+		description "A product is deleted in the PIM, observers are informed"
+		
+		roles {
+			ProductInformationManager "The product information manager creates new products and informs observers of deleted products. "
+			ProductInformationObserver "The product information observer is informed when new products are deleted. "
+		}
+	}
+	
+	workflow ProductDeleted implements ProductDeleted{
+		transaction ProductDeleted {
+			roles(ProductInformationManager, ProductInformationObserver)
+		}
+	}
+	
 	
 }
