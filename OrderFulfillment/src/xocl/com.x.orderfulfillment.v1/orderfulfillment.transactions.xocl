@@ -291,22 +291,6 @@ package com.x.orderfulfillment.v1 {
         }
     }
     
-    //Notifies a snapshot inventory numbers for a client was taken
-    transaction UpdateInventorySnapshot notify {
-    	sender{
-    		message UpdateInventorySnapshot{
-    			timeouts(receipt=30s, validation=3m) 
-    		}
-    	}
-    }
-    
-    transaction UpdateInventoryDelta notify {
-    	sender{
-    		message UpdateInventoryDelta{
-    			timeouts(receipt=30s, validation=3m) 
-    		}
-    	}
-    }
     
 
 }
