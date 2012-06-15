@@ -40,26 +40,7 @@ package com.x.inventory.v1
 		array<Error> errors "Array of errors related to the failed search.";
 	}
 	
-	record UpdateStockItem
-	{
-		summary "Update details for one or more stock items."
-		description "Requests that the capability update information related to one or more stock items."
-		array<StockItem> stockItems "Stock items whose information is to be updated.";
-	}
-	
-	record UpdateStockItemSucceeded
-	{
-		summary "Details about the stock items that were updated."
-		description "Returns stock items whose information is successfully updated."
-		array<StockItem> stockItems "Stock items whose information was successfully updated.";
-	}
-	
-	record UpdateStockItemFailed
-	{
-		summary "Error details for a failed attempt to update one or more stock items."
-		description "Signals that a request to update information related to one or more stock items has failed."
-		array<InventoryError> errors "Errors detailing why the update failed.";
-	}
+
 
    record InventoryError
 	{
@@ -81,5 +62,67 @@ package com.x.inventory.v1
 		summary "Informs observers that an inventory item is out of stock. "
 		description "Informs an Inventory Observer that a stock item quantity has gone to zero."
 		StockItem stockItem "Informs an Inventory Observer that a stock item quantity has gone to zero.";
+	}
+	
+	enum InventorySnapshotReason {
+		CYCLE_COUNT
+		DAMAGED_INVENTORY
+		LIQUIDATION
+	}
+	
+	enum InventoryCondition {
+		SELLABLE
+		UNSELLABLE
+	}
+	
+	record StockItemData {
+		description "details of merchant/supplier whose inventory is being snapshot"
+		string sku
+		int unitQuantity
+		string stockingUOM "stocking unit of measure"
+		InventoryCondition status		
+	}
+	
+	record UpdateStockItemSnapshot {
+		StockItemData inventorySnapshot
+		datetime snapshotDate
+		InventorySnapshotReason snapshotReason
+		string locationName	"warehouse or other location where the snapshot was taken"
+	}
+	
+	record UpdateStockItemSnapshotSucceeded
+	{
+		summary "Details about the stock items that were updated."
+		description "Returns stock items whose information is successfully updated."
+		UpdateStockItemSnapshot request;
+	}
+	
+	record UpdateStockItemSnapshotFailed
+	{
+		summary "Error details for a failed attempt to update a stock items."
+		description "Signals that a request to update information related a stock item has failed."
+		UpdateStockItemSnapshot request;
+		array<Error> errors "Errors detailing why the update failed.";
+	}
+	
+	record UpdateStockItemDelta {
+		StockItemData inventoryChange
+		datetime date 
+		string warehouseId "warehouse where the inventory change occured"
+	}
+	
+	record UpdateStockItemDeltaSucceeded
+	{
+		summary "Details about the stock items that were updated."
+		description "Returns stock items whose information is successfully updated."
+		UpdateStockItemDelta request "The request to update the stock item"
+	}
+	
+	record UpdateStockItemDeltaFailed
+	{
+		summary "Error details for a failed attempt to update one or more stock items."
+		description "Signals that a request to update information related to one or more stock items has failed."
+		UpdateStockItemDelta request "The request to update the stock item"
+		array<Error> errors "Errors detailing why the update failed."
 	}
 }

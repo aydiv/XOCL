@@ -1,3 +1,3 @@
-package com.x.inventory.v1 0.0 workingdraft{
+package com.x.inventory.v1 0.1 workingdraft{
 	import com.x.inventory.v1.*
 }

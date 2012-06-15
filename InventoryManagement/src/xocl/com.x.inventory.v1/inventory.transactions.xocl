@@ -16,12 +16,8 @@ package com.x.inventory.v1
         }
         receiver
         {
-        	// One of these two messages must be sent back to the sender as a response
-        	
-			// A success message does not have a response timeout
         	success LookupStockItemSucceeded
-            
-			// A failure message does not have a response timeout
+           
             failure LookupStockItemFailed
         }
     }
@@ -31,7 +27,9 @@ package com.x.inventory.v1
 		description "The inventory manager informs the inventory observer that properties of one or more stock items have been updated."
 		sender
 		{
-			message StockItemUpdated
+			message StockItemUpdated{
+				topic "/com.x.inventory.v1/StockItemUpdate/StockItemUpdated"
+			}
 		}
 	}
 	
@@ -40,38 +38,54 @@ package com.x.inventory.v1
 		description "The inventory manager informs the inventory observer that an item has gone out of stock."
 		sender
 		{
-			message OutOfStock
+			message OutOfStock{
+				topic "/com.x.inventory.v1/StockItemUpdate/OutOfStock"
+			}
 		}
 	}
 	
-    transaction UpdateStockItem response
-    {
-        description "Update properties (quantity and location) for one or more stock items based on SKU values."
-        sender
-        {
-        	message UpdateStockItem
+ 
+    transaction UpdateStockItemSnapshot response {
+    	sender{
+    		message UpdateStockItemSnapshot{
+    			timeouts(receipt=10s, response=1m) 
+    		}
+    	}
+        receiver{
+        	success UpdateStockItemSnapshotSucceeded
         	{
-        		timeouts(receipt=30s,  response=3m)     		
-        		// How many times should we retry if one of the timeouts expires? 
-        		retries=3
-        	}
-        }
-        receiver
-        {
-        	// One of these two messages must be sent back to the sender as a response
-        	success UpdateStockItemSucceeded
-        	{
-				// A success message does not have a response timeout
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(receipt=30s)
             	retries=3
             }
             
-            failure UpdateStockItemFailed
+            failure UpdateStockItemSnapshotFailed
             {
-				// A failure message does not have a response timeout
             	timeouts(receipt=30s)
             	retries=3
             }
         }
     }
+    
+    transaction UpdateStockItemDelta response {
+    	sender{
+    		message UpdateStockItemDelta{
+    			timeouts(receipt=10s, response=1m) 
+    		}
+    	}
+    	receiver{
+        	success UpdateStockItemDeltaSucceeded
+        	{
+            	timeouts(receipt=30s)
+            	retries=3
+            }
+            
+            failure UpdateStockItemDeltaFailed
+            {
+            	timeouts(receipt=30s)
+            	retries=3
+            }
+        }
+    }
+    
+    
 }
