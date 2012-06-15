@@ -54,20 +54,36 @@ package com.x.customer.v1{
 			{
 				CustomerConsumer "Searches for a customer to check if they already exist."
 				CustomerManager "Adds a new customer record or updates information about an existing customer in the customer management system."
-				CustomerObserver "Sends either a customer added or customer updated notification."
+				CustomerObserver "Recieves either a customer added or customer updated notification."
 			}
 	}
 	
 	workflow CustomerUpsert implements CustomerUpsert
 	{
-		summary "Search for a customer and either adds or updates customer information."
+		summary "Either adds or updates customer information."
 		description "Searches for a customer and either adds a new customer or updates the information of an existing customer."
-		any{
-			transaction UpsertCustomer
-			{
+		transaction UpsertCustomer
+		{
 				roles(CustomerConsumer,CustomerManager)
-			}
 		}
+		workflow CustomerCreatedOrUpdated
+		{
+			roles(CustomerManager, CustomerObserver)
+		}
+	}
+
+	process CustomerCreatedOrUpdated{
+			roles 
+			{
+				CustomerManager "Adds a new customer record or updates information about an existing customer in the customer management system."
+				CustomerObserver "Recieves either a customer added or customer updated notification."
+			}
+	}
+
+	workflow CustomerCreatedOrUpdated implements CustomerCreatedOrUpdated
+	{
+		summary "Sends information to an observer that a customer was created or updated"
+		description "Sends information to an observer that a customer was created or updated"
 		one{
 			transaction CustomerCreated	
 			{
@@ -78,7 +94,7 @@ package com.x.customer.v1{
 				roles(CustomerManager,CustomerObserver)
 			}
 		}
-		
 	}
-	
+
+		
 }

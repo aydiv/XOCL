@@ -37,17 +37,21 @@ package com.x.customer.v1{
     	description "Notifies CustomerObserver that a new customer record was created."
         sender
         {
-        	message CustomerCreated 
-   
+        	message CustomerCreated{
+        		topic "/com.x.customer.v1/CustomerUpsert/CustomerCreated"
+        	}
         }
     }
+    
     // Inform observers that an customer was updated
     transaction CustomerUpdated inform
     {
     	description "Notifies CustomerObserver that the information about a customer has been updated."
         sender
         {
-        	message CustomerUpdated
+        	message CustomerUpdated{
+        		topic "/com.x.customer.v1/CustomerUpsert/CustomerUpdated"
+        	}
    
         }
     }

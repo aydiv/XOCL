@@ -7,7 +7,8 @@ package com.x.customer.v1{
     		roles{
 	 			CustomerSearch.CustomerConsumer "Searches for customers." // ?? need more details
 	 			CustomerSearch.CustomerConsumer<Email> "Searches for customers by email address." // ??need more details
-	 			CustomerUpsert.CustomerObserver  "Notified when a new customer record is add or a customer record is updated." // ??guessing
+	 			CustomerUpsert.CustomerObserver  "Notified when a new customer record is add or a customer record is updated."
+	 			CustomerCreatedOrUpdated.CustomerObserver "Notified when a new customer record is add or a customer record is updated."
 	 		}
 	 }	
 }
