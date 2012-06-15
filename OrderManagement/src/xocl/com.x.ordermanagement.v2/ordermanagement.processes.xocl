@@ -106,7 +106,8 @@ package com.x.ordermanagement.v2 {
        		
 	    	
 	    	do (!order[Order.Cancelled] && !order[Order.Shipped] && !order[Order.Returned]) {
-	    		any {	
+	    		any {
+	    			noop //TN: Noop added to allow for polling semantic	
 		    		transaction ShippingInformationUpdate<MarketplaceOrder> {
 		    			roles(OrderProcessor, SalesChannel)
 		    		}
@@ -138,21 +139,37 @@ package com.x.ordermanagement.v2 {
 			        	}
 			        }
 	        	
-		        	do {
-			        	any {
+		        	any {
+			        	do {
 							// A canceller asks the processer to cancel its order 
 							transaction CancelOrder<MarketplaceOrder> {
 							   	roles(SalesChannel, OrderProcessor)
 							}
+							workflow OrderCancelled<MarketplaceOrder> {
+						   		roles(OrderProcessor, OrderObserver)
+						   	}
 						}
 						
 						// The order processor informs observers that an order was cancelled
-						transaction OrderCancelled<MarketplaceOrder> {
+						workflow OrderCancelled<MarketplaceOrder> {
 						   	roles(OrderProcessor, OrderObserver)
 						}
 					}
 				}
 			}
 		}
-    }
+	}
+	process OrderCancelled <MarketplaceOrder> {
+		roles {
+        	OrderProcessor "TBD"
+        	OrderObserver "TBD"
+        
+        }
+	}
+	
+	workflow OrderCancelled implements OrderCancelled{
+		 transaction OrderCancelled<MarketplaceOrder> {
+			 roles(OrderProcessor, OrderObserver)
+		 }	
+	}
 }
