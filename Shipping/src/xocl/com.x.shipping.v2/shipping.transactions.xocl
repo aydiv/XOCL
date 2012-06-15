@@ -8,7 +8,7 @@ package com.x.shipping.v2 {
 	transaction CalculateShippingRates response {
 		sender {
 			message CalculateShippingRates {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(receipt=30s, validation=1m, response=3m)
             	retries=3
             }
 		}		
@@ -27,7 +27,7 @@ package com.x.shipping.v2 {
 	transaction CreateShippingLabel response {
 		sender {
 			message CreateShippingLabel {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(receipt=30s, validation=1m, response=3m)
             	retries=3
             }
 		}		
@@ -46,7 +46,7 @@ package com.x.shipping.v2 {
 	transaction CancelShipment response {
 		sender {
 			message CancelShipment {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(receipt=30s, validation=1m, response=3m)
             	retries=3
             }
 		}		
@@ -65,7 +65,7 @@ package com.x.shipping.v2 {
 	transaction GetTrackingInformation response {
 		sender {
 			message GetTrackingInformation {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(receipt=30s, validation=1m, response=3m)
             	retries=3
             }
 		}		
@@ -94,7 +94,7 @@ package com.x.shipping.v2 {
 	transaction FindCarrierOffices response {
 		sender {
 			message FindCarrierOffices {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(receipt=30s, validation=1m, response=3m)
             	retries=3
             }
 		}		
@@ -113,7 +113,7 @@ package com.x.shipping.v2 {
 	transaction ValidateShippingAddress response {
 		sender {
 			message ValidateShippingAddress {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(receipt=30s, validation=1m, response=3m)
             	retries=3
             }
 		}		
@@ -132,7 +132,7 @@ package com.x.shipping.v2 {
 	transaction GetShippingServices response {
 		sender {
 			message GetShippingServices {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(receipt=30s, validation=1m, response=3m)
             	retries=3
             }
 		}		
@@ -151,7 +151,7 @@ package com.x.shipping.v2 {
 	transaction GetCarrierSpecialServices response {
 		sender {
 			message GetCarrierSpecialServices {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(receipt=30s, validation=1m, response=3m)
             	retries=3
             }
 		}		
@@ -170,7 +170,7 @@ package com.x.shipping.v2 {
 	transaction GetCarrierHandoffTypes response {
 		sender {
 			message GetCarrierHandoffTypes {
-            	timeouts(receipt=30s, validation=3m)
+            	timeouts(receipt=30s, validation=1m, response=3m)
             	retries=3
             }
 		}		
