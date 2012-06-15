@@ -11,7 +11,8 @@ package com.x.loyalty.v1{
     	roles
     	{   		
 			RewardCreation.LoyaltyMarketingProvider
-			RewardPointQueryAndUsage.LoyaltyMarketingProvider
+			RewardPointQuery.LoyaltyMarketingProvider
+			RewardPointUsage.LoyaltyMarketingProvider
 			RewardPointPrediction.LoyaltyMarketingProvider
 	   		LoyaltyReportGet.LoyaltyMarketingProvider
 	   		ProcessSalesChannelOrder.OrderObserver
@@ -29,7 +30,8 @@ package com.x.loyalty.v1{
     	roles
     	{   		
 			RewardCreation.LoyaltyMarketingConsumer
-			RewardPointQueryAndUsage.LoyaltyMarketingConsumer
+			RewardPointQuery.LoyaltyMarketingConsumer
+			RewardPointUsage.LoyaltyMarketingConsumer
 			RewardPointPrediction.LoyaltyMarketingConsumer
 	    }
 	    

@@ -2,18 +2,27 @@ package com.x.loyalty.v1{
 	import com.x.core.v1.*
 	import com.x.loyalty.v1.*
 	
-	process RewardPointQueryAndUsage{
+	process RewardPointQuery{
+		description "This process is used when a customer engages in activity on the web store, they can find their points and spend points"
+		roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
+	}
+	
+	workflow RewardPointQuery implements RewardPointQuery{
+		transaction LookupCustomerRewardData{
+			roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
+		}
+	}
+	
+	process RewardPointUsage{
 		description "This process is used when a customer engages in activity on the web store, they can find their points and spend points"
 		roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
 		workflow [5h]{ //validate this time out 
-				transaction LookupCustomerRewardData{
-						roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
-				}
-				any{
-					transaction SpendPoints{
-						roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
-					}
-				}
+			workflow RewardPointQuery{
+				roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
+			}
+			transaction SpendPoints{
+				roles(LoyaltyMarketingConsumer, LoyaltyMarketingProvider)
+			}
 		}
 	}
 	
