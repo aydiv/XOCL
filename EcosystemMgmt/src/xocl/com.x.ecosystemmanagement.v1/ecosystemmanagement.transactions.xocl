@@ -38,5 +38,33 @@ package com.x.ecosystemmanagement.v1 {
             failure UpdateCapabilityEndpointFailed
         } 
     }
+    
+    // TODO: (assuming there is one AppStore) mark as: unicast
+    transaction CollectTenantCredentials response {
+    	description "The Fabric requests that an AppStore collect credentials from a set of capabilities for a given tenant"
+    	sender
+    	{
+    		message CollectTenantCredentials
+    	}
+    	receiver
+    	{
+    		success TenantCredentialsCollected
+    		failure CollectTenantCredentialsFailed  // TODO: what about partial failures?
+    	}
+    }
+    
+    // TODO: mark as: unicast
+    transaction AcceptTenantRelationship response {
+    	description "The Fabric requests that a capability accept a new tenant relationship"
+    	sender
+    	{
+    		message AcceptTenantRelationship
+    	}
+    	receiver
+    	{
+    		success TenantRelationshipAccepted
+    		failure AcceptTenantRelationshipFailed
+    	}
+    }
 
 }

@@ -34,5 +34,29 @@ package com.x.ecosystemmanagement.v1 {
 			}
 		}
 	}
+	
+	process AuthenticateTenant {
+		description "Have one or more capabilities authenticate a given tenant"
+		
+		roles
+		{
+			XManager
+			AppStore
+			Capability
+		}
+		
+		workflow {
+			// occurs once
+			transaction CollectTenantCredentials {
+				roles(XManager,AppStore)
+			}
+			
+			// TODO: how do i mark this as occuring 1+ times?
+			// occurs one or more times
+			transaction AcceptTenantRelationship {
+				roles(XManager,Capability)
+			}
+		}
+	}
 
 }

@@ -110,36 +110,46 @@ package com.x.ecosystemmanagement.v1 {
 	// ----------------------------------------------------------------------------------------------
 	// New Tenant Authorization: Collection of onboarding values (for 1+ Capabilities simultaneously)
 	// ----------------------------------------------------------------------------------------------
-	record TenantOnboardingDetails {
+	record TenantCredentials {
 		summary "For a given Capability, map of <onboardingKey, onboardingValue> entries."
 		string destinationId          // the capability
 		map<string> tenantOnboarding  // <onboardingKey, onboardingValue>
 	}
 	
 	// sent from the XManager to AppStore
-	record CollectTenantRelationships {
+	record CollectTenantCredentials {
 		// note that the X-XC-TENANT-ID header has the AppStore's self-tenant identifier
 		// (and *not* the tenant pseudonymn within the message, below)
 		string  tenantPseudonym  // as seen from the point-of-view of the AppStore
 		string  tenantName       // friendly / pretty name
-		array<TenantOnboardingDetails> setOfTenantOnboardingDetails  // the onboardingValues are empty
+		array<TenantCredentials> setOfTenantCredentials  // the onboardingValues are empty
 	}
 	
-	// sent from AppStore to the XManager
-	record TenantRelationshipsCollected {
+	// "success" - sent from AppStore to the XManager
+	record TenantCredentialsCollected {
 		// note that the X-XC-TENANT-ID header has the AppStore's self-tenant identifier
 		// (and *not* the tenant pseudonymn within the message, below)
 		string  tenantPseudonym  // as seen from the point-of-view of the AppStore
 		string? tenantName       // friendly / pretty name
-		array<TenantOnboardingDetails> setOfTenantOnboardingDetails  // the onboardingValues are filled in
+		array<TenantCredentials> setOfTenantCredentials  // the onboardingValues are filled in
 	}
 	
-	// ---------------------------------------------------------------
-	// New Tenant Authorization: Validate credentials (per Capability)
-	// ---------------------------------------------------------------
+	// "failure" - sent from AppStore to the XManager
+	record CollectTenantCredentialsFailed {
+		// note that the X-XC-TENANT-ID header has the AppStore's self-tenant identifier
+		// (and *not* the tenant pseudonymn within the message, below)
+		string  tenantPseudonym  // as seen from the point-of-view of the AppStore
+		string? tenantName       // friendly / pretty name
+		array<TenantCredentials> setOfTenantCredentials  // list of failed TenantCredentials
+	}
+	
+	// ------------------------------------------------------------------------------------------------------------------
+	// New Tenant Authorization: A capability accepts a tenant relationship (typically based on the credentials provided)
+	// ------------------------------------------------------------------------------------------------------------------
 	
 	// sent from XManager to a specific Capability
-	record TenantRelationshipCreated {
+	record AcceptTenantRelationship {
+		// (in the ontology world, this was the TenantRelationshipCreated message)
 		// note that the X-XC-TENANT-ID header has the receiving capability's self-tenant identifier
 		// (and *not* the tenant pseudonymn within the message, below)
 		string      tenantPseudonym  // value of what my future X-XC-TENANT-ID header will carry when I receive a message for this tenant
@@ -149,12 +159,12 @@ package com.x.ecosystemmanagement.v1 {
 	}
 	
 	// "success" - sent from a Capability to the XManager
-	record AcceptTenantRelationship {
+	record TenantRelationshipAccepted {
 		// the requesting capability will use its auth token to indicate the tenant
 	}
 	
 	// "failure" - sent from a Capability to the XManager	
-	record RejectTenantRelationship {
+	record AcceptTenantRelationshipFailed {
 		// the requesting capability will use its auth token to indicate the tenant
 		string? reason  // an explanation
 	}

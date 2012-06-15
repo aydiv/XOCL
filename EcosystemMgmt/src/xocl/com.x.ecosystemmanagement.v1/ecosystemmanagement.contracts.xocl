@@ -7,6 +7,7 @@ package com.x.ecosystemmanagement.v1 {
     	{
     		PingPong.Ponger "Responds with a Pong message after it receives a Ping message."
     		UpdateCapabilityEndpoint.Capability "Requests that it's endpoint is updated."
+    		AuthenticateTenant.Capability "Accepts or denies a tenant relationship"
     	}
     }
     
@@ -16,6 +17,7 @@ package com.x.ecosystemmanagement.v1 {
     	{
     		// note: MUST also have the "Capability" contract since it itself is a capability
     		UpdateCapabilityEndpoint.XManager "Does the work of updating a capability's endpoint."
+    		AuthenticateTenant.XManager "Works with the AppStore and capabilities in establishing tenant relationships"
     	}
     }
     
@@ -25,6 +27,14 @@ package com.x.ecosystemmanagement.v1 {
     	{
     		// note: MUST also have the "Capability" contract since it itself is a capability
     		PingPong.Pinger "Sends a Ping message to a capability."
+    	}
+    }
+    
+    contract AppStore {
+    	description "The special capability that connects tenants and capabilities"
+    	roles
+    	{
+    		AuthenticateTenant.AppStore "Collects tenant onboarding information from capabilities"
     	}
     }
 
