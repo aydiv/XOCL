@@ -72,26 +72,42 @@ package com.x.webstore.v1{
 			{
 				WebStoreOfferConsumer "Searches for offers from the available web stores."
 				WebStoreOfferManager "Returns the offers found."
-				WebStoreOfferObserver "Sends a message that the offer has been created, updated, or deleted."
+				WebStoreOfferObserver "Recieves a message that the offer has been created, updated, or deleted."
 			}
 	
 		workflow
 		{
 			summary "Creates an offer."
 			description "Creates an offer for a web store."
-			
-			any{
-				transaction CreateWebStoreOffer
-				{
-					roles(WebStoreOfferConsumer, WebStoreOfferManager)
-				}
+			transaction CreateWebStoreOffer
+			{
+				roles(WebStoreOfferConsumer, WebStoreOfferManager)
 			}
-			transaction WebStoreOfferCreated
+
+			workflow WebStoreOfferCreated
 			{
 				roles (WebStoreOfferManager, WebStoreOfferObserver)
 			}
 		}		
 	}
+	
+	process WebStoreOfferCreated
+	{
+		description "An offer was created."
+	
+		roles{
+				WebStoreOfferManager "Returns the offers found."
+				WebStoreOfferObserver "Recieves a message that the offer has been created, updated, or deleted."
+		}
+	}
+	
+	workflow WebStoreOfferCreated implements WebStoreOfferCreated{
+			
+		transaction WebStoreOfferCreated {
+				roles (WebStoreOfferManager, WebStoreOfferObserver)
+		}		
+	}
+	
 	
 	process WebStoreOfferUpdate
 	{
@@ -105,17 +121,27 @@ package com.x.webstore.v1{
 			summary "Updates offer information."
 			description "Updates the offer information, such as price or quantity."
 			
-			any{
-				transaction UpdateWebStoreOffer
-				{
-					roles(WebStoreOfferConsumer, WebStoreOfferManager)
-				}
+			transaction UpdateWebStoreOffer {
+				roles(WebStoreOfferConsumer, WebStoreOfferManager)
 			}
-			do{ 
-				transaction WebStoreOfferUpdated
-			    {
-			    	roles(WebStoreOfferManager, WebStoreOfferObserver)
-			    }
+			workflow WebStoreOfferUpdated{
+				roles(WebStoreOfferConsumer, WebStoreOfferManager)
+			}
+		}		
+	}
+	
+	process WebStoreOfferUpdated
+	{
+		description "An offer was updated."
+	
+		roles{
+				WebStoreOfferManager "Returns the offers found."
+				WebStoreOfferObserver "Recieves a message that the offer has been created, updated, or deleted."
+		}
+	}
+	
+	workflow WebStoreOfferUpdated implements WebStoreOfferUpdated{
+			
 				any{
 					noop
 					transaction WebStoreOfferQuantityUpdated
@@ -127,10 +153,13 @@ package com.x.webstore.v1{
 			    		roles (WebStoreOfferManager, WebStoreOfferObserver)
 			    	}	
 			    }
-
-			}
-		}		
+			
+				transaction WebStoreOfferUpdated
+			    {
+			    	roles(WebStoreOfferManager, WebStoreOfferObserver)
+			    }
 	}
+	
 	
 	process WebStoreOfferDeletion
 	{
@@ -143,18 +172,31 @@ package com.x.webstore.v1{
 		{
 			summary "Deletes an offer."
 			description "Deletes an offer."
-			
-			any{
-				transaction DeleteWebStoreOffer
-				{
-					roles(WebStoreOfferConsumer, WebStoreOfferManager)
-				}
+			transaction DeleteWebStoreOffer
+			{
+				roles(WebStoreOfferConsumer, WebStoreOfferManager)
 			}
-			transaction WebStoreOfferDeleted
+			workflow WebStoreOfferDeleted
 			{
 				roles (WebStoreOfferManager, WebStoreOfferObserver)
 			}
 		}		
 	}
 	
+	process WebStoreOfferDeleted
+	{
+		description "An offer was deleted."
+	
+		roles{
+				WebStoreOfferManager "Returns the offers found."
+				WebStoreOfferObserver "Recieves a message that the offer has been deleted."
+		}
+	}
+	
+	workflow WebStoreOfferDeleted implements WebStoreOfferDeleted{
+			
+		transaction WebStoreOfferCreated {
+				roles (WebStoreOfferManager, WebStoreOfferObserver)
+		}		
+	}
 }

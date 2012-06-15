@@ -175,7 +175,7 @@ package com.x.webstore.v1{
         }
     }
     
-   	transaction WebStoreOfferCreated notify
+   	transaction WebStoreOfferCreated inform
    	{
    		description "Notification that a web store offer was created."
    		
@@ -183,13 +183,12 @@ package com.x.webstore.v1{
    		{
    			message WebStoreOfferCreated
    		    {
-        		timeouts(receipt=30s)     		
-        		retries=3
+   		    	topic "/com.x.webstore.v1/WebStoreOfferCreated/WebStoreOfferCreated"
         	}
    		}
    	}
    	
-   	transaction WebStoreOfferPriceUpdated notify
+   	transaction WebStoreOfferPriceUpdated inform
    	{
    		description "Notification that the price of a web store offer was updated."
    		
@@ -197,49 +196,45 @@ package com.x.webstore.v1{
    		{
    			message WebStoreOfferPriceUpdated
    			{
-   				timeouts(receipt=30s)     		
-        		retries=3
+   				topic "/com.x.webstore.v1/WebStoreOfferUpdate/WebStoreOfferPriceUpdated"
         	}
    		}
    	}
    	
-   	transaction WebStoreOfferQuantityUpdated notify
+   	transaction WebStoreOfferQuantityUpdated inform
    	{
    		description "Notification that the quantity of a web store offer was updated."
    		
    		sender
    		{
    			message WebStoreOfferQuantityUpdated{
-   			    timeouts(receipt=30s)     		
-        		retries=3
+   				topic "/com.x.webstore.v1/WebStoreOfferUpdate/WebStoreOfferQuantityUpdated"
         	}
    		}
    	}
    	
-   	transaction WebStoreOfferDeleted notify
+   	transaction WebStoreOfferDeleted inform
    	{
    		description "Notification that a web store offer was deleted."
    		
    		sender
    		{
    			message WebStoreOfferDeleted{
-   			    timeouts(receipt=30s)     		
-        		retries=3
+   				topic "/com.x.webstore.v1/WebStoreOfferDeletion/WebStoreOfferDeleted"
         	}
    			
    		}
    	}  
    	   	
    	   	
-   	transaction WebStoreOfferUpdated notify
+   	transaction WebStoreOfferUpdated inform
    	{
    		description "Notification that a web store offer was updated."
    		
    		sender
    		{
    			message WebStoreOfferUpdated{
-   			    timeouts(receipt=30s)     		
-        		retries=3
+   				topic "/com.x.webstore.v1/WebStoreOfferUpdate/WebStoreOfferUpdated"
         	}
    		}
    	}
