@@ -130,8 +130,12 @@ package com.x.ordermanagement.v2 {
     transaction OrderCancelled<MarketplaceOrder> inform {
     	description "Notifies observers that an order was cancelled."
         sender {
-        	message OrderCancelled
-        	message<MarketplaceOrder> MarketplaceOrderCancelled
+        	message OrderCancelled{
+        		topic "/com.x.ordermanagement.v2/ProcessSalesChannelOrder/OrderCancelled"
+        	}
+        	message<MarketplaceOrder> MarketplaceOrderCancelled{
+        		topic "/com.x.ordermanagement.v2/ProcessSalesChannelOrder.MarketplaceOrder/MarketplaceOrderCancelled"
+        	}
         }
     }
       
