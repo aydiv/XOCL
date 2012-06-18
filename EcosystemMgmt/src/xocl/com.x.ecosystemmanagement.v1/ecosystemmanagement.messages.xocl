@@ -84,7 +84,6 @@ package com.x.ecosystemmanagement.v1 {
 	}
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	// XManager related messages start here 
 	
 	// --------------------------
 	// Update Capability Endpoint
@@ -105,17 +104,94 @@ package com.x.ecosystemmanagement.v1 {
 		string endpoint   // as was sent in the request
 		string _AVDL_message    // reason
 	}
+
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
+	// TODO: verify how to specify a contract	
+		
+	// ------------------------
+	// beans: Tenant onboarding
+	// ------------------------
+	record ContractImpl {
+		summary "For a given Capability, list of contracts it implements for a particular bundle"
+		string        destinationId  // the capability
+		string        bundleName     // TODO: maybe this is optional?
+		array<string> contractIds    // the contracts the capability implements for this bundle
+	}
 	
+	record TenantCredentials {
+		summary "For a given Capability, map of <onboardingKey, onboardingValue> entries."
+		string      destinationId     // the capability
+		map<string> tenantOnboarding  // <onboardingKey, onboardingValue>
+	}
+	
+	// -------------------------------------
+	// Acquiring a bundle for a given tenant
+	// -------------------------------------
+	
+	// sent from the AppStore to the XManager
+	record AcquireBundle {
+		// note that the X-XC-TENANT-ID header has the AppStore's self-tenant identifier
+		// (and *not* the tenant pseudonymn within the message, below)
+		string              tenantPseudonym  // as seen from the point-of-view of the AppStore
+		string              bundleName
+		array<ContractImpl> contractImpls 
+		// FUTURE? array<TenantCredentials> setOfTenantCredentials  // the onboardingValues are filled in 
+	}
+	
+	// "success" - sent from the XManager to the AppStore
+	record BundleAcquired {
+		// note that the X-XC-TENANT-ID header has the AppStore's self-tenant identifier
+		// (and *not* the tenant pseudonymn within the message, below)
+		string  tenantPseudonym  // as seen from the point-of-view of the AppStore
+		string  bundleName
+	}
+	
+	// "failure" - sent from the XManager to the AppStore	
+	record AcquireBundleFailed {
+		// note that the X-XC-TENANT-ID header has the AppStore's self-tenant identifier
+		// (and *not* the tenant pseudonymn within the message, below)
+		string  tenantPseudonym  // as seen from the point-of-view of the AppStore
+		string  bundleName
+		string? reason  // an explanation
+		// TODO: do we need a list of failed contractImpls?
+	}
+	
+	// ----------------------------------------------------
+	// Agreeing to perform a contract(s) for a given tenant
+	// ----------------------------------------------------
+	
+	// sent from the XManager to a Capability
+	record PerformContracts {
+		// note that the X-XC-TENANT-ID header has the Capability's self-tenant identifier
+		// (and *not* the tenant pseudonymn within the message, below)
+		string        tenantPseudonym  // as seen from the point-of-view of the Capability
+		string        tenantName       // friendly / pretty name
+		string        bundleName
+		array<string> contractIds      // the contracts the capability implements  TODO: optional?
+	}
+	
+	// sent from a Capability to the XManager
+	record ContractsPerformed {
+		// note that the X-XC-TENANT-ID header has the Capability's self-tenant identifier
+		// (and *not* the tenant pseudonymn within the message, below)
+		string  tenantPseudonym  // as seen from the point-of-view of the Capability
+		string  bundleName
+	}
+	
+	// "failure" - sent from a Capability to the XManager
+	record PerformContractsFailed {
+		// note that the X-XC-TENANT-ID header has the Capability's self-tenant identifier
+		// (and *not* the tenant pseudonymn within the message, below)
+		string  tenantPseudonym     // as seen from the point-of-view of the Capability
+		string  bundleName
+		string? reason              // an explanation
+		array<string>? contractIds  // the contracts the capability will *not* perform  TODO: needed?
+	}
 	
 	// ----------------------------------------------------------------------------------------------
 	// New Tenant Authorization: Collection of onboarding values (for 1+ Capabilities simultaneously)
 	// ----------------------------------------------------------------------------------------------
-	record TenantCredentials {
-		summary "For a given Capability, map of <onboardingKey, onboardingValue> entries."
-		string destinationId          // the capability
-		map<string> tenantOnboarding  // <onboardingKey, onboardingValue>
-	}
-	
+
 	// sent from the XManager to AppStore
 	record CollectTenantCredentials {
 		// note that the X-XC-TENANT-ID header has the AppStore's self-tenant identifier
@@ -130,7 +206,6 @@ package com.x.ecosystemmanagement.v1 {
 		// note that the X-XC-TENANT-ID header has the AppStore's self-tenant identifier
 		// (and *not* the tenant pseudonymn within the message, below)
 		string  tenantPseudonym  // as seen from the point-of-view of the AppStore
-		string? tenantName       // friendly / pretty name
 		array<TenantCredentials> setOfTenantCredentials  // the onboardingValues are filled in
 	}
 	
@@ -139,8 +214,7 @@ package com.x.ecosystemmanagement.v1 {
 		// note that the X-XC-TENANT-ID header has the AppStore's self-tenant identifier
 		// (and *not* the tenant pseudonymn within the message, below)
 		string  tenantPseudonym  // as seen from the point-of-view of the AppStore
-		string? tenantName       // friendly / pretty name
-		array<TenantCredentials> setOfTenantCredentials  // list of failed TenantCredentials
+		array<TenantCredentials>? setOfTenantCredentials  // list of failed TenantCredentials
 	}
 	
 	// ------------------------------------------------------------------------------------------------------------------
@@ -160,12 +234,12 @@ package com.x.ecosystemmanagement.v1 {
 	
 	// "success" - sent from a Capability to the XManager
 	record TenantRelationshipAccepted {
-		// the requesting capability will use its auth token to indicate the tenant
+		string  tenantPseudonym
 	}
 	
 	// "failure" - sent from a Capability to the XManager	
 	record AcceptTenantRelationshipFailed {
-		// the requesting capability will use its auth token to indicate the tenant
+		string  tenantPseudonym
 		string? reason  // an explanation
 	}
 

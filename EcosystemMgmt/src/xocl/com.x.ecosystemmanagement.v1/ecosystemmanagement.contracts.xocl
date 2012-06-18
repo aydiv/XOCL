@@ -1,5 +1,16 @@
 package com.x.ecosystemmanagement.v1 { 	
     import com.x.ecosystemmanagement.v1.*
+    
+    contract XManager {
+    	description "The special entity (essentially a capability) that manages the Fabric."
+    	roles
+    	{
+    		PingPong.Ponger "Responds with a Pong message after it receives a Ping message."
+    		UpdateCapabilityEndpoint.XManager "Does the work of updating a capability's endpoint."
+    		OnboardTenant.XManager "Works with the AppStore and capabilities in acquiring a bundle for a tenant "
+    		AuthenticateTenant.XManager "Works with the AppStore and capabilities in establishing tenant relationships"
+    	}
+    }
        
     contract Capability {
     	description "What every capability must implement."
@@ -7,17 +18,8 @@ package com.x.ecosystemmanagement.v1 {
     	{
     		PingPong.Ponger "Responds with a Pong message after it receives a Ping message."
     		UpdateCapabilityEndpoint.Capability "Requests that it's endpoint is updated."
+    		OnboardTenant.Capability "Accepts or denies to perform a contract(s) for a tenant"
     		AuthenticateTenant.Capability "Accepts or denies a tenant relationship"
-    	}
-    }
-    
-    contract XManager {
-    	description "The special capability that manages the Fabric."
-    	roles
-    	{
-    		// note: MUST also have the "Capability" contract since it itself is a capability
-    		UpdateCapabilityEndpoint.XManager "Does the work of updating a capability's endpoint."
-    		AuthenticateTenant.XManager "Works with the AppStore and capabilities in establishing tenant relationships"
     	}
     }
     
@@ -34,6 +36,8 @@ package com.x.ecosystemmanagement.v1 {
     	description "The special capability that connects tenants and capabilities"
     	roles
     	{
+    		// note: MUST also have the "Capability" contract since it itself is a capability
+    		OnboardTenant.AppStore "Requests the Fabric facilitate tenant onboarding for a given bundle"
     		AuthenticateTenant.AppStore "Collects tenant onboarding information from capabilities"
     	}
     }

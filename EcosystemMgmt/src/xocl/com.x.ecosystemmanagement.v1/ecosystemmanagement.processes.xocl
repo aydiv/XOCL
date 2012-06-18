@@ -35,6 +35,31 @@ package com.x.ecosystemmanagement.v1 {
 		}
 	}
 	
+	process OnboardTenant {
+		description "Have one or more capabilities perform services for a given tenant"
+		
+		roles
+		{
+			XManager
+			AppStore
+			Capability
+		}
+		
+		workflow {
+			// occurs once per bundle
+			transaction AcquireBundle {
+				roles(AppStore,XManager)
+			}
+			
+			// TODO: this transaction really needs to live within the preceeding one
+			// TODO: how do i mark this as occuring 1+ times?
+			// occurs one or more times
+			transaction PerformContracts {
+				roles(XManager,Capability)
+			}
+		}
+	}
+	
 	process AuthenticateTenant {
 		description "Have one or more capabilities authenticate a given tenant"
 		
@@ -51,6 +76,7 @@ package com.x.ecosystemmanagement.v1 {
 				roles(XManager,AppStore)
 			}
 			
+			// TODO: this transaction really needs to live within the preceeding one
 			// TODO: how do i mark this as occuring 1+ times?
 			// occurs one or more times
 			transaction AcceptTenantRelationship {

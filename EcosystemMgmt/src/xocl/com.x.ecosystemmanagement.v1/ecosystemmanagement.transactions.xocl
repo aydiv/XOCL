@@ -39,7 +39,39 @@ package com.x.ecosystemmanagement.v1 {
         } 
     }
     
-    // TODO: (assuming there is one AppStore) mark as: unicast
+    // ------------------------------------------------------------------------
+    // onboarding tenant
+    // ------------------------------------------------------------------------
+    
+    // TODO: ideally this is marked as: unicast 
+    transaction AcquireBundle response {
+    	description "The AppStore requests the Fabric to aquire a specific bundle for the given tenant"
+    	sender
+    	{
+    		message AcquireBundle
+    	}
+    	receiver
+    	{
+    		success BundleAcquired
+    		failure AcquireBundleFailed
+    	}
+    }
+    
+    // TODO: mark as: unicast
+    transaction PerformContracts response {
+    	description "The Fabric requests that a capability perform its contracts for the given tenant"
+    	sender
+    	{
+    		message PerformContracts
+    	}
+    	receiver 
+    	{
+    		success ContractsPerformed
+    		failure PerformContractsFailed
+    	}
+    }
+    
+    // TODO: (assuming there is *one* AppStore) mark as: unicast
     transaction CollectTenantCredentials response {
     	description "The Fabric requests that an AppStore collect credentials from a set of capabilities for a given tenant"
     	sender
