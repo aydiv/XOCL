@@ -34,7 +34,20 @@ package com.x.marketplace.v3{
 		array<PaymentMethod> methods;
 		array<SupportedCountry> countries;
 		string marketplace;
+		CalculatedShippingMetadata? calculatedShippingMetadata;
 	}
+	enum MeasurementSystem{
+		METRIC "Measurements are in english units: lb, oz, in, etc",
+		ENGLISH "Measurements are in metric units: kg, g, cm, etc"
+	}
+	
+	
+	record CalculatedShippingMetadata{
+		array<string> supportedPackageTypes "The package types supported by this site"
+		boolean calculatedShippingSupported "Does this site support calculated shipping?"
+		MeasurementSystem measurementSystem "The measurement system used by this site"
+	}
+	
 	 /*
 		An environment represents a sub-section of the marketplace/site.
 		The environment often defines the destination urls, credentails, etc for
