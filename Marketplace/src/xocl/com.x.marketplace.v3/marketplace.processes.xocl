@@ -47,16 +47,11 @@ package com.x.marketplace.v3{
     process PolicyGroupCreation<Ebay> (PolicyGroup policyGroup) {
 		description "A merchant creates a policy group"
 		
-		roles(MarketplaceMerchantConsole, MarketplacePolicyManager, MarketplaceMetadataConsumer, MarketplaceMetadataProvider)
+		roles(MarketplaceMerchantConsole, MarketplacePolicyManager)
 		
 		preconditions(!exists(policyGroup)) 
 	
 		workflow {
-			any {
-				workflow MarketplaceSetup {
-					roles(MarketplaceMetadataConsumer, MarketplaceMetadataProvider)
-				}
-			}
 		    transaction CreatePolicyGroup<Ebay> {
 				   roles(MarketplaceMerchantConsole, MarketplacePolicyManager)
 			}
