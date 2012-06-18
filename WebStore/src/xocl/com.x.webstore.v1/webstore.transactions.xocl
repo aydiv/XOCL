@@ -175,15 +175,12 @@ package com.x.webstore.v1{
         }
     }
     
-   	transaction WebStoreOfferCreated inform
-   	{
+   	transaction WebStoreOfferCreated inform {
    		description "Notification that a web store offer was created."
    		
-   		sender
-   		{
-   			message WebStoreOfferCreated
-   		    {
-   		    	topic "/com.x.webstore.v1/WebStoreOfferCreated/WebStoreOfferCreated"
+   		sender {
+   			message WebStoreOfferCreated {
+   		    	topic "/com.x.webstore.v1/WebStoreOfferCreation/WebStoreOfferCreated"
         	}
    		}
    	}
@@ -217,12 +214,10 @@ package com.x.webstore.v1{
    	{
    		description "Notification that a web store offer was deleted."
    		
-   		sender
-   		{
-   			message WebStoreOfferDeleted{
+   		sender {
+   			message WebStoreOfferDeleted {
    				topic "/com.x.webstore.v1/WebStoreOfferDeletion/WebStoreOfferDeleted"
         	}
-   			
    		}
    	}  
    	   	

@@ -195,7 +195,7 @@ package com.x.webstore.v1{
 	
 	workflow WebStoreOfferDeleted implements WebStoreOfferDeleted{
 			
-		transaction WebStoreOfferCreated {
+		transaction WebStoreOfferDeleted {
 				roles (WebStoreOfferManager, WebStoreOfferObserver)
 		}		
 	}
