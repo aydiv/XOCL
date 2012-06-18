@@ -1,0 +1,28 @@
+package com.x.core.v1
+{
+	enum EnglishLengthMeasurementUnit{
+		INCH "inches, in."
+		FOOT "feet, ft."
+		YARD "yards, yd."
+		MILE "miles, m"
+	}
+	enum EnglishWeightMeasurementUnit{
+		GRAIN "grains, gr"
+		OUNCE "ounces, oz"
+		POUND "pounds, lb"
+		TON "tons, "
+	}
+	enum MetricLengthMeasurementUnit{
+		MILLIMETER "millimeters, mm"
+		CENTIMETER "centimeters, cm"
+		METER "meters, m"
+		KILOMETER "kilometers, km"
+	}
+	
+	enum MetricWeightMeasurementUnit{
+		MILLIGRAM "milligrams, mg"
+		CENTIGRAM "centigram, cg"
+		GRAM "Grams, g"
+		KILOGRAM "Kilograms, kg"
+	}
+}
