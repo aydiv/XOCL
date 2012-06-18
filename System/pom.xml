@@ -8,9 +8,9 @@
 	</parent>
 	<groupId>com.x.ocl</groupId>
 	<artifactId>system-xocl</artifactId>
-	<name>System XOCL</name>
+	<name>System Legacy XOCL</name>
 	<description>
-		The System XOCL
+		The System Legacy XOCL.  (see Ecosystem Management XOCL for choreographed versions)
 	</description>
 	<scm>
 		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/System</connection>
