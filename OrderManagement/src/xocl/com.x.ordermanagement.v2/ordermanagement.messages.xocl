@@ -417,7 +417,8 @@ package com.x.ordermanagement.v2 {
 		Shipment shipment "Shipping information." 
 		string sourceId "Identifier for the channel where this order originated, such as eBay, Amazon, etc."
 		string? referralSource "Marketing source that referred this order."
-    	array<OrderLineData>? orderLines "Order line item information."
+    	array<OrderLineData>? orderLines "Order line item information."	
+    }
 	
 	record MarketplaceOrderShipped extends OrderShipped {
 		summary "Additional marketplace information for the OrderShipped record."
@@ -484,7 +485,8 @@ package com.x.ordermanagement.v2 {
 		description "Captures additional information, which is added to the CreateOrderFailed record, such as account ID and site code."
 	
 		string accountId "Unique account identifier assigned by the system that created the account."
-		string? siteCode "Name that identifies the marketplace that is processing the order." 
+		string? siteCode "Name that identifies the marketplace that is processing the order." 	
+	}
 	
 	record OrderCreated {
 		summary "Signals that an order was created."
