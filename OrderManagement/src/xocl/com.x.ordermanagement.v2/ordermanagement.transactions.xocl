@@ -55,7 +55,7 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	transaction OrderShipped<MarketplaceOrder>(Order order) notify {
-		description "Updates the shipping tracking information for an order."
+		description "Updates the shipment tracking information for an order."
 		preconditions(order[Order.Submitted])
 		
 		sender
