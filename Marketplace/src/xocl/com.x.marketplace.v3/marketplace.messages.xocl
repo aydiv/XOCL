@@ -152,6 +152,29 @@ package com.x.marketplace.v3{
 		RefundMethod? refundMethod;
 	}
 	
+	
+	record CalculatedShippingPolicy {
+		string? _AVDL_description;
+		string packageType;
+		boolean shippingIrregular = false "Whether a package is irregular and therefore cannot go through the stamping machine at the shipping service office and thus requires special or fragile handling"
+		PackageDimensions dimensions;
+		PackageWeight weight;
+	}
+	
+	
+	record PackageDimensions{
+		float packageDepth;
+		float packageLength;
+		float packageWidth;
+		union {EnglishLengthMeasurementUnit, MetricLengthMeasurementUnit} measurementUnit
+	}
+	
+	record PackageWeight{
+		float packageWeightMajor  "The weight of the package in the units specified"
+		union {EnglishWeightMeasurementUnit, MetricWeightMeasurementUnit} majorMeasurementUnit
+		float? packageWeightMinor  "If the major package weight measurement unit is lb, this is oz.  If the major is kg, this is g"
+	}
+	
     record ShippingServiceOption {
 		int sellerPriority;
 		string serviceName;
@@ -199,6 +222,7 @@ package com.x.marketplace.v3{
 		PaymentPolicy? paymentPolicy;
 		ShippingPolicy? shippingPolicy;
 		ReturnPolicy? returnPolicy;
+		CalculatedShippingPolicy? calculatedShipmentPolicy 
 		string xAccountId;
 	}
 
