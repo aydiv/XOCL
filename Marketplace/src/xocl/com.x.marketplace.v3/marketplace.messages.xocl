@@ -293,6 +293,8 @@ package com.x.marketplace.v3{
 		PaymentPolicy? paymentPolicy;
 		ShippingPolicy? shippingPolicy;
 	    ReturnPolicy? returnPolicy;
+	    ShippingPolicy? shippingPolicy
+	    
 	    array<Sku> skus;
 	    array<string>? customCategories;
 	}
