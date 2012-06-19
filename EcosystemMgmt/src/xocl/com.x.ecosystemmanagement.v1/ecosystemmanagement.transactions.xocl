@@ -34,7 +34,7 @@ package com.x.ecosystemmanagement.v1 {
         receiver
         {
         	// one of these two messages must be sent back to the sender as a response
-        	success CapabilityEndpointUpdated
+        	success UpdateCapabilityEndpointSucceeded
             failure UpdateCapabilityEndpointFailed
         } 
     }
@@ -52,7 +52,7 @@ package com.x.ecosystemmanagement.v1 {
     	}
     	receiver
     	{
-    		success BundleAcquired
+    		success AcquireBundleSucceeded
     		failure AcquireBundleFailed
     	}
     }
@@ -66,7 +66,7 @@ package com.x.ecosystemmanagement.v1 {
     	}
     	receiver 
     	{
-    		success ContractsPerformed
+    		success PerformContractsSucceeded
     		failure PerformContractsFailed
     	}
     }
@@ -80,7 +80,7 @@ package com.x.ecosystemmanagement.v1 {
     	}
     	receiver
     	{
-    		success TenantCredentialsCollected
+    		success CollectTenantCredentialsSucceeded
     		failure CollectTenantCredentialsFailed  // TODO: what about partial failures?
     	}
     }
@@ -94,7 +94,7 @@ package com.x.ecosystemmanagement.v1 {
     	}
     	receiver
     	{
-    		success TenantRelationshipAccepted
+    		success AcceptTenantRelationshipSucceeded
     		failure AcceptTenantRelationshipFailed
     	}
     }

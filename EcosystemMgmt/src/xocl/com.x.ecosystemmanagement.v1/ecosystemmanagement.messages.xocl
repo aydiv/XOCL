@@ -95,7 +95,7 @@ package com.x.ecosystemmanagement.v1 {
 	}
 	
 	// "success" - sent to the Capability at the new endpoint, listed within the message
-	record CapabilityEndpointUpdated {
+	record UpdateCapabilityEndpointSucceeded {
 		string endpoint   // as was sent in the request
 	}
 	
@@ -139,7 +139,7 @@ package com.x.ecosystemmanagement.v1 {
 	}
 	
 	// "success" - sent from the XManager to the AppStore
-	record BundleAcquired {
+	record AcquireBundleSucceeded {
 		// note that the X-XC-TENANT-ID header has the AppStore's self-tenant identifier
 		// (and *not* the tenant pseudonymn within the message, below)
 		string  tenantPseudonym  // as seen from the point-of-view of the AppStore
@@ -171,7 +171,7 @@ package com.x.ecosystemmanagement.v1 {
 	}
 	
 	// sent from a Capability to the XManager
-	record ContractsPerformed {
+	record PerformContractsSucceeded {
 		// note that the X-XC-TENANT-ID header has the Capability's self-tenant identifier
 		// (and *not* the tenant pseudonymn within the message, below)
 		string  tenantPseudonym  // as seen from the point-of-view of the Capability
@@ -202,7 +202,7 @@ package com.x.ecosystemmanagement.v1 {
 	}
 	
 	// "success" - sent from AppStore to the XManager
-	record TenantCredentialsCollected {
+	record CollectTenantCredentialsSucceeded {
 		// note that the X-XC-TENANT-ID header has the AppStore's self-tenant identifier
 		// (and *not* the tenant pseudonymn within the message, below)
 		string  tenantPseudonym  // as seen from the point-of-view of the AppStore
@@ -233,7 +233,7 @@ package com.x.ecosystemmanagement.v1 {
 	}
 	
 	// "success" - sent from a Capability to the XManager
-	record TenantRelationshipAccepted {
+	record AcceptTenantRelationshipSucceeded {
 		string  tenantPseudonym
 	}
 	
