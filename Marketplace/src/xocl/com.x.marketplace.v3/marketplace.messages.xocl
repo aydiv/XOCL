@@ -37,8 +37,8 @@ package com.x.marketplace.v3{
 		CalculatedShippingMetadata? calculatedShippingMetadata;
 	}
 	enum MeasurementSystem{
-		METRIC "Measurements are in english units: lb, oz, in, etc",
-		ENGLISH "Measurements are in metric units: kg, g, cm, etc"
+		METRIC "Measurements are in metric units: kg, g, cm, etc" ,
+		ENGLISH "Measurements are in english units: lb, oz, in, etc"
 	}
 	
 	
