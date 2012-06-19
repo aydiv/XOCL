@@ -55,6 +55,31 @@ package com.x.ordermanagement.v2 {
 		NONE "Indicates that no payment has been received for the order."
 	}
 	
+	enum MeasurementSystem {
+		METRIC "Measurements are in metric units: kg, g, cm, etc" ,
+		ENGLISH "Measurements are in english units: lb, oz, in, etc"
+	}
+	
+	
+	record CalculatedShippingMetadata{
+		array<string> supportedPackageTypes "The package types supported by this site"
+		boolean calculatedShippingSupported "Does this site support calculated shipping?"
+		MeasurementSystem measurementSystem "The measurement system used by this site"
+	}
+	
+	record PackageDimensions {
+		float packageDepth "TBD"
+		float packageLength "TBD"
+		float packageWidth "TBD"
+		union {EnglishLengthMeasurementUnit, MetricLengthMeasurementUnit} measurementUnit "TBD"
+	}
+	
+	record PackageWeight {
+		float packageWeightMajor  "The weight of the package in the units specified"
+		union {EnglishWeightMeasurementUnit, MetricWeightMeasurementUnit} majorMeasurementUnit
+		float? packageWeightMinor  "If the major package weight measurement unit is lb, this is oz.  If the major is kg, this is g"
+	}
+	
 
 	record Shipment {
 		summary "Shipping information for an order."
@@ -75,6 +100,12 @@ package com.x.ordermanagement.v2 {
 		DateRange? shippingWindow  "Period of time within which the order will be shipped."
 		
 		string? shippingMessage "Additional information for the customer."
+		
+		PackageDimensions? packageDimensions "TBD"
+		PackageWeight? packageWeight "TBD"
+		string? packageType "TBD"
+		boolean shippingIrregular = false "Whether a package is irregular and therefore cannot go through the stamping machine at the shipping service office and thus requires special or fragile handling"
+		
 	}
 
 	record GiftTag {
