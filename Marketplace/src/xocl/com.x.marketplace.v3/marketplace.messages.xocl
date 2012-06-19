@@ -222,7 +222,7 @@ package com.x.marketplace.v3{
 		PaymentPolicy? paymentPolicy;
 		ShippingPolicy? shippingPolicy;
 		ReturnPolicy? returnPolicy;
-		CalculatedShippingPolicy? calculatedShipmentPolicy 
+		CalculatedShippingPolicy? calculatedShippingPolicy 
 		string xAccountId;
 	}
 
@@ -293,7 +293,7 @@ package com.x.marketplace.v3{
 		PaymentPolicy? paymentPolicy;
 		ShippingPolicy? shippingPolicy;
 	    ReturnPolicy? returnPolicy;
-	    ShippingPolicy? shippingPolicy
+	    CalculatedShippingPolicy? calculatedShippingPolicy
 	    
 	    array<Sku> skus;
 	    array<string>? customCategories;
