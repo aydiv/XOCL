@@ -2,8 +2,7 @@ package com.x.marketplace.v3{
 
 	import com.x.core.v1.*
 	import com.x.pim.v1.*
-	import com.x.ordermanagement.v2.PackageWeight
-	import com.x.ordermanagement.v2.PackageDimensions
+	import com.x.ordermanagement.v2.*
 	
 	/*
 		Defines a marketplace account which is intended to be used for all supported marketplaces.
