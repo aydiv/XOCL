@@ -1,5 +1,10 @@
 package com.x.core.v1
 {
+	enum MeasurementSystem{
+		METRIC "Measurements are in metric units: kg, g, cm, etc" ,
+		ENGLISH "Measurements are in english units: lb, oz, in, etc"
+	}
+	
 	enum EnglishLengthMeasurementUnit{
 		INCH "inches, in."
 		FOOT "feet, ft."
