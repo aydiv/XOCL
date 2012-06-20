@@ -23,7 +23,7 @@ package com.x.webstore.v1{
         } 
     }
         
-    transaction GetAllWebStore  query 
+    transaction GetAllWebStore unicast query 
     {
     	description "Searches for all web stores and returns either a succeeded or failed message."
         sender
@@ -44,7 +44,7 @@ package com.x.webstore.v1{
         } 
     }
     
-    transaction GetAllCategory  query 
+    transaction GetAllCategory unicast  query 
     {
     	description "Searches for all categories in a web store and returns either a succeeded or failed message."
         sender
@@ -66,7 +66,7 @@ package com.x.webstore.v1{
     }
     
 
-    transaction SearchWebStoreOffer query 
+    transaction SearchWebStoreOffer unicast query 
     {
     	description "Searches for all web store offers and returns either a succeeded or failed message."
         sender
@@ -86,7 +86,7 @@ package com.x.webstore.v1{
         } 
     }
     
-    transaction CreateWebStoreOffer response
+    transaction CreateWebStoreOffer unicast response
     {
     	description "Attempts to create a web store offer and returns either a succeeded or failed message." 
         sender
@@ -115,7 +115,7 @@ package com.x.webstore.v1{
         }
     }
     
-    transaction DeleteWebStoreOffer response
+    transaction DeleteWebStoreOffer unicast response
     {
     	description "Attempts to delete a web store offer and returns either a succeeded or failed message."
         sender
@@ -144,7 +144,7 @@ package com.x.webstore.v1{
             }
         }
     }
-     transaction UpdateWebStoreOffer response
+     transaction UpdateWebStoreOffer unicast response
     {
     	description "Attempts to update a web store offer and returns either a succeeded or failed message."
     	
