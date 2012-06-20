@@ -42,6 +42,7 @@ package com.x.ecosystemmanagement.v1 {
 	}
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	// TODO: do we really need this?
 	
 	// Message Delivery Failure notification.  This message indicates that a
 	// message was not delivered to one or more listening capabilities.  A
@@ -242,6 +243,46 @@ package com.x.ecosystemmanagement.v1 {
 		string  tenantPseudonym
 		string? reason  // an explanation
 	}
-
+	
+	// -------------------------------------------------------------
+	// Releasing a bundle for a given tenant -or- a given capability
+	// -------------------------------------------------------------
+	
+	// sent from the AppStore or a Capability to the XManager
+	record ReleaseBundle {
+		// note that the X-XC-TENANT-ID header has the requester's self-tenant identifier
+		// (and *not* the tenant pseudonymn within the message, below)
+		//
+		// note: if the tenant is *not* specified, then the capability is specifying on its own behalf
+		string?  tenantPseudonym  // as seen from the point-of-view of the requester  
+		string   bundleName
+	}
+	
+	// "success" - sent from the XManager to the requester
+	record ReleaseBundleSucceeded {
+		// note that the X-XC-TENANT-ID header has the requester's self-tenant identifier
+		// (and *not* the tenant pseudonymn within the message, below)
+		//
+		// if the tenant was specified in the request, it is repeated in this response
+		string?  tenantPseudonym  // as seen from the point-of-view of the requester
+		string   bundleName
+	}
+	
+	// "failure" - sent from the XManager to the requester	
+	record ReleaseBundleFailed {
+		// note that the X-XC-TENANT-ID header has the AppStore's self-tenant identifier
+		// (and *not* the tenant pseudonymn within the message, below)
+		//
+		// if the tenant was specified in the request, it is repeated in this response
+		string?  tenantPseudonym  // as seen from the point-of-view of the requester
+		string   bundleName
+		string?  reason  // an explanation
+	}
+	
+	// sent from the XManager to the other particpants in the bundle that the bundle is now invalidated
+	record BundleInvalidated {
+		string?  tenantPseudonym  // as seen from the point-of-view of the recipient
+		string   bundleName
+	}
 }
 	

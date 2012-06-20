@@ -35,6 +35,7 @@ package com.x.ecosystemmanagement.v1 {
 		}
 	}
 	
+	// TODO: maybe this is really "BindBundle" or "AcquireBundle" ?
 	process OnboardTenant {
 		description "Have one or more capabilities perform services for a given tenant"
 		
@@ -82,6 +83,45 @@ package com.x.ecosystemmanagement.v1 {
 			transaction AcceptTenantRelationship {
 				roles(XManager,Capability)
 			}
+		}
+	}
+	
+	// TODO: maybe this is really "OffboardTenant" ?
+	process OffboardBundle {
+		description "Tear down a bundle since one of its participants no longer wishes to be part of it"
+		
+		roles
+		{
+			XManager
+			AppStore
+			Capability
+		}
+		
+		workflow {
+			// just one of the following is allowed
+			one {
+				// used on behalf of the merchant 
+				transaction ReleaseBundle {
+					roles(AppStore,XManager)
+				}
+				// used on behalf of a capability
+				transaction ReleaseBundle {
+					roles(Capability,XManager)
+				}
+			}
+
+			// Notify any others that the bundle is gone
+			
+			// TODO: this transaction really needs to live within the preceeding one
+			// TODO: how do i mark each of these as occuring 0+ times?
+			
+			transaction BundleInvalidated {
+				roles(XManager,Capability)
+			}
+			transaction BundleInvalidated {
+				roles(XManager,AppStore)
+			}
+
 		}
 	}
 

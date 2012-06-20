@@ -2,13 +2,17 @@ package com.x.ecosystemmanagement.v1 {
     import com.x.ecosystemmanagement.v1.*
     
     contract XManager {
-    	description "The special entity (essentially a capability) that manages the Fabric."
+    	description "The special entity that manages the Fabric."
+    	// note: The XManager is kind of like a capability.  Hence some of its roles, below.
     	roles
     	{
     		PingPong.Ponger "Responds with a Pong message after it receives a Ping message."
     		UpdateCapabilityEndpoint.XManager "Does the work of updating a capability's endpoint."
+    		
     		OnboardTenant.XManager "Works with the AppStore and capabilities in acquiring a bundle for a tenant "
     		AuthenticateTenant.XManager "Works with the AppStore and capabilities in establishing tenant relationships"
+    		
+    		OffboardBundle.XManager "Does the work of offboarding a bundle"
     	}
     }
        
@@ -18,8 +22,11 @@ package com.x.ecosystemmanagement.v1 {
     	{
     		PingPong.Ponger "Responds with a Pong message after it receives a Ping message."
     		UpdateCapabilityEndpoint.Capability "Requests that it's endpoint is updated."
-    		OnboardTenant.Capability "Accepts or denies to perform a contract(s) for a tenant"
+    		
+    		OnboardTenant.Capability "Accepts or denies performing a contract(s) for a tenant"
     		AuthenticateTenant.Capability "Accepts or denies a tenant relationship"
+    		
+    		OffboardBundle.Capability "Requests removal of itself from a bundle, or is informed of an invalidated bundle"
     	}
     }
     
@@ -37,8 +44,11 @@ package com.x.ecosystemmanagement.v1 {
     	roles
     	{
     		// note: MUST also have the "Capability" contract since it itself is a capability
+    		
     		OnboardTenant.AppStore "Requests the Fabric facilitate tenant onboarding for a given bundle"
     		AuthenticateTenant.AppStore "Collects tenant onboarding information from capabilities"
+    		
+    		OffboardBundle.AppStore "Requests removal of the tenant from a bundle, or is informed of an invalidated bundle"
     	}
     }
 

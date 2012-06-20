@@ -2,8 +2,8 @@
 package com.x.ecosystemmanagement.v1 {
 	import com.x.ecosystemmanagement.v1.*
 	
-	// this is suppose to be a very simple transaction.  no fancy stuff.
 	// TODO: mark as: unicast
+	// this is suppose to be a very simple transaction.  no fancy stuff.
 	transaction PingCapability response {
 		description "A capability sends a Ping message to a different capability in hopes to receive a corresponding Pong message."
         sender
@@ -15,9 +15,8 @@ package com.x.ecosystemmanagement.v1 {
         }
         receiver
         {
-        	// one of these two messages must be sent back to the sender as a response
-        	success Pong 
-            failure MessageDeliveryFailed 
+        	success Pong
+        	// failure MessageDeliveryFailed 
         } 
     }
     
@@ -40,7 +39,7 @@ package com.x.ecosystemmanagement.v1 {
     }
     
     // ------------------------------------------------------------------------
-    // onboarding tenant
+    // acquiring a bundle (can include onboarding a tenant)
     // ------------------------------------------------------------------------
     
     // TODO: ideally this is marked as: unicast 
@@ -98,5 +97,35 @@ package com.x.ecosystemmanagement.v1 {
     		failure AcceptTenantRelationshipFailed
     	}
     }
+    
+    
+    // ------------------------------------------------------------------------
+    // releasing a bundle
+    // ------------------------------------------------------------------------
 
+	// TODO: ideally this is marked as: unicast 
+	transaction ReleaseBundle response {
+		description "The merchant or a capability requests the Fabric to remove its participation from a specific bundle"
+    	sender
+    	{
+    		message ReleaseBundle
+    	}
+    	receiver
+    	{
+    		success ReleaseBundleSucceeded
+    		failure ReleaseBundleFailed
+    	}
+	}
+	
+	// TODO: mark as: unicast
+	transaction BundleInvalidated notify {
+		description "The XManager notifies a capability that its bundle participation is no longer valid"
+		sender
+		{
+			message BundleInvalidated {
+            	timeouts(receipt=30s, validation=3m)
+            	retries=3
+        	}
+		}
+	}
 }
