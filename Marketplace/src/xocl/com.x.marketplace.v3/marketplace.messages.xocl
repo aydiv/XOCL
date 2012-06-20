@@ -2,6 +2,9 @@ package com.x.marketplace.v3{
 
 	import com.x.core.v1.*
 	import com.x.pim.v1.*
+	import com.x.ordermanagement.v2.PackageWeight
+	import com.x.ordermanagement.v2.PackageDimensions
+	
 	/*
 		Defines a marketplace account which is intended to be used for all supported marketplaces.
 	*/
@@ -36,16 +39,11 @@ package com.x.marketplace.v3{
 		string marketplace;
 		CalculatedShippingMetadata? calculatedShippingMetadata;
 	}
-	enum MeasurementSystem{
-		METRIC "Measurements are in metric units: kg, g, cm, etc" ,
-		ENGLISH "Measurements are in english units: lb, oz, in, etc"
-	}
-	
-	
+
 	record CalculatedShippingMetadata{
 		array<string> supportedPackageTypes "The package types supported by this site"
 		boolean calculatedShippingSupported "Does this site support calculated shipping?"
-		MeasurementSystem measurementSystem "The measurement system used by this site"
+		array<MeasurementSystem> measurementSystem "The measurement system used by this site"
 	}
 	
 	 /*
@@ -161,19 +159,6 @@ package com.x.marketplace.v3{
 		PackageWeight weight;
 	}
 	
-	
-	record PackageDimensions{
-		float packageDepth;
-		float packageLength;
-		float packageWidth;
-		union {EnglishLengthMeasurementUnit, MetricLengthMeasurementUnit} measurementUnit
-	}
-	
-	record PackageWeight{
-		float packageWeightMajor  "The weight of the package in the units specified"
-		union {EnglishWeightMeasurementUnit, MetricWeightMeasurementUnit} majorMeasurementUnit
-		float? packageWeightMinor  "If the major package weight measurement unit is lb, this is oz.  If the major is kg, this is g"
-	}
 	
     record ShippingServiceOption {
 		int sellerPriority;
