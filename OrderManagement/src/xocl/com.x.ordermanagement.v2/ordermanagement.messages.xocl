@@ -55,18 +55,6 @@ package com.x.ordermanagement.v2 {
 		NONE "Indicates that no payment has been received for the order."
 	}
 	
-	enum MeasurementSystem {
-		METRIC "Measurements are in metric units: kg, g, cm, etc." ,
-		ENGLISH "Measurements are in english units: lb, oz, in, etc."
-	}
-	
-	
-	record CalculatedShippingMetadata{
-		array<string> supportedPackageTypes "Package types supported by this site."
-		boolean calculatedShippingSupported "Does this site support calculated shipping?"
-		MeasurementSystem measurementSystem "Measurement system used by this site."
-	}
-	
 	record PackageDimensions {
 		float packageDepth "Depth measurement of the shipping package in the units specified."
 		float packageLength "Length measurement of the shipping package in the units specified."
@@ -80,7 +68,6 @@ package com.x.ordermanagement.v2 {
 		float? packageWeightMinor  "If the major package weight measurement unit is lb, this is oz.  If the major is kg, this is g."
 	}
 	
-
 	record Shipment {
 		summary "Shipping information for an order."
 		description "Captures all the shipping information for an order, such as shipping method, shipping fees, surcharge, tracking details"
