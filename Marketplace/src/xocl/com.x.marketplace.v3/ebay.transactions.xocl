@@ -2,7 +2,7 @@
  	
  	import com.x.marketplace.v3.*
  	
-    transaction LookupStore query
+    transaction LookupStore unicast query
     {
         sender
         {
@@ -25,7 +25,7 @@
         } 
     }
     
-    transaction LookupAccountProfile query
+    transaction LookupAccountProfile unicast query
     {
         sender
         {

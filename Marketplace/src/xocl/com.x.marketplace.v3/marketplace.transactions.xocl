@@ -10,7 +10,7 @@ package com.x.marketplace.v3{
     	state Inactive
     }
 	
-    transaction GetAllAuthorizedAccount query {
+    transaction GetAllAuthorizedAccount unicast query {
         sender {
         	message GetAllAuthorizedAccount	{
         		 timeouts(response=30s) 
@@ -29,7 +29,7 @@ package com.x.marketplace.v3{
         } 
     }
     
-    transaction RevokeAuthorization response {
+    transaction RevokeAuthorization unicast response {
         sender {
         	message RevokeAuthorization {
         		timeouts(receipt=30s, response=3m)     		
@@ -63,7 +63,7 @@ package com.x.marketplace.v3{
         } 
     }
     
- 	transaction GetAllSites query {
+ 	transaction GetAllSites unicast query {
         sender {
         	message GetAllSites {
         		 timeouts(response=30s)
@@ -77,7 +77,7 @@ package com.x.marketplace.v3{
         } 
     }
     
- 	transaction LookupSiteMetadata query {
+ 	transaction LookupSiteMetadata unicast query {
         sender {
         	message LookupSiteMetadata {
         		 timeouts(response=30s)
@@ -99,7 +99,7 @@ package com.x.marketplace.v3{
     
     
    
-    transaction SearchCategories query {
+    transaction SearchCategories unicast query {
         sender {
         	message SearchCategories {
         		 timeouts(response=1m)   //1m per Jay Rutten's request
@@ -118,7 +118,7 @@ package com.x.marketplace.v3{
         } 
     }
     
-    transaction CreatePolicyGroup<Ebay> response {
+    transaction CreatePolicyGroup<Ebay> unicast response {
         sender {
         	message CreatePolicyGroup {
         		timeouts(receipt=30s, response=3m)     		
@@ -148,7 +148,7 @@ package com.x.marketplace.v3{
         }
     }
     
-    transaction UpdatePolicyGroup<Ebay> response {
+    transaction UpdatePolicyGroup<Ebay> unicast response {
         sender {
         	message UpdatePolicyGroup{
         	    timeouts(receipt=30s, response=3m)     		
@@ -179,7 +179,7 @@ package com.x.marketplace.v3{
         }
     }
     
-    transaction DeletePolicyGroup response {
+    transaction DeletePolicyGroup unicast response {
         sender {
         	message DeletePolicyGroup {
         		timeouts(receipt=30s, response=3m)     		
@@ -197,7 +197,7 @@ package com.x.marketplace.v3{
         }
     }
      
-    transaction LookupPolicyGroup<Ebay> query {
+    transaction LookupPolicyGroup<Ebay> unicast query {
         sender {
         	message LookupPolicyGroup {
         		 timeouts(response=30s)     		
@@ -218,7 +218,7 @@ package com.x.marketplace.v3{
     }
  
     
-    transaction PublishOffer<Ebay>(Offer offer) notify {
+    transaction PublishOffer<Ebay>  (Offer offer) unicast notify {
         preconditions(offer[Offer.Created])
         sender {
         	message PublishOffer {
@@ -232,7 +232,7 @@ package com.x.marketplace.v3{
         }
     }
     
-    transaction PublishOfferWithProductData<Ebay>(Offer offer) notify {
+    transaction PublishOfferWithProductData<Ebay>(Offer offer) unicast notify {
         preconditions(offer[Offer.Created])
         sender {
         	message PublishOfferWithProductData {
@@ -246,7 +246,7 @@ package com.x.marketplace.v3{
         }
     }
     
-    transaction PublishOfferSucceeded<Ebay>(Offer offer) notify {
+    transaction PublishOfferSucceeded<Ebay>(Offer offer) unicast notify {
         preconditions(offer[Offer.Active])
         sender {
         	message PublishOfferSucceeded {
@@ -260,7 +260,7 @@ package com.x.marketplace.v3{
         }
     }
     
-    transaction PublishOfferFailed<Ebay>(Offer offer) notify {
+    transaction PublishOfferFailed<Ebay>(Offer offer) unicast notify {
         preconditions(!offer[Offer.Active])
         sender {
         	message PublishOfferFailed {
@@ -275,7 +275,7 @@ package com.x.marketplace.v3{
     }
     
  
-    transaction RevisePublishedOffer<Ebay> notify {
+    transaction RevisePublishedOffer<Ebay> unicast notify {
         sender {
         	message RevisePublishedOffer {
         		timeouts(receipt=30s)		
@@ -287,7 +287,7 @@ package com.x.marketplace.v3{
         	}
         }
       }
-      transaction RevisePublishedOfferWithProductData<Ebay> notify {
+      transaction RevisePublishedOfferWithProductData<Ebay> unicast notify {
         sender {
         	message RevisePublishedOfferWithProductData {
         		timeouts(receipt=30s)		
@@ -301,7 +301,7 @@ package com.x.marketplace.v3{
       }
       
              
-    transaction RevisePublishedOfferSucceeded<Ebay> notify {
+    transaction RevisePublishedOfferSucceeded<Ebay> unicast notify {
         sender {
         	message RevisePublishedOfferSucceeded {
         		timeouts(receipt=30s)		
@@ -314,7 +314,7 @@ package com.x.marketplace.v3{
         }
       }
       
-      transaction RevisePublishedOfferFailed<Ebay> notify {
+      transaction RevisePublishedOfferFailed<Ebay> unicast notify {
         sender {
         	message RevisePublishedOfferFailed {
         		timeouts(receipt=30s)		
@@ -327,7 +327,7 @@ package com.x.marketplace.v3{
         }
       }
       
-    transaction RevokePublishedOffer response {
+    transaction RevokePublishedOffer unicast response {
         sender {
         	message RevokePublishedOffer {
         		timeouts(receipt=30s, response=2h)     		
@@ -345,7 +345,7 @@ package com.x.marketplace.v3{
         }
     }
     
-    transaction SearchOffers<Ebay> query {
+    transaction SearchOffers<Ebay> unicast query {
         sender {
         	message SearchOffers {
         		 timeouts(response=30s)
@@ -368,7 +368,7 @@ package com.x.marketplace.v3{
         } 
     } 
     
-    transaction SearchTopSellingProducts<Ebay> query {
+    transaction SearchTopSellingProducts<Ebay> unicast query {
         sender {
         	message SearchTopSellingProducts {
         		 timeouts(response=30s)
