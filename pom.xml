@@ -233,6 +233,7 @@
 										<goals>
 											<goal>xocltoavdl</goal>
 											<goal>xocltolocaljson</goal>
+											<goal>xocltojson</goal>
 										</goals>
 									</pluginExecutionFilter>
 									<action>
