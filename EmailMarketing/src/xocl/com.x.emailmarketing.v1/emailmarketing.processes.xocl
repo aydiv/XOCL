@@ -111,6 +111,7 @@ package com.x.emailmarketing.v1{
 			success (!exists(contactList))
 		} 
 	}
+	
 	process ContactListsSearch {
 	    roles (MarketingConsole, MarketingManager)
 		
