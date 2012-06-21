@@ -97,13 +97,13 @@ package com.x.emailmarketing.v1{
 		} 
 	}	
 	
-	process DeleteContactList<Dynamic> (ContactList contactList){
+	process DeleteContactList (ContactList contactList){
 	    roles (MarketingConsole, MarketingManager)
 		
 		preconditions (exists(contactList))
 		
 		workflow{
-			transaction DeleteContactList<Dynamic> {
+			transaction DeleteContactList {
 				roles(MarketingConsole, MarketingManager)
 			}	
 		}
