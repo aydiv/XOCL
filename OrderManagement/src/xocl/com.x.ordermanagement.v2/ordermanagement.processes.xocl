@@ -61,7 +61,7 @@ package com.x.ordermanagement.v2 {
     }
     
     // Process orders that originate from a sales channel
-    process ProcessSalesChannelOrder<MarketplaceOrder, MarketplacePaymentUpdate>(Order order) {
+    process ProcessSalesChannelOrder<MarketplaceOrder>(Order order) {
     	
     	summary "Processes an order."
         description "An order is submitted and is processed by making adjustments, changing the status, etc."
@@ -124,7 +124,7 @@ package com.x.ordermanagement.v2 {
 		    			roles(OrderProcessor, OrderObserver)
 		    		}
 		    		
-		    		transaction PaymentUpdate<MarketplacePaymentUpdate> {
+		    		transaction PaymentUpdate<MarketplaceOrder> {
 		    			roles(SalesChannel, OrderProcessor)
 		    		}
 		    		

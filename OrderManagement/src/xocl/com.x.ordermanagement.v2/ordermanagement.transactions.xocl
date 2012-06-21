@@ -202,21 +202,21 @@ package com.x.ordermanagement.v2 {
     	}
     }
     
-    transaction PaymentUpdate<MarketplacePaymentUpdate> response {
+    transaction PaymentUpdate<MarketplaceOrder> response {
     	description "Updates the payment information."
     	sender {
     		message PaymentUpdate {
     			timeouts(response=30s)    		
         	}
-        	message <MarketplacePaymentUpdate> MarketplacePaymentUpdate {
+        	message <MarketplaceOrder> MarketplacePaymentUpdate {
     			timeouts(response=30s)    		
         	}
         }
         receiver {
         	success PaymentUpdateSucceeded                       	        
-        	success <MarketplacePaymentUpdate> MarketplacePaymentUpdateSucceeded                       	        
+        	success <MarketplaceOrder> MarketplacePaymentUpdateSucceeded                       	        
             failure PaymentUpdateFailed
-            failure <MarketplacePaymentUpdate> MarketplacePaymentUpdateFailed
+            failure <MarketplaceOrder> MarketplacePaymentUpdateFailed
         } 
     }
 }
