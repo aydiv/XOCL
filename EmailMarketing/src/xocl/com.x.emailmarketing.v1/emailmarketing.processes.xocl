@@ -1,0 +1,204 @@
+package com.x.emailmarketing.v1{
+
+	import com.x.core.v1.*
+	import com.x.emailmarketing.v1.*
+	
+	entity EmailCampaign
+	entity ContactList
+	entity Message
+	
+	process EmailCampaignCreation (EmailCampaign campaign){
+		roles (MarketingConsole, MarketingManager)
+		preconditions (!exists(campaign))
+		workflow{
+			transaction CreateEmailCampaign{
+				roles(MarketingConsole, MarketingManager)
+			}			
+		}
+		postconditions{
+			success (exists(campaign))
+		} 
+	}
+	
+	process EmailCampaignUpdate (EmailCampaign campaign) {
+		roles (MarketingConsole, MarketingManager)
+		preconditions (exists(campaign))
+		workflow{
+			transaction UpdateEmailCampaign{
+				roles(MarketingConsole, MarketingManager)
+			}	
+			
+		}
+	}
+	
+	
+	process EmailCampaignDeletion (EmailCampaign campaign) {
+		roles (MarketingConsole, MarketingManager)
+		preconditions (exists(campaign))
+		workflow{
+			transaction DeleteEmailCampaign{
+				roles(MarketingConsole, MarketingManager)
+			}	
+			
+		}
+		postconditions{
+			success (!exists(campaign))
+		} 
+	}
+
+	process CampaignStatisticsLookup {
+	    roles (MarketingConsole, MarketingManager)
+		
+		workflow{
+			transaction LookupCampaignStatistics {
+				roles(MarketingConsole, MarketingManager)
+			}	
+			
+		}
+	}
+		
+	process CampaignSearch {
+	    roles (MarketingConsole, MarketingManager)
+		
+		workflow{
+			transaction SearchCampaigns {
+				roles(MarketingConsole, MarketingManager)
+			}	
+			
+		}
+	}	
+	
+	process CreateContactList<Dynamic> (ContactList contactList) {
+	    roles (MarketingConsole, MarketingManager)
+		preconditions (!exists(contactList))
+		workflow{
+			transaction CreateContactList<Dynamic> {
+				roles(MarketingConsole, MarketingManager)
+			}	
+			
+		}
+		postconditions{
+			success (exists(contactList))
+		} 
+	}	
+	
+	process UpdateContactList<Dynamic> (ContactList contactList) {
+	    roles (MarketingConsole, MarketingManager)
+		
+		preconditions (exists(contactList))
+		
+		workflow{
+			transaction UpdateContactList<Dynamic> {
+				roles(MarketingConsole, MarketingManager)
+			}	
+		}
+		postconditions{
+			success (exists(contactList))
+		} 
+	}	
+	
+	process DeleteContactList<Dynamic> (ContactList contactList){
+	    roles (MarketingConsole, MarketingManager)
+		
+		preconditions (exists(contactList))
+		
+		workflow{
+			transaction DeleteContactList<Dynamic> {
+				roles(MarketingConsole, MarketingManager)
+			}	
+		}
+		postconditions{
+			success (!exists(contactList))
+		} 
+	}
+	process ContactListsSearch {
+	    roles (MarketingConsole, MarketingManager)
+		
+		workflow{
+			transaction SearchContactLists {
+				roles(MarketingConsole, MarketingManager)
+			}	
+			
+		}
+	}	
+			
+	process CreateMessage (Message mesg){
+	    roles (MarketingConsole, MarketingManager)
+		
+		preconditions (!exists(mesg))
+		
+		workflow{
+			transaction CreateMessage {
+				roles(MarketingConsole, MarketingManager)
+			}	
+		}
+		postconditions{
+			success (exists(mesg))
+		} 
+	}
+	
+	process UpdateMessage (Message mesg){
+	    roles (MarketingConsole, MarketingManager)
+
+		preconditions (exists(mesg))
+
+		workflow{
+			transaction UpdateMessage {
+				roles(MarketingConsole, MarketingManager)
+			}	
+		}
+		postconditions{
+			success (exists(mesg))
+		} 
+	}
+	
+	process DeleteMessage (Message mesg){
+	    roles (MarketingConsole, MarketingManager)
+		
+		workflow{
+			transaction DeleteMessage {
+				roles(MarketingConsole, MarketingManager)
+			}	
+			
+		}
+		
+		postconditions{
+			success (!exists(mesg))
+		}
+	}
+	
+	process AddContactListsToCampaign (ContactList contactList, EmailCampaign campaign){
+	    roles (MarketingConsole, MarketingManager)
+		preconditions (exists(contactList) && exists(campaign))
+		
+		workflow{
+			transaction AddContactListsToCampaign {
+				roles(MarketingConsole, MarketingManager)
+			}	
+		}
+	}
+	
+    process AddOffersToCampaign ( EmailCampaign campaign){
+	    roles (MarketingConsole, MarketingManager)
+		preconditions (exists(campaign))
+		
+		workflow{
+			transaction AddOffersToCampaign {
+				roles(MarketingConsole, MarketingManager)
+			}	
+		}
+	}
+	
+	process RemoveOffersFromCampaign ( EmailCampaign campaign){
+	    roles (MarketingConsole, MarketingManager)
+		preconditions (exists(campaign))
+		
+		workflow{
+			transaction RemoveOffersFromCampaign {
+				roles(MarketingConsole, MarketingManager)
+			}	
+		}
+	}
+	
+
+}

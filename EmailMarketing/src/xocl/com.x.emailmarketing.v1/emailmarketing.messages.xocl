@@ -1,0 +1,513 @@
+
+package com.x.emailmarketing.v1{
+
+	import com.x.core.v1.*
+	
+	record Account extends AccountData{
+		string id;
+	}
+
+	record AccountData {
+		
+		string email "The email address that will be use to send messages."
+		string emailName;
+		
+		string? parentAccountId;
+	}
+	
+	enum EventType {
+		MESSAGE_BOUNCED,
+		MESSAGE_OPENED,
+		UNSUBSCRIBE
+	}
+	
+	record EmailEvent {
+		description "Represents an event relating to a message sent from a campaign"
+		string campaignId;
+		string contactId;
+		
+		datetime time;
+		
+		EventType type;
+	}
+	
+	record SocialShareEvent {
+		string campaignId;
+		string contactId;
+		
+		datetime time;
+		string socialNetwork;		
+		int networkViews;
+	}
+	
+	record LinkClickEvent {
+	    string campaignId;
+		string contactId;
+		datetime time;		
+		int webPageViews;
+		string? orderId
+		CurrencyAmount? salesValue;
+	}
+	
+
+	record ContactStatistic {
+		description "summary and detailed statistics of a contact  in the context of a campaign. "
+		string contactId;
+		string campaignId;
+
+		boolean bounced;
+		int delivered;
+		int opens;
+		int clicks;
+		boolean unsubscribed;
+
+		array<union{EmailEvent,LinkClickEvent,SocialShareEvent}> allEvents;				
+	}
+
+
+	record ContactSearchFilter {
+		string? email
+		string? contactId
+		string? listId
+		string? campaignId 
+		string? accountId
+	}
+	
+	
+	enum ListVisibilityType {
+		PRIVATE "Only visible to the merchant.",
+		CONTACT "The provider can inform a contact that he is part of the list"
+	}
+	
+	record ContactList extends ContactListData{
+		string id;
+	}
+	
+	record ContactListData  {
+		string name;
+		string _AVDL_description;	
+		string accountId "The account this list belongs to";
+
+		boolean notifyOnAdd = false "Determines whether a contact should be notified whenever it is added to this list. ";
+		string? notifyOnAddMessageId;
+		
+		ListVisibilityType visibility;  
+	}
+	
+	enum SegmentScope {
+		GLOBAL "all contacts the tenant has will be considered",
+		LIST "only contacts in the associated static list will be considered"
+	}
+	
+	record Criteria {
+		string? _AVDL_description;
+		
+		string property;
+		string operator;
+		array<string>? values;
+	}
+
+	record DynamicContactList extends DynamicContactListData{
+		string id;
+	}
+	
+	record DynamicContactListData{
+		description " A dynamic contact list is defined by a set of query criteria and the scope it covers."
+		string name;
+		string _AVDL_description;
+		array<Criteria> criteria;
+		
+		SegmentScope scope;
+		array<string>? staticListId //TBD:  what is this?		
+	}
+
+	/** Use this to search for list */	
+	record ListSearchFilter {
+		string? listId
+		string? contactId
+		string? campaignId
+	    string? accountId
+	}
+	
+	enum MessageType {
+		NORMAL  "A message normally sent from a campaign",
+		WELCOME "A message that welcomes a contact when subscribed",  
+		CONFIRM "A message requesting recipient to confirm email address"
+	}
+	
+	record Message{
+		string id;
+	}
+	
+	
+	record MessageData extends Message {
+		
+		description "Represents an email that will be used in campaign"
+	
+		
+		string accountId "The account this list belongs to"
+
+		union{MessageType,string} type "Provider specific types can be specified as strings"
+		
+		string subjectText;
+		
+		/** Must provide both */
+		string htmlBody;
+		string textBody;
+		
+		string? defaultFromEmail;
+		string? defaultFromName;
+	}
+	
+
+	record MessageSearchFilter {
+		string? messageId;
+		string? campaignId;
+		string? accountId ;
+	}
+	
+	record SpamCheckRule {
+		double score;
+		string name;
+		string? _AVDL_description;
+	}
+	
+	record SpamCheckScore {
+		string messageId;
+	
+		double totalScore "Lower score is better"
+		array<SpamCheckRule> triggeredRules;
+	}
+	
+	
+	record CampaignStatistic {
+		description "The aggregated and detailed result of a campaign."
+		
+		string campaignId;
+		
+		int bounces;
+		int delivered;
+		int opens;
+		int clicks;
+		int unsubscribes;
+		
+		array<union{EmailEvent,LinkClickEvent,SocialShareEvent}> allEvents;				
+	}
+	
+	enum CampaignStatus {
+		DRAFT,
+		SCHEDULED,
+		EXECUTING,
+		COMPLETED
+	}
+	
+	record EmailCampaign extends EmailCampaignData{
+		string id;
+	}
+	
+	record EmailCampaignData {
+
+		string accountId "The account this campaign belongs to"
+		
+		string name "The name of the campaign"
+		string? _AVDL_description;
+
+		datetime? startTime;
+		datetime? endTime;
+		
+		/** Provider specific types can be specified as strings */
+		union{CampaignStatus,string} status;
+		string messageId;
+
+		/** If not provided, will use default on message */
+		string? fromEmail;
+		string? fromName;
+		
+		/** Must have one or more list. Can be id of static list or segment. */
+		array<string> listIds;
+	
+		Address? address;
+	}
+	
+	/** Use this to search for campaign */
+	record CampaignSearchFilter {
+		string? campaignId
+		string? campaignName
+		string? messageId
+		string? listId
+		string? accountId
+	}
+
+	record GetContactStatistic {
+		string contactId;
+		string campaignId;
+	}
+	
+
+	record GetContactStatisticSucceeded {
+		ContactStatistic statistic;
+	}
+	
+
+	record GetContactStatisticFailed {
+		string contactId;
+		array<Error> errors;
+	}
+
+	record CreateContactList {
+		ContactListData contactList;
+	}
+	
+
+	record CreateContactListSucceeded {
+		ContactList contactList;
+	}
+	
+	record CreateContactListFailed {
+		array<Error> errors;
+		CreateContactList request;
+	}
+	
+	record CreateDynamicContactList {
+		DynamicContactListData contactList;
+	}
+	
+	record CreateDynamicContactListSucceeded {
+		DynamicContactList contactList;
+	}
+	
+	record CreateDynamicContactListFailed {
+		CreateDynamicContactList request;
+		array<Error> errors;
+	}
+	
+	record UpdateContactList {
+		ContactList contactList;
+	}
+	
+	record UpdateContactListSucceeded {
+		ContactList contactList;
+	}
+	
+	record UpdateContactListFailed {
+		array<Error> errors;
+		UpdateContactList request;
+	}
+	
+	record UpdateDynamicContactList {
+		DynamicContactList contactList;
+	}
+	
+	record UpdateDynamicContactListSucceeded {
+		DynamicContactList contactList;
+	}
+	
+	record UpdateDynamicContactListFailed {
+		UpdateDynamicContactList request;
+		array<Error> errors;
+	}
+	
+	
+	record DeleteContactList {
+		string id;
+	}
+	
+	record DeleteContactListSucceeded {
+		string id;
+	}
+	
+	record DeleteContactListFailed {
+		DeleteContactList request;
+		array<Error> errors;
+	}
+	
+
+	record SearchContactLists {
+		ListSearchFilter filter;
+	}
+	
+
+	record SearchContactListsSucceeded {
+		ListSearchFilter filter;
+		
+		//Returns an array of List or Segment
+		array<union{ContactList,DynamicContactList}> lists;
+	}
+	
+
+	record SearchContactListsFailed {
+		SearchContactLists request;
+		array<Error> errors;
+	}
+	
+
+	record CreateMessage {
+		MessageData mesg;
+	}
+	
+
+	record CreateMessageSucceeded {
+		Message mesg;
+	}
+	
+
+	record CreateMessageFailed {
+		Message mesg;
+		array<Error> errors;
+	}
+
+
+	record SearchMessage {
+		MessageSearchFilter filter;
+	}
+
+
+	record SearchMessageSucceeded {
+		MessageSearchFilter filter;
+		array<Message> mesg;
+	}
+
+	record SearchMessageFailed {
+		MessageSearchFilter filter;
+		array<Error> errors;
+	}
+	
+	record UpdateMessage {
+		Message mesg;
+	}
+    
+    record UpdateMessageSucceeded {
+		Message mesg;
+	}
+
+	record UpdateMessageFailed {
+		UpdateMessage request;
+		array<Error> errors;
+	}
+	
+
+	record DeleteMessage {
+		string messageId;
+	}
+
+	record DeleteMessageSucceeded {
+		string messageId;
+	}
+	
+	record DeleteMessageFailed {
+		DeleteMessage request;
+		array<Error> errors;
+	}
+	
+	record CreateEmailCampaign {
+		EmailCampaignData campaignData;
+	}
+	
+	record CreateEmailCampaignSucceeded {
+		EmailCampaign campaign;
+	}
+
+	record CreateEmailCampaignFailed {
+		EmailCampaign campaign;
+		array<Error> errors;
+	}
+	
+
+	record SearchCampaigns {
+		CampaignSearchFilter filter;
+	}
+	
+	record SearchCampaignsSucceeded {
+		array<EmailCampaign> campaigns;
+		SearchCampaigns request;
+	}
+	
+	record SearchCampaignsFailed {
+		SearchCampaigns request;
+		array<Error> errors;
+	}
+	
+	record UpdateEmailCampaign {
+		EmailCampaign campaign;
+	}
+	
+	record UpdateEmailCampaignSucceeded {
+		EmailCampaign campaign;
+	}
+	
+	record UpdateEmailCampaignFailed {
+		UpdateEmailCampaign request;
+		array<Error> errors;
+	}
+	
+	record DeleteEmailCampaign {
+		string campaignId;
+	}
+	
+	record DeleteEmailCampaignSucceeded {
+		DeleteEmailCampaign request;
+	}
+	
+	record DeleteEmailCampaignFailed {
+		string campaignId;
+		array<Error> errors;
+	}
+	
+	record AddContactListsToCampaign {
+		string campaignId;
+		array<string> listIds "Ids of ContactLists or DynamicContactLists";
+	}
+
+	record AddContactListsToCampaignSucceeded {
+		AddContactListsToCampaign request
+	}
+	
+	record AddContactListsToCampaignFailed {
+		AddContactListsToCampaign request
+		array<Error> errors;
+	}
+	
+	
+	record AddOffersToCampaign {
+		string campaignId;
+		array<string> offerIds "Ids of offers to be added to the campaign";
+	}
+
+	record AddOffersToCampaignSucceeded {
+		AddOffersToCampaign request;
+	}
+	
+	record  AddOffersToCampaignFailed  {
+		AddOffersToCampaign request;
+		array<Error> errors;
+	}
+	
+	record RemoveOffersFromCampaign {
+		string campaignId;
+		array<string> offerIds "Ids of offers to be removed from the campaign";
+	}
+
+	record RemoveOffersFromCampaignSucceeded {
+		RemoveOffersFromCampaign request;
+	}
+	
+	record RemoveOffersFromCampaignFailed {
+		RemoveOffersFromCampaign request;
+		array<Error> errors;
+	}
+	
+	record LookupCampaignStatistics {
+		string campaignId;
+	}
+
+	record LookupCampaignStatisticsSucceeded {
+		string campaignId;
+		CampaignStatistic statistic;
+	}
+	
+	record LookupCampaignStatisticsFailed {
+		LookupCampaignStatistics request;
+		array<Error> errors;
+	}
+	
+}

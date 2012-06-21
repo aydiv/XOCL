@@ -1,0 +1,17 @@
+package com.x.emailmarketing.v1{
+
+	import com.x.core.v1.*
+	import com.x.emailmarketing.v1.*
+	import com.x.customer.v1.*
+	
+	contract EmailMarketingProvider{
+		description "A provider of e-mail marketing services"
+		roles{
+				CustomerSearch.CustomerConsumer<Email>
+				EmailCampaignCreation.MarketingManager
+				EmailCampaignUpdate.MarketingManager
+				EmailCampaignDeletion.MarketingManager
+		}
+		
+	}
+}

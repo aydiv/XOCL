@@ -1,0 +1,328 @@
+package com.x.emailmarketing.v1{
+
+	import com.x.core.v1.*
+	import com.x.emailmarketing.v1.*
+	
+	transaction CreateEmailCampaign response  {
+    	description "Creates a new campaign in the target system"
+        sender {
+        	message CreateEmailCampaign {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success CreateEmailCampaignSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+         	
+            failure CreateEmailCampaignFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}  
+        } 
+    }
+    
+    transaction UpdateEmailCampaign response {
+    	description "Updates a new campaign in the target system"
+        sender {
+        	message UpdateEmailCampaign {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success UpdateEmailCampaignSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+         	
+            failure UpdateEmailCampaignFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}  
+        } 
+    }
+    
+    transaction DeleteEmailCampaign response  {
+    	description "Updates a new campaign in the target system"
+        sender {
+        	message DeleteEmailCampaign {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success DeleteEmailCampaignSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+         	
+            failure DeleteEmailCampaignFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}  
+        } 
+    }
+    
+    transaction LookupCampaignStatistics query  {
+    	description "Retrieves campaign statistics"
+        sender {
+        	message LookupCampaignStatistics {
+        		 timeouts(response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success LookupCampaignStatisticsSucceeded {
+        	}
+         	
+            failure LookupCampaignStatisticsFailed {
+        	}  
+        } 
+    }
+    
+    transaction SearchCampaigns query  {
+    	description "Finds campaigns based on search criteria"
+        sender {
+        	message SearchCampaigns {
+        		 timeouts(response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success SearchCampaignsSucceeded {
+        	}
+         	
+            failure SearchCampaignsFailed {
+        	}  
+        } 
+    }
+    transaction CreateContactList<Dynamic> response  {
+    	description "Creates a contact list in the target system"
+        sender {
+        	message CreateContactList {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        	message <Dynamic>CreateDynamicContactList {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success CreateContactListSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+         	
+        	success<Dynamic> CreateDynamicContactListSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+            failure CreateContactListFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	} 
+            failure<Dynamic> CreateDynamicContactListFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}   
+        } 
+    }
+    transaction UpdateContactList<Dynamic> response  {
+    	description "Creates a contact list in the target system"
+        sender {
+        	message UpdateContactList {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        	message <Dynamic>UpdateDynamicContactList {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success UpdateContactListSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+         	
+        	success<Dynamic> UpdateDynamicContactListSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+            failure UpdateContactListFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	} 
+            failure<Dynamic> UpdateDynamicContactListFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}   
+        } 
+    }
+    transaction DeleteContactList response  {
+    	description "Deletes a contact list in the target system"
+        sender {
+        	message DeleteContactList {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success DeleteContactListSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+            failure DeleteContactListFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	} 
+ 
+        } 
+    }
+    transaction CreateMessage response  {
+    	description "Creates a message in the target system"
+        sender {
+        	message CreateMessage {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success CreateMessageSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+         	
+            failure CreateMessageFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}   
+        } 
+    }
+    transaction UpdateMessage response  {
+    	description "Updates a message in the target system"
+        sender {
+        	message UpdateMessage {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success UpdateMessageSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+         	
+            failure UpdateMessageFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}   
+        } 
+    }
+    transaction DeleteMessage response  {
+    	description "Deletes a message in the target system"
+        sender {
+        	message DeleteMessage {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success DeleteMessageSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+         	
+            failure DeleteMessageFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}   
+        } 
+    }
+    transaction AddContactListsToCampaign response  {
+    	description "Adds contact lists to a campaign"
+        sender {
+        	message AddContactListsToCampaign {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success AddContactListsToCampaignSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+         	
+            failure AddContactListsToCampaignFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}   
+        } 
+    }
+    
+    transaction SearchContactLists query  {
+    	description "Finds contact lists based on search criteria"
+        sender {
+        	message SearchContactLists {
+        		 timeouts(response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success SearchContactListsSucceeded {
+        	}
+         	
+            failure SearchContactListsFailed {
+        	}  
+        } 
+    }
+    
+    transaction AddOffersToCampaign response  {
+    	description "Adds offers to a campaign"
+        sender {
+        	message AddOffersToCampaign {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success AddOffersToCampaignSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+         	
+            failure AddOffersToCampaignFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}   
+        } 
+    }
+    
+    transaction RemoveOffersFromCampaign response  {
+    	description "Removes offers from a campaign"
+        sender {
+        	message RemoveOffersFromCampaign {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success RemoveOffersFromCampaignSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+         	
+            failure RemoveOffersFromCampaignFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}   
+        } 
+    }
+    
+    
+    
+}
