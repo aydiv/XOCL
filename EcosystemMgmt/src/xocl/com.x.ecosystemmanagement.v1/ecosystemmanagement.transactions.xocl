@@ -2,9 +2,8 @@
 package com.x.ecosystemmanagement.v1 {
 	import com.x.ecosystemmanagement.v1.*
 	
-	// TODO: mark as: unicast
 	// this is suppose to be a very simple transaction.  no fancy stuff.
-	transaction PingCapability response {
+	transaction PingCapability unicast response {
 		description "A capability sends a Ping message to a different capability in hopes to receive a corresponding Pong message."
         sender
         {
@@ -20,8 +19,7 @@ package com.x.ecosystemmanagement.v1 {
         } 
     }
     
-    // TODO: mark as: unicast
-    transaction UpdateCapabilityEndpoint response {
+    transaction UpdateCapabilityEndpoint unicast response {
     	description "A capability needs to update its URL where the Fabric delivers its messages."
         sender
         {
@@ -41,8 +39,8 @@ package com.x.ecosystemmanagement.v1 {
     // ------------------------------------------------------------------------
     // acquiring a bundle (can include onboarding a tenant)
     // ------------------------------------------------------------------------
-    
-    // TODO: ideally this is marked as: unicast 
+
+	// TODO: should this be a "unicast" to force the request to the XManager?     
     transaction AcquireBundle response {
     	description "The AppStore requests the Fabric to aquire a specific bundle for the given tenant"
     	sender
@@ -56,8 +54,7 @@ package com.x.ecosystemmanagement.v1 {
     	}
     }
     
-    // TODO: mark as: unicast
-    transaction PerformContracts response {
+    transaction PerformContracts unicast response {
     	description "The Fabric requests that a capability perform its contracts for the given tenant"
     	sender
     	{
@@ -84,8 +81,7 @@ package com.x.ecosystemmanagement.v1 {
     	}
     }
     
-    // TODO: mark as: unicast
-    transaction AcceptTenantRelationship response {
+    transaction AcceptTenantRelationship unicast response {
     	description "The Fabric requests that a capability accept a new tenant relationship"
     	sender
     	{
@@ -103,7 +99,7 @@ package com.x.ecosystemmanagement.v1 {
     // releasing a bundle
     // ------------------------------------------------------------------------
 
-	// TODO: ideally this is marked as: unicast 
+	// TODO: should this be a "unicast" to force the request to the XManager? 
 	transaction ReleaseBundle response {
 		description "The merchant or a capability requests the Fabric to remove its participation from a specific bundle"
     	sender
@@ -117,8 +113,7 @@ package com.x.ecosystemmanagement.v1 {
     	}
 	}
 	
-	// TODO: mark as: unicast
-	transaction BundleInvalidated notify {
+	transaction BundleInvalidated unicast notify {
 		description "The XManager notifies a capability that its bundle participation is no longer valid"
 		sender
 		{
