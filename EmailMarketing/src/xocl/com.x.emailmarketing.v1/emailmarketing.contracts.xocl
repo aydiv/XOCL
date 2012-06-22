@@ -11,6 +11,20 @@ package com.x.emailmarketing.v1{
 				EmailCampaignCreation.MarketingManager
 				EmailCampaignUpdate.MarketingManager
 				EmailCampaignDeletion.MarketingManager
+				CampaignStatisticsLookup.MarketingManager
+				CampaignSearch.MarketingManager
+				CreateContactList.MarketingManager
+				CreateContactList.MarketingManager<Dynamic>
+				UpdateContactList.MarketingManager
+				UpdateContactList.MarketingManager<Dynamic>
+				DeleteContactList.MarketingManager
+				ContactListsSearch.MarketingManager
+				CreateMessage.MarketingManager
+				UpdateMessage.MarketingManager
+				DeleteMessage.MarketingManager
+				AddContactListsToCampaign.MarketingManager
+				AddOffersToCampaign.MarketingManager
+				RemoveOffersFromCampaign.MarketingManager
 		}
 		
 	}
