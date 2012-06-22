@@ -105,9 +105,9 @@ package com.x.ecosystemmanagement.v1 {
 					roles(AppStore,XManager)
 				}
 				// used on behalf of a capability
-				transaction ReleaseBundle {
-					roles(Capability,XManager)
-				}
+				//transaction ReleaseBundle {
+				//	roles(Capability,XManager)
+				//}
 			}
 
 			// Notify any others that the bundle is gone
@@ -118,9 +118,9 @@ package com.x.ecosystemmanagement.v1 {
 			transaction BundleInvalidated {
 				roles(XManager,Capability)
 			}
-			transaction BundleInvalidated {
-				roles(XManager,AppStore)
-			}
+			//transaction BundleInvalidated {
+			//	roles(XManager,AppStore)
+			//}
 
 		}
 	}
