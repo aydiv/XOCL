@@ -26,6 +26,28 @@ package com.x.emailmarketing.v1{
 				AddOffersToCampaign.MarketingManager
 				RemoveOffersFromCampaign.MarketingManager
 		}
-		
 	}
+	contract EmailMarketingAdminConsole{
+		description "An administrative console for an e-mail marketing provider"
+		roles{
+				EmailCampaignCreation.MarketingConsole
+				EmailCampaignUpdate.MarketingConsole
+				EmailCampaignDeletion.MarketingConsole
+				CampaignStatisticsLookup.MarketingConsole
+				CampaignSearch.MarketingConsole
+				CreateContactList.MarketingConsole
+				CreateContactList.MarketingConsole<Dynamic>
+				UpdateContactList.MarketingConsole
+				UpdateContactList.MarketingConsole<Dynamic>
+				DeleteContactList.MarketingConsole
+				ContactListsSearch.MarketingConsole
+				CreateMessage.MarketingConsole
+				UpdateMessage.MarketingConsole
+				DeleteMessage.MarketingConsole
+				AddContactListsToCampaign.MarketingConsole
+				AddOffersToCampaign.MarketingConsole
+				RemoveOffersFromCampaign.MarketingConsole
+		}
+	}
+	
 }
