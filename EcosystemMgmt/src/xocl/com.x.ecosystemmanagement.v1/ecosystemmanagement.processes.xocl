@@ -87,6 +87,7 @@ package com.x.ecosystemmanagement.v1 {
 	}
 	
 	// TODO: maybe this is really "OffboardTenant" ?
+	// TODO: this process & workflow is subject to change!
 	process OffboardBundle {
 		description "Tear down a bundle since one of its participants no longer wishes to be part of it"
 		
