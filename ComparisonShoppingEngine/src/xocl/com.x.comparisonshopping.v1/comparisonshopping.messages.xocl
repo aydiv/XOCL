@@ -30,7 +30,8 @@ package com.x.comparisonshopping.v1 {
 		description "Identifies the availability of a product as InStock, AvailableForOrder, or Unknown."
 
 		InStock "Product is in stock and ready to ship with the required number of days.",
-		AvailableForOrder "Product is not in stock but can be ordered.",
+		OutOfStock "Product is currently out of stock.",
+		AvailableForOrder "Product is not in stock but can be ordered.",	
 		Unknown "Availability is not known."
 	}
 	
