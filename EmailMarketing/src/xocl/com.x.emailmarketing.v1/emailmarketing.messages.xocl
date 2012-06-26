@@ -147,7 +147,7 @@ package com.x.emailmarketing.v1{
 		
 		string accountId "The account this list belongs to"
 
-		union{MessageType,string} type "Provider specific types can be specified as strings"
+		MessageType type
 		
 		string subjectText;
 		
