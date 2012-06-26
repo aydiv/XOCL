@@ -95,7 +95,7 @@ package com.x.ordermanagement.v2 {
     				summary "Adds or creates a customer." 
     				description "Adds or creates a customer."
 	        		
-	    			roles(OrderProcessor, CustomerManager)
+	    			roles(OrderProcessor, null, null)
 	    		}
 	    	}
 	    	
