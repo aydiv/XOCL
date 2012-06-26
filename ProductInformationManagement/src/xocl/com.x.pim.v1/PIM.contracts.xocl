@@ -15,7 +15,7 @@ package com.x.pim.v1{
 	     
     contract ProductInformationManagementConsumer
     {
-    		description "A product information system's read-only consumer/observer role. Products and data cannot be altered by the consumer/observer role for this contract. "
+    		description "A product information system's read-only consumer/observer role. Products and data cannot be altered by the consumer/observer role for this contract."
     		roles{
 	 			ProductSearch.ProductInformationConsumer
 		 		ProductLookup.ProductInformationConsumer
