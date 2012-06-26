@@ -4,187 +4,199 @@ package com.x.pim.v1
 	
 	record Product extends ProductData
     {
-        summary "The primary record of the capability. The base record that represents a product. Extends ProductData."
-        string id;
+        summary "The primary record of the capability."
+        description "The base record (unique identifier) that represents a product. Extends ProductData." 
+        string id "Unique identifier of a product.";
     }
     
     record  ProductData
     {
-    	// ID of the product type 
-        string? productTypeId;
-        // descriptive name
-        array<LocalizedString>? name;
-        // short description
-        array<LocalizedString>? shortDescription;
-        // full description
-        array<LocalizedString>? _AVDL_description;
-        string? GTIN;
-        array<LocalizedString>? brand;
-        array<LocalizedString>? manufacturer;
-        string? MPN;
-        // Manufacturer suggested retail price
-        CurrencyAmount? MSRP;
-        // Minimal advertisement price
-        CurrencyAmount? MAP;
-        // product images 
-        array<Image>? images;
-        // product attributes 
-        array<ProductAttributeValue>? attributes;
-        // defines the ids of variation variables 
-        array<string>? variationFactors;
-       	// list of associated SKUs
-        array<SKU>? skuList;   
+    	summary "Contains information that represents a product "
+    	description "Captures all the product information needed to represent a product, such as quantity, title, SKU, category, etc."
+        string? productTypeId "Unique identifier of the product type.";
+        array<LocalizedString>? name "Descriptive names for the product.";
+        array<LocalizedString>? shortDescription "Breif description of the product.";
+        array<LocalizedString>? _AVDL_description "Full description of the product.";
+        string? GTIN "GTIN identifier for the product.";
+        array<LocalizedString>? brand "Brand of the product.";
+        array<LocalizedString>? manufacturer "Manufacturer of the product.";
+        string? MPN "Manufacturer part number of the product.";
+        CurrencyAmount? MSRP "Manufacturer suggested retail price.";
+        CurrencyAmount? MAP "Minimal advertisement price.";
+        array<Image>? images "Array of images of the product.";
+        array<ProductAttributeValue>? attributes "Product attributes.";
+        array<string>? variationFactors "Unique identifiers of the variation variables.";
+        array<SKU>? skuList "Array of the SKUs of associated products.";   
     }
      
     record ProductAttributeValue
     {
-    	string attributeId;
-        union {ProductTypeAttributeValue, CustomAttributeValue} attributeValue;
+    	summary "Product attribute value."
+    	description "Captures the attribute ID and either the product type or custom attribute value."
+    	string attributeId "Unique attribute identifier of the product.";
+        union {ProductTypeAttributeValue, CustomAttributeValue} attributeValue "Product type attribue and custom attribute value of the product.";
     }
     
     record CustomAttributeValue 
     {
-		union {null, BooleanAttributeValue, StringAttributeValue, MeasurementAttributeValue} value = null;
+    	summary "Contains the custom attribute value."
+    	description "Captures the custom attribute value of a product."
+		union {null, BooleanAttributeValue, StringAttributeValue, MeasurementAttributeValue} value = null "Custom attribute value of the product.";
     }
  	
     record ProductTypeAttributeValue
     {
-        union {ProductTypeStringAttributeValue, StringEnumerationAttributeValue, BooleanAttributeValue} value;
+    	summary "Contains the product type attribute value."
+    	description "Captures the product type attribute value."
+        union {ProductTypeStringAttributeValue, StringEnumerationAttributeValue, BooleanAttributeValue} value "Product type attribute value.";
     }
     
     record LocalizedString 
     {
- 		Locale? locale;
-  		string stringValue;
+    	summary "Contains the location of the product."
+    	description "Captures the country "
+ 		Locale? locale "Country and language of the product. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). For example, ja_JP is Japanese and Japan. If this is not provided, en_US is used.";
+  		string stringValue "Name of the country and where the product is located."; //??guessing
  	}
  	 
-	record LocalizedMeasurement 
+	record LocalizedMeasurement  //??Waiting for reply from either Christopher or Yu
 	{
-		Locale? locale;
-		string name;
-		string unit;
-		string value;
+    	summary "Contains the unit of measurement used."
+    	description "Captures the unit of measurement used in the country where the product is located."
+		Locale? locale "Country and language of the product. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). For example, ja_JP is Japanese and Japan. If this is not provided, en_US is used.";
+		string name "TBD";
+		string unit "TBD";
+		string value "TBD";
 	}
 	
- 	record LocalizedNameValue 
+ 	record LocalizedNameValue //??What’s in each field depends on where it is used. Waiting on decision.
  	{
- 		Locale? locale;
- 		string name;
- 		string value;
+    	summary "TBD"
+    	description "TBD"
+ 		Locale? locale "County and language for the location of the product. Country and language of the product. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). For example, ja_JP is Japanese and Japan. If this is not provided, en_US is used.";
+ 		string name "TBD";
+ 		string value "TBD";
  	}
  	
 	enum ProductIdType 
 	{
-		PRODUCT_ID,
-		SKU
+    	summary "Sets the product type." //??Is this correct
+    	description "Defines Dvalues that can be used to specify the product type to either the product ID or the SKU of the product."
+		PRODUCT_ID "Unique identifier of a product.", 
+		SKU "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
 	}
 	
 	record ProductIdentifier 
 	{
-		string value;
-		ProductIdType type;
+    	summary "Contains the product identifier and its type."
+    	description "Captures the value of the product identifier and its type, which can be either the a unique ID generated by the merchant or the SKU of the product." //?? is all this correct?
+		string value "Value to use as the product identifier.";
+		ProductIdType type "What is being used as a product type. Valid values are: PRODUCT_ID and SKU.";
 	}
 	
     record BooleanAttributeValue
     {
-        boolean value;
-        array<LocalizedString>? attributeName;
+    	summary "TBD"
+    	description "TBD"
+        boolean value "TBD";
+        array<LocalizedString>? attributeName "TBD";
     }
  
  	record StringAttributeValue 
  	{
- 		array<LocalizedNameValue> attributeNameValue;
+    	summary "TBD"
+    	description "TBD"
+ 		array<LocalizedNameValue> attributeNameValue "TBD";
  	}
  	
  	record MeasurementAttributeValue 
  	{
- 		array<LocalizedMeasurement> localizedMeasurementValue;
+    	summary "TBD"
+    	description "TBD"
+ 		array<LocalizedMeasurement> localizedMeasurementValue "TBD";
  	}
  	
     record StringEnumerationAttributeValue
     {
-    	// valueId is the id of the value defined in ProductTaxonomy StringEnumeration 
-    	array<string> valueId;
+    	summary "TBD"
+    	description "TBD"
+    	array<string> valueId "ID of the attribute value defined in ProductTaxonomy StringEnumeration.";
         // this localized value will be populated by capability 
-        map<StringAttributeValue>? attributeValues;
+        map<StringAttributeValue>? attributeValues "TBD";
     }
  
     record ProductTypeStringAttributeValue
     {
-    	// a string attribute value can optionally refer to 
-    	// a predefined value in ProductTaxonomy, or it can be localized name/value pair 
-        string? valueId;
-        // this localized value can be populated by capability if valueId is present 
-        // if valueId is not present, the localized values can be populated by requester 
-        StringAttributeValue? attributeValue;
+    	summary "Contains the product type value ID and attribute value."
+    	description "A product type string attribute value can optionally refer to a predefined value in the ProductTaxonomy, or it can be a localized name/value pair."
+        string? valueId "Product type value ID.";
+        StringAttributeValue? attributeValue "A localized value that can be populated by capability if valueId is present. If the valueId is not present, the localized values can be populated by the requester.";
     }
     
     enum ImageTag{
-    	THUMBNAIL
+		summary "Specifies the product image tag."
+		description "Defines the values that can be used to tag a product image."
+    	THUMBNAIL "Indicates this is a thrmbnail image."
     }
   
     record Image
     {
-        string url;
-   	 	// height in pixel
-   	 	int? height;
-    	// width in pixel
-        int? width;
-    	LocalizedString? label;
-    	LocalizedString? altText;
-    	array<ImageTag>? tags;
+    	summary "Information about an image of a product."
+    	description "Captures the URL, size, localized information and tag of an image."
+        string url "URL of the product image.";
+   	 	int? height "Height in pixels of the image.";
+        int? width "Width in pixels of the image.";
+    	LocalizedString? label "Localized label for the image.";
+    	LocalizedString? altText "Localized HTML img alt attribute text for the image.";
+    	array<ImageTag>? tags "Array of tags for the image. Valid values are: THUMBNAIL.";
     }
-	
+   
     record SearchProduct
     {
-    	summary "Requests a search for specific products."
-    	description "Requests a search for specific products using a query of type Product. Contains an (optional) array of locales. The default locale is en_US if one isn't specified."
+       	summary "Requests a search for specific products."
+    	description "Requests a search for specific products using a query of type Product. Contains an (optional) array of locales. If this is not provided, en_US is used."
         Query _AVDL_query "The search query of type Product."; //@queryType("com.x.pim.v1.Product")
-        array<Locale> ? locales "The (optional) array of locales to search in. The default locale is en_US if one isn't specified.";
+        array<Locale> ? locales "The (optional) array of locales to search in. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). For example, ja_JP is Japanese and Japan. If this is not provided, en_US is used.";
     }
  
     record SearchProductSucceeded
     {
     	summary "Signals that a search for specific products succeeded."
     	description "Signals that a search for specific products succeeded. Returns the result of the query. Also returns the original search query and locales specified."
-        Query _AVDL_query "The original search query."; 
-        // The locale en_US will be the default if no locale is supplied in 
-        // the message.
-        array<Locale> ? locales "The array of locales associated with the search query, if any. The default locale is en_US if one isn't specified.";
+        Query _AVDL_query "Original search query."; 
+        array<Locale> ? locales "Array of locales associated with the search query. If this is not provided, en_US is used.";
         QueryResult queryResult "The search results.";
     }
  
     record SearchProductFailed
     {
     	summary "Signals that a search for specific products failed."
-    	description "Signals that a search for specific products succeeded. Returns the original search query and any locales specified."
+    	description "Signals that a search for specific products succeeded. It returns the original search query and any locales specified."
         Query _AVDL_query "The original search query.";
-        array<Locale> ? locales "The array of locales associated with the search query, if any. The default locale is en_US if one isn't specified.";
-        array<Error> errors "The array of error information associated with the failure. Contains information useful for troubleshooting.";
+        array<Locale> ? locales "Array of locales associated with the search query. If this is not provided, en_US is used.";
+        array<Error> errors "Array of error information associated with the failure. Contains information useful for troubleshooting.";
     }
      
     
     record SKU
     {
-    	//unique identifier of the SKU.  This is supplied by the merchant and not generated by the system
-        string sku;
-        // ID of the product for this SKU.  This required in all cases except product creation
-        string? productId;
-        // Manufacturer suggested retail price, override the field in Product
-        CurrencyAmount? MSRP;
-        // Minimal advertisement price, override the field in Product
-        CurrencyAmount? MAP;
-        // variation attributes, the list must match the variationAttributeIds in Product 
-        array<ProductAttributeValue>? variationAttributeValues;
-        // SKU specific images 
-        array<Image>? images;     
+    	summary "Contains override values for a product." //??When/How do you use this?
+    	description "Captures product SKU and ID and override values for MSRP and MAP."
+        string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant.";
+        string? productId "Unique identifier of the product. This is required in all cases except product creation.";
+        CurrencyAmount? MSRP "Manufacturer suggested retail price. Note: This overrides the MSRP field in Product.";
+        CurrencyAmount? MAP "Minimal advertisement price.  Note: This overrides the MAP field in Product.";
+        array<ProductAttributeValue>? variationAttributeValues "Array of product variation attributes. Note: This list must match the variationAttributeIds in Product.";
+        array<Image>? images "Product images specific to this SKU.";     
     }
     
     
     enum FilterType 
     {
-        SUMMARY,
-        FULL_DETAILS
+    	summary "Results filter type."
+    	description "Defines the filter types for the search results."
+        SUMMARY "Filters the search results to return summary information.",
+        FULL_DETAILS "Doesn't filter the search results; returns all information."
     }
     
     record LookupProduct
@@ -192,41 +204,41 @@ package com.x.pim.v1
     	summary "Requests the lookup of specific products."
     	description "Requests the lookup of specific products by their IDs. Contains an (optional) filter. Also contains an (optional) array of locales."
         array<ProductIdentifier> ids "The IDs of the products to be looked up.";
-        FilterType? filter "The (optional) filter."; 
-        array<Locale> ? locales "The (optional) array of locales. The locale en_US is the default if no locale is specified";
+        FilterType? filter "Type of filter to be used on the results of the search. Valid values are: SUMMARY and FULL_DETAILS."; 
+        array<Locale> ? locales "An optional array of locales. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). For example, ja_JP is Japanese and Japan. If this is not provided, en_US is used.";
     }
  
     record LookupProductSucceeded
     {
     	summary "Signals that specific products were successfully looked up."
     	description "Signals that specific products were successfully looked up by their IDs. Contains the array of products that were looked up. Also contains the (optional) filter and locale(s) that were specified in the original lookup."
-        array<Product> products "The array of products that were successfully looked up.";
-        FilterType? filter "The (optional) filter."; 
-        array<Locale>? locales "The (optional) array of locales. The locale en_US is the default if no locale was supplied in the original request message.";
+        array<Product> products "Array of products that were successfully looked up.";
+        FilterType? filter "Type of filter to be used on the results of the search. Valid values are: SUMMARY and FULL_DETAILS."; 
+        array<Locale>? locales "An optional array of locales. The locale en_US is the default if no locale was supplied in the original request message.";
     }
     
     record LookupProductFailed
     {
     	summary "Signals that specific products couldn't be looked up."
     	description "Signals that specific products couldn't be looked up by their IDs (in conjunction with a filter)."
-        array<ProductIdentifier> ids "The array of product IDs that couldn't be looked up.";
-        FilterType? filter "The (optional) filter."; 
-        array<Locale>? locales "The (optional) array of locales. The locale en_US is the default if no locale was supplied in the original request message.";
-        array<Error> errors "The array of error information that provides details about the lookup failure that are useful for troubleshooting.";
+        array<ProductIdentifier> ids "Array of product IDs that couldn't be looked up.";
+        FilterType? filter "Type of filter to be used on the results of the search. Valid values are: SUMMARY and FULL_DETAILS."; 
+        array<Locale>? locales "An optional array of locales. The locale en_US is the default if no locale was supplied in the original request message.";
+        array<Error> errors "Array of error information that provides details about the lookup failure that are useful for troubleshooting.";
     }
     
     record UpdateProduct
     {
     	summary "Requests the update of specific products."
     	description "Requests the update of specific products. If one product in the array cannot be updated, the request fails."
-        array<Product> products "The array that contains the products requested to be updated.";
+        array<Product> products "Array that contains the products requested to be updated.";
     }
    
     record UpdateProductSucceeded
     {
     	summary "Signals the update of specific products."
     	description "Signals the update of specific products. Contains the array of products that were successfully updated."
-        array<Product> products "The array of products that were successfully updated.";
+        array<Product> products "Array of products that were successfully updated.";
     }
     
     record UpdateProductFailed
@@ -241,138 +253,138 @@ package com.x.pim.v1
     {
     	summary "Notifies an observer that products have been updated."
     	description "Notifies an observer that products have been updated."
-        array<Product> productChanges "The array of products that were updated.";
+        array<Product> productChanges "Array of products that were updated.";
     }
     	
     record CreateProductWithId
     {
     	summary "Requests creation of one or more products with unique IDs."
     	description "Requests creation of one or more products with an array of ProductData. Called by the consumer. Triggers /com.x.pim.v1/ProductCreation/CreateProductSucceeded upon success or /com.x.pim.v1/ProductCreation/CreateProductFailed upon failure."
-        array<Product> products "The array of products with unique IDs requested to be created.";
+        array<Product> products "Array of products with unique IDs requested to be created.";
     }
 
     record CreateProduct
     {
     	summary "Requests creation of product data."
     	description "Requests creation of one or more products with an array of ProductData. Called by the consumer. Triggers /com.x.pim.v1/ProductCreation/CreateProductSucceeded upon success or /com.x.pim.v1/ProductCreation/CreateProductFailed upon failure."
-        array<ProductData> products "The array of product data requested to be created.";
+        array<ProductData> products "Array of product data requested to be created.";
     }
  
     record CreateProductSucceeded
     {
     	summary "Returns one or more newly created products."
     	description "Returns one or more products that were created by /com.x.pim.v1/ProductCreation/CreateProduct. Received by the consumer."
-    	array<Product> products "The array of products that were created.";
+    	array<Product> products "Array of products that were created.";
     }
  
     record CreateProductFailed
     {
     	summary "Signals that creation of the data of one or more products has failed."
     	description "Signals that creation of one or more products has failed. Received by the consumer. Returned after calling /com.x.pim.v1/ProductCreation/CreateProduct. Returns the products passed into the topic by the requestor. Contains information about the failure useful for troubleshooting."
-        array<ProductData> products "The array of product data that couldn't be created.";
-        array<Error> errors "The array of error information about the failure to create product data."
+        array<ProductData> products "Array of product data that couldn't be created.";
+        array<Error> errors "Array of error information about the failure to create product data."
     }
     
     record ProductCreated
     {
     	summary "Notifies an observer that one or products were created."
     	description "The message contains the array of products that were created."
-        array<Product> products "The array of products that were created.";
+        array<Product> products "Array of products that were created.";
     }
     
     record DeleteProduct
     {
     	summary "Requests deletion of products specified by their IDs."
     	description "Requests deletion of one or more products specified by their IDs. Called by the consumer. Triggers /com.x.pim.v1/ProductDeletion/DeleteProductSucceeded upon success or /com.x.pim.v1/ProductDeletion/DeleteProductFailed upon failure."
-        array<string> productIds "The array of product IDs that reference the products to be deleted.";
+        array<string> productIds "Array of product IDs that reference the products to be deleted.";
     }
     
     record DeleteProductSucceeded
     {
     	summary "Signals that a request to delete one or more products using their IDs has succeeded."
     	description "Signals that a request to delete one or more products using their IDs has succeeded. Returns the array of product IDs specified in DeleteProduct by the requestor."
-        array<string> productIds "The array of product IDs that reference the products that were deleted.";
+        array<string> productIds "Array of product IDs that reference the products that were deleted.";
     }
     
     record DeleteProductFailed
     {
     	summary "Signals that a request to delete one or more products using their IDs has succeeded."
     	description "Signals that a request to delete one or more product using their IDs has succeeded. Returned after calling /com.x.pim.v1/ProductDeletion/DeleteProduct and contains the array of product IDs specified in DeleteProduct by the requestor. Contains information about the failure useful for troubleshooting."
-        array<string> productIds "The array of product IDs that reference the products that weren't deleted.";
-        array<Error> errors "The array of error information about the failure to delete products.";
+        array<string> productIds "Array of product IDs that reference the products that weren't deleted.";
+        array<Error> errors "Array of error information about the failure to delete products.";
     }
     
     record ProductDeleted
     {
     	summary "Notifies an observer that one or more products were deleted."
 		description "Notifies an observer that one or more products were deleted. The message contains the array of products that were deleted."
-        array<Product> products "The array of products that were deleted.";
+        array<Product> products "Array of products that were deleted.";
     }
     
     record CreateSKU
     {
     	summary "Requests creation of new Stock Keeping Units (SKUs)."
     	description "Requests creation of new Stock Keeping Units (SKUs). The SKU value is determined on a per-merchant basis. A product can have one or more SKUs."
-        array<SKU> sku "The array of SKUs to be created.";
+        array<SKU> sku "Array of SKUs to be created.";
     }
     
     record CreateSKUFailed
     {
     	summary "Signals that a request to create new SKUs has failed."
     	description "Signals that a request to create new SKUs has failed. The message contains the array of SKUs specified in CreateSKU by the requestor. It also contains error information useful in troubleshooting."
-        array<SKU> skus "The array of SKUs that couldn't be created.";
-        array<Error> errors "The array of error information that provides detail regarding why the SKUs couldn't be created.";
+        array<SKU> skus "Array of SKUs that couldn't be created.";
+        array<Error> errors "Array of error information that provides detail regarding why the SKUs couldn't be created.";
     }
 
     record CreateSKUSucceeded
     {
     	summary "Signals that a request to create new SKUs has succeeded."
     	description "Signals that a request to create new SKUs has succeeded. The message contains the array of SKUs specified in CreateSKU by the requestor."
-        array<SKU> sku "The array of SKUs that were created.";
+        array<SKU> sku "Array of SKUs that were created.";
     }
     
     record UpdateSKU
     {
     	summary "Requests the update of specific SKUs."
     	description "Requests the update of specific SKUs. The new SKU values are determined by the merchant."
-        array<SKU> skus "The array of SKUs to be updated.";
+        array<SKU> skus "Array of SKUs to be updated.";
     }
     
     record UpdateSKUSucceeded
     {
     	summary "Signals that a request to update specific SKUs succeeded."
     	description "Signals that a request to update specific SKUs succeeded. Contains the array of SKUs specified in UpdateSKU by the requestor."
-        array<SKU> skus "The array of SKUs that were successfully updated.";
+        array<SKU> skus "Array of SKUs that were successfully updated.";
     }
  
     record UpdateSKUFailed
     {
     	summary "Signals that a request to update specific SKUs failed."
-    	description "Signals that a request to update specific SKUs failed. Contains the array of SKUs specified in UpdateSKU by the requestor. It also contains error information useful in troubleshooting."
-        array<SKU> skus "The array of SKUs that couldn't be updated.";
-        array<Error> errors "The array of error information that provides detail regarding why the SKUs couldn't be updated.";
+    	description "Signals that a request to update specific SKUs failed. It returns the array of SKUs specified in UpdateSKU by the requestor. It also contains error information useful in troubleshooting."
+        array<SKU> skus "Array of SKUs that weren't updated.";
+        array<Error> errors "Array of error information that provides detail regarding why the SKUs couldn't be updated.";
     }	
     
     record DeleteSKU
     {
     	summary "Requests the deletion of specific SKUs."
     	description "Requests the deletion of specific SKUs specified by the merchant."
-        array<string> skus "The array of SKUs to be deleted.";
+        array<string> skus "Array of SKUs to be deleted.";
     }
     
     record DeleteSKUSucceeded
     {
     	summary "Signals that a request to delete specific SKUs succeeded."
     	description "Signals that a request to delete specific SKUs succeeded. Contains the array of SKUs specified in DeleteSKU."
-    	array<string> skus "The array of SKUs that were deleted.";
+    	array<string> skus "Array of SKUs that were deleted.";
     }
 
     record DeleteSKUFailed
     {
     	summary "Signals that a request to delete specific SKUs failed."
     	description "Signals that a request to delete specific SKUs failed. Contains the array of SKUs specified in DeleteSKU. It also contains error information useful in troubleshooting."
-        array<string> skus "The array of SKUs that couldn't be deleted.";
-        array<Error> errors "The array of error information that provides detail regarding why the SKUs couldn't be deleted.";
+        array<string> skus "Array of SKUs that couldn't be deleted.";
+        array<Error> errors "Array of error information that provides detail regarding why the SKUs couldn't be deleted.";
     }
     
 }
