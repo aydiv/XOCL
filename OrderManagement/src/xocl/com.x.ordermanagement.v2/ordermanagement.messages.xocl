@@ -8,25 +8,25 @@ package com.x.ordermanagement.v2 {
 	
 	enum TaxabilityType {
 		summary "Specifies the taxability types."
-		description "Defines the values that can be used to specify the type of tax that applies to a given order line item."
+		description "Defines the values use to specify the type of tax that applies to a given order line item."
 		TAXABLE "Indicates tax should be applied to an item.",
 		NONTAXABLE "Indicates tax should not be applied to an item.",
 		EXEMPT "Indicates that the customer has tax exempt status, such as a non-profit organization.",
-		DEFERRED "Indicates that the tax will be paid at a later date."
+		DEFERRED "Indicates that the tax will be paid later."
 	}
 	
 	enum OrderStatus {
 		summary "Specifies the order status types."
-		description "Defines the values that can be used to specify the status of an order line item."
+		description "Defines the values used to specify the status of an order."
 		NEW "Indicates that the order has just been created.",
-		ON_HOLD "Indicates that the progress of the order is stopped.",
+		ON_HOLD "Indicates that the processing of the order is stopped.",
 		BACKORDERED "Indicates that an item on the order is not available and the order is waiting until the merchant receives the item. ",
 		PENDING_PAYMENT "Indicates that the order is waiting for the customer's payment.",
 		READY_TO_SHIP "Indicates that the order is paid for and the items are available for shipping.",
 		PARTIALLY_SHIPPED "Indicates that some of the items on the order have been shipped.",
 		SHIPPED "Indicates that all the items on the order have been shipped.",
-		PROCESSING_RETURN "Indicates that at least one item on the order has been received as a return.",
-		EXCHANGED "Indicates that at least one item on the order has been received for an exchange.",
+		PROCESSING_RETURN "Indicates that at least one item on the order has been returned.",
+		EXCHANGED "Indicates that at least one item on the order has been returned and the customer wants it exchanged.",
 		CANCELLED "Indicates that the order was cancelled.",
 		COMPLETED "Indicates that all processes for the order have been completed.",
 		PAID "Indicates that payment for the order was received."
@@ -34,25 +34,25 @@ package com.x.ordermanagement.v2 {
 	
 	enum ShippingServiceType {
 		summary "Specifies the shipping service types."
-		description "Defines the values that can be used to specify the type of service used to deliver the purchased goods."
+		description "Defines the values used to specify the type of service used to ship the purchased goods."
 		MERCHANT_SHIPPED "Indicates that the merchant shipped the order themselves.",
 		DROP_SHIP "Indicates that the merchant used a drop ship service to ship the order.",
-		SHIPPING_SERVICE "Indicates that the merchant used a shipping service to ship the item.",
-		WILL_CALL "Indicates that the customer will pick the item up from the merchant."
+		SHIPPING_SERVICE "Indicates that the merchant used a shipping service to ship the order.",
+		WILL_CALL "Indicates that the customer will pick the order up from the merchant."
 	}
 	
 	enum PromotionDiscountType {
 		summary "Specifies the promotion discount types."
-		description "Defines the values that can be used to specify the type of promotional discount that has been applied (if any) to the order."
+		description "Defines the values used to specify the promotional discount type."
 		STOREWIDE_SALE "Indicates that the promotion was a store wide sale.",
 		SHIPPING_DISCOUNT "Indicates that the promotion was a shipping discount.",
 		PRODUCT_DISCOUNT "Indicates that the promotion was a product discount.",
-		OTHER "Indicates that the promotion was something other than a store wide sale."
+		OTHER "Indicates that the promotion was something other than the discount types available."
 	}
 	
 	enum PaymentStatus {
-		summary "Specifies the status values for payment."
-		description "Defines the values that can be used to specify the payment processing status for a an order."
+		summary "Specifies the payment status values."
+		description "Defines the values used to specify the payment processing status for a an order."
 		AUTHORIZED "Indicates that the order payment has been authorized.",
 		PAID "Indicates that the order has been paid for.",
 		NOT_AUTHORIZED "Indicates that the payment for the order is waiting to be authorized.",
@@ -72,37 +72,37 @@ package com.x.ordermanagement.v2 {
 	record PackageWeight {
 		summary "Contains the package weight."
 		description "Captures the weight (major and minor) and unit of weight measurement for a package."
-		float packageWeightMajor "The weight of the package in the units specified. For example, lb or kg."
+		float packageWeightMajor "Weight of the package in the units specified. For example, lb or kg."
 		union {EnglishWeightMeasurementUnit, MetricWeightMeasurementUnit} majorMeasurementUnit "Unit of measurement used."
 		float? packageWeightMinor "Minor unit of measurement based on the major unit used. For example, if the major package weight measurement unit is lb, this is oz.  If the major is kg, this is g."
 	}
 	
 	record Shipment {
 		summary "Shipping information for an order."
-		description "Captures all the shipping information for an order, such as shipping method, shipping fees, surcharge, tracking details."
-		string shipmentId "Unique identifier for a given shipment. The value must be unique within a given order only (e.g., 1, 2, 3, and so on)."
+		description "Captures all the shipping information for an order, such as shipping method, shipping fees, surcharge, tracking details, etc."
+		string shipmentId "Unique identifier for a given shipment. Note: The value must be unique only within a given order."
 		CurrencyAmount shippingFees "Fees paid by the customer for this shipment."
 		CurrencyAmount? discountAmount "Total discount amount associated with a shipment. This value is calculated from the individual promotional discounts applied to the shipment."
 		array<PromotionalDiscount>? discounts "Container shipping discount information for one or more specific types of promotional discounts."
 		CurrencyAmount? additionalCost "Sum of any additional fees applied to this shipment. For example, if the order consists of multiple items from the same offer, this specifies the cost of shipping each additional item beyond the first item."
-		CurrencyAmount? packagingHandlingCost "Fees a merchant will assess for the shipping of the item (in addition to whatever the shipping service might charge)."
+		CurrencyAmount? packagingHandlingCost "Fees a merchant will charge for shipping the item (this is in addition to whatever the shipping service might charge)."
 		CurrencyAmount? surcharge  "Additional fee to charge US buyers who have the purchased goods shipped via UPS or FedEx to Alaska, Hawaii or Puerto Rico. Only returned if set. This applies only to flat-rate shipping."
 		array<TrackingDetail>? trackingDetails "Array of tracking details, such as carrier and tracking numbers, for this shipment."	
-		string? shippingMethod  "Shipping method used, such as new day, ground, etc."
+		string? shippingMethod  "Shipping method used, such as one-day, ground, etc."
 		DateRange? deliveryWindow  "Period of time within which the order will be delivered."
 		DateRange? shippingWindow  "Period of time within which the order will be shipped."
 		string? shippingMessage "Additional information for the customer."
-		PackageDimensions? packageDimensions "Measurement of the shipping package."
-		PackageWeight? packageWeight "Weight of the shipping package."
+		PackageDimensions? packageDimensions "Measurement of the package to ship."
+		PackageWeight? packageWeight "Weight of the package to ship."
 		string? packageType "Type of the shipping package, such as envelop, box, etc."
-		boolean shippingIrregular = false "Whether a package is irregular and therefore cannot go through the stamping machine at the shipping service office and thus requires special or fragile handling."		
+		boolean shippingIrregular = false "Whether a package is irregular in shape and therefore cannot go through the stamping machine at the shipping service office and thus requires special or fragile handling."		
 	}
 
 	record GiftTag {
 		summary "Information for the gift tag."
 		description "Captures the information used on a gift tag."
 		string? from "Name of the person sending the item."
-		string? to "Name of the person this item is for."
+		string? to "Name of the person receiving this item."
 		string giftMessage "Message to the person receiving the item, such as Happy Birthday."
 	}
 	
@@ -121,7 +121,7 @@ package com.x.ordermanagement.v2 {
 		string code "Code that identifies this promotional discount."
 		string promoDescription "Information that describes the promotional discount, such as Labor Day Sale."
 		PromotionDiscountType type "Type of discount applied. The valid values are: STOREWIDE_SALE, SHIPPING_DISCOUNT, PRODUCT_DISCOUNT, OTHER."
-		CurrencyAmount amount "Amount of the discount to apply."
+		CurrencyAmount amount "Amount of the discount applied."
 	}
 	
 	record ShipTo confidential {
@@ -142,10 +142,10 @@ package com.x.ordermanagement.v2 {
 	record TrackingDetail {
 		summary "Shipment tracking information for the order."
 		description "Captures the shipment tracking number, carrier or service used and the shipping type."	
-		array<string>? trackingNumbers "Order tracking numbers generated by the carrier or service."
+		array<string>? trackingNumbers "Order tracking numbers generated by the carrier or shipping service."
 		string? carrier "Name of the company that is shipping the order, such as a trucking company."
 		string? service "Name of the shipping service that is shipping the order, such as FedEx."
-		ShippingServiceType? serviceType "Type of service used. Valid values are: MERCHANT_SHIPPED,	DROP_SHIP,  SHIPPING_SERVICE, and WILL_CALL."
+		ShippingServiceType? serviceType "Type of service used. Valid values are: MERCHANT_SHIPPED,	DROP_SHIP, SHIPPING_SERVICE, and WILL_CALL."
 	}
 	
 	record ShippingInformationUpdate extends TrackingDetail {
@@ -172,7 +172,7 @@ package com.x.ordermanagement.v2 {
 	
 	record ShippingInformationUpdateFailed {
 		summary "Signals that specific shipping information couldn't be updated."
-		description "Captures the order number and item identifier of the order where the shipping information couldn't be updated and the error information about the transaction useful in troubleshooting."
+		description "Signals that specific shipping information couldn't be updated. It returns the order number and item identifier of the order where the shipping information couldn't be updated and details about the failure."
 		string? orderNumber "Unique order identifier generated by the originator of the order."
 		string? orderLineId "Unique identifier of an item."
 		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
@@ -191,7 +191,7 @@ package com.x.ordermanagement.v2 {
 	
 	record Tax {
 		summary "Information about the tax charged on an order."
-		description "Captures detailed information about the tax for an order."
+		description "Captures detailed information about the tax applied to an order."
 		TaxabilityType? taxability "Tax status type of an order. Valid values are: TAXABLE, NONTAXABLE, EXEMPT, and DEFERRED."
 		string? taxType "Type of tax being applied, such as state, county, federal, etc."
 		double? effectiveRate "Tax rate a taxpayer would be taxed at if taxing was done at a constant rate."
@@ -200,9 +200,9 @@ package com.x.ordermanagement.v2 {
 		
 	record OrderLinePrice {
 		summary "Information about all the charges and credits for a single line item on an order."
-		description "Captures detailed information about all the charges and credits for a single line item on an order, such as total price, insurance cost, total discounts."
-		CurrencyAmount totalPrice "Total price for a single line item including all additional costs (sum of price of the item or multiples of this item, fees, additional costs, etc.)"
-		CurrencyAmount price "Total amount (unit price) for the item without additional fees."
+		description "Captures detailed information about all the charges and credits for a single line item on an order, such as total price, insurance cost, total discounts, etc."
+		CurrencyAmount totalPrice "Total price for a single line item including all additional costs (sum of price of the item or multiples of this item, fees, additional costs, etc.)."
+		CurrencyAmount price "Cost of the item without additional fees (unit price)."
 		CurrencyAmount? insuranceCost "Amount charged to insure the shipment."
 		CurrencyAmount? totalDiscountAmount "Total amount of all of the discounts that were applied to a line item."	
 		array<PromotionalDiscount>? allDiscounts "Array of the discounts that were applied to a line item."
@@ -217,10 +217,10 @@ package com.x.ordermanagement.v2 {
 		float quantity "How many of the item were returned."
 		string productSku "Standardized SKU (Stock Keeping Unit) of the returned item. This is a unique number per product and merchant."
 		string itemDescription "Description of the returned item."
-		CurrencyAmount? totalTaxAmount "Total amount of tax charged for the returned item(s)."
+		CurrencyAmount? totalTaxAmount "Total amount of tax associated with the returned items."
 		datetime dateReturned "Date the returned items were received. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ." 	
-		OrderLinePrice price "Total price for the returned items without additional fees."
-		string? shipmentId "Unique identifier the shipment that was used to send the item to the customer. The value must be unique within a given order only (e.g., 1, 2, 3, and so on)."
+		OrderLinePrice price "Price for the returned items without additional fees."
+		string? shipmentId "Unique identifier of the shipment that was used to send the item to the customer. Note: The value must be unique only within a given order."
 	}
 
 	record SimpleOrderLineData {
@@ -233,17 +233,17 @@ package com.x.ordermanagement.v2 {
 		string productSku "Standardized SKU (Stock Keeping Unit) of an item. This is a unique number per product and merchant."
 		string itemDescription "Description of an item."	
 		OrderLinePrice unitPrice "Total price for an item without additional fees."
-		CurrencyAmount? totalTaxAmount "Total amount of tax charged for an item(s)."
+		CurrencyAmount? totalTaxAmount "Total amount of tax charged for an item."
 		OrderStatus status "Status of an order line item. Valid values are: NEW, ON_HOLD, BACKORDERED, PENDING_PAYMENT, READY_TO_SHIP, PARTIALLY_SHIPPED, SHIPPED, PROCESSING_RETURN, EXCHANGED, CANCELLED, COMPLETED, and PAID."
-		CurrencyAmount price "Total amount (unit price) for the item without additional fees."		
+		CurrencyAmount price "Cost of the item without additional fees (unit price)."		
 		array<PromotionalDiscount>? allDiscounts "Array of the discounts that were applied to a line item."
 		datetime? dateCancelled "Date the item was cancelled. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ."
 		datetime? dateDelivered "Date the item was delivered to the customer. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ."
 		datetime? dateShipped "Date the item was shipped to the customer. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ."
 		datetime? dateReturned "Date the item was returned. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ."
 		datetime? dateInvoiced "Date the invoice for the item was generated. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ."
-		ShipTo destination "Location the item was shipped to."
-		string shipmentId "Unique identifier the shipment that was used to send the item to the customer. The value must be unique within a given order only (e.g., 1, 2, 3, and so on). "
+		ShipTo destination "Location the item in the order line was shipped to."
+		string shipmentId "Unique identifier of the shipment that was used to send the item to the customer. Note: The value must be unique only within a given order. "
 		string? offerId "Identifier of the offer. This ID is assigned by the channel that published the offer. Note: offerId and offerURL provide information that can be used to construct a link to the product on the sales channel where it was purchased."
 		string? offerUrl "URL of the offer. Note: offerId and offerURL provide information that can be used to construct a link to the product on the sales channel where it was purchased."
 	}
@@ -256,7 +256,7 @@ package com.x.ordermanagement.v2 {
 		boolean? expandBundle = false "Indicates you can expand the bundle and see the individual items."
 		boolean? soloShip = false "Indicates the order can be divided into multiple shipments." 
 		boolean? autoShip = false "Indicates item is to be shipped automatically."
-		boolean? autoSubstitution = false "Indicates that if the item is not available a substitution can be done."
+		boolean? autoSubstitution = false "Indicates that if the item is not available a substitution is allowed."
 	}
 
 	record OrderDetails {
@@ -266,16 +266,16 @@ package com.x.ordermanagement.v2 {
 		OrderStatus status "Status of an order line item. Valid values are: NEW, ON_HOLD, BACKORDERED, PENDING_PAYMENT, READY_TO_SHIP, PARTIALLY_SHIPPED, SHIPPED, PROCESSING_RETURN, EXCHANGED, CANCELLED, COMPLETED, and PAID."
 		string dateOrdered  "Date an item was ordered."
 		CurrencyAmount grandTotal "Total amount paid by the customer (total amount of items, fees, taxes, etc.) for the order."
-		CurrencyAmount? netMerchandiseValue "Total minus any non-shipping discounts."
+		CurrencyAmount? netMerchandiseValue "Total amount minus any non-shipping discounts."
 		CurrencyAmount itemPriceTotal "Total amount of all the items without taxes, fees, etc."	
 		CurrencyAmount? totalInsuranceCost "Total cost of insurance."
 		CurrencyAmount? totalDiscountAmount "Total amount of all discounts."
 		array<AdditionalCost>? additionalCosts "Total amount of all the additional costs."
 		CurrencyAmount? totalTaxAmount "Total cost of all the taxes charged for this order."
-		CurrencyAmount? totalShippingFees "Sum of the shipping fees from each of the associated shipment."
+		CurrencyAmount? totalShippingFees "Sum of the shipping fees from each of the associated shipments."
 		array<PromotionalDiscount>? discounts "Array of all the promotional discounts that were applied at the order level."
 		string sourceId "Identifier for the channel where this order originated, such as eBay, Amazon, etc."
-		string sourceGroupId "Unique identifier of the group that classifies source, such as web, print, email, etc."
+		string sourceGroupId "Unique identifier of the group that classifies source of the order, such as web, print, email, etc."
 		array<string>? relatedOrderNumbers "Array of order numbers of any related orders."
 		array<Shipment>? shipments "Array of the shipments that were created to ship one or more of the items in this order."
 		string? referralSource "Marketing source that referred this order."
@@ -338,7 +338,7 @@ package com.x.ordermanagement.v2 {
 	
 	record ProcessOrderFailed {
 		summary "Signals that the processing of an order has failed."
-		description "Signals that the processing of an order has failed and returns information about the failure, which is useful for troubleshooting."
+		description "Signals that the processing of an order has failed. It returns information about the failure, which is useful for troubleshooting."
 		OrderData order "Order information." 
 		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
@@ -364,7 +364,7 @@ package com.x.ordermanagement.v2 {
 	
 	record SubmitOrderFailed {
 		summary "Signals that submitting an order has failed."
-		description "Signals that submitting an order has failed and returns the order information and information about the failure, which is useful for troubleshooting."
+		description "Signals that submitting an order has failed. It returns the order information and information about the failure, which is useful for troubleshooting."
 		OrderData order "Order information."
 		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
@@ -426,8 +426,8 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	record CreateOrderFailed {
-		summary "Signals that the attempt to create an order has failed."
-		description "Signals that the attempt to create an order has failed and returns the order number and information about the failure, which is useful for troubleshooting."
+		summary "Signals the attempt to create an order has failed."
+		description "Signals the attempt to create an order has failed. It returns the order number and information about the failure, which is useful for troubleshooting."
 		string orderNumber "Unique order identifier generated by the originator of the order."
 		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
@@ -440,8 +440,8 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	record OrderCreated {
-		summary "Signals that an order was created."
-		description "Signals that an order was created and returns order information and information about the failure, which is useful for troubleshooting. This information does not contain sensitive customer information."
+		summary "Signals an order was created."
+		description "Confirms an order was created and returns order information and information about the failure, which is useful for troubleshooting. This information does not contain sensitive customer information."
 		SimpleOrder simpleOrder "Order information that does not contain sensitive customer information." 
 	}
 	
@@ -472,23 +472,23 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	record CancelOrderFailed {
-		summary "Signals that the attempt to cancel an order has failed."
-		description "Signals that the attempt to cancel an order has failed and returns the order number, guid, and information about the failure, which is useful for troubleshooting."
+		summary "Signals the attempt to cancel an order has failed."
+		description "Signals the attempt to cancel an order has failed. It returns the order number, guid, and information about the failure, which is useful for troubleshooting."
 		string orderNumber "Unique order identifier generated by the originator of the order."
 		guid id "Unique order identifier assigned by the system that created the order."
 		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
 	
 	record CancelMarketplaceOrderFailed {
-		summary "Signals that the attempt to cancel a marketplace order has failed."
-		description "Signals that the attempt to cancel a marketplace order has failed and returns the failed order numbers and information about the failure, which is useful for troubleshooting."
+		summary "Signals the attempt to cancel a marketplace order has failed."
+		description "Signals the attempt to cancel a marketplace order has failed. It returns the failed order numbers and information about the failure, which is useful for troubleshooting."
 		array<string> failedOrderNumbers "Array of the order numbers that failed to be cancelled."
 		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
 	
 	record OrderCancelled {
-		summary "Signals that an order was cancelled."
-		description "Signals that an order was cancelled and returns the order information of the cancelled order."
+		summary "Signals an order was cancelled."
+		description "Signals an order was cancelled and returns the order information of the cancelled order."
 		array<SimpleOrder> cancelledOrders "Order that was cancelled."
 	}
 	
@@ -512,7 +512,7 @@ package com.x.ordermanagement.v2 {
 	}
 
 	record SearchOrderSucceeded {
-		summary "Signals that the search for orders was successful."
+		summary "Signals the search for orders was successful."
 		description "Confirms successfully searching for orders and returns the information that was used for the search."
     	Query _AVDL_query "Search criteria." 
 		array<Order> orders "Array of order found."
@@ -526,15 +526,15 @@ package com.x.ordermanagement.v2 {
 	}
 	
 	record SearchNonSensitiveOrderSucceeded {
-		summary "Signals that searching for an order was successful." 
+		summary "Signals searching for an order was successful." 
 		description "Confirms successfully searching for orders and returns the search criteria and the result of the query."
 	   	Query _AVDL_query "Search criteria." 
         array<NonSensitiveOrder> orders "Orders information without sensitive customer information."        	
 	}
 	
 	record SearchOrderFailed {
-		summary "Signals that searching for orders has failed." 
-		description "Signals that searching for orders has failed and returns the search criteria and information about the failure, which is useful for troubleshooting."
+		summary "Signals searching for orders has failed." 
+		description "Signals that searching for orders has failed. It returns the search criteria and information about the failure, which is useful for troubleshooting."
 		SearchOrder search "Search criteria used."
 		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
@@ -555,18 +555,18 @@ package com.x.ordermanagement.v2 {
 		datetime? dateOrdered "Date the order was created. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ."
 		array<ReturnOrderLineData>? orderLines "Array of the order line items that were returned." 
 		CurrencyAmount totalAmountOfReturn "Total amount of the returned items."
-		CurrencyAmount totalTaxAmountOfReturn "Total amount of the tax for the returned items."
+		CurrencyAmount totalTaxAmountOfReturn "Total amount of the tax associated with the returned items."
 	}
 	
 	record PartialOrderReturn {
 		summary "Information about the returned items from an order where only some of the items were returned."
 		description "Captures information about the returned items such as, item, cost, and order number, etc. from an order where only some of the items were returned."
 		string orderNumber "Unique order identifier generated by the originator of the order."
-		array<ReturnOrderLineData> returnedItems
+		array<ReturnOrderLineData> returnedItems "Array of the items that were returned."
 		union{null, guid, EntityId} customerId = null "Unique customer identifier assigned by the system that created the customer."
 		datetime? dateOrdered "Date the order was placed. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ."
 		CurrencyAmount totalAmountOfReturn "Total amount of the returned items."
-		CurrencyAmount totalTaxAmountOfReturn "Total amount of the tax for the returned items."
+		CurrencyAmount totalTaxAmountOfReturn "Total amount of the tax associated with the returned items."
 	}
 	
 	record OrderAdjust {
@@ -608,7 +608,7 @@ package com.x.ordermanagement.v2 {
 	
 	record PaymentUpdateFailed {
 		summary "Signals that updating payment information has failed."
-		description "Signals that updating payment information has failed. Returns the number of the order that was being updated and information about the failure, which is useful for troubleshooting."
+		description "Signals that updating payment information has failed. It returns the number of the order that was being updated and information about the failure, which is useful for troubleshooting."
 		string orderNumber "Unique order identifier generated by the originator of the order."
 		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
