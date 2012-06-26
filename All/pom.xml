@@ -215,7 +215,7 @@
                     		</excludes>
                			 </configuration>
 			 </plugin>
-			 <!-- <plugin>
+			 <plugin>
 				<inherited>true</inherited>
 				<groupId>com.x.ocl</groupId>
 				<artifactId>xocl-internal-maven-plugin</artifactId>
@@ -230,11 +230,11 @@
 							<importSourceDir>${project.basedir}/..</importSourceDir>
 							<outputDir>${project.basedir}</outputDir>
 							<trunkUrl>svn/x/xocl/trunk</trunkUrl>
-							<tagUrl>svn/x/xocl/tags/xocl-contracts-0.0.16</tagUrl>
+							<tagUrl>svn/x/xocl/tags/xocl-contracts-0.0.17</tagUrl>
 						</configuration>
 					</execution>
 				</executions>
-			</plugin> -->
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
