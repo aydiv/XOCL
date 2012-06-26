@@ -134,13 +134,6 @@ package com.x.pim.v1
     	LocalizedString? altText;
     	array<ImageTag>? tags;
     }
-   
-   
-	enum ProductIdType 
-	{
-		PRODUCT_ID,
-		SKU
-	}
 	
     record SearchProduct
     {
