@@ -20,8 +20,8 @@ package com.x.ordermanagement.v2 {
     	description "A marketing or analytics provider searches for orders based on the search criteria provided."
     	
     	roles {
-    		OrderManager "Searches for modified orders." //?? only modified orders
-    		OrderConsumer "Submits queries to retrieve orders that have been modified since a specified timestamp." //?? do they received the results?
+    		OrderManager "Searches for orders." 
+    		OrderConsumer "Submits a request to query and the search criteria to retrieve orders."
     		
     	}
     	
@@ -37,7 +37,6 @@ package com.x.ordermanagement.v2 {
     }
     
     
-    // Submit an order that is in an already shipped state
     process SubmitShippedOrder<MarketplaceOrder>(Order order) {
     	
     	summary "Submits an order to the processor that has already been shipped."
@@ -60,11 +59,10 @@ package com.x.ordermanagement.v2 {
     	}
     }
     
-    // Process orders that originate from a sales channel
     process ProcessSalesChannelOrder<MarketplaceOrder>(Order order) {
     	
-    	summary "Processes an order."
-        description "An order is submitted and is processed by making adjustments, changing the status, etc."
+    	summary "Processes an order that originates from a sales channel."
+        description "An order is submitted from and sales channel and is processed by making adjustments, changing the status, etc. Note: Use OrderReturn ONLY when all the items in an order are returned at the same time. For all other returns, use PartialOrderReturn. For example, a buyer orders two items. Returns one item and later returns the second item. User PartialOrderReturn for both of these returns."
         
         roles {
         	SalesChannel "Submits the order for processing."
@@ -161,9 +159,8 @@ package com.x.ordermanagement.v2 {
 	}
 	process OrderCancelled <MarketplaceOrder> {
 		roles {
-        	OrderProcessor "TBD"
-        	OrderObserver "TBD"
-        
+         	OrderProcessor "Cancels the order and informs observers."
+        	OrderObserver "Informed of the processing that happened."      
         }
 	}
 	
