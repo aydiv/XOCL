@@ -280,48 +280,7 @@ package com.x.emailmarketing.v1{
         	}  
         } 
     }
-    
-    transaction AddOffersToCampaign response  {
-    	description "Adds offers to a campaign"
-        sender {
-        	message AddOffersToCampaign {
-        		 timeouts(receipt=2s,response=15s)
-        		 retries=3     		
-        	}
-        }
-        receiver {
-        	success AddOffersToCampaignSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
-         	
-            failure AddOffersToCampaignFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}   
-        } 
-    }
-    
-    transaction RemoveOffersFromCampaign response  {
-    	description "Removes offers from a campaign"
-        sender {
-        	message RemoveOffersFromCampaign {
-        		 timeouts(receipt=2s,response=15s)
-        		 retries=3     		
-        	}
-        }
-        receiver {
-        	success RemoveOffersFromCampaignSucceeded {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
-         	
-            failure RemoveOffersFromCampaignFailed {
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}   
-        } 
-    }
+
     
     
     

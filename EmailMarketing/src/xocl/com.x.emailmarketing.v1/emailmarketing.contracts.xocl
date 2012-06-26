@@ -23,8 +23,6 @@ package com.x.emailmarketing.v1{
 				UpdateMessage.MarketingManager
 				DeleteMessage.MarketingManager
 				AddContactListsToCampaign.MarketingManager
-				AddOffersToCampaign.MarketingManager
-				RemoveOffersFromCampaign.MarketingManager
 		}
 	}
 	contract EmailMarketingAdminConsole{
@@ -45,8 +43,6 @@ package com.x.emailmarketing.v1{
 				UpdateMessage.MarketingConsole
 				DeleteMessage.MarketingConsole
 				AddContactListsToCampaign.MarketingConsole
-				AddOffersToCampaign.MarketingConsole
-				RemoveOffersFromCampaign.MarketingConsole
 		}
 	}
 	

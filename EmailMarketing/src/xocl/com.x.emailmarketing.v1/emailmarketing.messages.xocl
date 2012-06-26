@@ -468,33 +468,6 @@ package com.x.emailmarketing.v1{
 	}
 	
 	
-	record AddOffersToCampaign {
-		string campaignId;
-		array<string> offerIds "Ids of offers to be added to the campaign";
-	}
-
-	record AddOffersToCampaignSucceeded {
-		AddOffersToCampaign request;
-	}
-	
-	record  AddOffersToCampaignFailed  {
-		AddOffersToCampaign request;
-		array<Error> errors;
-	}
-	
-	record RemoveOffersFromCampaign {
-		string campaignId;
-		array<string> offerIds "Ids of offers to be removed from the campaign";
-	}
-
-	record RemoveOffersFromCampaignSucceeded {
-		RemoveOffersFromCampaign request;
-	}
-	
-	record RemoveOffersFromCampaignFailed {
-		RemoveOffersFromCampaign request;
-		array<Error> errors;
-	}
 	
 	record LookupCampaignStatistics {
 		string campaignId;

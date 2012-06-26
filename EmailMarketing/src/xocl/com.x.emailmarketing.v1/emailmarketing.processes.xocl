@@ -179,27 +179,6 @@ package com.x.emailmarketing.v1{
 		}
 	}
 	
-    process AddOffersToCampaign ( EmailCampaign campaign){
-	    roles (MarketingConsole, MarketingManager)
-		preconditions (exists(campaign))
-		
-		workflow{
-			transaction AddOffersToCampaign {
-				roles(MarketingConsole, MarketingManager)
-			}	
-		}
-	}
-	
-	process RemoveOffersFromCampaign ( EmailCampaign campaign){
-	    roles (MarketingConsole, MarketingManager)
-		preconditions (exists(campaign))
-		
-		workflow{
-			transaction RemoveOffersFromCampaign {
-				roles(MarketingConsole, MarketingManager)
-			}	
-		}
-	}
 	
 
 }
