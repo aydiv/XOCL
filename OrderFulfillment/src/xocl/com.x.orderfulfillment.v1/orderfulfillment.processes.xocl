@@ -38,7 +38,7 @@ package com.x.orderfulfillment.v1 {
 	process DropshipFulfillmentProcessing (Fulfillment fulfillment) {	
 	 description "An order is submitted to dropshipper for fulfillment and is either shipped or cancelled"
 	 
-	 	roles(OrderProcessor, DropshipProcessor, ProductInformationManager)
+	 	roles(OrderProcessor, DropshipProcessor)
         
 	        workflow { 
 		 	 	transaction ProcessDropshipFulfillment {
@@ -49,7 +49,7 @@ package com.x.orderfulfillment.v1 {
 		    	any{
 					workflow ProductLookup {  
 						description "The DropShip processor can get information from PIM, such as customs and shipment related attributes"
-						roles(DropshipProcessor, ProductInformationManager)
+						roles(DropshipProcessor, null)
 					}
 		    	}
 		    	
@@ -93,7 +93,7 @@ package com.x.orderfulfillment.v1 {
  	process ThirdPartyFulfillmentProcessing (Fulfillment fulfillment) {		
 	 description "An order is submitted to third party for fulfillment and is either shipped or cancelled"
 	 
-	 	roles(OrderProcessor, ThirdPartyFulfillmentProcessor, ProductInformationManager)
+	 	roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
  		 workflow{		
 	 	 	transaction ProcessThirdPartyFulfillment {
 	 	 		description "A merchant wants to direct a fulfillment provider to ship all or part of an order to an end customer"
@@ -102,7 +102,7 @@ package com.x.orderfulfillment.v1 {
 	    	any{
 				workflow ProductLookup {  
 					description "The DropShip processor can get information from PIM, such as customs and shipment related attributes"
-					roles(ThirdPartyFulfillmentProcessor, ProductInformationManager)
+					roles(ThirdPartyFulfillmentProcessor, null)
 				}
 		    }    	
 	 	    do(!fulfillment[Fulfillment.Complete]) {
