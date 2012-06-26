@@ -1,12 +1,15 @@
 package com.x.orderfulfillment.v1 {	
 	import com.x.orderfulfillment.v1.*
 	import com.x.inventory.v1.*
+	import com.x.pim.v1.*
 	
     contract DropShipFulfillmentProvider {
     	description "A capability that performs drop shipment functions"
     	roles {
 	        DropshipFulfillmentProcessing.DropshipProcessor
 	        ReturnProcessing.FulfillmentProcessor
+	       	ProductLookup.ProductInformationConsumer
+	       	StockItemUpdate.StockItemConsumer
 	    }
     }
     
@@ -19,6 +22,7 @@ package com.x.orderfulfillment.v1 {
 	        ReturnProcessing.FulfillmentProcessor
 	        ReturnReceiptProcessing.FulfillmentProcessor
 	        StockItemUpdate.StockItemConsumer
+	        ProductLookup.ProductInformationConsumer
 	    }
     }
     
