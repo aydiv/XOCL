@@ -216,7 +216,7 @@ package com.x.emailmarketing.v1{
 		datetime? endTime;
 		
 		/** Provider specific types can be specified as strings */
-		union{CampaignStatus,string} status;
+		CampaignStatus status;
 		string messageId;
 
 		/** If not provided, will use default on message */
