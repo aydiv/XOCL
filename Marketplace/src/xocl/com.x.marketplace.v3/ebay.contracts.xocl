@@ -3,6 +3,7 @@ package com.x.marketplace.v3{
 	import com.x.ordermanagement.v2.*
 	import com.x.authz.v1.*
 	import com.x.pim.v1.*
+	import com.x.customer.v1.*
 	
     contract EBayMarketplace 
     {
@@ -52,6 +53,7 @@ package com.x.marketplace.v3{
     	{
 	   		OfferPublication.OfferManager<Ebay>  
 	   		PublishedOfferRevision.OfferManager<Ebay>
+	   		CustomerUpsert.CustomerConsumer
 	    }
 	    
 	}	

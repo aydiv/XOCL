@@ -3,6 +3,7 @@ package com.x.marketplace.v3{
 	import com.x.ordermanagement.v2.*
 	import com.x.authz.v1.*
 	import com.x.pim.v1.*
+	import com.x.customer.v1.*
 	
     contract Marketplace 
     {
@@ -49,6 +50,7 @@ package com.x.marketplace.v3{
 	   		//Marketplace  roles 
 	   		OfferPublication.OfferManager
 	   		PublishedOfferRevision.OfferManager
+	   		CustomerUpsert.CustomerConsumer
 
 	    }
 	    
@@ -57,8 +59,7 @@ package com.x.marketplace.v3{
      {
     	description "A system that places offers on a marketplace and processes orders from the marketplace and passes product data with offer publication"
     	
-    	roles
-    	{
+    	roles{
 	   		OfferPublicationWithProductData.OfferManager 
 			PublishedOfferRevisionWithProductData.OfferManager
 	    }
