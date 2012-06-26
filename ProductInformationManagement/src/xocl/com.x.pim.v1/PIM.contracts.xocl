@@ -8,8 +8,11 @@ package com.x.pim.v1{
 		 		ProductSearch.ProductInformationManager
 		 		ProductLookup.ProductInformationManager
 	 			ProductUpdate.ProductInformationManager
+	 			ProductUpdated.ProductInformationManager
 	 			ProductCreation.ProductInformationManager
+	 			ProductCreated.ProductInformationManager
 	 			ProductDeletion.ProductInformationManager
+	 			ProductDeleted.ProductInformationManager
 	 		}
 	}
 	     
@@ -19,9 +22,9 @@ package com.x.pim.v1{
     		roles{
 	 			ProductSearch.ProductInformationConsumer
 		 		ProductLookup.ProductInformationConsumer
-	 			ProductUpdate.ProductInformationObserver
-	 			ProductCreation.ProductInformationObserver
-	 			ProductDeletion.ProductInformationObserver
+	 			ProductUpdated.ProductInformationObserver
+	 			ProductCreated.ProductInformationObserver
+	 			ProductDeleted.ProductInformationObserver
 	 		}
 	}
 	 
