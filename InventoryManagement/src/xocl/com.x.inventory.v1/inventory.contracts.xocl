@@ -15,6 +15,7 @@ package com.x.inventory.v1{
     		description "The InventoryManager contract models a standard inventory system."
     		roles{
 	 			StockItemUpdate.InventoryManager "Updates stock information in the inventory."
+	 			StockItemUpdated.InventoryManager "Notifies observers when inventory has been updated."
 	 		}
 	}
     
