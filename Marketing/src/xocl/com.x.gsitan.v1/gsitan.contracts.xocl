@@ -13,15 +13,16 @@ package com.x.gsitan.v1{
     	roles
     	{
 	 		WebStoreOfferSearch.WebStoreOfferConsumer
-	 		WebStoreOfferUpdate.WebStoreOfferObserver
-	 		WebStoreOfferCreation.WebStoreOfferObserver
-	 		WebStoreOfferDeletion.WebStoreOfferObserver
+	 		WebStoreOfferUpdated.WebStoreOfferObserver
+	 		WebStoreOfferCreated.WebStoreOfferObserver
+	 		WebStoreOfferDeleted.WebStoreOfferObserver
 	 		ProductSearch.ProductInformationConsumer
 	 		ProductLookup.ProductInformationConsumer
 	 		OrderSearch.OrderConsumer<NonSensitive>
 	 		ProcessSalesChannelOrder.OrderObserver<MarketplaceOrder> 
+	 		OrderCancelled.OrderObserver
 	 		CustomerSearch.CustomerConsumer
-	 	    CustomerUpsert.CustomerObserver  
+	 	    CustomerCreatedOrUpdated.CustomerObserver  
 	    }
 	    
 	 }
