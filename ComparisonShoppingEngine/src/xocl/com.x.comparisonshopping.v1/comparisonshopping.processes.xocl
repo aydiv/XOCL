@@ -8,37 +8,32 @@ package com.x.comparisonshopping.v1
 	import com.x.comparisonshopping.v1.* 
 	
     // Publish a set of products on a comparison shopping engine site
-    process PublishProductFeed(ProductFeed productFeed)
-    {
+    process PublishProductFeed(ProductFeed productFeed) {
         summary "Publishes (adds) products to a comparison shopping engine."
         description "Sends a product feed file to a comparison shopping engine and links the products to the merchant's store."
         
-        roles 
-        	{
-        		TrafficGenerationManager "Sends a feed file containing a list of products to a comparison shopping engine."
-        		ComparisonShoppingPublisher "Links the products to the merchant's online store."
-        	}
+        roles {
+			TrafficGenerationManager "Sends a feed file containing a list of products to a comparison shopping engine."
+			ComparisonShoppingPublisher "Links the products to the merchant's online store."
+		}
         
         preconditions(productFeed[ProductFeed.Prepared])
         
 	    // The baseline workflow for processing product feeds
 	    workflow
-	    	{
+	    {
 	    	summary "Baseline workflow for publishing products using a product feed file."
 	    	description "This workflow sends a product feed file to a comparison shopping engine, which adds the products to the comparison shopping engine and links the products to the merchant's store. It returns either a success or failure message."
 	    	
 	    	// This transaction publishes the feed to the CSE 
-	        transaction PublishProductFeed
-	        {
-	        	roles
-	        	(PublishProductFeed.TrafficGenerationManager, PublishProductFeed.ComparisonShoppingPublisher)
+	        transaction PublishProductFeed {
+	        	roles (PublishProductFeed.TrafficGenerationManager, PublishProductFeed.ComparisonShoppingPublisher)
 	        }
 	    }
 	    
-        postconditions
-        {
-          success(productFeed[ProductFeed.Published])
-          failure(productFeed[ProductFeed.Denied])
+        postconditions {
+			success(productFeed[ProductFeed.Published])
+			failure(productFeed[ProductFeed.Denied])
         }
     }
     
@@ -47,11 +42,10 @@ package com.x.comparisonshopping.v1
         summary "Updates the information of published products."
         description "Updates the information for one or more products that have already been published to a comparison shopping engine."
         
-        roles
-            {
-        		TrafficGenerationManager "Sends a feed file containing updates to the products to a comparison shopping engine."
-        		ComparisonShoppingPublisher "Links the products to the merchant's online store."
-        	}
+        roles {
+    		TrafficGenerationManager "Sends a feed file containing updates to the products to a comparison shopping engine."
+    		ComparisonShoppingPublisher "Links the products to the merchant's online store."
+    	}
         
 
         
@@ -61,17 +55,14 @@ package com.x.comparisonshopping.v1
 	    	summary "Updates published products."
 			description "This workflow sends a product feed file, which updates (replaces) the information for one or more products that have already been published and links the product to the merchant's store. It returns either a success or failure message."
 			
-	        transaction UpdateProductFeed
-	        {
+	        transaction UpdateProductFeed {
 	        	roles(TrafficGenerationManager, ComparisonShoppingPublisher)
 	        }
 	    }
 	    
-        postconditions
-        {
-          success(productFeed[ProductFeed.Updated])
-          failure(productFeed[ProductFeed.Denied])
-        }
-    	
+        postconditions {
+			success(productFeed[ProductFeed.Updated])
+			failure(productFeed[ProductFeed.Denied])
+        }	
     }
 }
