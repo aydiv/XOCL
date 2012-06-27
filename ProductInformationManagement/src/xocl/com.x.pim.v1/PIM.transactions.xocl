@@ -8,7 +8,7 @@ package com.x.pim.v1
     
  	transaction SearchProduct query
     {
-    	description "Retrieve details for one or more products based on locale."
+    	description "Retrieves the details for one or more products based on the search criteria. It returns either a succeeded message containing the results or a failed message containing the search criteria."
         sender
         {
         	message SearchProduct
@@ -30,7 +30,7 @@ package com.x.pim.v1
     
     transaction LookupProduct query
     {
-    	description "Retrieve details for one or more products based on SKU values."
+    	description "Retrieves the details for one product based on SKU value. It returns either a succeeded message containing the results or a failed message containing the search criteria."
         sender
         {
         	message LookupProduct
@@ -52,7 +52,7 @@ package com.x.pim.v1
     
     transaction ProductCreated inform
     {
-    	description "The product information manager informs an observer that a product was created."
+    	description "Sends a message that informs an observer that a product was created. The message contains an array of the products that were created."
         sender
         {
         	message ProductCreated{
@@ -63,7 +63,7 @@ package com.x.pim.v1
     
     transaction ProductUpdated inform
     {
-    	description "The product information manager informs an observer that a product was updated."
+    	description "Sends a message that informs an observer that a product was updated. The message contains an array of the products that were updated."
         sender
         {
         	message ProductUpdated{
@@ -74,7 +74,7 @@ package com.x.pim.v1
     
     transaction ProductDeleted inform
     {
-    	description "The product information manager informs an observer that a product was deleted."
+    	description "Sends a message that informs an observer that a product was deleted. The message contains an array of the products that were deleted."
         sender
         {
         	message ProductDeleted{
@@ -86,7 +86,7 @@ package com.x.pim.v1
     
     transaction UpdateProduct response
     {
-    	description "A consumer asks the product information manager to update one or more products. This transaction is not specified in any contract at this time."
+    	description "Updates one or more products based on a request from a consumer. It returns either a succeeded message or a failed message containing the product update information."
         sender
         {
         	message UpdateProduct
@@ -115,7 +115,7 @@ package com.x.pim.v1
     
     transaction CreateProduct response
     {
-    	description "A consumer asks the product information manager to create one or more products. This transaction is not specified in any contract at this time."
+    	description "Creates one or more products based on a request from a consumer. It returns either a succeeded message or a failed message containing the product information."
         sender
         {
         	message CreateProduct
@@ -143,7 +143,7 @@ package com.x.pim.v1
 
     transaction DeleteProduct response
     {
-    	description "A consumer asks the product information manager to delete one or more products. This transaction is not specified in any contract at this time."
+    	description "Deletes one or more products based on a request from a consumer. It returns either a succeeded message or a failed message containing an array of the IDs of the products to delete."
         sender
         {
         	message DeleteProduct
@@ -172,7 +172,7 @@ package com.x.pim.v1
         
     transaction UpdateSKU (StockKeepingUnit sku)response
     {
-     	description "A consumer asks the product information manager to update one or more product SKUs. This transaction is not specified in any contract at this time."
+     	description "Updates the SKUs for one or more products based on a request from a consumer. It returns either a succeeded message or a failed message containing the SKUs that were to be updated. Note: To use this transaction, the SKUs must exist."
     	preconditions
     	{
     		exists(sku) "A pre-condition to updating a product SKU is that the SKU already exists (i.e., the merchant has already generated an SKU)."
@@ -204,7 +204,7 @@ package com.x.pim.v1
     
     transaction CreateSKU (StockKeepingUnit sku) response
     {
-    	description "A consumer asks the product information manager to create one or more product SKUs. This transaction is not specified in any contract at this time."
+    	description "Creates the SKUs for one or more products based on a request from a consumer. It returns either a succeeded message or a failed message containing the SKUs that were to be created. Note: To use this transaction, the SKUs must NOT already exist."
         preconditions
         {
         	!exists(sku) "A pre-condition to performing this transaction is that the SKU to be created does not already exist (i.e., the merchant has not already generated an SKU)."
@@ -236,7 +236,7 @@ package com.x.pim.v1
 
     transaction DeleteSKU (StockKeepingUnit sku) response
     {
-    	description "A consumer asks the product information manager to delete one or more product SKUs. This transaction is not specified in any contract at this time."
+    	description "Deletes the SKUs for one or more products based on a request from a consumer. It returns either a succeeded message or a failed message containing the SKUs that were to be deleted. Note: To use this transaction, the SKUs must exist."
         preconditions
         {
         	exists(sku) "A pre-condition to performing this transaction is that the SKU to be delete must already exist (i.e., the merchant has already generated the SKU)."

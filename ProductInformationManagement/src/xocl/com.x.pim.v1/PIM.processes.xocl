@@ -2,7 +2,8 @@ package com.x.pim.v1 {
     import com.x.pim.v1.*
     
     process ProductSearch{
-		description "A consumer queries the product catalog, and gets all products back."
+    	summary "Searches for all products."
+		description "A consumer queries the product catalog and gets back all the products."
 
 		roles
 		{
@@ -11,7 +12,8 @@ package com.x.pim.v1 {
 		}
 	
 		workflow {
-			description "A consumer queries the product catalog, and gets all products back."
+    		summary "Searches for all the products in a product information management system."
+			description "A consumer queries the product catalog and gets back all the products."
 			transaction SearchProduct {
 				roles(ProductInformationConsumer, ProductInformationManager)
 			}
@@ -19,7 +21,8 @@ package com.x.pim.v1 {
 	}
 	
 	process ProductLookup {
-		description "A consumer queries the product catalog, and gets a single product back."
+    	summary "Searches a product catalog for a single product."
+		description "A consumer queries the product catalog and gets a single product back."
 		
 		roles
 		{
@@ -29,13 +32,16 @@ package com.x.pim.v1 {
 	}
 	
     workflow ProductLookup implements ProductLookup {
+    	summary "Searches a product catalog for a single product in a product information management system."
+    	description "A consumer queries the product catalog and gets a single product back."
 			transaction LookupProduct {
 				roles(ProductInformationConsumer, ProductInformationManager)
 			}
 		}
 	
 	process ProductUpdate (Product product, StockKeepingUnit sku){
-		description "A product is updated in the product information management system. "
+    	summary "Updates the product information of the products."
+		description "A consumer submits a product update request and the manager updates the product information management system and sends a message to notify observers of the updated products."
 		
 		roles
 		{
@@ -47,7 +53,8 @@ package com.x.pim.v1 {
 		preconditions(exists(product))	
 	
 		workflow {
-			description "A consumer asks the product information manager to update a product. A product is updated by one of the following activities: adding a new SKU, revising an existing SKU, deleting an existing SKU, or updating base product information. "
+    		summary "Updates the product information for products in a product information management system."
+			description "A consumer submit a product update request. The manager updates the product by one of the following activities: adding a new SKU, updating or deleting an existing SKU, or updating the base product information."
 			one {
 			
 				// A consumer asks the PIM to update a product.  An update, create, or delete of a SKU is considered a product update
@@ -72,6 +79,8 @@ package com.x.pim.v1 {
 			
 			// The PIM informs an observer that a product was updated
 			workflow ProductUpdated {
+		    	summary "Informs an observer that a product was updated in a product information management system."
+		    	description "A manager sends a message that informs an observer that a product was updated by one of the following activities: adding a new SKU, updating or deleting an existing SKU, or updating the base product information."
 			   	roles(ProductInformationManager, ProductInformationObserver)
 			}
 		}
@@ -82,6 +91,8 @@ package com.x.pim.v1 {
 	}
 	
 	process ProductUpdated(Product product){
+    	summary "Updates product and product SKU data in a product information management system."
+    	description "A manager updates the product and product SKU data and sends a message that informs observers of changes."
 		roles
 		{
 			ProductInformationManager "The product information manager updates product and product SKU data and informs observers of changes."
@@ -90,6 +101,8 @@ package com.x.pim.v1 {
 	}
 	
 	workflow ProductUpdated implements ProductUpdated{
+    	summary "Updates product and product SKU data."
+    	description "A manager updates the product and product SKU data and informs observers of changes."
 		transaction ProductUpdated {
 			   	roles(ProductInformationManager, ProductInformationObserver)
 		}
@@ -97,7 +110,8 @@ package com.x.pim.v1 {
 
 
 	process ProductCreation (Product product) {
-		description "A product is created in the PIM"
+    	summary "Creates one or more products in a product information management system."
+		description "A consumer requests the creation of products. The manager creates the products and sends a message that informs observers of the products that were created."
 		
 		roles
 		{
@@ -109,13 +123,16 @@ package com.x.pim.v1 {
 		preconditions(!exists(product))
 	
 		workflow  {
-			description "A consumer asks the product information manager to create one or more products and/or the product information manager informs any observers that products were created."
+    		summary "Creates one or more products in a product information management system."
+			description "A consumer requests the creation of one or more products. The manager creates the products and sends a message that informs observers of the products that were created."
 				// A consumer asks the PIM to create a product
 			transaction CreateProduct {
 				roles(ProductInformationConsumer,ProductInformationManager)
 			}
 				// The PIM informs an observer that a product was created
 			workflow ProductCreated {
+    			summary "Informs observers that products were created."
+		    	description "The product information manager informs any observers that products were created."
 			   	roles(ProductInformationManager, ProductInformationObserver)
 			}
 		}
@@ -126,7 +143,8 @@ package com.x.pim.v1 {
 		}
 	}	
 	process ProductCreated {
-		description "A product is created in the PIM, observers are informed"
+    	summary "Creates a product in a product information management system."
+		description "A manager creates a product and sends a message that informs observers of the products that were created."
 		
 		roles {
 			ProductInformationManager "The product information manager creates new products and informs observers of added products. "
@@ -135,13 +153,16 @@ package com.x.pim.v1 {
 	}
 	
 	workflow ProductCreated implements ProductCreated{
+    	summary "Creates products in a product information management system."
+    	description "A manager creates the products and informs observers of the product that were created."
 		transaction ProductCreated {
 			roles(ProductInformationManager, ProductInformationObserver)
 		}
 	}
 
     process ProductDeletion (Product product) {
-		description "A product is deleted in the product information system."
+    	summary "Deletes products."
+		description "A consumer requests the deletion of products. The manager deletes the products and sends a message that informs observers of the products that were deleted."
 		
 		roles
 		{
@@ -153,6 +174,8 @@ package com.x.pim.v1 {
 		preconditions(exists(product))
 	
 		workflow {
+			summary "Deletes products from a XPIM."
+			description "A consumer requests the deletion of products and the manager deletes the products."
 				// A consumer asks the PIM to delete a product
 			transaction DeleteProduct {
 				roles(ProductInformationConsumer,ProductInformationManager)
@@ -160,6 +183,8 @@ package com.x.pim.v1 {
 			
 			// The PIM informs an observer that a product was deleted
 			workflow ProductDeleted {
+		    	summary "Informs observers of the products that were deleted."
+    			description "The manager sends a message that informs observers of the products that were deleted."
 			   	roles(ProductInformationManager, ProductInformationObserver)
 			}
 		}
@@ -170,15 +195,18 @@ package com.x.pim.v1 {
 		}
 	}
 	process ProductDeleted{
-		description "A product is deleted in the PIM, observers are informed"
+    	summary "Informs observers of the products that were deleted."
+		description "The manager sends a message that informs observers of the products that were deleted."
 		
 		roles {
-			ProductInformationManager "The product information manager creates new products and informs observers of deleted products. "
-			ProductInformationObserver "The product information observer is informed when new products are deleted. "
+			ProductInformationManager "The product information manager informs observers of deleted products. "
+			ProductInformationObserver "The product information observer is informed of the products that were deleted. "
 		}
 	}
 	
 	workflow ProductDeleted implements ProductDeleted{
+    	summary "Informs observers of the products that were deleted."
+		description "The manager sends a message that informs observers of the products that were deleted."
 		transaction ProductDeleted {
 			roles(ProductInformationManager, ProductInformationObserver)
 		}

@@ -171,7 +171,7 @@ package com.x.pim.v1
     record SearchProductFailed
     {
     	summary "Signals that a search for specific products failed."
-    	description "Signals that a search for specific products succeeded. It returns the original search query and any locales specified."
+    	description "Signals that a search for specific products failed. It returns the original search query and any locales specified."
         Query _AVDL_query "The original search query.";
         array<Locale> ? locales "Array of locales associated with the search query. If this is not provided, en_US is used.";
         array<Error> errors "Array of error information associated with the failure. Contains information useful for troubleshooting.";
@@ -308,8 +308,8 @@ package com.x.pim.v1
     
     record DeleteProductFailed
     {
-    	summary "Signals that a request to delete one or more products using their IDs has succeeded."
-    	description "Signals that a request to delete one or more product using their IDs has succeeded. Returned after calling /com.x.pim.v1/ProductDeletion/DeleteProduct and contains the array of product IDs specified in DeleteProduct by the requestor. Contains information about the failure useful for troubleshooting."
+    	summary "Signals that a request to delete one or more products using their IDs has failed."
+    	description "Signals that a request to delete one or more product using their IDs has failed. Returned after calling /com.x.pim.v1/ProductDeletion/DeleteProduct and contains the array of product IDs specified in DeleteProduct by the requestor. Contains information about the failure useful for troubleshooting."
         array<string> productIds "Array of product IDs that reference the products that weren't deleted.";
         array<Error> errors "Array of error information about the failure to delete products.";
     }
