@@ -289,6 +289,23 @@
 										<ignore />
 									</action>
 								</pluginExecution>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.x.ocl</groupId>
+										<artifactId>
+											xocl-internal-maven-plugin
+										</artifactId>
+										<versionRange>
+											[2.0.1,)
+										</versionRange>
+										<goals>
+											<goal>xocltohtmldiff</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
