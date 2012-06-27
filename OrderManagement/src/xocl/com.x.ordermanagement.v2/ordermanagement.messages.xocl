@@ -276,7 +276,7 @@ package com.x.ordermanagement.v2 {
 		array<PromotionalDiscount>? discounts "Array of all the promotional discounts that were applied at the order level."
 		string sourceId "Identifier for the channel where this order originated, such as eBay, Amazon, etc."
 		string sourceGroupId "Unique identifier of the group that classifies source of the order, such as web, print, email, etc."
-		array<string>? relatedOrderNumbers "Array of order numbers of any related orders."
+		array<string>? relatedOrderNumbers "Array of order numbers of any related orders. These numbers are assigned by the system that orginated the order."
 		array<Shipment>? shipments "Array of the shipments that were created to ship one or more of the items in this order."
 		string? referralSource "Marketing source that referred this order."
 		string? buyerComments "Additional comments or instructions that the buyer wants to convey to the merchant."
@@ -448,8 +448,8 @@ package com.x.ordermanagement.v2 {
 	record CancelOrder {
 		summary "Information needed to cancel an order."
 		description "Captures all the information needed to cancel an order."
-		array<string> orderNumbers "Array of unique order numbers." //?  what is the difference btw these Tod is sending me this info
-		array<guid> orderIds "Array of internal order IDs." 
+		array<string> orderNumbers "Array of unique order numbers. These numbers are assigned by the system that orginated the order."
+		array<guid> orderIds "Array of internal unique identifiers that are used to manage orders." 
 	}
 	
 	record CancelMarketplaceOrder extends CancelOrder {
@@ -482,7 +482,7 @@ package com.x.ordermanagement.v2 {
 	record CancelMarketplaceOrderFailed {
 		summary "Signals the attempt to cancel a marketplace order has failed."
 		description "Signals the attempt to cancel a marketplace order has failed. It returns the failed order numbers and information about the failure, which is useful for troubleshooting."
-		array<string> failedOrderNumbers "Array of the order numbers that failed to be cancelled."
+		array<string> failedOrderNumbers "Array of the order numbers that failed to be cancelled. These numbers are assigned by the system that orginated the order."
 		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
 	
