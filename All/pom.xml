@@ -215,9 +215,7 @@
                     		</excludes>
                			 </configuration>
 			 </plugin>
-		 <plugin>
-
-			 <!--<plugin>
+			 <plugin>
 				<inherited>true</inherited>
 				<groupId>com.x.ocl</groupId>
 				<artifactId>xocl-internal-maven-plugin</artifactId>
@@ -233,11 +231,10 @@
 							<outputDir>${project.basedir}</outputDir>
 							<trunkUrl>svn/x/xocl/trunk</trunkUrl>
 							<tagBaseUrl>svn/x/xocl/tags</tagBaseUrl>
-							<tag></tag>
 						</configuration>
 					</execution>
 				</executions>
-			</plugin> -->
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
