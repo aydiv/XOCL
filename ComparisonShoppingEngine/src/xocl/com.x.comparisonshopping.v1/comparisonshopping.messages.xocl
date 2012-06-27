@@ -79,24 +79,15 @@ package com.x.comparisonshopping.v1 {
 	 	string region "Region (state) country where the product will be delivered."
 	 	string service "Shipping service (ground, air, etc.) that will be used when the product is shipped."
 	 	CurrencyAmount price "Amount that will be charged to ship the product."
-	 }
-
-	record VariationValue {
-		summary "Product variation information."
-		description "Captures the information used to represent each value that can be associated with a given variation of a product."
-
-		CurrencyAmount price "Price associated with a specific variation."
-		string sku "Standardized SKU (Stock Keeping Unit) for this variation. This is a unique number per product and merchant."
-		array<ProductImage> imageUrls "Array of URLs to the images for this variation."
-		string value "Displayed text for this variation."
 	}
 	
 	record Variation {
 		summary "Product variation definition."
-		description "Captures all the information for a single variation."
+		description "Captures the id, name, and single value for variation."
 
-		string id "Unique identifier for this variation."
-		array<VariationValue> values "List of possible values for this variation."
+		string? id "Unique identifier for this variation."
+		string name "The label name for the variation."
+		string value "The value assigned to the variation."
 	}
 	
 	record Product {
@@ -104,6 +95,7 @@ package com.x.comparisonshopping.v1 {
 		description "Captures all the product information needed to represent a product on a comparison shopping engine channel, such as quantity, title, SKU, category, etc."
 
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant."
+		string? itemGroup "The identifier that groups together all the variation values for this product (if it has variations)."
 		CurrencyAmount price "Price to purchase the product."; 
 		int quantity "How many of this product are in stock.";
    		string title "Title for the product."
