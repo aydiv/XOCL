@@ -40,8 +40,6 @@ package com.x.inventory.v1
 		array<Error> errors "Array of errors related to the failed search.";
 	}
 	
-
-
    record InventoryError
 	{
 		summary "Stock item update errors."
@@ -59,70 +57,79 @@ package com.x.inventory.v1
 
     record OutOfStock
 	{
-		summary "Informs observers that an inventory item is out of stock. "
+		summary "Informs observers that an inventory item is out of stock."
 		description "Informs an Inventory Observer that a stock item quantity has gone to zero."
 		StockItem stockItem "Informs an Inventory Observer that a stock item quantity has gone to zero.";
 	}
 	
 	enum InventorySnapshotReason {
-		CYCLE_COUNT
-		DAMAGED_INVENTORY
-		LIQUIDATION
+		summary "Specifies the reason for an inventory snapshot."
+		description "Defines the values that can be used to specify the reason for an inventory snapshot."
+		CYCLE_COUNT "Indicates the inventory snapshot was for a cycle count."
+		DAMAGED_INVENTORY "Indicates the inventory snapshot was for damaged inventory."
+		LIQUIDATION "Indicates the inventory snapshot was for a liquidation."
 	}
 	
 	enum InventoryCondition {
-		SELLABLE
-		UNSELLABLE
+		summary "Specifies the condition of an item."
+		description "Defines the values that can be used to specify the condition of an item."
+		SELLABLE "Indicates that the item is in sellable condition."
+		UNSELLABLE "Indicates that the condition of the item makes the item unsellable."
 	}
 	
 	record StockItemData {
-		description "details of merchant/supplier whose inventory is being snapshot"
-		string sku
-		int unitQuantity
-		string stockingUOM "stocking unit of measure"
-		InventoryCondition status		
+		summary "Contains details of the stock items in the snapshot."
+		description "Captures the SKU, quanity, and condition of the stock item in the snapshot."
+		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
+		int unitQuantity "Amount of item in the stocking unit of measure. For example, if the UOM is per case and there are 12  items in a case, this value would be 12."
+		string stockingUOM "Stocking unit of measure, such as units per case."
+		InventoryCondition status "Condition of an item. Valid values are: SELLABLE and UNSELLABLE."	
 	}
 	
 	record UpdateStockItemSnapshot {
-		StockItemData inventorySnapshot
-		datetime snapshotDate
-		InventorySnapshotReason snapshotReason
-		string locationName	"warehouse or other location where the snapshot was taken"
+		summary "Contains the information for updating the snapshot."
+		description "Captures the date and time, reason, and location of the snapshot."
+		StockItemData inventorySnapshot "Details of the stock item to update."
+		datetime snapshotDate "Date and time the snapshot was done. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.;"
+		InventorySnapshotReason snapshotReason "Reason the snapshot was done. Valid values are: CYCLE_COUNT, DAMAGED_INVENTORY, and LIQUIDATION."
+		string locationName	"Location of where the snapshot is being taken."
 	}
 	
 	record UpdateStockItemSnapshotSucceeded
 	{
 		summary "Details about the stock items that were updated."
 		description "Returns stock items whose information is successfully updated."
-		UpdateStockItemSnapshot request;
+		UpdateStockItemSnapshot request "Details of the stock items that were updated.";
 	}
 	
 	record UpdateStockItemSnapshotFailed
 	{
-		summary "Error details for a failed attempt to update a stock items."
-		description "Signals that a request to update information related a stock item has failed."
-		UpdateStockItemSnapshot request;
-		array<Error> errors "Errors detailing why the update failed.";
+		summary "Signals that the updating stock item in a snapshot failed."
+		description "Signals that a request to update information related a stock item in a snapshop has failed."
+		UpdateStockItemSnapshot request "Stock items that were not updated.";
+		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting.";
 	}
 	
 	record UpdateStockItemDelta {
-		StockItemData inventoryChange
-		datetime date 
-		string warehouseId "warehouse where the inventory change occured"
+		summary "Contains the information for updating the stock items."
+		description "Captures date and time, inventory changes, and the warehouse identifier to in which to update the stock items."
+		StockItemData inventoryChange "Details of the stock items that changed."
+		datetime snapshotDate "Date and time the snapshot was updated. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.;"
+		string warehouseId "The identifier of the warehouse where the inventory change occured."
 	}
 	
 	record UpdateStockItemDeltaSucceeded
 	{
 		summary "Details about the stock items that were updated."
 		description "Returns stock items whose information is successfully updated."
-		UpdateStockItemDelta request "The request to update the stock item"
+		UpdateStockItemDelta request "The request to update the stock item."
 	}
 	
 	record UpdateStockItemDeltaFailed
 	{
 		summary "Error details for a failed attempt to update one or more stock items."
 		description "Signals that a request to update information related to one or more stock items has failed."
-		UpdateStockItemDelta request "The request to update the stock item"
-		array<Error> errors "Errors detailing why the update failed."
+		UpdateStockItemDelta request "The request to update the stock item."
+		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
 	}
 }
