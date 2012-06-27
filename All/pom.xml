@@ -215,7 +215,7 @@
                     		</excludes>
                			 </configuration>
 			 </plugin>
-			 <plugin>
+			 <!--<plugin>
 				<inherited>true</inherited>
 				<groupId>com.x.ocl</groupId>
 				<artifactId>xocl-internal-maven-plugin</artifactId>
@@ -234,7 +234,7 @@
 						</configuration>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin>-->
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -289,7 +289,7 @@
 										<ignore />
 									</action>
 								</pluginExecution>
-								<pluginExecution>
+								<!--<pluginExecution>
 									<pluginExecutionFilter>
 										<groupId>com.x.ocl</groupId>
 										<artifactId>
@@ -305,7 +305,7 @@
 									<action>
 										<ignore></ignore>
 									</action>
-								</pluginExecution>
+								</pluginExecution>-->
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>
