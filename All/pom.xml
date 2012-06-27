@@ -215,6 +215,8 @@
                     		</excludes>
                			 </configuration>
 			 </plugin>
+		 <plugin>
+
 			 <!--<plugin>
 				<inherited>true</inherited>
 				<groupId>com.x.ocl</groupId>
@@ -230,7 +232,8 @@
 							<importSourceDir>${project.basedir}/..</importSourceDir>
 							<outputDir>${project.basedir}</outputDir>
 							<trunkUrl>svn/x/xocl/trunk</trunkUrl>
-							<tagUrl>svn/x/xocl/tags/xocl-contracts-0.0.17</tagUrl>
+							<tagBaseUrl>svn/x/xocl/tags</tagBaseUrl>
+							<tag></tag>
 						</configuration>
 					</execution>
 				</executions>
