@@ -215,26 +215,6 @@
                     		</excludes>
                			 </configuration>
 			 </plugin>
-			 <!--<plugin>
-				<inherited>true</inherited>
-				<groupId>com.x.ocl</groupId>
-				<artifactId>xocl-internal-maven-plugin</artifactId>
-				<version>2.0.2-SNAPSHOT</version>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>xocltohtmldiff</goal>
-						</goals>
-						<configuration>
-							<importSourceDir>${project.basedir}/..</importSourceDir>
-							<outputDir>${project.basedir}</outputDir>
-							<trunkUrl>svn/x/xocl/trunk</trunkUrl>
-							<tagBaseUrl>svn/x/xocl/tags</tagBaseUrl>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>-->
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -289,23 +269,6 @@
 										<ignore />
 									</action>
 								</pluginExecution>
-								<!--<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>com.x.ocl</groupId>
-										<artifactId>
-											xocl-internal-maven-plugin
-										</artifactId>
-										<versionRange>
-											[2.0.1,)
-										</versionRange>
-										<goals>
-											<goal>xocltohtmldiff</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>-->
 							</pluginExecutions>
 						</lifecycleMappingMetadata>
 					</configuration>

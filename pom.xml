@@ -140,25 +140,6 @@
 					</execution>
 				</executions>
 			</plugin>
-			<!--<plugin>
-				<inherited>true</inherited>
-				<groupId>com.x.ocl</groupId>
-				<artifactId>xocl-internal-maven-plugin</artifactId>
-				<version>2.0.2-SNAPSHOT</version>
-				<executions>
-					<execution>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>xocltohtmldoc</goal>
-						</goals>
-						<configuration>
-							<sourceDirectory>${project.basedir}/src/xocl</sourceDirectory>
-							<outputDir>${project.basedir}/src-gen/doc</outputDir>
-							<legacyMode>false</legacyMode>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>-->
 			<plugin>
 				<inherited>true</inherited>
 				<groupId>org.apache.avro</groupId>
