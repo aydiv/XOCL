@@ -280,7 +280,47 @@ package com.x.emailmarketing.v1{
         	}  
         } 
     }
-
+    transaction AddCustomersToContactList response  {
+    	description "Adds customers to a contact list"
+        sender {
+        	message AddCustomersToContactList {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success AddCustomersToContactListSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+         	
+            failure AddCustomersToContactListFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}   
+        } 
+    }
+    
+    transaction RemoveCustomersFromContactList response  {
+    	description "Removes customers from a contact list"
+        sender {
+        	message RemoveCustomersFromContactList {
+        		 timeouts(receipt=2s,response=15s)
+        		 retries=3     		
+        	}
+        }
+        receiver {
+        	success RemoveCustomersFromContactListSucceeded {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+         	
+            failure RemoveCustomersFromContactListFailed {
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}   
+        } 
+    }
     
     
     

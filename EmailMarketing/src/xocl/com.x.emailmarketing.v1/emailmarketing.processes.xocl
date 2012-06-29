@@ -179,6 +179,28 @@ package com.x.emailmarketing.v1{
 		}
 	}
 	
+	process AddCustomersToContactList (ContactList contactList){
+	    roles (MarketingConsole, MarketingManager)
+		preconditions (exists(contactList))
+		
+		workflow{
+			transaction AddCustomersToContactList {
+				roles(MarketingConsole, MarketingManager)
+			}	
+		}
+	}
+	
+	process RemoveCustomersFromContactList (ContactList contactList){
+	    roles (MarketingConsole, MarketingManager)
+		preconditions (exists(contactList))
+		
+		workflow{
+			transaction RemoveCustomersFromContactList {
+				roles(MarketingConsole, MarketingManager)
+			}	
+		}
+	}
+	
 	
 
 }

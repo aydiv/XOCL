@@ -80,7 +80,7 @@ package com.x.emailmarketing.v1{
 	}
 	
 	record ContactList extends ContactListData{
-		string id;
+		string listId;
 	}
 	
 	record ContactListData  {
@@ -108,7 +108,7 @@ package com.x.emailmarketing.v1{
 	}
 
 	record DynamicContactList extends DynamicContactListData{
-		string id;
+		string listId;
 	}
 	
 	record DynamicContactListData{
@@ -467,8 +467,6 @@ package com.x.emailmarketing.v1{
 		array<Error> errors;
 	}
 	
-	
-	
 	record LookupCampaignStatistics {
 		string campaignId;
 	}
@@ -482,5 +480,27 @@ package com.x.emailmarketing.v1{
 		LookupCampaignStatistics request;
 		array<Error> errors;
 	}
-	
+	record AddCustomersToContactList{
+		string listId;
+	 	array<union{guid, EntityId}> customerIds;
+	}
+	record AddCustomersToContactListSucceeded{
+		AddCustomersToContactList request;
+	}
+	record AddCustomersToContactListFailed{
+		AddCustomersToContactList request;
+		array<Error> errors;
+	}
+	record RemoveCustomersFromContactList{
+		string listId;
+	 	array<union{guid, EntityId}> customerIds;
+	}
+	record RemoveCustomersFromContactListSucceeded{
+		RemoveCustomersFromContactList request;
+	}
+	record RemoveCustomersFromContactListFailed{
+		RemoveCustomersFromContactList request;
+		array<Error> errors;
+	}
+
 }

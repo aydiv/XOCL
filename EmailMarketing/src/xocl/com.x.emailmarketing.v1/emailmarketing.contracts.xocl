@@ -23,8 +23,11 @@ package com.x.emailmarketing.v1{
 				UpdateMessage.MarketingManager
 				DeleteMessage.MarketingManager
 				AddContactListsToCampaign.MarketingManager
+				AddCustomersToContactList.MarketingManager
+				RemoveCustomersFromContactList.MarketingManager
 		}
 	}
+	
 	contract EmailMarketingAdminConsole{
 		description "An administrative console for an e-mail marketing provider"
 		roles{
@@ -43,6 +46,9 @@ package com.x.emailmarketing.v1{
 				UpdateMessage.MarketingConsole
 				DeleteMessage.MarketingConsole
 				AddContactListsToCampaign.MarketingConsole
+				AddCustomersToContactList.MarketingConsole
+				RemoveCustomersFromContactList.MarketingConsole
+				
 		}
 	}
 	
