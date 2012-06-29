@@ -2,10 +2,10 @@
  *  order fulfillment domain
  */
 package com.x.orderfulfillment.v1 {
+
 	import com.x.orderfulfillment.v1.*
 	import com.x.pim.v1.*
-	import com.x.inventory.v1.*
-	
+	import com.x.inventory.v1.*	
 
     entity Fulfillment {
     	description "Entity that represents the various states of a fulfillment order"
@@ -124,6 +124,10 @@ package com.x.orderfulfillment.v1 {
 	    			transaction CancelFulfillment {
 	    				description "A merchant may choose to cancel fulfillment in progress"
 	        			roles(OrderProcessor, ThirdPartyFulfillmentProcessor)
+	        		}
+	        	    transaction FulfillmentProcessorCancelFulfillment {
+	    				description "A merchant may choose to cancel fulfillment in progress"
+	        			roles(ThirdPartyFulfillmentProcessor,OrderProcessor)
 	        		}
 	        		transaction LookupFulfillments {
 	        			description "A merchant may choose to lookup all fulfillments for an order"

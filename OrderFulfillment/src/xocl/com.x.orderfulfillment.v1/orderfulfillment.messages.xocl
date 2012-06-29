@@ -312,6 +312,10 @@ package com.x.orderfulfillment.v1 {
 		array <FulfillmentLineData> fulfillmentLines
 		string? cancelMessage
 	}
+	
+	record FulfillmentProcessorCancelFulfillment extends CancelFulfillment{
+		//no additional fields at this time
+	}
 		
 	record MerchantComment {
 		guid fulfillmentId

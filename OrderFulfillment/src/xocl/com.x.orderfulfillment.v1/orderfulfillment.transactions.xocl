@@ -173,6 +173,16 @@ package com.x.orderfulfillment.v1 {
     	}
     }
     
+        // Notifies that whole/parts of fulfillment should be cancelled
+    transaction FulfillmentProcessorCancelFulfillment notify {
+    	sender{
+    		message FulfillmentProcessorCancelFulfillment{
+    			timeouts(receipt=30s, validation=3m) 
+    		}
+    	}
+    }
+    
+    
     // Notifies that data pertaining to future expected inventory a.k.a receiving should be processed
     transaction ProcessReceiving(Receiving receiving) notify {
     	sender{
