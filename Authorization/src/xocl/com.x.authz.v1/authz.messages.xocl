@@ -20,6 +20,7 @@ package com.x.authz.v1{
 		string? cancelURL ;
 		string? environmentName ;
 		string? userMarketplaceId ;
+		string? runame "Used by the provider to indicate how to redirect"
 	}
 
 	record InitAuthorizationSucceeded {
