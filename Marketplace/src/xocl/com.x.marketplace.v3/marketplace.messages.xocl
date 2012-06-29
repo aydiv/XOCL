@@ -95,7 +95,7 @@ package com.x.marketplace.v3{
 		string serviceName; //i.e. USPSPriorityFlatRateBox
 		int shippingTimeMaxInDays;
 		int shippingTimeMinInDays;
-		ShippingRateType? rateType;
+		array<ShippingRateType>? rateType;
 		ShippingLocaleType localeType;  // Domestic or international
 		
 		boolean dimensionsRequired;
