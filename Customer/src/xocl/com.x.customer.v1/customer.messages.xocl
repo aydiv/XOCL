@@ -33,7 +33,7 @@ package com.x.customer.v1{
 	    array<Address>? addresses "Customer's address.";
 		Phone? primaryPhone "Customer's primary phone number.";  
 		Email email "Customer's email address.";   
-		Gender? gender "Customer's gender. This can be either MALE or FEMALE.";
+		Gender? gender "Customer's gender. Valid values are: MALE or FEMALE.";
 		datetime? dateOfBirth "Customer's birthday. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.";
 		string? company "Customer's company name.";
 		datetime dateCreated "Date the customer record was created. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ."; 
