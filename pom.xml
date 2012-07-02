@@ -8,9 +8,17 @@
 	<description>
 		The parent pom of all XOCL contracts.
 	</description>
+	<licenses>
+  		<license>
+    			<name>X.Commerce Developer Package License Agreement, Version 1.0</name>
+    			<url>https://www.x.com/developers/x.commerce/x.commerce-developer-package-license-agreement</url>
+    			<distribution>repo</distribution>
+  		</license>
+	</licenses>
 	<scm>
 		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk</connection>
 	</scm>
+
 
 	<repositories>
 		<repository>
