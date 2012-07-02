@@ -4,8 +4,8 @@ package com.x.inventory.v1
 	
     record StockItem 
 	{
-		summary "Stock item information that was retrieved."
-		description "Contains the SKUs, quantity and location of a stock item."
+		summary "Contains stock item information."
+		description "Captures the SKUs, quantity, and location of a stock item."
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant.";
 		int quantity "Number of stock items at a location. Note: Quantity is a high-consistency field due to serialization issues.";
 		string locationName "Unique name used to reference the location of the stock item.";
@@ -13,52 +13,52 @@ package com.x.inventory.v1
 	
 	record LookupStockItem
 	{
-		summary "Searches for stock items."
-		description "Searches for one or more stock item by their SKU."
+		summary "Requests to lookup stock items by SKU."
+		description "Requests the lookup for one or more stock items by their SKU. Note: A match must be found for every submitted SKU in order for the request to succeed."
 		array<string> skus "SKUs of the stock items to be retrieved.";
 	}
 
 	record LookupStockItemSucceeded
 	{
-		summary "Returns details for one or more stock items."
-		description "Returns details for one or more stock items matching the submitted SKUs. A match must be found for every submitted SKU in order for the request to succeed."
+		summary "Signals that the lookup for stock items was successful."
+		description "Notifies an oberver that stock items were found. Returns the details for one or more stock items matching the submitted SKUs. A match must be found for every submitted SKU in order for the request to succeed."
 		array<StockItem> stockItems "Stock items that were retrieved.";
 	}
 	
 	record LookupStockItemFailed
 	{
-		summary "Error details for a failed attempt to find stock items."
-		description "Signals that the request to find a stock item has failed. The failure message contains information about cause of the failure."
+		summary "Signals that the attempt to lookup stock items by SKU failed."
+		description "Notifies an observer that the request to lookup stock items by SKU has failed. Returns information about the failure, which is useful for troubleshooting."
 		array<InventoryLookupError> errors "Array of errors related to the failed search for stock items.";
 	}
 	
-	record InventoryLookupError
+	record InventoryLookupError //Travis can't find where this is called/used
 	{
-		summary "Stock item retrieval errors."
-		description "Contains the errors related to searching for one or more stock items."
+		summary "Signals there were lookup error.Stock item retrieval errors."
+		description "Returns the errors related to searching for one or more stock items."
 		string? sku "SKUs of the stock items involved in the failed search.";
-		array<Error> errors "Array of errors related to the failed search.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	
-   record InventoryError
+   record InventoryError //Travis can't find where this is called/used
 	{
-		summary "Stock item update errors."
-		description "Contains errors related to updating a stock item. A way of grouping error information in StockItemFailed."
+		summary "Signals that there were errors with updating stock items."
+		description "Returns the errors related to updating a stock item. A way of grouping error information in StockItemFailed."
 		StockItem? stockItem "One or more stock items involved in the failed update operation.";
-		array<Error> errors "Array of errors related to the failed update operation.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 
     record StockItemUpdated
 	{
-		summary "Informs observers of changes for one or more stock items."
-		description "Event sent to observers to inform them of a change in information for one or more stock items. Includes the array of updated stock items."
+		summary "Signals that stock items have been updated."
+		description "Notifies observers that stock items have been updated. Returns an array of updated stock items."
 		array<StockItem> stockItems "Stock items whose information was successfully updated.";
 	}
 
     record OutOfStock
 	{
-		summary "Informs observers that an inventory item is out of stock."
-		description "Informs an Inventory Observer that a stock item quantity has gone to zero."
+		summary "Notifies observers that an inventory item is out of stock."
+		description "Notifies an Inventory Observer that a stock item quantity has gone to zero."
 		StockItem stockItem "Informs an Inventory Observer that a stock item quantity has gone to zero.";
 	}
 	
@@ -97,17 +97,17 @@ package com.x.inventory.v1
 	
 	record UpdateStockItemSnapshotSucceeded
 	{
-		summary "Details about the stock items that were updated."
-		description "Returns stock items whose information is successfully updated."
+		summary "Signals that stock items were updated."
+		description "Notifies observers that stock items were updated. Returns the stock items update request information."
 		UpdateStockItemSnapshot request "Details of the stock items that were updated.";
 	}
 	
 	record UpdateStockItemSnapshotFailed
 	{
-		summary "Signals that the updating stock item in a snapshot failed."
-		description "Signals that a request to update information related a stock item in a snapshop has failed."
+		summary "Signals that the updating stock item in a snapshot failed. . Returns the information that was sent in the request and information about the failure, which is useful for troubleshooting."
+		description "Notifies an observer that the request update stock items in a snapshop has failed."
 		UpdateStockItemSnapshot request "Stock items that were not updated.";
-		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	
 	record UpdateStockItemDelta {
@@ -118,18 +118,18 @@ package com.x.inventory.v1
 		string warehouseId "The identifier of the warehouse where the inventory change occured."
 	}
 	
-	record UpdateStockItemDeltaSucceeded
+	record UpdateStockItemDeltaSucceeded //Travis "request"
 	{
-		summary "Details about the stock items that were updated."
-		description "Returns stock items whose information is successfully updated."
-		UpdateStockItemDelta request "The request to update the stock item."
+		summary "Signals that updating stock items was successful."
+		description "Notifies an observer that stock items were updated. Returns information of the stock items that were updated."
+		UpdateStockItemDelta request "Information for the request to update the stock item."
 	}
 	
 	record UpdateStockItemDeltaFailed
 	{
-		summary "Error details for a failed attempt to update one or more stock items."
-		description "Signals that a request to update information related to one or more stock items has failed."
-		UpdateStockItemDelta request "The request to update the stock item."
-		array<Error> errors "Unique code that identifies the particular error condition that occurred and provides details about the failure that are useful for troubleshooting."
+		summary "Signals that updating storck items failed."
+		description "Notifies an observer that the request to update stock items has failed. Returns the ?? that was sent in the request and information about the failure, which is useful for troubleshooting."
+		UpdateStockItemDelta request "Information for the request to update the stock item."
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 }
