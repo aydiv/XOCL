@@ -129,7 +129,7 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	record PublishProductFeed {
-		summary "Contains information needed to publish (send) the product feed file to a comparison shopping engine."
+		summary "Contains information for the product feed file."
 		description "Captures information needed to publish the feed file such as, products, site and account ID, name of the feed file, etc."
 
 		array<Product> products "Array of the products to be published to a comparison shopping engine."
