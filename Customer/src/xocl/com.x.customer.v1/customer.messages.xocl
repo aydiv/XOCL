@@ -10,10 +10,10 @@ package com.x.customer.v1{
 	record UpsertCustomerSucceeded{
 		summary "Signals that a customer was added or an existing customer's data was updated."
 		description "Notifies an observer that a customer was added or an existing customer's information was updated."
-		Customer data "Information about the customer, such as name, address, phone, etc.";
+		Customer data "Customer information that was sent in the request.";
 	}
     record UpsertCustomerFailed{
-		summary "Signals that a request to either add or update a customer record has failed."
+		summary "Signals that a request to either add or update a customer information has failed."
 		description "Notifies an observer that the request to add or update a customer has failed. Returns the customer data that was sent in the request and information about the failure, which is useful for troubleshooting."
 		CustomerData data "Customer information that was sent in the request."; 
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
@@ -30,7 +30,7 @@ package com.x.customer.v1{
 		summary "Contains information needed to represent a customer."
 		description "Captures all the information needed for the customer's record."
 		Name fullName "Customer's full name (first and last name).";      
-	    array<Address>? addresses "Customer's address.";
+	    array<Address>? addresses "Customer's complete address.";
 		Phone? primaryPhone "Customer's primary phone number.";  
 		Email email "Customer's email address.";   
 		Gender? gender "Customer's gender. Valid values are: MALE or FEMALE.";
@@ -50,10 +50,10 @@ package com.x.customer.v1{
 	} 
 	
 	record SearchCustomer{
-		summary "Requests a search for customers."
-		description "Requests a search for customers based on a modification date and optionally let you specify how many items are returned at a time."
+		summary "Requests a search for customers by email address or name and system ID and optionally modification date."
+		description "Requests a search for customers based on their email address or name and system ID. Optionally you can add modification date and specify how many items are returned at a time and the startItemIndex. Note: When searching by email, the list returned does NOT include customers that have indicated they do not want to receive marketing email (opted-out)."
 		datetime? modifiedSince "Modification date for the search criteria. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ."; 
-		long? itemsRequested "Sets the maximum number of returned items at a time. If this is not set, all items are returned.";
+		long? itemsRequested "Maximum number of items to return at one time (used for paging). If this is not set, all items are returned.";
 		long? startItemIndex "Returns the results starting from this zero-based index. If this is not set, items will be returned started from the first item.";
 	}
 	
@@ -67,7 +67,7 @@ package com.x.customer.v1{
 	
 	record LookupCustomer {
 		summary "Requests a lookup for a customer by system ID."
-		description "Requests a lookup for a customer using the identifier assigned to the customer by the system that created the customer record."
+		description "Requests a lookup for a customer using the identifier assigned to the customer by the system that created the customer record or a guid."
         union{guid, EntityId} id "Identifier assigned to the customer by the system that created the customer record." 
     }
  
@@ -86,15 +86,15 @@ package com.x.customer.v1{
 
     record CustomerEmail{
 		summary "Contains email information for a customer."
-		description "Captures the email address, record modification date and ID of the customer. This ID can be assigned  by the system that created the customer record, a guid, or null."	
+		description "Captures the email address, record modification date, and ID of the customer. This ID can be assigned by the system that created the customer record, a guid, or null."	
 		Email email "Customer's email address.";		
 		datetime lastModifiedDate "Date the customer information was last modified (changed). The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.";		
 		union{null,guid,EntityId} customerId = null "Identifier for a customer. This ID can be assigned  by the system that created the customer record, a guid, or null.";
 	}
 	
 	record CustomerNameAndId{
-		summary "Contains the name of the customer, record modification date and the customer's ID."
-		description "Captures the customer's full name, record modification date and ID of the customer. This ID can be assigned  by the system that created the customer record, a guid, or null."	
+		summary "Contains the name of the customer, record modification date, and the customer's ID."
+		description "Captures the customer's full name, record modification date, and ID of the customer. This ID can be assigned  by the system that created the customer record, a guid, or null."	
 		union{guid,EntityId} customerId "Identifier assigned to the customer by the system that created the customer record or a guid.";
 		Name fullName "Customer's first and last name."; 
 		datetime lastModifiedDate "Date the customer information was last modified (changed). The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.";
@@ -102,7 +102,7 @@ package com.x.customer.v1{
 	
 	record SearchEmailCustomerSucceeded{
 		summary "Signals that searching for customer email addresses was successful."
-		description "Returns a list of customers and their email address that can be used to send marketing email. List does NOT include customers that have indicated they do not want to receive marketing email (opted-out). It also returns the total number of customers found and the search criteria used."
+		description "Returns a list of customers and their email address that can be used to send marketing email. It also returns the total number of customers found and the search criteria used. Note: The results do NOT include customers that have indicated they do not want to receive marketing email (opted-out)."
 		array<CustomerEmail> customers "Array of customers with an email address and who allow the merchant to send them marketing email. In other words, customers who did NOT opt-out.";
 		long totalItemsFound "Total number of customers returned.";
 		SearchCustomer request "Search criteria used."; 
@@ -118,14 +118,14 @@ package com.x.customer.v1{
 	
 	record SearchCustomerFailed{
 		summary "Signals that searching for customers failed."
-		description "Returns error details related to the failed retrieval of a customer."
+		description "Notifies an observer that a search for customers failed. Returns the search criteria used and error details related to the failed retrieval of a customer."
 		SearchCustomer request "Search criteria used.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	
 	record CustomerCreated{
-		summary "Contains information needed to create a new customer."
-		description "Captures all the information for a new customer record."
+		summary "Signals that a new customer was created."
+		description "Notifies an observer that a new customer was created and returns the information sent in the request."
 		Customer data "Information about the customer, such as name, address, phone, etc., which is used to create the customer record.";
 	}
 	record CustomerUpdated{
