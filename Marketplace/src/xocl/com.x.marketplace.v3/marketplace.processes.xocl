@@ -119,7 +119,7 @@ package com.x.marketplace.v3{
 	
 		preconditions(offer[Offer.Created])
 			
-	     workflow [5m]  {
+	     workflow [12h]  { //timeout: Ontology-492
 			transaction PublishOffer<Ebay> {
 				roles(OfferManager, Marketplace)
 			}
@@ -145,7 +145,7 @@ package com.x.marketplace.v3{
 	
 		preconditions(offer[Offer.Created])
 	
-		workflow [5m]{
+		workflow [12h]  { //timeout: Ontology-492
 	
 			transaction PublishOfferWithProductData<Ebay> {
 				roles(OfferManager, Marketplace)
@@ -167,7 +167,7 @@ package com.x.marketplace.v3{
 	
 		preconditions(offer[Offer.Created])
 			
-		workflow  [5m]  {
+		workflow [12h]  { //timeout: Ontology-492
 			transaction RevisePublishedOffer<Ebay> {
 				roles(OfferManager, Marketplace)
 			}
@@ -193,7 +193,7 @@ package com.x.marketplace.v3{
 	
 		preconditions(offer[Offer.Created])
 			
-		workflow  [5m]  {
+		workflow [12h]  { //timeout: Ontology-492
 			transaction RevisePublishedOfferWithProductData<Ebay> {
 				roles(OfferManager, Marketplace)
 			}
