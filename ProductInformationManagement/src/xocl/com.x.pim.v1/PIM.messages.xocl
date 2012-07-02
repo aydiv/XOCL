@@ -4,8 +4,8 @@ package com.x.pim.v1
 	
 	record Product extends ProductData
     {
-        summary "The primary record of the capability."
-        description "The base record (unique identifier) that represents a product. Extends ProductData." 
+        summary "Contains additional information for the ProductData record."
+        description "Captures the unique identifier that represents a product that is added to ProductData." 
         string id "Unique identifier of a product.";
     }
     
@@ -17,7 +17,7 @@ package com.x.pim.v1
         array<LocalizedString>? name "Descriptive names for the product.";
         array<LocalizedString>? shortDescription "Breif description of the product.";
         array<LocalizedString>? _AVDL_description "Full description of the product.";
-        string? GTIN "GTIN identifier for the product.";
+        string? GTIN "GTIN (Global Trade Item Number) identifier for the product.";
         array<LocalizedString>? brand "Brand of the product.";
         array<LocalizedString>? manufacturer "Manufacturer of the product.";
         string? MPN "Manufacturer part number of the product.";
@@ -31,7 +31,7 @@ package com.x.pim.v1
      
     record ProductAttributeValue
     {
-    	summary "Product attribute value."
+    	summary "Contains the product attribute value."
     	description "Captures the attribute ID and either the product type or custom attribute value."
     	string attributeId "Unique attribute identifier of the product.";
         union {ProductTypeAttributeValue, CustomAttributeValue} attributeValue "Product type attribue and custom attribute value of the product.";
@@ -54,16 +54,16 @@ package com.x.pim.v1
     record LocalizedString 
     {
     	summary "Contains the location of the product."
-    	description "Captures the country "
- 		Locale? locale "Country and language of the product. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). For example, ja_JP is Japanese and Japan. If this is not provided, en_US is used.";
-  		string stringValue "Name of the country and where the product is located."; //??guessing
+    	description "Captures the country and language use in the location of the product."
+ 		Locale? locale "County and language for the product. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
+  		string stringValue "Name of the country and where the product is located.";
  	}
  	 
 	record LocalizedMeasurement  //??Waiting for reply from either Christopher or Yu
 	{
     	summary "Contains the unit of measurement used."
     	description "Captures the unit of measurement used in the country where the product is located."
-		Locale? locale "Country and language of the product. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). For example, ja_JP is Japanese and Japan. If this is not provided, en_US is used.";
+ 		Locale? locale "County and language for the measurement unit. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
 		string name "TBD";
 		string unit "TBD";
 		string value "TBD";
@@ -71,17 +71,17 @@ package com.x.pim.v1
 	
  	record LocalizedNameValue //??What’s in each field depends on where it is used. Waiting on decision.
  	{
-    	summary "TBD"
-    	description "TBD"
- 		Locale? locale "County and language for the location of the product. Country and language of the product. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). For example, ja_JP is Japanese and Japan. If this is not provided, en_US is used.";
- 		string name "TBD";
- 		string value "TBD";
+    	summary "Reserved for future use."
+    	description "Reserved for future use."
+ 		Locale? locale "County and language. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
+ 		string name "Reserved for future use.";
+ 		string value "Reserved for future use.";
  	}
  	
 	enum ProductIdType 
 	{
-    	summary "Sets the product type." //??Is this correct
-    	description "Defines Dvalues that can be used to specify the product type to either the product ID or the SKU of the product."
+    	summary "Specifies the product ID type."
+    	description "Defines the values used to specify the product ID type."
 		PRODUCT_ID "Unique identifier of a product.", 
 		SKU "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
 	}
@@ -156,7 +156,7 @@ package com.x.pim.v1
        	summary "Requests a search for specific products."
     	description "Requests a search for specific products using a query of type Product. Contains an (optional) array of locales. If this is not provided, en_US is used."
         Query _AVDL_query "The search query of type Product."; //@queryType("com.x.pim.v1.Product")
-        array<Locale> ? locales "The (optional) array of locales to search in. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). For example, ja_JP is Japanese and Japan. If this is not provided, en_US is used.";
+        array<Locale> ? locales "The (optional) array of locales to search in. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
     }
  
     record SearchProductSucceeded
@@ -174,7 +174,7 @@ package com.x.pim.v1
     	description "Signals that a search for specific products failed. It returns the original search query and any locales specified."
         Query _AVDL_query "The original search query.";
         array<Locale> ? locales "Array of locales associated with the search query. If this is not provided, en_US is used.";
-        array<Error> errors "Array of error information associated with the failure. Contains information useful for troubleshooting.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
      
     
@@ -205,7 +205,7 @@ package com.x.pim.v1
     	description "Requests the lookup of specific products by their IDs. Contains an (optional) filter. Also contains an (optional) array of locales."
         array<ProductIdentifier> ids "The IDs of the products to be looked up.";
         FilterType? filter "Type of filter to be used on the results of the search. Valid values are: SUMMARY and FULL_DETAILS."; 
-        array<Locale> ? locales "An optional array of locales. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). For example, ja_JP is Japanese and Japan. If this is not provided, en_US is used.";
+        array<Locale> ? locales "An optional array of locales. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
     }
  
     record LookupProductSucceeded
@@ -214,7 +214,7 @@ package com.x.pim.v1
     	description "Signals that specific products were successfully looked up by their IDs. Contains the array of products that were looked up. Also contains the (optional) filter and locale(s) that were specified in the original lookup."
         array<Product> products "Array of products that were successfully looked up.";
         FilterType? filter "Type of filter to be used on the results of the search. Valid values are: SUMMARY and FULL_DETAILS."; 
-        array<Locale>? locales "An optional array of locales. The locale en_US is the default if no locale was supplied in the original request message.";
+        array<Locale>? locales "An optional array of locales. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
     }
     
     record LookupProductFailed
@@ -223,8 +223,8 @@ package com.x.pim.v1
     	description "Signals that specific products couldn't be looked up by their IDs (in conjunction with a filter)."
         array<ProductIdentifier> ids "Array of product IDs that couldn't be looked up.";
         FilterType? filter "Type of filter to be used on the results of the search. Valid values are: SUMMARY and FULL_DETAILS."; 
-        array<Locale>? locales "An optional array of locales. The locale en_US is the default if no locale was supplied in the original request message.";
-        array<Error> errors "Array of error information that provides details about the lookup failure that are useful for troubleshooting.";
+        array<Locale>? locales "An optional array of locales. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
     
     record UpdateProduct
@@ -246,7 +246,7 @@ package com.x.pim.v1
     	summary "Signals that specific products couldn't be updated."
     	description "Signals that specific products couldn't be updated. Contains the array of products that couldn't be updated. Also contains error information about the transaction useful in troubleshooting."
         array<Product> products "The products that couldn't be updated.";
-        array<Error> errors "Error information about the transaction useful in troubleshooting.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
 
     record ProductUpdated
@@ -282,7 +282,7 @@ package com.x.pim.v1
     	summary "Signals that creation of the data of one or more products has failed."
     	description "Signals that creation of one or more products has failed. Received by the consumer. Returned after calling /com.x.pim.v1/ProductCreation/CreateProduct. Returns the products passed into the topic by the requestor. Contains information about the failure useful for troubleshooting."
         array<ProductData> products "Array of product data that couldn't be created.";
-        array<Error> errors "Array of error information about the failure to create product data."
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
     
     record ProductCreated
@@ -311,7 +311,7 @@ package com.x.pim.v1
     	summary "Signals that a request to delete one or more products using their IDs has failed."
     	description "Signals that a request to delete one or more product using their IDs has failed. Returned after calling /com.x.pim.v1/ProductDeletion/DeleteProduct and contains the array of product IDs specified in DeleteProduct by the requestor. Contains information about the failure useful for troubleshooting."
         array<string> productIds "Array of product IDs that reference the products that weren't deleted.";
-        array<Error> errors "Array of error information about the failure to delete products.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
     
     record ProductDeleted
@@ -333,7 +333,7 @@ package com.x.pim.v1
     	summary "Signals that a request to create new SKUs has failed."
     	description "Signals that a request to create new SKUs has failed. The message contains the array of SKUs specified in CreateSKU by the requestor. It also contains error information useful in troubleshooting."
         array<SKU> skus "Array of SKUs that couldn't be created.";
-        array<Error> errors "Array of error information that provides detail regarding why the SKUs couldn't be created.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
 
     record CreateSKUSucceeded
@@ -362,7 +362,7 @@ package com.x.pim.v1
     	summary "Signals that a request to update specific SKUs failed."
     	description "Signals that a request to update specific SKUs failed. It returns the array of SKUs specified in UpdateSKU by the requestor. It also contains error information useful in troubleshooting."
         array<SKU> skus "Array of SKUs that weren't updated.";
-        array<Error> errors "Array of error information that provides detail regarding why the SKUs couldn't be updated.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }	
     
     record DeleteSKU
@@ -384,7 +384,7 @@ package com.x.pim.v1
     	summary "Signals that a request to delete specific SKUs failed."
     	description "Signals that a request to delete specific SKUs failed. Contains the array of SKUs specified in DeleteSKU. It also contains error information useful in troubleshooting."
         array<string> skus "Array of SKUs that couldn't be deleted.";
-        array<Error> errors "Array of error information that provides detail regarding why the SKUs couldn't be deleted.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
     
 }
