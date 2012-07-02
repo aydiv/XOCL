@@ -8,8 +8,8 @@ package com.x.comparisonshopping.v1 {
 	
 
 	enum ImagePurpose {
-		summary "Type of product image."
-		description "Identifies the product image type as Hero, Gallery, or Thumbnail."
+		summary "Specifies the product image type."
+		description "Defines the values used to specify the product image type."
 
 		Hero "Primary full-sized image of a product.", 
 		Gallery "Image to be used in the gallery.",
@@ -17,8 +17,8 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	enum ImageBackgroundType {
-		summary "Background used by a product image."
-		description "Identifies the background of a product image as HasBackground, NoBackground, or Unknown."
+		summary "Specifies the background used by a product image."
+		description "Defines the values used to specify the background of a product image."
 
 		HasBackground "Product image has a background.",
 		NoBackground "Product image doesn't have a background.",
@@ -26,8 +26,8 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	enum AvailabilityType {
-		summary "Product availability status for each offered product."
-		description "Identifies the availability of a product as InStock, AvailableForOrder, or Unknown."
+		summary "Specifies the product availability status for each offered product."
+		description "Defines the values used to identify the availability of a product."
 
 		InStock "Product is in stock and ready to ship with the required number of days.",
 		OutOfStock "Product is currently out of stock.",
@@ -36,15 +36,15 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	enum ProductFeedType {
-		summary "Product feed file classification."
-		description "Classifies the product feed file as Full (complete) or Incremental (partial)."
+		summary "Specifies the product feed file classification."
+		description "Defines the values used to classify a product feed file."
 
 		Full "Product feed file contains all the products.",
 		Incremental "Product feed file contains only products to be added or updated to the comparison shopping engine channel."
 	}
 			
 	record ProductAttribute {
-		summary "Product label/value pairs."
+		summary "Contains the product label/value pairs."
 		description "Captures the various label/value pairs that are collected and associated as attributes with a product."
 
 		string id "Unique identifier of this attribute."
@@ -53,7 +53,7 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	record ProductImage {
-		summary "Information needed for a product image."
+		summary "Contains information needed for a product image."
 		description "Captures the product image URL, the image purpose, and the image background type."
 
 		string imageUrl "URL (location) of the image file."
@@ -62,7 +62,7 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	record TaxRate {
-		summary "Rate at which an offered product is taxed according to country and region."
+		summary "Contains the rate at which an offered product is taxed according to country and region."
 		description "Captures the country, region, tax rate, and whether to charge tax on the cost of shipping information."
 
 		string country "Country where the taxes are being applied."
@@ -72,7 +72,7 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	record Shipping {
-	 	summary "Type of service used to ship an offered product."
+	 	summary "Contains the type of service used to ship an offered product."
 	 	description "Captures the country and region where the product will be delivered, the shipping service to use, and the flat rate cost to ship the product."
 
 	 	string country "Country where the product will be delivered."
@@ -82,7 +82,7 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	record Variation {
-		summary "Product variation definition."
+		summary "Contains the product variation definition."
 		description "Captures the id, name, and single value for variation."
 
 		string? id "Unique identifier for this variation."
@@ -91,7 +91,7 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	record Product {
-		summary "Product information needed to represent a product on a comparison shopping engine channel."
+		summary "Contains the product information needed to represent a product on a comparison shopping engine channel."
 		description "Captures all the product information needed to represent a product on a comparison shopping engine channel, such as quantity, title, SKU, category, etc."
 
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant."
@@ -121,16 +121,16 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	record MappedProductId {
-		summary "Product SKU to (Comparison Shopping Engine) CSE-assigned product identifier mappings."
-		description "Maps the merchant's product SKU to the product identifier assigned to the product by the comparison shopping engine."
+		summary "Contains the product SKU to (Comparison Shopping Engine) CSE-assigned product identifier mappings."
+		description "Captures the mapping of the merchant's product SKU to the product identifier assigned to the product by the comparison shopping engine."
 
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant.";
-		string cseProductId "(CSE) Comparison Shopping Engine identifier for the product."
+		string cseProductId "CSE (Comparison Shopping Engine) identifier for the product."
 	}
 	
 	record PublishProductFeed {
-		summary "Publishes (sends) the product feed file."
-		description "Generates and sends the product feed file to the comparison shopping engine channel."
+		summary "Contains information needed to publish (send) the product feed file to a comparison shopping engine."
+		description "Captures information needed to publish the feed file such as, site and account ID, name of the feed file, etc."
 
 		array<Product> products "Array of the products to be published to a comparison shopping engine."
 		ProductFeedType feedType "Type of product feed file, which is either Full (complete) or Incremental (partial)."
@@ -140,22 +140,21 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	record PublishProductFeedSuccess {
-		summary "Retrieves the product IDs for each published product when publishing is successful."
-		description "Returns an array of the product IDs and their associated comparison shopping engine product IDs when the product feed file is successfully published."
+		summary "Signals that a feed file was successfully published."
+		description "Notifies observers that a feed file was published. Returns an array of the product IDs and their associated comparison shopping engine product IDs."
 
 		array<MappedProductId> cseProductIds "Array of the product IDs and their associated (CSE) Comparison Shopping Engine product IDs.";
 	}
 	
 	record PublishProductFeedFailure {
-		summary "Indicates that publishing products failed."
-		description "Returns the error code and details of the product publishing failure."
-
-		string errorCode "Error code and details of the publishing failure.";
+		summary "Signals that publishing a feed file failed."
+		description "Notifies an observer that the request to publish a feed file has failed. Returns the error code of the failure, which is useful for troubleshooting."
+		string errorCode "Error code of the publishing failure.";
 	}
 	
 	record UpdateProductFeed {
-		summary "Updates published products."
-		description "Generates and sends a product feed file containing only updates to currently published products."
+		summary "Contains update information for published products."
+		description "Captures the information needed to update published product."
 
 		array<Product> products "Array of the products to be updated on a comparison shopping engine channel.";
 		string xAccountId "Unique X.commerce identifier for the merchant account. This value is assigned to a merchant account when it is created at the end of the authorization work flow and is returned in the message published to the /cse/authorization/completed topic."; 
@@ -164,16 +163,15 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	record UpdateProductFeedSuccess {
-		summary "Retrieves the product IDs for each updated product."
-		description "Returns an array of product IDs and their associated comparison shopping engine product IDs when the products are successfully updated."
+		summary "Signals that published products were updated."
+		description "Notifies an observer that published products were updated. Returns an array of product IDs and their associated comparison shopping engine product IDs when the products are successfully updated."
 
 		array<MappedProductId> cseProductIds "An array of the product identifiers and their associated (CSE) Comparison Shopping Engine product identifier.";
 	}
 	
 	record UpdateProductFeedFailure {
-		summary "Indicates that products failed to be updated."
-		description "Returns the error code and details for the product updating failure."
-
-		string errorCode "Error code and details of the update failure.";
+		summary "Signals that published products failed to be updated."
+		description "Notifies an observer that the request to update published products has failed. Returns the error codes of the failure, which are useful for troubleshooting."
+		string errorCode "Error code of the update failure.";
 	}
 }
