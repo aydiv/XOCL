@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.x.ocl</groupId>
 		<artifactId>xocl-contracts</artifactId>
-		<version>0.0.19</version>
+		<version>0.0.20-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>comparison-shopping-engine-xocl</artifactId>
@@ -19,7 +19,7 @@
   		</license>
 	</licenses>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/tags/xocl-contracts-0.0.19/ComparisonShoppingEngine</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/ComparisonShoppingEngine</connection>
 	</scm>
 
 	<repositories>
