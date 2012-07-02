@@ -1,69 +1,66 @@
 package com.x.producttaxonomy.v1{
 	
-		/**
-	 * Locale contains a combination of ISO language code, country code and optional variant
-	 */
 	record Locale {
-		summary "The specifics of the product location."
-		description "The locale is used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). If this is not provided, en_US is used."
-		string language "2-letter language code (see ISO 639-1 Registration Authority Home).";
-		string country "2-letter country code (see ISO 3166 Maintenance agency home).";
-		string? variant "Variant based on the Locale, the vendor, or operating system.";
+		summary "Contains the specifics of the product location, which is a combination of ISO language code, country code, and optional variant."
+		description "Contains the specifics of the product location, which is a combination of ISO language code, country code, and optional variant. The locale is used to request Country/Language specific product types."
+		string language "2-letter language code (ISO 639-1). For example, en (english) or fr (French).";
+		string country "2-character country code (ISO 3166). For example, US (United States) or FR (France).";
+		string? variant "Variant based on the locale, the vendor, or operating system.";
 	}
 
 	record Error {
-		summary "The specifics of an error."
-		description "A unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message."
+		summary "Contains the specifics of an error."
+		description "Captures the unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message."
 		int code "Code associated with an error.";
 		string _AVDL_message "Message associated with an error.";
 		array<string>? parameters "Array of parameters associated with the error.";
 	}
 
 	record Filter {
-		summary "A filter that uses channel IDs and returns either summary or complete information."
-		description "A filter that returns attributes and the recommended values for these attributes that are relevant to the list of channels and lets you specify the level of detail returned."
-		int? detailLevel "Determines the level of detail to include in the results. Two levels of details are supported: 1) summary information only (ID, version, name, productClassID) 2) all product type details.";
+		summary "Contains the filter that uses channel IDs and returns either summary or complete information."
+		description "Captures the filter that returns attributes and the recommended values for these attributes that are relevant to the list of channels and lets you specify the level of detail returned."
+		int? detailLevel "Level of detail to include in the results. Two levels of details are supported: 1) summary information only (ID, version, name, productClassID) 2) all product type details.";
 		array<string>? channelIds "Determines whether product type details are returned for specific channels.";
 	}
 	
 	record ChannelValueDecoration {
-		summary "The various channels within a product taxonomy."
-		description "Serialized representation of a specific channel, for example ebay_US."
+		summary "Contains the various channels within a product taxonomy."
+		description "Captures a serialized representation of a specific channel, for example ebay_US."
 		string channelId "Identifier of a specific channel within a product taxonomy. For example ebay_US.";
 	}
 
 	record StringAttributeValue {
-		summary "The value of a string ProductType attribute."
-		description "Array of channel IDs, and the required attribute and variations allowed settings. Note: Some values may only apply to certain channel and some may apply to all channels. For example, if the channelValueDecorations array is null or empty, the value applies to all channels."
+		summary "Contains the value of a string ProductType attribute."
+		description "Captures an array of channel IDs, and the required attribute and variations allowed settings. Note: Some values may only apply to certain channel and some may apply to all channels. For example, if the channelValueDecorations array is null or empty, the value applies to all channels."
 		string valueId "String identifier for a value.";
 		string localizedValue "Localized string identifier for a value.";
 		array<ChannelValueDecoration>? channelValueDecorations "Array of channel IDs, and the required attribute and variations allowed settings. Note: Some values may only apply to certain channel and some may apply to all channels. For example, if the channelValueDecorations array is null or empty, the value applies to all channels.";
 	}
 	
 	record SearchQuery {
-		summary "A product class search query."
-		description "A search query for products by unique product class ID."
+		summary "Contains a product class search query."
+		description "Captures a search query for products by unique product class ID."
 		string productClassId "Unique product class identifier.";
 	}
 	
 	record ChannelAttributeDecoration {
-		summary "The specifics for a channel in the product taxonomy."
-		description "The identifier of a specific channel within a product taxonomy, whether an attribute is required, and whether variations to an attribute are allowed."
+		summary "Contains the specifics for a channel in the product taxonomy."
+		description "Captures the identifier of a specific channel within a product taxonomy, whether an attribute is required, and whether variations to an attribute are allowed."
 		string channelId "Identifier of a specific channel within a product taxonomy.";
 		boolean? required "Determines whether a particular attribute is required.";
 		boolean? supportsVariation "Determines whether variations to an attribute are allowed.";
 	}
 	
 	record StringEnumerator {
-		summary "A string enumeration."
-		description "An ID and the localized name associated with the string enumeration and the specific channels within a product taxonomy."
+		summary "Contains a string enumeration."
+		description "Captures an ID and the localized name associated with the string enumeration and the specific channels within a product taxonomy."
 		string id "String enumeration identifier.";
 		string name "Localized name associated with a string enumeration.";
 		array<ChannelValueDecoration>? channelValueDecorations "Array of channel IDs, and the required attribute and variations allowed settings. Note: Some values may only apply to certain channel and some may apply to all channels. For example, if the channelValueDecorations array is null or empty, the value applies to all channels.";
 	}
 
 	record StringEnumerationAttribute {
-		summary "A string enumeration attribute identifier, which is unique within an product type."
+		summary "Contains a string enumeration attribute identifier, which is unique within an product type."
 		description "Captures the attribute ID, localized name, channel decoration, description, the list of string enumerations, and whether an attribute can have multiple values."
 		string id "String enumeration identifier.";
 		string name "Localized name associated with the string enumeration.";
@@ -76,7 +73,7 @@ package com.x.producttaxonomy.v1{
 	}
 
 	record BooleanAttribute {
-		summary "A boolean attribute of a product type."
+		summary "Contains a boolean attribute of a product type."
 		description "Captures the boolean attribute ID, name, channels, string enumeration attribute description, and default value of a product type."
 		string id "Identifier of the boolean attribute.";
 		string name "Name of the boolean attribute.";
@@ -86,7 +83,7 @@ package com.x.producttaxonomy.v1{
 	}
 
 	record StringAttribute {
-		summary "A string attribute of a product type."
+		summary "Contains a string attribute of a product type."
 		description "Captures the ID, name, channels, minimum and maximum attribute string length, default value, and the recommended values of a product type."
 		string id "Identifier of the string attribute.";
 		string name "Name of the string attribute";
@@ -99,14 +96,14 @@ package com.x.producttaxonomy.v1{
 	}
 	
 	record ProductTypeIdVersion {
-		summary "A combination of a productTypeID and its associated version."
+		summary "Contains a combination of a productTypeID and its associated version."
 		description "Captures the product type ID and its associated version."
 		string productTypeId "Identifier associated with the productTypeID.";
 		string version "Version associated with the productTypeID using the format of <major>.<minor>.";
 	}
 
 	record ProductClass {
-		summary "A product class within the product taxonomy and the related product types."
+		summary "Contains a product class within the product taxonomy and the related product types."
 		description "Captures the product class ID, localized product class name, top-level product classes and the product type ID versions. The product class can contain subclasses."
 		string id "Unique product class identifier.";
 		string name "Unique localized product class name.";
@@ -115,7 +112,7 @@ package com.x.producttaxonomy.v1{
 	}
 	
 	record ProductType {
-		summary "A versioned data-structure containing various product attributes."
+		summary "Contains a versioned data-structure containing various product attributes."
 		description "Captures the ID, version, localized name, and description of the product type. Along with the product category ID and an array of StringAttribute, StringEnumerationAttribute or BooleanAttribute attributes. Note: The same product type can exist in multiple product classes."
 		string id "Identifier of a product type.";
 		string? version "Version of a product type.";
@@ -126,7 +123,7 @@ package com.x.producttaxonomy.v1{
 	}
 	
 	record ProductTaxonomy {
-		summary "A root-level product taxonomy."
+		summary "Contains a root-level product taxonomy."
 		description "Captures the product classes and their version within a top-level product class."
 		array<ProductClass> productClasses "Array of classes within a top-level product class.";
 		string version "Version of the product taxonomy. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.";
@@ -139,27 +136,27 @@ package com.x.producttaxonomy.v1{
 	// 	- SearchProductTypeFailed: Error message
 	//-----------------------------------------------------------------------------------------------------
 
-	record SearchProductType {
-		summary "Returns product type details for a specific product class."
-		description "Retrieves the details of a product type using the product class ID. The results can be optionally filtered by locale and the level of detail to return."
+	record SearchProductType { 
+		summary "Requests a search for product type details for a specific product class."
+		description "Requests a search for a product type using the product class ID. The results can be optionally filtered by locale and the level of detail to return."
 		SearchQuery criteria "Criteria used for the SearchProductType search. The criteria is the corresponding productClassId.";
-		Locale? locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). If this is not provided, en_US is used.";
+		Locale? locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
 		Filter? filter "Optional filter that determines the level of detail. Two levels of details are supported: 1) summary information only (ID, version, name, productClassID) 2) all product type details. If this is null, only the product type summary is returned.";		
 	}
 
 	record SearchProductTypeSucceeded {
-		summary "Search for product types succeeded."
+		summary "Signals that the search for product types succeeded."
 		description "Confirms successful retrieval of product type details for the specified product class."
 		array<ProductType> productTypes "Array of the product types matching the search criteria.";
 		SearchQuery criteria "Criteria used for the SearchProductType search. The criteria is the corresponding productClassId.";
-		Locale locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). If this is not provided, en_US is used.";
+		Locale? locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
 	    Filter? filter "Optional filter to request channel IDs or detail level. If filter is omitted, the detailed information is returned.";		
 	}
 	
 	record SearchProductTypeFailed {
-		summary "Product type search failed."
-		description "Returns error details related to the failed retrieval of product type details for the specified product class."
-		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
+		summary "Signals that the search for product type failed."
+		description "Notifies an observer that the request to search for product type has failed. Returns information about the failure, which is useful for troubleshooting."
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 
 	//-----------------------------------------------------------------------------------------------------
@@ -168,24 +165,24 @@ package com.x.producttaxonomy.v1{
 	record GetProductTaxonomy {
 		summary "Returns all product classes by locale."
 		description "Returns all product classes by locale. If no locale is provided, en_US is used."
-		Locale? locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). If this is not provided, en_US is used.";
+		Locale? locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
 	}
 	
 	record GetProductTaxonomySucceeded {
 		summary "Search of product classes by locale succeeded."
 		description "Confirms successful retrieval of product classes by locale."
 		ProductTaxonomy productTaxonomy "A product taxonomy that can contain one or more productClasses and has its own version.";
-		Locale locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). If this is not provided, en_US is used.";
+		Locale? locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
 	}
 
 	record GetProductTaxonomyFailed{
-		summary "Product class by locale failed."
-		description "Returns error details related to the failed retrieval of product classes by locale."
-		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
+		summary "Signals that search product class by locale failed."
+		description "Notifies an observer that the request to search product class by locale failed. Returns error details related to the failed retrieval, which are helpful in troubshooting."
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}	
 	
 	record ProductTaxonomyUpdated{
-		summary "Product taxonomy has been updated."
+		summary "Signals that the product taxonomy has been updated."
 		description "Confirms that updates have been made to the product taxonomy. This includes updates to ProductClass, ProductType, or details within a Producttype. This confirmation includes a version in the form of a time based on ISO 8601."
 		datetime version "Version of a ProductTaxonomy. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.";
 	}
@@ -198,25 +195,25 @@ package com.x.producttaxonomy.v1{
 	// 	- GetProductTypeFailed- error message
 	//-----------------------------------------------------------------------------------------------------
 	record GetProductType {
-		summary "Search for product type."
-		description "Retrieves details for a specified product type. Note: More than one product type can be included."
-		array<string>? productTypeIds "An array of ProductTypeIDs. If the productTypeIds field is null, all the productTypes are returned.";
-	    Locale? locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). If this is not provided, en_US is used.";
+		summary "Requests a search for product type by ID."
+		description "Requests a search for product type by ID and returns the details for a specified product type. Note: More than one product type can be included."
+		array<string>? productTypeIds "Array of ProductTypeIDs. If the productTypeIds field is null, all the productTypes are returned.";
+	    Locale? locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
 		Filter? filter "Optional filter to request channel IDs or detail level. If filter is omitted, the detailed information is returned.";
 	}
 
 	record GetProductTypeSucceeded {
-		summary "Search for product type succeeded."
+		summary "Signals that the search for product type succeeded."
 		description "Confirms the successful retrieval of details for the specified product type or types."
 		array<ProductType> productTypes "Versioned data-structure containing various product types.";
-		Locale locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (see ISO 639-1 Registration Authority Home) and BB is a 2-letter country code (see ISO 3166 Maintenance agency home). If this is not provided, en_US is used.";
+	    Locale? locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
 		Filter? filter "Optional filter to request channel IDs or detail level. If filter is omitted, the detailed information is returned.";		
 	}
 
 	record GetProductTypeFailed {
-		summary "Error for search for product type failure."
-		description "Returns error details related to the failed retrieval of a specified product type or types."
-		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
+		summary "Signals that the search for product type by ID failed."
+		description "Notifies an observer that the request to search for product type by ID has failed. Returns information about the failure, which is useful for troubleshooting"
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	
 }
