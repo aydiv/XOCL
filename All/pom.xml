@@ -70,7 +70,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<properties>
-				<repo-id>infradeploy</repo-id>
+				<repo-id>ontologydeploy</repo-id>
 				<release-repo-url>http://maven.corp.x.com:8080/nexus/content/repositories/releases</release-repo-url>
 				<snapshot-repo-url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</snapshot-repo-url>
 			</properties>
