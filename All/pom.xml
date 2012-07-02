@@ -9,6 +9,13 @@
 		The artifact is a composition of all other XOCL contracts. It can be used as a single source
 		for tools that requires all avdl to be in one central location.
 	</description>
+	<licenses>
+  		<license>
+    			<name>X.Commerce Developer Package License Agreement, Version 1.0</name>
+    			<url>https://www.x.com/developers/x.commerce/x.commerce-developer-package-license-agreement</url>
+    			<distribution>repo</distribution>
+  		</license>
+	</licenses>
 	<scm>
 		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/All</connection>
 	</scm>
@@ -45,17 +52,38 @@
 	<distributionManagement>
 		<repository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>ontologydeploy</id>
-			<name>Ontology release repository</name>
-			<url>http://maven.corp.x.com:8080/nexus/content/repositories/releases</url>
+			<id>${repo-id}</id>
+			<name>${repo-id}</name>
+			<url>${release-repo-url}</url>
 		</repository>
 		<snapshotRepository>
 			<uniqueVersion>false</uniqueVersion>
-			<id>ontologydeploy</id>
-			<name>Ontology snapshot repository</name>
-			<url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</url>
+			<id>${repo-id}</id>
+			<name>${repo-id}</name>
+			<url>${snapshot-repo-url}</url>
 		</snapshotRepository>
 	</distributionManagement>
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<repo-id>infradeploy</repo-id>
+				<release-repo-url>http://maven.corp.x.com:8080/nexus/content/repositories/releases</release-repo-url>
+				<snapshot-repo-url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</snapshot-repo-url>
+			</properties>
+		</profile>
+		<profile>
+			<id>release</id>
+			<properties>
+				<repo-id>externalnexus</repo-id>
+				<release-repo-url>http://50.56.54.89:8080/nexus/content/repositories/releases</release-repo-url>
+				<snapshot-repo-url>http://50.56.54.89:8080/nexus/content/repositories/snapshots</snapshot-repo-url>
+			</properties>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>

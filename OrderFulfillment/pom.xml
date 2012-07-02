@@ -11,6 +11,13 @@
 	<description>
 		The Order Fulfillment  XOCL
 	</description>
+	<licenses>
+  		<license>
+    			<name>X.Commerce Developer Package License Agreement, Version 1.0</name>
+    			<url>https://www.x.com/developers/x.commerce/x.commerce-developer-package-license-agreement</url>
+    			<distribution>repo</distribution>
+  		</license>
+	</licenses>
 	<scm>
 		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/OrderFulfillment </connection>
 	</scm>
@@ -30,21 +37,6 @@
 			<url>http://maven.corp.x.com:8080/nexus/content/groups/public</url>
 		</repository>
 	</repositories>
-
-	<distributionManagement>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>ontologydeploy</id>
-			<name>Ontology release repository</name>
-			<url>http://maven.corp.x.com:8080/nexus/content/repositories/releases</url>
-		</repository>
-		<snapshotRepository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>ontologydeploy</id>
-			<name>Ontology snapshot repository</name>
-			<url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-	</distributionManagement>
 
 	<dependencies>
 		<dependency>
