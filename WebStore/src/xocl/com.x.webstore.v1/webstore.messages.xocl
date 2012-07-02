@@ -3,11 +3,11 @@ package com.x.webstore.v1{
 	import com.x.core.v1.*
 	
 	enum OfferState{
-		summary "Identifies the status of the offer."
-		description "Identifies the offer as being either Published or Suspended."
+		summary "Specifies the status of the offer."
+		description "Defines the values used to specify the offer status."
 		
-		PUBLISHED "Offer**by mercheant** has been published to a web store.", 
-		SUSPENDED "The web store suspends the offer." 
+		PUBLISHED "Indicates the offer was sent by the merchant has been published to a web store.", 
+		SUSPENDED "Indicates the web store suspended the offer." 
 	}
 	
     record WebStore{
@@ -16,8 +16,8 @@ package com.x.webstore.v1{
 
     	string webStoreName "Name of the web store.";
     	string webStoreId "Identifier for the web store."; 
-		string language "Language used in the web store.";
-		string currencyCode "Code for the currency the web store accepts.";
+		string language "Name of the language used in the web store.";
+		string currencyCode "Code for the currency the web store accepts. Currency is a 3-letter upper case code (ISO 4217). For example, USD (United States dollar) or GBP (pound sterling).";
 		string url "Location (URL) of the web store.";
 	}
 	record WebStoreOffer extends WebStoreOfferData{
@@ -28,7 +28,7 @@ package com.x.webstore.v1{
 	}
 	record WebStoreOfferData {
 		summary "Contains the detailed information of an offer."
-		description "Captures the URL and identifier of the web store, and the price, quantity, SKU, and category of the offer."
+		description "Captures the URL and identifier of the web store, and details for the offer such as price, quantity, SKU, etc."
 
 		string url "Location (URL) to the product in the web store.";
 		CurrencyAmount currentPrice "Selling price of the product."; 
@@ -39,7 +39,7 @@ package com.x.webstore.v1{
 	}
 	record Category {
 		summary "Contains the category information."
-		description "Captures the identifier, name, and URL of the category and the identifier of the parent category."
+		description "Captures the category data such as identifier, name, URL, etc."
 
 		string id "Identifier of the offer category.";
 		string name "Name of the category.";
@@ -47,156 +47,155 @@ package com.x.webstore.v1{
 		string? categoryUrl "Location (URL) for the category.";
 	}
 	record GetAllCategory{
-		summary "Searches for all the categories in a web store."
-		description "Searches for all the product categories defined in the specified web store."
+		summary "Requests a search for all the categories in a specific web store."
+		description "Requests a search for all the product categories defined in the specified web store."
 
 		string webStoreId "Identifier of a web store.";
 	}  
 	record GetAllCategorySucceeded{
-		summary "Retrieves the product categories in a web store."
-		description "Returns the web store ID and all the categories used in this web store."
+		summary "Signals that a search for the product categories in a web store was successful."
+		description "Notifies an observer that a product categories were found. Returns the web store ID used in the search and all the categories defined in that web store."
 
 		string webStoreId "Identifier for the web store containing the categories.";
 		array<Category> categories "Array of product categories in the web store.";
 	} 
 	record GetAllCategoryFailed{
-		summary "Indicates that no product categories were found."
-		description "Returns the web store ID and error details related to the failed category search."
+		summary "Signals that searching for product categories has failed."
+		description "Notifies an observer that the request to search for product categories has failed. Returns the web store ID that was sent in the request and information about the failure, which is useful for troubleshooting."
 
 		string webStoreId "Identifier of the web store.";
-		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}    
     record GetAllWebStoreProvider {
-		summary "Searches for web store providers." 
-		description "Searches for all the web store providers."
+		summary "Requests a search for web store providers." 
+		description "Requests a search for all the web store providers."
 	}
     record GetAllWebStoreProviderSucceeded {
-		summary "Retrieves a web store provider."
-		description "Returns the name of a web store provider."
+		summary "Signals the search for web store providers was successful."
+		description "Notifies an observer that web store providers were found. Returns the name of a web store provider."
 
 		string providerName "Name of the web store provider found.";  
 	}
 	record GetAllWebStore {  
-		summary "Searches for web stores."
-		description "Searches for all web stores."
+		summary "Requests a search for all web stores."
+		description "Requests a search for all web stores."
 	}
     record GetAllWebStoreSucceeded {
-		summary "Returns a list of web stores for a specific provider."
-		description "Retrieves a list of web stores associated with the specified provider."
+		summary "Signals that searching for web stores was successful."
+		description "Notifies an observer that web stores were found. Returns an array of web stores associated with a specified provider."
 
 		string providerName "Name of provider."
-	    array<WebStore> stores "Array of web stores that use the specified provider.";
+	    array<WebStore> stores "Array of web stores found.";
 	}
 	record GetAllWebStoreFailed {
-		summary "Indicates that no web stores were found for the specified provider."
+		summary "Signals that no web stores were found for the specified provider."
 		description "Returns the provider name and error details related to the failed web store search."
 
 		string providerName "Name of the web store provider.";
-	    array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	record SearchWebStoreOffer{
-		summary "Searches for offers from a specific web store."
-		description "Searches for offers based on the web store ID and optionally the modification date."
+		summary "Requests a search for offers from a specific web store."
+		description "Requests a search for offers based on the web store ID and optionally the modification date."
   
     	string? webStoreId "Identifier for the web store.";
-		datetime? modifiedSince "Date the offer information was last modified (changed). This is used along with the other search criteria to restrict the search to offers modified since this date." 
-		long? itemsRequested "Sets the maximum number of returned items. If this is not set, all items are returned."
+		datetime? modifiedSince "Date the offer information was last modified (changed). This is used along with the other search criteria to restrict the search to offers modified since this date. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ." 
+		long? itemsRequested "Maximum number of returned items at a time. If this is not set, all items are returned.";
 		long? startItemIndex "Returns the results starting from a zero-based index. If this is not set, items will be returned started from the first item.";
 	}
 	record SearchWebStoreOfferSucceeded{	
-		summary "Returns the offers for a specific web store."
-		description "Retrieves the offers and the total number of offers returned for a specific web store."
+		summary "Signals that searching for web store offers was successful."
+		description "Notifies an observer that web store offers were found. Returns the offers and the total number of offers returned for a specific web store."
 
 		array<WebStoreOffer> webStoreOffers "Array of offers found and the details of these offers.";
 		long totalItemsFound "Total number of offers returned.";
-		SearchWebStoreOffer request "Searches for web store offers.";
+		SearchWebStoreOffer request "Search criteria used.";
 	}
 	record SearchWebStoreOfferFailed{
-		summary "Indicates that no offers were found for the specified web store."
-		description "Returns error details related to the failed offer search."
-
-		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
-		SearchWebStoreOffer request "Searches for web store offers.";
+		summary "Signals that no offers were found for the specified web store."
+		description "Notifies an observer that the request to search for offers has failed. Returns the search criteria that was sent in the request and information about the failure, which is useful for troubleshooting."
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+		SearchWebStoreOffer request "Search criteria used.";
 	}
 	record CreateWebStoreOffer{ 
-		summary "Creates a web store offer."
-		description "Creates a web store offer using the offer data."
+		summary "Requests the creation of a web store offer."
+		description "Request teh creation of a web store offer using the offer data."
 
 		WebStoreOfferData offer "Data that defines the web store offer.";
 	}
     record CreateWebStoreOfferSucceeded{
-    	summary "Indicates an offer was created."
-    	description "Returns the offer ID from the channel."
+    	summary "Signals that an offer was created."
+    	description "Notifies an observer that an offer was created. Returns the offer ID from the channel."
     	
 		WebStoreOffer offer "Identifier of the offer. This ID is assigned by the channel that published the offer.";  
 	}
 	record CreateWebStoreOfferFailed{
-		summary "Indicates that the attempt to create an offer failed."
-		description "Returns the error details related to the failed attempt to create an offer."
+		summary "Signals that the attempt to create an offer failed."
+		description "Notifies an observer that the request to create an offer has failed. Returns the offer data that was sent in the request and information about the failure, which is useful for troubleshooting.Returns the error details related to the failed attempt to create an offer."
 
-		WebStoreOfferData offer "Data that defines the web store offer that failed to be created."; 
-		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
+		WebStoreOfferData offer "Data that defines the web store offer."; 
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	record UpdateWebStoreOffer{
-		summary "Updates an offer."
-		description "Changes the information of an offer." 
+		summary "Requests updating an offer."
+		description "Requests changing the information of an offer." 
 
-		WebStoreOffer offer "Identifier of the offer to be updated. This ID is assigned by the channel that published the offer.";
+		WebStoreOffer offer "Data for the update.";
 	}
     record UpdateWebStoreOfferSucceeded{
-		summary "Indicates an offer was updated."
-		description "Returns the ID of the offer that was updated."
+		summary "Signals that an offer was updated."
+		description "Notifies an observer that an offer was updated. Returns the ID of the offer that was updated."
 
 		WebStoreOffer offer "Identifier of the offer that was updated. This ID is assigned by the channel that published the offer.";
 	}
 	record UpdateWebStoreOfferFailed{
-		summary "Indicates that updating an offer failed."
-		description "Returns the offer ID and the error details related to the failed attempt to update an offer."
+		summary "Signals that updating an offer failed."
+		description "Notifies an observer that the request to update an offer has failed. Returns the offer identifier that was sent in the request and information about the failure, which is useful for troubleshooting.Returns the offer ID and the error details related to the failed attempt to update an offer."
 
 		WebStoreOffer offer "Identifier of the offer that failed to be updated. This ID is assigned by the channel that published the offer."; 
-		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	record DeleteWebStoreOffer{
-		summary "Deletes an offer."
-		description "Removes an offer from a channel using the offer ID."
+		summary "Request the deletion of an offer."
+		description "Requests removing an offer from a channel using the offer ID."
 
 		string offerId "Identifier of the offer to be deleted."; 
 	}
 	record DeleteWebStoreOfferSucceeded{
-		summary "Indicates an offer was deleted."
-		description "Returns the ID of the offer that was deleted."
+		summary "Signals that an offer was deleted."
+		description "Notifies an observer that an offer was deleted. Returns the ID of the offer that was deleted."
 
 		string offerId "Identifier of the offer that was deleted.";
 	}
 	record DeleteWebStoreOfferFailed{
-		summary "Indicates that deleting an offer failed."
-		description "Returns the offer ID and the error details related to the failed attempt to delete an offer."
+		summary "Signals that deleting an offer failed."
+		description "Notifies an observer that the request to delete an offer has failed. Returns the offer ID that was sent in the request and information about the failure, which is useful for troubleshooting.Returns the offer ID and the error details related to the failed attempt to delete an offer."
 
-		string offerId "Identifier of the failed offer.";
-		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
+		string offerId "Identifier of the offer.";
+		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	record WebStoreOfferCreated{ 
-		summary "Notification that an offer was created."
-		description "Returns the ID of the offer that was created."
+		summary "Signals that an offer was created."
+		description "Notifies an observer that an offer was created. Returns the ID of the offer that was created."
 
 		WebStoreOffer offer "Identifier of the offer. This ID is assigned by the channel that published the offer."; 
 	}
 	record WebStoreOfferUpdated{
-		summary "Notification that an offer was updated."
-		description "Returns the ID of the offer that was updated."
+		summary "Signals that an offer was updated."
+		description "Notifies an observer that an offer was updated. Returns the ID of the offer that was updated."
 
-		WebStoreOffer offer "Identifier of the offer. This ID is assigned by the channel that published the offer.";
+		WebStoreOffer offer "Data used for the update.";
 	}
 	record WebStoreOfferDeleted{
-		summary "Notification that an offer was deleted."
-		description "Returns the ID of the offer that was deleted."
+		summary "Signals that an offer was deleted."
+		description "Notifies an observer that an offer was deleted. Returns the ID of the offer that was deleted."
 
 		WebStoreOffer offer "Identifier of the offer. This ID is assigned by the channel that published the offer.";
 	}
 	
     record WebStoreOfferPriceUpdated{
-		summary "Notification that the price information of an offer was updated."
-		description "Changes the selling price of an offer."
+		summary "Signals that the price information of an offer was updated."
+		description "Notifies an observer that the selling price of an offer was changed. Returns the SKU, new price, and web store ID."
 
 	    string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant.";
 		CurrencyAmount currentPrice "New selling price for the offer.";
@@ -204,8 +203,8 @@ package com.x.webstore.v1{
 	}
 	
     record WebStoreOfferQuantityUpdated{
-		summary "Notification that the quantity of an offer was changed."
-		description "Changes the number of items in inventory of an offer."
+		summary "Signals that the quantity of an offer was changed."
+		description "Notifies an observer that an offer quantity was changed. Returns the SKU, new quantity, and web store ID."
 
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant.";
 		long quantity "New value for how many of this product are in stock.";

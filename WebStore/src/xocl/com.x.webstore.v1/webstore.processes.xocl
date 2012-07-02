@@ -40,7 +40,6 @@ package com.x.webstore.v1{
 		}
 	}
 	
-	
     process WebStoreOfferSearch 
 	{
 		summary "Searches the offers from the web stores."
