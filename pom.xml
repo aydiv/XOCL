@@ -152,7 +152,7 @@
 				<inherited>true</inherited>
 				<groupId>com.x.ocl</groupId>
 				<artifactId>xocl-maven-plugin</artifactId>
-				<version>1.4.8</version>
+				<version>1.4.9</version>
 				<executions>
 					<execution>
 						<phase>generate-sources</phase>
