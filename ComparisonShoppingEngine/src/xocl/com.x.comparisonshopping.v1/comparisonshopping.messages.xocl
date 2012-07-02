@@ -29,7 +29,7 @@ package com.x.comparisonshopping.v1 {
 		summary "Specifies the product availability status for each offered product."
 		description "Defines the values used to identify the availability of a product."
 
-		InStock "Product is in stock and ready to ship with the required number of days.",
+		InStock "Product is in stock and ready to ship within the required number of days.",
 		OutOfStock "Product is currently out of stock.",
 		AvailableForOrder "Product is not in stock but can be ordered.",	
 		Unknown "Availability is not known."
@@ -40,7 +40,7 @@ package com.x.comparisonshopping.v1 {
 		description "Defines the values used to classify a product feed file."
 
 		Full "Product feed file contains all the products.",
-		Incremental "Product feed file contains only products to be added or updated to the comparison shopping engine channel."
+		Incremental "Product feed file contains only products to be added or updated."
 	}
 			
 	record ProductAttribute {
@@ -94,11 +94,11 @@ package com.x.comparisonshopping.v1 {
 		summary "Contains the product information needed to represent a product on a comparison shopping engine channel."
 		description "Captures all the product information needed to represent a product on a comparison shopping engine channel, such as quantity, title, SKU, category, etc."
 
-		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant."
+		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
 		string? itemGroup "The identifier that groups together all the variation values for this product (if it has variations)."
 		CurrencyAmount price "Price to purchase the product."; 
 		int quantity "How many of this product are in stock.";
-   		string title "Title for the product."
+   		string title "Title of the product."
    		string productDescription "Description of the product.";
    		string manufacturer "Name of the manufacturer/supplier of the product."
    		string? mpn "Manufacturer part number of the product."
@@ -121,20 +121,20 @@ package com.x.comparisonshopping.v1 {
 	}
 	
 	record MappedProductId {
-		summary "Contains the product SKU to (Comparison Shopping Engine) CSE-assigned product identifier mappings."
+		summary "Contains the product SKU to CSE-assigned product identifier mappings."
 		description "Captures the mapping of the merchant's product SKU to the product identifier assigned to the product by the comparison shopping engine."
 
-		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant.";
+		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant.";
 		string cseProductId "CSE (Comparison Shopping Engine) identifier for the product."
 	}
 	
 	record PublishProductFeed {
 		summary "Contains information needed to publish (send) the product feed file to a comparison shopping engine."
-		description "Captures information needed to publish the feed file such as, site and account ID, name of the feed file, etc."
+		description "Captures information needed to publish the feed file such as, products, site and account ID, name of the feed file, etc."
 
 		array<Product> products "Array of the products to be published to a comparison shopping engine."
-		ProductFeedType feedType "Type of product feed file, which is either Full (complete) or Incremental (partial)."
-		string xAccountId "Unique X.commerce identifier for the merchant account. This value is assigned to a merchant account when it is created at the end of the authorization work flow and is returned in the message published to the /cse/authorization/completed topic."
+		ProductFeedType feedType "Type of product feed file. Valid values are Full (complete) or Incremental (partial)."
+		string xAccountId "Unique X.commerce identifier for the merchant's account. This value is assigned to a merchant when an account created at the end of the authorization flow. It is returned in the message published to the /cse/authorization/completed topic."
 		string siteId "Identifier of the comparison shopping engine."
 		string? feedName "Name of the product feed file."
 	}
@@ -154,10 +154,10 @@ package com.x.comparisonshopping.v1 {
 	
 	record UpdateProductFeed {
 		summary "Contains update information for published products."
-		description "Captures the information needed to update published product."
+		description "Captures the information needed to update products that have already been published on a comparison shopping engine channel."
 
 		array<Product> products "Array of the products to be updated on a comparison shopping engine channel.";
-		string xAccountId "Unique X.commerce identifier for the merchant account. This value is assigned to a merchant account when it is created at the end of the authorization work flow and is returned in the message published to the /cse/authorization/completed topic."; 
+		string xAccountId "Unique X.commerce identifier for the merchant's account. This value is assigned to a merchant when an account created at the end of the authorization flow. It is returned in the message published to the /cse/authorization/completed topic."
 		string siteId "Identifier of the comparison shopping engine.";
 		string? feedName "Name of the product feed file."
 	}
