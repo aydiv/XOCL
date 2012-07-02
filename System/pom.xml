@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.x.ocl</groupId>
 		<artifactId>xocl-contracts</artifactId>
-		<version>0.0.20-SNAPSHOT</version>
+		<version>0.0.20</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<groupId>com.x.ocl</groupId>
@@ -20,7 +20,7 @@
   		</license>
 	</licenses>
 	<scm>
-		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/System</connection>
+		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/tags/xocl-contracts-0.0.20/System</connection>
 	</scm>
 
 	<repositories>
