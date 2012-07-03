@@ -6,8 +6,6 @@ package com.x.comparisonshopping.v1
 {	
 	import com.x.comparisonshopping.v1.*
 	
- 	// This entity represents a product feed that can be
- 	// published to a comparison shopping engine
     entity ProductFeed
     {   
     	description "Represents a product feed file and its state, which can be published to a comparison shopping engine."
@@ -18,13 +16,10 @@ package com.x.comparisonshopping.v1
         state Denied "A product feed file was denied (publishing failed) by the comparison shopping engine."
 	} 
     
-    // Publish products and get information back from the CSE about
-    // the status of each product that was offered
     transaction PublishProductFeed response
     {
     	description "Sends the product feed file. It will try to send the file a maximum of 3 times. If the publishing of the feed file is successful, you will receive the status of each product back from the comparison shopping engine. Otherwise, an error message is returned."
     	
-    	// Send the list of products to the CSE
         sender
         {
         	message PublishProductFeed
@@ -32,7 +27,6 @@ package com.x.comparisonshopping.v1
 				// Timeouts for the receiver to acknowledge message receipt and/or message validation
         		timeouts(receipt=1h, validation=24h, response=3d)
         		
-        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         }
@@ -53,7 +47,6 @@ package com.x.comparisonshopping.v1
     }
     
         
-    // Update the products that are published on a CSE
     transaction UpdateProductFeed response
     {
     	description "Updates the products that are published on a comparison shopping engine. It will try to send the file a maximum of 3 times. If the updating is successful, you will receive a list of product SKUs and assigned comparison shopping engine IDs back from the comparison shopping engine. Otherwise, an error message is returned. "
@@ -66,7 +59,6 @@ package com.x.comparisonshopping.v1
 				// Timeouts for the receiver to acknowledge message receipt and/or message validation
         		timeouts(receipt=1h, validation=24h, response=3d)
         		
-        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         }
@@ -74,14 +66,12 @@ package com.x.comparisonshopping.v1
         // Receive a list of product sku and assigned CSE ids
         receiver
         {
-        	// The feed was accepted and processed by the CSE
 	       	success UpdateProductFeedSuccess
         	{
             	timeouts(receipt=1h, validation=24h)
             	retries=3
             }
             
-            // The feed was not accepted by the CSE
             failure UpdateProductFeedFailure
         }
     }

@@ -58,7 +58,7 @@ package com.x.comparisonshopping.v1 {
 
 		string imageUrl "URL (location) of the image file."
 		ImagePurpose imagePurpose "Role associated with the image. The values are Hero, Gallery, or Thumbnail."
-		ImageBackgroundType backgroundType "Background state of the product image. The values are NoBackground, HasBackground, or Unknown."
+		ImageBackgroundType backgroundType "Background of the product image. The values are NoBackground, HasBackground, or Unknown."
 	}
 	
 	record TaxRate {
@@ -133,7 +133,7 @@ package com.x.comparisonshopping.v1 {
 		description "Captures information needed to publish the feed file such as, products, site and account ID, name of the feed file, etc."
 
 		array<Product> products "Array of the products to be published to a comparison shopping engine."
-		ProductFeedType feedType "Type of product feed file. Valid values are Full (complete) or Incremental (partial)."
+		ProductFeedType feedType "Type of product feed file."
 		string xAccountId "Unique X.commerce identifier for the merchant's account. This value is assigned to a merchant when an account created at the end of the authorization flow. It is returned in the message published to the /cse/authorization/completed topic."
 		string siteId "Identifier of the comparison shopping engine."
 		string? feedName "Name of the product feed file."
@@ -141,14 +141,14 @@ package com.x.comparisonshopping.v1 {
 	
 	record PublishProductFeedSuccess {
 		summary "Signals that a feed file was successfully published."
-		description "Notifies observers that a feed file was published. Returns an array of the product IDs and their associated comparison shopping engine product IDs."
+		description "Signals that a feed file was successfully published and returns an array of the product IDs and their associated comparison shopping engine product IDs."
 
 		array<MappedProductId> cseProductIds "Array of the product IDs and their associated (CSE) Comparison Shopping Engine product IDs.";
 	}
 	
 	record PublishProductFeedFailure {
 		summary "Signals that publishing a feed file failed."
-		description "Notifies an observer that the request to publish a feed file has failed. Returns the error code of the failure, which is useful for troubleshooting."
+		description "Signals that publishing a feed file failed and returns the error code of the failure, which is useful for troubleshooting."
 		string errorCode "Error code of the publishing failure.";
 	}
 	
@@ -164,14 +164,14 @@ package com.x.comparisonshopping.v1 {
 	
 	record UpdateProductFeedSuccess {
 		summary "Signals that published products were updated."
-		description "Notifies an observer that published products were updated. Returns an array of product IDs and their associated comparison shopping engine product IDs when the products are successfully updated."
+		description "Signals that published products were updated and returns an array of product IDs and their associated comparison shopping engine product IDs when the products are successfully updated."
 
 		array<MappedProductId> cseProductIds "An array of the product identifiers and their associated (CSE) Comparison Shopping Engine product identifier.";
 	}
 	
 	record UpdateProductFeedFailure {
 		summary "Signals that published products failed to be updated."
-		description "Notifies an observer that the request to update published products has failed. Returns the error codes of the failure, which are useful for troubleshooting."
+		description "Signals that the request to update published products has failed and returns the error codes of the failure, which are useful for troubleshooting."
 		string errorCode "Error code of the update failure.";
 	}
 }
