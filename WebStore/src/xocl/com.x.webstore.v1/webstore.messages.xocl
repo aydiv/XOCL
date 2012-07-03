@@ -117,6 +117,31 @@ package com.x.webstore.v1{
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 		SearchWebStoreOffer request "Search criteria used.";
 	}
+	
+	record LookupWebStoreOffer{
+		summary "Allows lookup of offers based on the offer ID"
+		description "Allows lookup of offers based on the offer ID."
+  		string offerId "The ID of the offer to look up"
+    	string? webStoreId "Identifier for the web store.";
+
+	}
+	record LookupWebStoreOfferSucceeded{	
+		summary "Contains the retrieved offer"
+		description "Contains the retrieved offer"
+
+		WebStoreOffer webStoreOffer "The offer";
+		LookupWebStoreOffer request "The request that caused this message";
+	}
+	
+	record LookupWebStoreOfferFailed{
+		summary "Indicates that no offers were found for the specified web store."
+		description "Returns error details related to the failed offer search."
+
+		array<Error> errors "Unique code that identifies the particular error condition that occurred. Your application can use error codes as identifiers in your customized error-handling algorithms. Each error consists of an error code and error message.";
+		LookupWebStoreOffer request "Searches for web store offers.";
+	}
+	
+	
 	record CreateWebStoreOffer{ 
 		summary "Requests the creation of a web store offer."
 		description "Request teh creation of a web store offer using the offer data."

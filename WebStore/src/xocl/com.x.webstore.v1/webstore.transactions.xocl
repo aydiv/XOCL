@@ -85,6 +85,27 @@ package com.x.webstore.v1{
             failure SearchWebStoreOfferFailed  
         } 
     }
+   
+    transaction LookupWebStoreOffer query 
+    {
+    	description "Looks up a web store offer by ID and returns either a succeeded or failed message."
+        sender
+        {
+        	message LookupWebStoreOffer
+        	{
+        		 timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	//Offers must be returned in a deterministic order
+        	success LookupWebStoreOfferSucceeded        
+                    	
+        	// A failure message does not have a response timeout
+            failure LookupWebStoreOfferFailed  
+        } 
+    }
+    
     
     transaction CreateWebStoreOffer unicast response
     {

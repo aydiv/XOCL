@@ -1,6 +1,7 @@
 package com.x.paidsearchadvertising.v1{
 	
 	import com.x.paidsearchadvertising.v1.*
+	import com.x.webstore.v1.*
 
 	contract PaidSearchAdvertisingProvider{
 		roles{
@@ -12,6 +13,7 @@ package com.x.paidsearchadvertising.v1{
 			CampaignDeletion.PaidSearchAdvertisingProvider
 			CampaignPerformanceReportLookup.PaidSearchAdvertisingProvider
 			AddOffersToCampaign.PaidSearchAdvertisingProvider
+			WebStoreOfferLookup.WebStoreOfferConsumer
 		}
 	}
 

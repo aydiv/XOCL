@@ -62,6 +62,30 @@ package com.x.webstore.v1{
 		}
 	}
 	
+    process WebStoreOfferLookup 
+	{
+		summary "Retrieves offers from the web stores."
+		description "A marketing provider or other interested party queries for offers."
+	
+		roles  
+			{
+				WebStoreOfferConsumer "Searches for offers from the available web stores."
+				WebStoreOfferManager "Returns the offers found."
+			}
+		workflow
+		{
+			summary "Retrieves the offers from the web stores."
+			description "Returns the offers from the web stores."
+			
+			transaction LookupWebStoreOffer
+			{
+				roles(WebStoreOfferConsumer, WebStoreOfferManager)
+			}
+		}
+	}
+	
+	
+	
 	process WebStoreOfferCreation
 	{
 		summary "Creates an offer."
