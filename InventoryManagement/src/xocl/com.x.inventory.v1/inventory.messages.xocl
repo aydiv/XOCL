@@ -6,7 +6,7 @@ package com.x.inventory.v1
 	{
 		summary "Contains stock item information."
 		description "Captures the SKUs, quantity, and location of a stock item."
-		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number per product and merchant.";
+		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant.";
 		int quantity "Number of stock items at a location. Note: Quantity is a high-consistency field due to serialization issues.";
 		string locationName "Unique name used to reference the location of the stock item.";
 	}
@@ -21,29 +21,29 @@ package com.x.inventory.v1
 	record LookupStockItemSucceeded
 	{
 		summary "Signals that the lookup for stock items was successful."
-		description "Notifies an oberver that stock items were found. Returns the details for one or more stock items matching the submitted SKUs. A match must be found for every submitted SKU in order for the request to succeed."
+		description "Returns the details for one or more stock items matching the submitted SKUs. A match must be found for every submitted SKU in order for the request to succeed."
 		array<StockItem> stockItems "Stock items that were retrieved.";
 	}
 	
 	record LookupStockItemFailed
 	{
 		summary "Signals that the attempt to lookup stock items by SKU failed."
-		description "Notifies an observer that the request to lookup stock items by SKU has failed. Returns information about the failure, which is useful for troubleshooting."
+		description "Signals that the request to lookup stock items by SKU has failed and returns information about the failure, which is useful for troubleshooting."
 		array<InventoryLookupError> errors "Array of errors related to the failed search for stock items.";
 	}
 	
-	record InventoryLookupError //Travis can't find where this is called/used
+	record InventoryLookupError
 	{
-		summary "Signals there were lookup error.Stock item retrieval errors."
+		summary "Signals there were stock item retrieval errors."
 		description "Returns the errors related to searching for one or more stock items."
 		string? sku "SKUs of the stock items involved in the failed search.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	
-   record InventoryError //Travis can't find where this is called/used
+   record InventoryError
 	{
 		summary "Signals that there were errors with updating stock items."
-		description "Returns the errors related to updating a stock item. A way of grouping error information in StockItemFailed."
+		description "Returns the errors related to updating a stock item. This can be used as a way of grouping error information in StockItemFailed."
 		StockItem? stockItem "One or more stock items involved in the failed update operation.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
@@ -51,7 +51,7 @@ package com.x.inventory.v1
     record StockItemUpdated
 	{
 		summary "Signals that stock items have been updated."
-		description "Notifies observers that stock items have been updated. Returns an array of updated stock items."
+		description "Notifies observers that stock items have been updated and returns an array of updated stock items."
 		array<StockItem> stockItems "Stock items whose information was successfully updated.";
 	}
 
@@ -79,9 +79,9 @@ package com.x.inventory.v1
 	
 	record StockItemData {
 		summary "Contains details of the stock items in the snapshot."
-		description "Captures the SKU, quanity, and condition of the stock item in the snapshot."
+		description "Captures the SKU, quantity, and condition of the stock item in the snapshot."
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
-		int unitQuantity "Amount of item in the stocking unit of measure. For example, if the UOM is per case and there are 12  items in a case, this value would be 12."
+		int unitQuantity "Amount of item in the stocking unit of measure. For example, if the UOM is per case and there are 12 items in a case, this value would be 12."
 		string stockingUOM "Stocking unit of measure, such as units per case."
 		InventoryCondition status "Condition of an item. Valid values are: SELLABLE and UNSELLABLE."	
 	}
@@ -98,14 +98,14 @@ package com.x.inventory.v1
 	record UpdateStockItemSnapshotSucceeded
 	{
 		summary "Signals that stock items were updated."
-		description "Notifies observers that stock items were updated. Returns the stock items update request information."
+		description "Returns the stock items update request information."
 		UpdateStockItemSnapshot request "Details of the stock items that were updated.";
 	}
 	
 	record UpdateStockItemSnapshotFailed
 	{
-		summary "Signals that the updating stock item in a snapshot failed. . Returns the information that was sent in the request and information about the failure, which is useful for troubleshooting."
-		description "Notifies an observer that the request update stock items in a snapshop has failed."
+		summary "Signals that the updating stock item in a snapshot failed."
+		description "Signals that the updating stock item in a snapshot failed. It returns the information that was sent in the request and information about the failure, which is useful for troubleshooting."
 		UpdateStockItemSnapshot request "Stock items that were not updated.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
@@ -115,20 +115,20 @@ package com.x.inventory.v1
 		description "Captures date and time, inventory changes, and the warehouse identifier to in which to update the stock items."
 		StockItemData inventoryChange "Details of the stock items that changed."
 		datetime snapshotDate "Date and time the snapshot was updated. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.;"
-		string warehouseId "The identifier of the warehouse where the inventory change occured."
+		string warehouseId "The identifier of the warehouse where the inventory change occurred."
 	}
 	
-	record UpdateStockItemDeltaSucceeded //Travis "request"
+	record UpdateStockItemDeltaSucceeded
 	{
 		summary "Signals that updating stock items was successful."
-		description "Notifies an observer that stock items were updated. Returns information of the stock items that were updated."
+		description "Returns information of the stock items that were updated."
 		UpdateStockItemDelta request "Information for the request to update the stock item."
 	}
 	
 	record UpdateStockItemDeltaFailed
 	{
-		summary "Signals that updating storck items failed."
-		description "Notifies an observer that the request to update stock items has failed. Returns the ?? that was sent in the request and information about the failure, which is useful for troubleshooting."
+		summary "Signals that updating stock items failed."
+		description "Returns the update data that was sent in the request and information about the failure, which is useful for troubleshooting."
 		UpdateStockItemDelta request "Information for the request to update the stock item."
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
