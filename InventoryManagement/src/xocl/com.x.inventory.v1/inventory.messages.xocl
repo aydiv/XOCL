@@ -13,7 +13,7 @@ package com.x.inventory.v1
 	
 	record LookupStockItem
 	{
-		summary "Requests to lookup stock items by SKU."
+		summary "Requests the lookup of stock items by SKU."
 		description "Requests the lookup for one or more stock items by their SKU. Note: A match must be found for every submitted SKU in order for the request to succeed."
 		array<string> skus "SKUs of the stock items to be retrieved.";
 	}
@@ -21,7 +21,7 @@ package com.x.inventory.v1
 	record LookupStockItemSucceeded
 	{
 		summary "Signals that the lookup for stock items was successful."
-		description "Returns the details for one or more stock items matching the submitted SKUs. A match must be found for every submitted SKU in order for the request to succeed."
+		description "Signals that the lookup for stock items was successful and returns the details for one or more stock items matching the submitted SKUs. A match must be found for every submitted SKU in order for the request to succeed."
 		array<StockItem> stockItems "Stock items that were retrieved.";
 	}
 	
@@ -65,7 +65,7 @@ package com.x.inventory.v1
 	enum InventorySnapshotReason {
 		summary "Specifies the reason for an inventory snapshot."
 		description "Defines the values that can be used to specify the reason for an inventory snapshot."
-		CYCLE_COUNT "Indicates the inventory snapshot was for a cycle count."
+		CYCLE_COUNT "Indicates the inventory snapshot was for a cycle count. A cycle count is where a small subset of inventory, in a specific location, is counted on a specified day."
 		DAMAGED_INVENTORY "Indicates the inventory snapshot was for damaged inventory."
 		LIQUIDATION "Indicates the inventory snapshot was for a liquidation."
 	}
@@ -83,15 +83,15 @@ package com.x.inventory.v1
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
 		int unitQuantity "Amount of item in the stocking unit of measure. For example, if the UOM is per case and there are 12 items in a case, this value would be 12."
 		string stockingUOM "Stocking unit of measure, such as units per case."
-		InventoryCondition status "Condition of an item. Valid values are: SELLABLE and UNSELLABLE."	
+		InventoryCondition status "Condition of an item."	
 	}
 	
 	record UpdateStockItemSnapshot {
 		summary "Contains the information for updating the snapshot."
 		description "Captures the date and time, reason, and location of the snapshot."
-		StockItemData inventorySnapshot "Details of the stock item to update."
+		StockItemData inventorySnapshot "Information for the update."
 		datetime snapshotDate "Date and time the snapshot was done. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.;"
-		InventorySnapshotReason snapshotReason "Reason the snapshot was done. Valid values are: CYCLE_COUNT, DAMAGED_INVENTORY, and LIQUIDATION."
+		InventorySnapshotReason snapshotReason "Reason the snapshot was done."
 		string locationName	"Location of where the snapshot is being taken."
 	}
 	
@@ -104,32 +104,32 @@ package com.x.inventory.v1
 	
 	record UpdateStockItemSnapshotFailed
 	{
-		summary "Signals that the updating stock item in a snapshot failed."
-		description "Signals that the updating stock item in a snapshot failed. It returns the information that was sent in the request and information about the failure, which is useful for troubleshooting."
+		summary "Signals that updating stock items in a snapshot failed."
+		description "Signals that the updating of stock items in a snapshot failed and returns the information that was sent in the request and information about the failure, which is useful for troubleshooting."
 		UpdateStockItemSnapshot request "Stock items that were not updated.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	
 	record UpdateStockItemDelta {
 		summary "Contains the information for updating the stock items."
-		description "Captures date and time, inventory changes, and the warehouse identifier to in which to update the stock items."
-		StockItemData inventoryChange "Details of the stock items that changed."
+		description "Captures date and time, inventory changes, and the warehouse identifier for the stock item update."
+		StockItemData inventoryChange "Inventory information for the update."
 		datetime snapshotDate "Date and time the snapshot was updated. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.;"
-		string warehouseId "The identifier of the warehouse where the inventory change occurred."
+		string warehouseId "Identifier of the warehouse."
 	}
 	
 	record UpdateStockItemDeltaSucceeded
 	{
-		summary "Signals that updating stock items was successful."
+		summary "Signals that the updating of stock items was successful."
 		description "Returns information of the stock items that were updated."
-		UpdateStockItemDelta request "Information for the request to update the stock item."
+		UpdateStockItemDelta request "Update data that was sent in the request."
 	}
 	
 	record UpdateStockItemDeltaFailed
 	{
 		summary "Signals that updating stock items failed."
 		description "Returns the update data that was sent in the request and information about the failure, which is useful for troubleshooting."
-		UpdateStockItemDelta request "Information for the request to update the stock item."
+		UpdateStockItemDelta request "Update data that was sent in the request."
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 }
