@@ -33,7 +33,7 @@ package com.x.customer.v1{
 	    array<Address>? addresses "Customer's complete address.";
 		Phone? primaryPhone "Customer's primary phone number.";  
 		Email email "Customer's email address.";   
-		Gender? gender "Customer's gender. Valid values are: MALE or FEMALE.";
+		Gender? gender "Customer's gender.";
 		datetime? dateOfBirth "Customer's birthday. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.";
 		string? company "Customer's company name.";
 		datetime dateCreated "Date the customer record was created. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ."; 
@@ -79,7 +79,7 @@ package com.x.customer.v1{
     
     record LookupCustomerFailed {
 		summary "Signals that the lookup of a customer by system ID failed."
-		description "Notifies an observer that the lookup of a customer has failed. Returns the customer ID that was sent in the request and information about the failure, which is useful for troubleshooting."
+		description "Signals that the lookup of a customer has failed and returns the customer ID that was sent in the request and information about the failure, which is useful for troubleshooting."
         union{guid, EntityId} id "Identifier used for the lookup."
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
@@ -118,7 +118,7 @@ package com.x.customer.v1{
 	
 	record SearchCustomerFailed{
 		summary "Signals that searching for customers failed."
-		description "Notifies an observer that a search for customers failed. Returns the search criteria used and error details related to the failed retrieval of a customer."
+		description "Signals that a search for customers failed and returns the search criteria used and error details related to the failed retrieval of a customer."
 		SearchCustomer request "Search criteria used.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
