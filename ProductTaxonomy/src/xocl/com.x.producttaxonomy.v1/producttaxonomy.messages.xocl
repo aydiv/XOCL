@@ -155,7 +155,7 @@ package com.x.producttaxonomy.v1{
 	
 	record SearchProductTypeFailed {
 		summary "Signals that the search for product type failed."
-		description "Notifies an observer that the request to search for product type has failed. Returns information about the failure, which is useful for troubleshooting."
+		description "Returns information about the failure, which is useful for troubleshooting."
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 
@@ -177,7 +177,7 @@ package com.x.producttaxonomy.v1{
 
 	record GetProductTaxonomyFailed{
 		summary "Signals that search product class by locale failed."
-		description "Notifies an observer that the request to search product class by locale failed. Returns error details related to the failed retrieval, which are helpful in troubshooting."
+		description "Returns error details related to the failed retrieval, which are helpful in troubshooting."
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}	
 	
@@ -212,7 +212,7 @@ package com.x.producttaxonomy.v1{
 
 	record GetProductTypeFailed {
 		summary "Signals that the search for product type by ID failed."
-		description "Notifies an observer that the request to search for product type by ID has failed. Returns information about the failure, which is useful for troubleshooting"
+		description "Returns information about the failure, which is useful for troubleshooting"
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	
