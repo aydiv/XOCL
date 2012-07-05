@@ -95,7 +95,7 @@ package com.x.webstore.v1{
 			{
 				WebStoreOfferConsumer "Searches for offers from the available web stores."
 				WebStoreOfferManager "Returns the offers found."
-				WebStoreOfferObserver "Recieves a message that the offer has been created, updated, or deleted."
+				WebStoreOfferObserver "Receives notification that an offer has been created."
 			}
 	
 		workflow
@@ -118,10 +118,11 @@ package com.x.webstore.v1{
 	{
 		description "An offer was created."
 	
-		roles{
-				WebStoreOfferManager "Returns the offers found."
-				WebStoreOfferObserver "Recieves a message that the offer has been created, updated, or deleted."
-		}
+		roles
+			{
+				WebStoreOfferManager "Returns the offers created."
+				WebStoreOfferObserver "Receives notification that an offer has been created."
+			}
 	}
 	
 	workflow WebStoreOfferCreated implements WebStoreOfferCreated{
@@ -137,7 +138,12 @@ package com.x.webstore.v1{
 		summary "Updates offer information."
 		description "Updates the offer information, such as price or quantity."
 	
-		roles(WebStoreOfferConsumer, WebStoreOfferManager, WebStoreOfferObserver)
+		roles
+			{
+				WebStoreOfferConsumer "Requests an offer be updated."
+				WebStoreOfferManager "Updates the offer."
+				WebStoreOfferObserver "Receives notification that an offer was updated."
+			}
 	
 		workflow
 		{
@@ -158,8 +164,8 @@ package com.x.webstore.v1{
 		description "An offer was updated."
 	
 		roles{
-				WebStoreOfferManager "Returns the offers found."
-				WebStoreOfferObserver "Recieves a message that the offer has been created, updated, or deleted."
+				WebStoreOfferManager "Returns the offers that were updated."
+				WebStoreOfferObserver "Receives notification that an offer has been updated."
 		}
 	}
 	
@@ -189,7 +195,12 @@ package com.x.webstore.v1{
 		summary "Deletes an offer."
 		description "Deletes an offer."
 	
-		roles(WebStoreOfferConsumer,WebStoreOfferManager, WebStoreOfferObserver)
+		roles
+			{
+				WebStoreOfferConsumer "Requests an offer be deleted."
+				WebStoreOfferManager "Deletes the offer."
+				WebStoreOfferObserver "Receives notification that an offer was deleted."
+			}
 	
 		workflow
 		{
@@ -211,8 +222,8 @@ package com.x.webstore.v1{
 		description "An offer was deleted."
 	
 		roles{
-				WebStoreOfferManager "Returns the offers found."
-				WebStoreOfferObserver "Recieves a message that the offer has been deleted."
+				WebStoreOfferManager "Returns the offers that were deleted."
+				WebStoreOfferObserver "Receives notification that an offer has been deleted."
 		}
 	}
 	
