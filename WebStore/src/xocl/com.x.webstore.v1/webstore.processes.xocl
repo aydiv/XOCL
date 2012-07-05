@@ -129,6 +129,9 @@ package com.x.webstore.v1{
 	}
 	
 	workflow WebStoreOfferCreated implements WebStoreOfferCreated{
+		summary "Notification of an offer that was created."
+		description "An offer was created."
+		
 			
 		transaction WebStoreOfferCreated {
 				roles (WebStoreOfferManager, WebStoreOfferObserver)
