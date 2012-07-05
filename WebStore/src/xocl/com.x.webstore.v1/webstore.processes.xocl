@@ -109,6 +109,8 @@ package com.x.webstore.v1{
 
 			workflow WebStoreOfferCreated
 			{
+				summary "Notifies observers that an offer was created."
+				description "Notifies observers that an offer was created."
 				roles (WebStoreOfferManager, WebStoreOfferObserver)
 			}
 		}		
@@ -162,6 +164,7 @@ package com.x.webstore.v1{
 	
 	process WebStoreOfferUpdated
 	{
+		summary "An offer was updated"
 		description "An offer was updated."
 	
 		roles{
@@ -171,6 +174,8 @@ package com.x.webstore.v1{
 	}
 	
 	workflow WebStoreOfferUpdated implements WebStoreOfferUpdated{
+		summary "Updates an offer."
+		description "Update the quantity or price of an offer and notifies observers."
 			
 				any{
 					noop
@@ -194,7 +199,7 @@ package com.x.webstore.v1{
 	process WebStoreOfferDeletion
 	{
 		summary "Deletes an offer."
-		description "Deletes an offer."
+		description "Deletes an offer and notifies observers."
 	
 		roles
 			{
@@ -229,6 +234,8 @@ package com.x.webstore.v1{
 	}
 	
 	workflow WebStoreOfferDeleted implements WebStoreOfferDeleted{
+		summary "Deletes an offer."
+		description "Deletes an offer and notifies observers."
 			
 		transaction WebStoreOfferDeleted {
 				roles (WebStoreOfferManager, WebStoreOfferObserver)
