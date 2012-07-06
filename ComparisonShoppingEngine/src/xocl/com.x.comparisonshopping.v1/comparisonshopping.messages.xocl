@@ -57,8 +57,8 @@ package com.x.comparisonshopping.v1 {
 		description "Captures the product image URL, the image purpose, and the image background type."
 
 		string imageUrl "URL (location) of the image file."
-		ImagePurpose imagePurpose "Role associated with the image. The values are Hero, Gallery, or Thumbnail."
-		ImageBackgroundType backgroundType "Background of the product image. The values are NoBackground, HasBackground, or Unknown."
+		ImagePurpose imagePurpose "Role associated with the image."
+		ImageBackgroundType backgroundType "Background of the product image."
 	}
 	
 	record TaxRate {
@@ -97,7 +97,7 @@ package com.x.comparisonshopping.v1 {
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
 		string? itemGroup "The identifier that groups together all the variation values for this product (if it has variations)."
 		CurrencyAmount price "Price to purchase the product."; 
-		int quantity "How many of this product are in stock.";
+		int quantity "How many of this product there are in stock.";
    		string title "Title of the product."
    		string productDescription "Description of the product.";
    		string manufacturer "Name of the manufacturer/supplier of the product."
@@ -110,7 +110,7 @@ package com.x.comparisonshopping.v1 {
    		array<ProductImage> images  "Array of  URLs for the product images (with assigned roles)."
    		string link "Link to the product landing page on the merchant's storefront."
    		CurrencyAmount originalPrice "Original price of the item before any discounting."
-   		AvailabilityType availability "Availability status of the product. The values are InStock, AvailableForOrder, or Unknown."
+   		AvailabilityType availability "Availability status of the product."
    		TaxRate? taxRate "Tax rate based on the country and region of the product's location (where the product is shipped from)."
    		Shipping? shipping "Shipping profile of a product and its shipping price."
    		double? shippingWeight "Shipping weight of the product."

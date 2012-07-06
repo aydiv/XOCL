@@ -8,11 +8,12 @@ package com.x.comparisonshopping.v1
 	
     entity ProductFeed
     {   
-    	description "Represents a product feed file and its state, which can be published to a comparison shopping engine."
+		summary "Specifies the state of a product feed file and the next valid states if any."
+		description "Defines the values used to specify the state of a product feed file and the next valid states if any."
 
-        state Prepared[Published, Denied] "The state of the product feed file. This can be either Published or Denied."           
-        state Published[Updated] "The product feed file was successfully published."        
-        state Updated[Denied] "A published product feed file was updated."        
+        state Prepared[Published, Denied] "A product feed file has been generated. The next state can be either Published or Denied."           
+        state Published[Updated] "A product feed file was successfully published.  The next state can be Updated."        
+        state Updated[Denied] "A published product feed file was updated.  The next state can be Denied."        
         state Denied "A product feed file was denied (publishing failed) by the comparison shopping engine."
 	} 
     

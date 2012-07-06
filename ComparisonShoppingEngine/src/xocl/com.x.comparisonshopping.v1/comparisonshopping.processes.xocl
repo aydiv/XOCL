@@ -23,7 +23,7 @@ package com.x.comparisonshopping.v1
 	    workflow
 	    {
 	    	summary "Baseline workflow for publishing products using a product feed file."
-	    	description "This workflow sends a product feed file to a comparison shopping engine, which adds the products to the comparison shopping engine and links the products to the merchant's store. It returns either a success or failure message."
+	    	description "Sends a product feed file to a comparison shopping engine, which adds the products to the comparison shopping engine and links the products to the merchant's store. It returns either a success or failure message."
 	    	
 	    	// This transaction publishes the feed to the CSE 
 	        transaction PublishProductFeed {
@@ -53,7 +53,7 @@ package com.x.comparisonshopping.v1
         
 	    workflow {
 	    	summary "Updates published products."
-			description "This workflow sends a product feed file, which updates (replaces) the information for one or more products that have already been published and links the product to the merchant's store. It returns either a success or failure message."
+			description "Sends a product feed file, which updates (replaces) the information for one or more products that have already been published and links the product to the merchant's store. It returns either a success or failure message."
 			
 	        transaction UpdateProductFeed {
 	        	roles(TrafficGenerationManager, ComparisonShoppingPublisher)
