@@ -46,7 +46,7 @@ package com.x.webstore.v1{
     
     transaction GetAllCategory unicast  query 
     {
-    	description "Searches for all categories in a specific web store and returns either a succeeded or failed message. The web store is specified by ID."
+    	description "Searches for all categories in a specific web store, which is specified by the web store ID, and returns either a succeeded or failed message."
         sender
         {
         	message GetAllCategory
