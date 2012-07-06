@@ -6,6 +6,9 @@ package com.x.ordermanagement.v2 {
 	import com.x.customer.v1.*
 	
 	entity Order {
+		summary "Specifies the state of the order and the next valid states if any."
+		description "Defines the values used to specify the state of the order and the next valid states if any."
+		
     	state Submitted[Cancelled, Shipped] "Order has been submitted. The next states are either Cancelled or Shipped."
     	state Shipped[Cancelled, Returned] "Order has shipped. The next states are either Cancelled or Returned."
     	state Cancelled "Order has been Cancelled."
