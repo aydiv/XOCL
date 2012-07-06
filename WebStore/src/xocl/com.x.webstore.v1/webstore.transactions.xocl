@@ -25,7 +25,7 @@ package com.x.webstore.v1{
         
     transaction GetAllWebStore unicast query 
     {
-    	description "Searches for all web stores and returns either a succeeded or failed message."
+    	description "Searches for a web store by ID and returns either a succeeded or failed message."
         sender
         {
         	message GetAllWebStore 
@@ -46,7 +46,7 @@ package com.x.webstore.v1{
     
     transaction GetAllCategory unicast  query 
     {
-    	description "Searches for all categories in a web store and returns either a succeeded or failed message."
+    	description "Searches for all categories in a specific web store and returns either a succeeded or failed message. The web store is specified by ID."
         sender
         {
         	message GetAllCategory
@@ -64,11 +64,10 @@ package com.x.webstore.v1{
             failure GetAllCategoryFailed  
         } 
     }
-    
 
     transaction SearchWebStoreOffer unicast query 
     {
-    	description "Searches for all web store offers and returns either a succeeded or failed message."
+    	description "Searches for all web store offers by either web store ID or modification date and returns either a succeeded or failed message."
         sender
         {
         	message SearchWebStoreOffer
@@ -88,7 +87,7 @@ package com.x.webstore.v1{
    
     transaction LookupWebStoreOffer query 
     {
-    	description "Looks up a web store offer by ID and returns either a succeeded or failed message."
+    	description "Looks up a web store offer by ID and optionally by web store ID and returns either a succeeded or failed message."
         sender
         {
         	message LookupWebStoreOffer
@@ -104,8 +103,7 @@ package com.x.webstore.v1{
         	// A failure message does not have a response timeout
             failure LookupWebStoreOfferFailed  
         } 
-    }
-    
+    }    
     
     transaction CreateWebStoreOffer unicast response
     {
@@ -165,6 +163,7 @@ package com.x.webstore.v1{
             }
         }
     }
+    
      transaction UpdateWebStoreOffer unicast response
     {
     	description "Attempts to update a web store offer and returns either a succeeded or failed message."
@@ -197,7 +196,7 @@ package com.x.webstore.v1{
     }
     
    	transaction WebStoreOfferCreated inform {
-   		description "Notification that a web store offer was created."
+   		description "Notifies observers that a web store offer was created."
    		
    		sender {
    			message WebStoreOfferCreated {
@@ -208,7 +207,7 @@ package com.x.webstore.v1{
    	
    	transaction WebStoreOfferPriceUpdated inform
    	{
-   		description "Notification that the price of a web store offer was updated."
+   		description "Notifies observers that the price of a web store offer was updated."
    		
    		sender
    		{
@@ -221,7 +220,7 @@ package com.x.webstore.v1{
    	
    	transaction WebStoreOfferQuantityUpdated inform
    	{
-   		description "Notification that the quantity of a web store offer was updated."
+   		description "Notifies observers that the quantity of a web store offer was updated."
    		
    		sender
    		{
@@ -233,7 +232,7 @@ package com.x.webstore.v1{
    	
    	transaction WebStoreOfferDeleted inform
    	{
-   		description "Notification that a web store offer was deleted."
+   		description "Notifies observers that a web store offer was deleted."
    		
    		sender {
    			message WebStoreOfferDeleted {
@@ -242,10 +241,9 @@ package com.x.webstore.v1{
    		}
    	}  
    	   	
-   	   	
    	transaction WebStoreOfferUpdated inform
    	{
-   		description "Notification that a web store offer was updated."
+   		description "Notifies observers that a web store offer was updated."
    		
    		sender
    		{
