@@ -119,18 +119,18 @@ package com.x.webstore.v1{
 	}
 	
 	record LookupWebStoreOffer{
-		summary "Allows lookup of offers based on the offer ID"
-		description "Allows lookup of offers based on the offer ID."
-  		string offerId "The ID of the offer to look up"
+		summary "Requests the lookup offers based on the offer ID."
+		description "Requests the lookup offers based on the offer ID."
+  		string offerId "Identifier of the offer to look up."
     	string? webStoreId "Identifier for the web store.";
 
 	}
 	record LookupWebStoreOfferSucceeded{	
-		summary "Contains the retrieved offer"
-		description "Contains the retrieved offer"
+		summary "Contains the retrieved offer."
+		description "Contains the retrieved offer."
 
-		WebStoreOffer webStoreOffer "The offer";
-		LookupWebStoreOffer request "The request that caused this message";
+		WebStoreOffer webStoreOffer "Offer that was requested to be looked up.";
+		LookupWebStoreOffer request "Lookup request.";
 	}
 	
 	record LookupWebStoreOfferFailed{
@@ -144,7 +144,7 @@ package com.x.webstore.v1{
 	
 	record CreateWebStoreOffer{ 
 		summary "Requests the creation of a web store offer."
-		description "Request teh creation of a web store offer using the offer data."
+		description "Request the creation of a web store offer using the offer data."
 
 		WebStoreOfferData offer "Data that defines the web store offer.";
 	}
