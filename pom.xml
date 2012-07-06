@@ -80,9 +80,9 @@
 			<id>release</id>
 			<properties>
 				<repo-id>externalnexus</repo-id>
-				<public-repo-url>http://50.56.54.89:8080/nexus/content/groups/public</public-repo-url>
-				<release-repo-url>http://50.56.54.89:8080/nexus/content/repositories/releases</release-repo-url>
-				<snapshot-repo-url>http://50.56.54.89:8080/nexus/content/repositories/snapshots</snapshot-repo-url>
+				<public-repo-url>http://maven.x.com:8080/nexus/content/groups/public</public-repo-url>
+				<release-repo-url>http://maven.x.com:8080/nexus/content/repositories/releases</release-repo-url>
+				<snapshot-repo-url>http://maven.x.com:8080/nexus/content/repositories/snapshots</snapshot-repo-url>
 			</properties>
 		</profile>
 	</profiles>
