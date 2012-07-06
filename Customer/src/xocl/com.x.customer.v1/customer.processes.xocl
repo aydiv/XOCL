@@ -5,11 +5,11 @@ package com.x.customer.v1{
 	process CustomerSearch<Email, NameAndId>
 	{
 		summary "Searches and returns customer information for multiple customers."
-		description "A CustomerConsumer searches for customers by email or name, customer system ID, or modification date. The CustomerManager returns the results." // ??need more details 
+		description "A CustomerConsumer searches for customers by email or name, customer system ID, or modification date. The CustomerManager returns the results." 
 
 		roles
 			{
-				CustomerConsumer "Searches the customer management system."
+				CustomerConsumer "Searches for customers in the customer management system."
 				CustomerManager "Returns a list of customers and their information based on the search criteria."
 			}
 	
@@ -17,6 +17,7 @@ package com.x.customer.v1{
 		{
 			summary "Searches and returns customer information."
 			description "Searches for customers by email or customer name and system ID and returns customer information."
+
 			transaction SearchCustomer<Email, NameAndId>
 			{
 				roles(CustomerConsumer,CustomerManager)
@@ -24,9 +25,8 @@ package com.x.customer.v1{
 		}
 	}
 	
-	// lookup a single customer
 	process CustomerLookup {
-		summary "Searches for a single customer."
+		summary "Looks up a single customer."
 		description "A CustomerConsumer looks up a single customer and CustomerManager returns the results."
 		
 		roles
@@ -37,31 +37,31 @@ package com.x.customer.v1{
 	    workflow {
 			summary "Search for a single customer."
 			description "A CustomerConsumer looks up a single customer and CustomerManager returns the results."
+
 			transaction LookupCustomer {
 				roles(CustomerConsumer, CustomerManager)
 			}
 		}		
 	}
 	
-	
-	//Implementer should assume that, if creating the customer, that he/she is opted-out for marketing purposes. 
-	//Implementer must check to see if the customer is already there before deciding to create or update  
 	process CustomerUpsert
 	{
-		summary "Add a customer or update existing customer information."
+		summary "Adds a customer or updates existing customer information."
 		description "Adds a customer or updates information about an existing customer in the customer management system. To determine whether to create a new customer or update information for an existing customer, you MUST check to see if the customer already exists. Also when creating a new customer, assume they have opted-out of email marketing messages."
+
 		roles 
 			{
-				CustomerConsumer "Searches for a customer to check if they already exist."
-				CustomerManager "Adds a new customer record or updates information about an existing customer in the customer management system."
-				CustomerObserver "Recieves either a customer added or customer updated notification."
+				CustomerConsumer "Requests a customer be added or customer information be updated."
+				CustomerManager "Adds a new customer record or updates information about an existing customer in the customer management system and notifies observers."
+				CustomerObserver "Receives either a customer added or customer updated notification."
 			}
 	}
 	
 	workflow CustomerUpsert implements CustomerUpsert
 	{
-		summary "Either adds or updates customer information."
+		summary "Adds a customer or updates an existing customer's data."
 		description "Searches for a customer and either adds a new customer or updates the information of an existing customer."
+
 		transaction UpsertCustomer
 		{
 				roles(CustomerConsumer,CustomerManager)
@@ -73,17 +73,20 @@ package com.x.customer.v1{
 	}
 
 	process CustomerCreatedOrUpdated{
+		summary "Notification that a customer was added or that customer data was updated."
+		description "The CustomerManager returns the data in the original request and notifies observers of the action taken."
 			roles 
 			{
-				CustomerManager "Adds a new customer record or updates information about an existing customer in the customer management system."
-				CustomerObserver "Recieves either a customer added or customer updated notification."
+				CustomerManager "Returns the data in the original request and notifies observers."
+				CustomerObserver "Receives either a customer added or customer updated notification."
 			}
 	}
 
 	workflow CustomerCreatedOrUpdated implements CustomerCreatedOrUpdated
 	{
-		summary "Sends information to an observer that a customer was created or updated"
-		description "Sends information to an observer that a customer was created or updated"
+		summary "Notification that a customer was added or that customer data was updated."
+		description "Sends information to an observer that a customer was created or updated."
+
 		one{
 			transaction CustomerCreated	
 			{

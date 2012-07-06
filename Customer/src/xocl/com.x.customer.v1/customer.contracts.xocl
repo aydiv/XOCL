@@ -5,8 +5,8 @@ package com.x.customer.v1{
     {
     		description "A read-only consumer and observer of customer data."
     		roles{
-	 			CustomerSearch.CustomerConsumer "Searches for customers." // ?? need more details
-	 			CustomerSearch.CustomerConsumer<Email> "Searches for customers by email address." // ??need more details
+	 			CustomerSearch.CustomerConsumer "Searches for customers." 
+	 			CustomerSearch.CustomerConsumer<Email> "Searches for customers by email address."
 	 			CustomerUpsert.CustomerObserver  "Notified when a new customer record is add or a customer record is updated."
 	 			CustomerCreatedOrUpdated.CustomerObserver "Notified when a new customer record is add or a customer record is updated."
 	 		}
