@@ -87,8 +87,8 @@ package com.x.ordermanagement.v2 {
 	        any {
 	        	workflow CustomerUpsert {
 	        		    		
-    				summary "Adds or creates a customer." 
-    				description "Adds or creates a customer."
+    				summary "Adds a customer or updates an existing customer." 
+    				description "Adds a new customer or updates the information of an existing customer based on whether the customer exists."
 	        		
 	    			roles(OrderProcessor, null, null)
 	    		}
@@ -154,9 +154,12 @@ package com.x.ordermanagement.v2 {
 		}
 	}
 	process OrderCancelled <MarketplaceOrder> {
+		summary ""
+		description ""
+		
 		roles {
-         	OrderProcessor "Cancels the order and informs observers."
-        	OrderObserver "Informed of the processing that happened."      
+         	OrderProcessor "Notification that an order was cancelled."
+        	OrderObserver "Receives an order cancelled notification."      
         }
 	}
 	
