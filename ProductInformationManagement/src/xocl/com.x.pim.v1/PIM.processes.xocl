@@ -7,8 +7,8 @@ package com.x.pim.v1 {
 
 		roles
 		{
-			ProductInformationConsumer "The product information consumer submits queries to retrieve product details for products that match the specified criteria."
-			ProductInformationManager "The product information manager supplies details for an array of products that match a submitted query."
+			ProductInformationConsumer "Submits queries to retrieve product details for products that match the specified criteria."
+			ProductInformationManager "Returns details for an array of products that match a submitted query."
 		}
 	
 		workflow {
@@ -26,8 +26,8 @@ package com.x.pim.v1 {
 		
 		roles
 		{
-			ProductInformationConsumer "The product information consumer submits queries to retrieve product details for specified products."
-			ProductInformationManager "The product information manager supplies details for an array of requested products."
+			ProductInformationConsumer "Submits queries to retrieve product details for specified products."
+			ProductInformationManager "Returns details for an array of requested products."
 		}
 	}
 	
@@ -45,9 +45,9 @@ package com.x.pim.v1 {
 		
 		roles
 		{
-			ProductInformationConsumer"The product information consumer submits requests to update product details, including adding or deleted SKUs, for specified products."
-			ProductInformationManager "The product information manager updates product and product SKU data and informs observers of changes."
-			ProductInformationObserver "The product information observer is informed when product details are updated."
+			ProductInformationConsumer"Submits requests to update product details, including adding or deleted SKUs, for specified products."
+			ProductInformationManager "Updates product and product SKU data and informs observers of changes."
+			ProductInformationObserver "Receives notification of the product details that were updated."
 		}
 		
 		preconditions(exists(product))	
@@ -57,12 +57,10 @@ package com.x.pim.v1 {
 			description "A consumer submit a product update request. The manager updates the product by one of the following activities: adding a new SKU, updating or deleting an existing SKU, or updating the base product information."
 			one {
 			
-				// A consumer asks the PIM to update a product.  An update, create, or delete of a SKU is considered a product update
 				transaction UpdateSKU(sku) {
 				   	roles(ProductInformationConsumer,ProductInformationManager)
 				}
 
-				// A consumer asks the PIM to update a product.  An update, create, or delete of a SKU is considered a product update
 				transaction CreateSKU(sku) {
 				   	roles(ProductInformationConsumer,ProductInformationManager)
 				}
@@ -71,13 +69,11 @@ package com.x.pim.v1 {
 				   	roles(ProductInformationConsumer,ProductInformationManager)
 				}
 		
-				// A consumer asks the PIM to update a product
 				transaction UpdateProduct {
 				   	roles(ProductInformationConsumer,ProductInformationManager)
 				}
 			}
 			
-			// The PIM informs an observer that a product was updated
 			workflow ProductUpdated {
 		    	summary "Informs an observer that a product was updated in a product information management system."
 		    	description "A manager sends a message that informs an observer that a product was updated by one of the following activities: adding a new SKU, updating or deleting an existing SKU, or updating the base product information."
@@ -95,8 +91,8 @@ package com.x.pim.v1 {
     	description "A manager updates the product and product SKU data and sends a message that informs observers of changes."
 		roles
 		{
-			ProductInformationManager "The product information manager updates product and product SKU data and informs observers of changes."
-			ProductInformationObserver "The product information observer is informed when product details are updated."
+			ProductInformationManager "Updates product and product SKU data and informs observers of changes."
+			ProductInformationObserver "Receives notification of the product details that were updated."
 		}
 	}
 	
@@ -108,16 +104,15 @@ package com.x.pim.v1 {
 		}
 	}
 
-
 	process ProductCreation (Product product) {
     	summary "Creates one or more products in a product information management system."
 		description "A consumer requests the creation of products. The manager creates the products and sends a message that informs observers of the products that were created."
 		
 		roles
 		{
-			ProductInformationConsumer "The product information consumer submits product details for the creation of one or more new products."
-			ProductInformationManager "The product information manager creates new products and informs observers of added products. "
-			ProductInformationObserver "The product information observer is informed when new products are created. "
+			ProductInformationConsumer "Submits product details for the creation of one or more new products."
+			ProductInformationManager "Creates new products and informs observers of added products. "
+			ProductInformationObserver "Receives notification of the new products that were created. "
 		}
 		
 		preconditions(!exists(product))
@@ -125,11 +120,10 @@ package com.x.pim.v1 {
 		workflow  {
     		summary "Creates one or more products in a product information management system."
 			description "A consumer requests the creation of one or more products. The manager creates the products and sends a message that informs observers of the products that were created."
-				// A consumer asks the PIM to create a product
-			transaction CreateProduct {
+ 
+ 			transaction CreateProduct {
 				roles(ProductInformationConsumer,ProductInformationManager)
 			}
-				// The PIM informs an observer that a product was created
 			workflow ProductCreated {
     			summary "Informs observers that products were created."
 		    	description "The product information manager informs any observers that products were created."
@@ -147,8 +141,8 @@ package com.x.pim.v1 {
 		description "A manager creates a product and sends a message that informs observers of the products that were created."
 		
 		roles {
-			ProductInformationManager "The product information manager creates new products and informs observers of added products. "
-			ProductInformationObserver "The product information observer is informed when new products are created. "
+			ProductInformationManager "Creates new products and informs observers of added products. "
+			ProductInformationObserver "Receives notification of new products that were created. "
 		}
 	}
 	
@@ -166,9 +160,9 @@ package com.x.pim.v1 {
 		
 		roles
 		{
-			ProductInformationConsumer "The product information consumer requests that specified products be deleted from the system. "
-			ProductInformationManager "The product information manager deletes products and informs observers of deletions."
-			ProductInformationObserver "The product information observer is informed when products are deleted. "
+			ProductInformationConsumer "Requests that specified products be deleted from the system. "
+			ProductInformationManager "Deletes products and informs observers of deletions."
+			ProductInformationObserver "Receives notification of the products that were deleted. "
 		}
 		
 		preconditions(exists(product))
@@ -176,12 +170,11 @@ package com.x.pim.v1 {
 		workflow {
 			summary "Deletes products from a XPIM."
 			description "A consumer requests the deletion of products and the manager deletes the products."
-				// A consumer asks the PIM to delete a product
+ 
 			transaction DeleteProduct {
 				roles(ProductInformationConsumer,ProductInformationManager)
 			}
 			
-			// The PIM informs an observer that a product was deleted
 			workflow ProductDeleted {
 		    	summary "Informs observers of the products that were deleted."
     			description "The manager sends a message that informs observers of the products that were deleted."
@@ -199,8 +192,8 @@ package com.x.pim.v1 {
 		description "The manager sends a message that informs observers of the products that were deleted."
 		
 		roles {
-			ProductInformationManager "The product information manager informs observers of deleted products. "
-			ProductInformationObserver "The product information observer is informed of the products that were deleted. "
+			ProductInformationManager "The product information observer is informed whennforms observers of deleted products. "
+			ProductInformationObserver "Receives notification of the products that were deleted. "
 		}
 	}
 	
