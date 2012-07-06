@@ -50,6 +50,7 @@ package com.x.webstore.v1{
 				WebStoreOfferConsumer "Searches for offers from the available web stores."
 				WebStoreOfferManager "Returns the offers found."
 			}
+
 		workflow
 		{
 			summary "Retrieves the offers from the web stores."
@@ -64,14 +65,15 @@ package com.x.webstore.v1{
 	
     process WebStoreOfferLookup 
 	{
-		summary "Retrieves offers from the web stores."
-		description "A marketing provider or other interested party queries for offers."
+		summary "Retrieves a specific offer from the web stores."
+		description "A marketing provider or other interested party queries for an offer by ID."
 	
 		roles  
 			{
-				WebStoreOfferConsumer "Searches for offers from the available web stores."
-				WebStoreOfferManager "Returns the offers found."
+				WebStoreOfferConsumer "Searches for an offer by ID from the available web stores."
+				WebStoreOfferManager "Returns either the offer or a failed message."
 			}
+
 		workflow
 		{
 			summary "Retrieves the offers from the web stores."
@@ -84,8 +86,6 @@ package com.x.webstore.v1{
 		}
 	}
 	
-	
-	
 	process WebStoreOfferCreation
 	{
 		summary "Creates an offer."
@@ -93,15 +93,16 @@ package com.x.webstore.v1{
 	
 		roles
 			{
-				WebStoreOfferConsumer "Searches for offers from the available web stores."
-				WebStoreOfferManager "Returns the offers found."
-				WebStoreOfferObserver "Receives notification that an offer has been created."
+				WebStoreOfferConsumer "Submits a request to create an offer."
+				WebStoreOfferManager "Creates the offer."
+				WebStoreOfferObserver "Receives an offer created notification."
 			}
 	
 		workflow
 		{
 			summary "Creates an offer."
 			description "Creates an offer for a web store."
+
 			transaction CreateWebStoreOffer
 			{
 				roles(WebStoreOfferConsumer, WebStoreOfferManager)
@@ -111,6 +112,7 @@ package com.x.webstore.v1{
 			{
 				summary "Notifies observers that an offer was created."
 				description "Notifies observers that an offer was created."
+
 				roles (WebStoreOfferManager, WebStoreOfferObserver)
 			}
 		}		
@@ -118,8 +120,8 @@ package com.x.webstore.v1{
 	
 	process WebStoreOfferCreated
 	{
-		summary "Notification of an offer that was created."
-		description "An offer was created."
+		summary "Notification that an offer that was created."
+		description "Returns the offers that were created and notifies observers."
 	
 		roles
 			{
@@ -128,9 +130,10 @@ package com.x.webstore.v1{
 			}
 	}
 	
-	workflow WebStoreOfferCreated implements WebStoreOfferCreated{
-		summary "Notification of an offer that was created."
-		description "An offer was created."
+	workflow WebStoreOfferCreated implements WebStoreOfferCreated
+	{
+		summary "Notification that an offer that was created."
+		description "Returns the offers that were created and notifies observers."
 		
 			
 		transaction WebStoreOfferCreated {
@@ -138,17 +141,16 @@ package com.x.webstore.v1{
 		}		
 	}
 	
-	
 	process WebStoreOfferUpdate
 	{
-		summary "Updates offer information."
-		description "Updates the offer information, such as price or quantity."
+		summary "Updates an offer."
+		description "Updates the quantity or price of an offer and notifies observers."
 	
 		roles
 			{
 				WebStoreOfferConsumer "Requests an offer be updated."
-				WebStoreOfferManager "Updates the offer."
-				WebStoreOfferObserver "Receives notification that an offer was updated."
+				WebStoreOfferManager "Updates the offer and notifies observers."
+				WebStoreOfferObserver "Receives offer updated notification."
 			}
 	
 		workflow
@@ -167,18 +169,19 @@ package com.x.webstore.v1{
 	
 	process WebStoreOfferUpdated
 	{
-		summary "An offer was updated"
-		description "An offer was updated."
+		summary "Notification that an offer that was updated."
+		description "Returns the offers that were updated and notifies observers."
 	
 		roles{
-				WebStoreOfferManager "Returns the offers that were updated."
-				WebStoreOfferObserver "Receives notification that an offer has been updated."
+				WebStoreOfferManager "Returns the offers that were updated and notifies observers."
+				WebStoreOfferObserver "Receives offer updated notification."
 		}
 	}
 	
-	workflow WebStoreOfferUpdated implements WebStoreOfferUpdated{
-		summary "Updates an offer."
-		description "Update the quantity or price of an offer and notifies observers."
+	workflow WebStoreOfferUpdated implements WebStoreOfferUpdated
+	{
+		summary "Notification that an offer that was updated."
+		description "Returns the offers that were updated and notifies observers."
 			
 				any{
 					noop
@@ -197,8 +200,7 @@ package com.x.webstore.v1{
 			    	roles(WebStoreOfferManager, WebStoreOfferObserver)
 			    }
 	}
-	
-	
+		
 	process WebStoreOfferDeletion
 	{
 		summary "Deletes an offer."
@@ -207,14 +209,15 @@ package com.x.webstore.v1{
 		roles
 			{
 				WebStoreOfferConsumer "Requests an offer be deleted."
-				WebStoreOfferManager "Deletes the offer."
-				WebStoreOfferObserver "Receives notification that an offer was deleted."
+				WebStoreOfferManager "Deletes the offer and notifies observers."
+				WebStoreOfferObserver "Receives offer deleted notification."
 			}
 	
 		workflow
 		{
 			summary "Deletes an offer."
-			description "Deletes an offer."
+			description "Deletes an offer and notifies observers."
+
 			transaction DeleteWebStoreOffer
 			{
 				roles(WebStoreOfferConsumer, WebStoreOfferManager)
@@ -228,11 +231,12 @@ package com.x.webstore.v1{
 	
 	process WebStoreOfferDeleted
 	{
-		description "An offer was deleted."
+		summary "Notification that an offer was deleted."
+		description "Notification that an offer was deleted."
 	
 		roles{
 				WebStoreOfferManager "Returns the offers that were deleted."
-				WebStoreOfferObserver "Receives notification that an offer has been deleted."
+				WebStoreOfferObserver "Receives offer deleted notification."
 		}
 	}
 	
