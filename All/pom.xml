@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.x.ocl</groupId>
 	<artifactId>all-contracts</artifactId>
@@ -10,80 +11,15 @@
 		for tools that requires all avdl to be in one central location.
 	</description>
 	<licenses>
-  		<license>
-    			<name>X.Commerce Developer Package License Agreement, Version 1.0</name>
-    			<url>https://www.x.com/developers/x.commerce/x.commerce-developer-package-license-agreement</url>
-    			<distribution>repo</distribution>
-  		</license>
+		<license>
+			<name>X.Commerce Developer Package License Agreement, Version 1.0</name>
+			<url>https://www.x.com/developers/x.commerce/x.commerce-developer-package-license-agreement</url>
+			<distribution>repo</distribution>
+		</license>
 	</licenses>
 	<scm>
 		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/All</connection>
 	</scm>
-
-	<repositories>
-		<repository>
-			<releases>
-				<enabled>true</enabled>
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<checksumPolicy>warn</checksumPolicy>
-			</snapshots>
-			<id>xcommerce</id>
-			<name>x.commerce</name>
-			<url>http://maven.corp.x.com:8080/nexus/content/groups/public</url>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>xcommerce</id>
-			<name>xcommerce</name>
-			<url>http://maven.corp.x.com:8080/nexus/content/groups/public</url>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
-
-	<distributionManagement>
-		<repository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>${repo-id}</id>
-			<name>${repo-id}</name>
-			<url>${release-repo-url}</url>
-		</repository>
-		<snapshotRepository>
-			<uniqueVersion>false</uniqueVersion>
-			<id>${repo-id}</id>
-			<name>${repo-id}</name>
-			<url>${snapshot-repo-url}</url>
-		</snapshotRepository>
-	</distributionManagement>
-	<profiles>
-		<profile>
-			<id>default</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<properties>
-				<repo-id>ontologydeploy</repo-id>
-				<release-repo-url>http://maven.corp.x.com:8080/nexus/content/repositories/releases</release-repo-url>
-				<snapshot-repo-url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</snapshot-repo-url>
-			</properties>
-		</profile>
-		<profile>
-			<id>release</id>
-			<properties>
-				<repo-id>externalnexus</repo-id>
-				<release-repo-url>http://50.56.54.89:8080/nexus/content/repositories/releases</release-repo-url>
-				<snapshot-repo-url>http://50.56.54.89:8080/nexus/content/repositories/snapshots</snapshot-repo-url>
-			</properties>
-		</profile>
-	</profiles>
 
 	<dependencies>
 		<dependency>
@@ -194,7 +130,7 @@
 			<resource>
 				<directory>${project.basedir}/src-gen/avro</directory>
 			</resource>
-    	</resources>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -233,16 +169,16 @@
 				</executions>
 			</plugin>
 			<plugin>
-			        <inherited>true</inherited>
-               		 	<groupId>org.apache.maven.plugins</groupId>
-               			<artifactId>maven-compiler-plugin</artifactId>
-               			<version>2.4</version>
-                		<configuration>
-                    		<excludes>
-								<exclude>**/com_x_*.java</exclude>
-                    		</excludes>
-               			 </configuration>
-			 </plugin>
+				<inherited>true</inherited>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<excludes>
+						<exclude>**/com_x_*.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>

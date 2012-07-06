@@ -22,22 +22,6 @@
 		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/ProductTaxonomy</connection>
 	</scm>
 
-	<repositories>
-		<repository>
-			<releases>
-				<enabled>true</enabled>
-				<checksumPolicy>warn</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
-				<checksumPolicy>warn</checksumPolicy>
-			</snapshots>
-			<id>xcommerce</id>
-			<name>x.commerce</name>
-			<url>http://maven.corp.x.com:8080/nexus/content/groups/public</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
 		<dependency>
 			<groupId>com.x.ocl</groupId>

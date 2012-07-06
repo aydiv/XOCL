@@ -32,14 +32,14 @@
 			</snapshots>
 			<id>xcommerce</id>
 			<name>x.commerce</name>
-			<url>http://maven.corp.x.com:8080/nexus/content/groups/public</url>
+			<url>${public-repo-url}</url>
 		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>xcommerce</id>
 			<name>xcommerce</name>
-			<url>http://maven.corp.x.com:8080/nexus/content/groups/public</url>
+			<url>${public-repo-url}</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -71,6 +71,7 @@
 			</activation>
 			<properties>
 				<repo-id>ontologydeploy</repo-id>
+				<public-repo-url>http://maven.corp.x.com:8080/nexus/content/groups/public</public-repo-url>
 				<release-repo-url>http://maven.corp.x.com:8080/nexus/content/repositories/releases</release-repo-url>
 				<snapshot-repo-url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</snapshot-repo-url>
 			</properties>
@@ -79,6 +80,7 @@
 			<id>release</id>
 			<properties>
 				<repo-id>externalnexus</repo-id>
+				<public-repo-url>http://50.56.54.89:8080/nexus/content/groups/public</public-repo-url>
 				<release-repo-url>http://50.56.54.89:8080/nexus/content/repositories/releases</release-repo-url>
 				<snapshot-repo-url>http://50.56.54.89:8080/nexus/content/repositories/snapshots</snapshot-repo-url>
 			</properties>
