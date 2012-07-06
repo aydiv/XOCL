@@ -20,6 +20,72 @@
 	<scm>
 		<connection>scm:svn:https://svn.corp.x.com:8080/svn/x/xocl/trunk/All</connection>
 	</scm>
+	<repositories>
+		<repository>
+			<releases>
+				<enabled>true</enabled>
+				<checksumPolicy>warn</checksumPolicy>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+				<checksumPolicy>warn</checksumPolicy>
+			</snapshots>
+			<id>xcommerce</id>
+			<name>x.commerce</name>
+			<url>${public-repo-url}</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>xcommerce</id>
+			<name>xcommerce</name>
+			<url>${public-repo-url}</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>${repo-id}</id>
+			<name>${repo-id}</name>
+			<url>${release-repo-url}</url>
+		</repository>
+		<snapshotRepository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>${repo-id}</id>
+			<name>${repo-id}</name>
+			<url>${snapshot-repo-url}</url>
+		</snapshotRepository>
+	</distributionManagement>
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<repo-id>ontologydeploy</repo-id>
+				<public-repo-url>http://maven.corp.x.com:8080/nexus/content/groups/public</public-repo-url>
+				<release-repo-url>http://maven.corp.x.com:8080/nexus/content/repositories/releases</release-repo-url>
+				<snapshot-repo-url>http://maven.corp.x.com:8080/nexus/content/repositories/snapshots</snapshot-repo-url>
+			</properties>
+		</profile>
+		<profile>
+			<id>release</id>
+			<properties>
+				<repo-id>externalnexus</repo-id>
+				<public-repo-url>http://50.56.54.89:8080/nexus/content/groups/public</public-repo-url>
+				<release-repo-url>http://50.56.54.89:8080/nexus/content/repositories/releases</release-repo-url>
+				<snapshot-repo-url>http://50.56.54.89:8080/nexus/content/repositories/snapshots</snapshot-repo-url>
+			</properties>
+		</profile>
+	</profiles>
 
 	<dependencies>
 		<dependency>
