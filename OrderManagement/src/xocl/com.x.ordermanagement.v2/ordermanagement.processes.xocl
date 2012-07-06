@@ -15,23 +15,21 @@ package com.x.ordermanagement.v2 {
     	state Returned "Order has been returned."
     }
     
-    // A new process for marketing channels and analytics.  Non-PII only, no customer information.  
-    // Search only for now
-    process OrderSearch<NonSensitive, MarketplaceOrderSearch> {
+     process OrderSearch<NonSensitive, MarketplaceOrderSearch> {
     	
     	summary "Searches for orders based on the search criteria provided."
     	description "A marketing or analytics provider searches for orders based on the search criteria provided."
     	
     	roles {
     		OrderManager "Searches for orders." 
-    		OrderConsumer "Submits a request to query and the search criteria to retrieve orders."
+    		OrderConsumer "Submits a request to query for orders."
     		
     	}
     	
     	workflow {
     		    		
     		summary "Searches for orders."
-    		description "Searches for orders."
+    		description "Searches for orders and returns the results or a failed message."
     		
     		transaction SearchOrder<NonSensitive, MarketplaceOrderSearch> {
     			roles (OrderManager, OrderConsumer)
@@ -48,13 +46,13 @@ package com.x.ordermanagement.v2 {
     	roles {
     		
     		SalesChannel "Submits an order to the order processor." 
-    		OrderProcessor "Becomes aware of an order from a sales channel."
+    		OrderProcessor "Receives an order from a sales channel."
     	}
     	
     	workflow {
     		
-    		summary "Submits an order to the OrderProcessor that has already been shipped."
-    		description "Submits an order to the OrderProcessor that has already been shipped."
+    		summary "Submits an order, which has already been shipped, to the OrderProcessor."
+    		description "Submits an order, which has already been shipped, to the OrderProcessor."
     		
     		transaction SubmitOrder<MarketplaceOrder> {
     			roles (SalesChannel, OrderProcessor)
@@ -65,7 +63,7 @@ package com.x.ordermanagement.v2 {
     process ProcessSalesChannelOrder<MarketplaceOrder>(Order order) {
     	
     	summary "Processes an order that originates from a sales channel."
-        description "An order is submitted from and sales channel and is processed by making adjustments, changing the status, etc. Note: Use OrderReturn ONLY when all the items in an order are returned at the same time. For all other returns, use PartialOrderReturn. For example, a buyer orders two items. Returns one item and later returns the second item. User PartialOrderReturn for both of these returns."
+        description "An order is submitted from and sales channel and is processed by making adjustments, changing the status, etc. and notifies observers of the action performed. Note: Use OrderReturn ONLY when all the items in an order are returned at the same time. For all other returns, use PartialOrderReturn. For example, a buyer orders two items. Returns one item and later returns the second item. You would use PartialOrderReturn for both of these returns."
         
         roles {
         	SalesChannel "Submits the order for processing."
@@ -80,11 +78,7 @@ package com.x.ordermanagement.v2 {
     		summary "Processes an order."
     		description "Processes an order."
 	    	
-	    	// A new order may already have arrived at the OrderProcessor
-	    	// via a separate flow (SearchOrder, for example). That means the 
-	    	// ProcessOrder transaction may not be required to start the workflow.
 	        any {
-		        // An order submitter submits an order to an order processor
 	       	 	transaction ProcessOrder<MarketplaceOrder> {
 	        		roles(SalesChannel, OrderProcessor)
 	        	}
@@ -100,7 +94,6 @@ package com.x.ordermanagement.v2 {
 	    		}
 	    	}
 	    	
-   			// Notify observers that an order was created
        	    transaction OrderCreated {
         		roles(SalesChannel, OrderObserver)
        		}
