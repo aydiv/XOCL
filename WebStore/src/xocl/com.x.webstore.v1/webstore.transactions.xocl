@@ -17,9 +17,6 @@ package com.x.webstore.v1{
         receiver
         {
         	success GetAllWebStoreProviderSucceeded        
-        	
-        	//No failure message in this case.  If the capability cannot give provider information, it should not return anything.  
-                    	
         } 
     }
         
@@ -35,11 +32,8 @@ package com.x.webstore.v1{
         }
         receiver
         {
-        	// One of these two messages must be sent back to the sender as a response	
-         	// A success message does not have a response timeout
         	success GetAllWebStoreSucceeded        
                     	
-        	// A failure message does not have a response timeout
             failure GetAllWebStoreFailed  
         } 
     }
@@ -56,11 +50,8 @@ package com.x.webstore.v1{
         }
         receiver
         {
-        	// One of these two messages must be sent back to the sender as a response	
-         	// A success message does not have a response timeout
         	success GetAllCategorySucceeded        
                     	
-        	// A failure message does not have a response timeout
             failure GetAllCategoryFailed  
         } 
     }
@@ -77,10 +68,8 @@ package com.x.webstore.v1{
         }
         receiver
         {
-        	//Offers must be returned in a deterministic order
         	success SearchWebStoreOfferSucceeded        
                     	
-        	// A failure message does not have a response timeout
             failure SearchWebStoreOfferFailed  
         } 
     }
@@ -97,10 +86,8 @@ package com.x.webstore.v1{
         }
         receiver
         {
-        	//Offers must be returned in a deterministic order
         	success LookupWebStoreOfferSucceeded        
                     	
-        	// A failure message does not have a response timeout
             failure LookupWebStoreOfferFailed  
         } 
     }    
@@ -118,10 +105,8 @@ package com.x.webstore.v1{
         }
         receiver
         {
-        	// One of these two messages must be sent back to the sender as a response
         	success CreateWebStoreOfferSucceeded
         	{
-				// A success message does not have a response timeout
             	timeouts(receipt=30s, validation=3m)
             	retries=3
             }
@@ -147,17 +132,14 @@ package com.x.webstore.v1{
         }
         receiver
         {
-        	// One of these two messages must be sent back to the sender as a response
         	success DeleteWebStoreOfferSucceeded
         	{
-				// A success message does not have a response timeout
             	timeouts(receipt=30s, validation=3m)
             	retries=3
             }
             
             failure DeleteWebStoreOfferFailed
             {
-				// A failure message does not have a response timeout
             	timeouts(receipt=30s)
             	retries=3
             }
@@ -178,17 +160,14 @@ package com.x.webstore.v1{
         }
         receiver
         {
-        	// One of these two messages must be sent back to the sender as a response
         	success UpdateWebStoreOfferSucceeded
         	{
-				// A success message does not have a response timeout
             	timeouts(receipt=30s, validation=3m)
             	retries=3
             }
             
             failure UpdateWebStoreOfferFailed
             {
-				// A failure message does not have a response timeout
             	timeouts(receipt=30s)
             	retries=3
             }
@@ -252,6 +231,4 @@ package com.x.webstore.v1{
         	}
    		}
    	}
-   	
-
 }
