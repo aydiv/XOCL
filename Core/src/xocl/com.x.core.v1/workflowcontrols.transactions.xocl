@@ -1,0 +1,12 @@
+package com.x.core.v1 {
+	import com.x.core.v1.*
+	    
+    transaction NewWorkflowExecutionControlsAdded inform {
+        sender
+        {
+        	message WorkflowExecutionControls {
+        		topic "/system/workflow/controls/added"
+        	}
+        }
+    }
+}
