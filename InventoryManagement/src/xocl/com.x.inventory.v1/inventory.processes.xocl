@@ -4,19 +4,19 @@ package com.x.inventory.v1
 	
 	process StockItemLookup 
 	{
-		summary "Retrieves specified stock items."
-		description "The inventory consumer queries inventory levels and locations. This process is read-only. Stock item properties are not altered by this process."	
+		summary "Searched for stock items by SKU."
+		description "The InventoryConsumer queries inventory levels and locations. This process is read-only. Stock item properties are not altered by this process."	
 			
 		roles
 		{
-			InventoryConsumer "The inventory consumer needs to know inventory details. In the context of the StockItemLookup process, the inventory consumer needs to understand stock item properties for uses in other business processes, such as the creation of a marketing offer."
-			InventoryManager "The inventory manager maintains inventory stocking information and reports stocking information to inventory consumers and observers."
+			InventoryConsumer "Searches for inventory details. In the context of the StockItemLookup process, the inventory consumer needs to understand stock item properties for uses in other business processes, such as the creation of a marketing offer."
+			InventoryManager "Maintains inventory stocking information and reports stocking information to inventory consumers and observers."
 		}
 		
 		workflow 
 		{
 			summary "Retrieves inventory information."
-			description "The inventory consumer queries inventory levels and locations."
+			description "Queries inventory levels and locations."
 			transaction LookupStockItem
 			{
 				roles(InventoryConsumer, InventoryManager)
@@ -25,20 +25,19 @@ package com.x.inventory.v1
 	}
 	
     process StockItemUpdate {
-		summary "Updates stock items and reports on updates."
-		description "The stock item consumer submits stock item updates to the inventory manager."
+		summary "Updates stock items."
+		description "Updates stock items and reports on updates. The stock item consumer submits stock item updates to the inventory manager."
 		
 		roles {
-			StockItemConsumer "The StockItemConsumer submits requests to update stock item details. "
-			InventoryManager "The inventory manager services requests to update stock items and informs inventory observers of inventory updates and out-of-stock conditions."
-			InventoryObserver "The inventory observer is like the inventory consumer. The inventory observer likes to be informed of inventory changes, but does not query for the information. In the context of the StockItemUpdate process, the inventory observer sends no messages, but gets informed of stock updates and when an item is out of stock."
+			StockItemConsumer "Submits requests to update stock item details. "
+			InventoryManager "Services requests to update stock items and informs inventory observers of inventory updates and out-of-stock conditions."
+			InventoryObserver "Notified of inventory changes, but does not query for the information. In the context of the StockItemUpdate process, the inventory observer sends no messages, but gets informed of stock updates and when an item is out of stock."
 		}
 	}
 	
 	workflow StockItemUpdate implements StockItemUpdate{
 		summary "Updates stock item."
-		description "The stock item consumer tells the inventory manager to do an inventory snapshot or delta update for a stock item. The inventory manager informs the inventory observer that stock item was updated and, optionally, if an item is out of stock. "
-		// Stock item consumer tells inventory manager to update stock item
+		description "Updates stock items and reports on updates. The stock item consumer tells the inventory manager to do an inventory snapshot or delta update for a stock item. The inventory manager informs the inventory observer that stock item was updated and, optionally, if an item is out of stock. "
 		one{
 			transaction UpdateStockItemDelta {
 				roles(StockItemConsumer, InventoryManager)
@@ -53,21 +52,20 @@ package com.x.inventory.v1
 	}
 	
 	process StockItemUpdated {
-		summary "Updates stock items and reports on updates."
-		description "The stock item consumer submits stock item updates to the inventory manager."
+		summary "Notifies observers that stock items were updated."
+		description "Notifies observers that stock items were updated. The InventoryManager notifies observers that stock items have been updated."
 		
 		roles {
-			InventoryManager "The inventory manager services requests to update stock items and informs inventory observers of inventory updates and out-of-stock conditions."
-			InventoryObserver "The inventory observer is like the inventory consumer. The inventory observer likes to be informed of inventory changes, but does not query for the information. In the context of the StockItemUpdate process, the inventory observer sends no messages, but gets informed of stock updates and when an item is out of stock."
+			InventoryManager "Updates the stock items and informs inventory observers of inventory updates and out-of-stock conditions."
+			InventoryObserver "Receives notification that stock items have been updated. The InventoryObserver sends no messages, but gets informed of stock item updates."
 		}
 	}
 	
 	workflow StockItemUpdated implements StockItemUpdated {
-			summary "Updates stock item."
-			description "The inventory manager informs the inventory observer that stock item was updated (updates could occur through the messaging system or via the user interface), and, optionally, if an item is out of stock. "
+			summary "Notifies observers that stock items were updated."
+			description "Notifies observers that stock items were updated. The InventoryManager informs the InventoryObserver that stock items were was updated (updates could occur through the messaging system or via the user interface), and, optionally, if an item is out of stock. "
 
 			any { 
-				// Inventory manager informs Inventory observer that item has gone out of stock
 				transaction OutOfStock {
 					roles(InventoryManager, InventoryObserver)
 				}
