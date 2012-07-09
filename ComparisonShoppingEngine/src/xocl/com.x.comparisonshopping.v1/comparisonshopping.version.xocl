@@ -1,3 +1,4 @@
 package com.x.comparisonshopping.v1 0.2 workingdraft {
+	packagetitle "Comparison Shopping Engine"
 	import com.x.comparisonshopping.v1.*
 }
