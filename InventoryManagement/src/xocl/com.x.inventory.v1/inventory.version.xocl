@@ -1,3 +1,4 @@
 package com.x.inventory.v1 0.1 workingdraft{
+	packagetitle "Inventory Management"
 	import com.x.inventory.v1.*
 }
