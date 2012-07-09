@@ -1,3 +1,4 @@
 package com.x.webstore.v1 0.3 workingdraft{
+	packagetitle "Web Store"
 	import com.x.webstore.v1.*
 }
