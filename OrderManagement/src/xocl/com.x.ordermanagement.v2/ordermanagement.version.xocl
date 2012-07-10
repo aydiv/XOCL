@@ -1,4 +1,5 @@
 package com.x.ordermanagement.v2 2.11 workingdraft {
 	packagetitle "Order Management"
+	description "Specifies the processes for managing the complete lifecycle of any product that is purchased from a merchant."
 	import com.x.ordermanagement.v2.*
 }
