@@ -1,5 +1,5 @@
 package com.x.webstore.v1 0.3 workingdraft{
 	packagetitle "Web Store"
-	description "Specifies processes that provide a web-based storefront for a merchant."
+	description "The Web Store package specifies processes that provide a web-based storefront for a merchant."
 	import com.x.webstore.v1.*
 }
