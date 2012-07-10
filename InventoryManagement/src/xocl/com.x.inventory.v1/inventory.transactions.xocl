@@ -3,6 +3,9 @@ package com.x.inventory.v1
 	import com.x.inventory.v1.*
 	
 	entity StockItem
+	{
+		description "A product available in the inventory."
+	}
 	
 	transaction LookupStockItem query
     {
