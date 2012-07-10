@@ -1,4 +1,5 @@
 package com.x.inventory.v1 0.1 workingdraft{
 	packagetitle "Inventory Management"
+	description "Specifies the processes used for maintaining an optimal level of products."
 	import com.x.inventory.v1.*
 }
