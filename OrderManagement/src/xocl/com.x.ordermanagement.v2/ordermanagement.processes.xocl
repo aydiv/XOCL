@@ -154,16 +154,20 @@ package com.x.ordermanagement.v2 {
 		}
 	}
 	process OrderCancelled <MarketplaceOrder> {
-		summary ""
-		description ""
+		summary "Notification that an order was cancelled."
+		description "Notification that an order was cancelled."
 		
 		roles {
-         	OrderProcessor "Notification that an order was cancelled."
+         	OrderProcessor "Sends a notification that an order was cancelled."
         	OrderObserver "Receives an order cancelled notification."      
         }
 	}
 	
 	workflow OrderCancelled implements OrderCancelled{
+		summary "Notification that an order was cancelled."
+		description "OrderProcessor send a notification that an order was cancelled to observers."
+		
+		
 		 transaction OrderCancelled<MarketplaceOrder> {
 			 roles(OrderProcessor, OrderObserver)
 		 }	
