@@ -1,5 +1,5 @@
 package com.x.customer.v1 1.1 workingdraft{
 	packagetitle "Customer"
-	description "Specifies the processes for management and access of customer information"
+	description "Specifies the processes for management and access of customer information."
 	import com.x.customer.v1.*
 } 
