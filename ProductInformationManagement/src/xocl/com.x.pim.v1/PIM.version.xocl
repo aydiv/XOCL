@@ -1,5 +1,5 @@
 package com.x.pim.v1 1.3 workingdraft{
 	packagetitle "Product Information Management"
-	description "Specifies processes for managing product information that is used by multiple systems within a merchant’s commerce ecosystem."
+	description "The Product Information Management package specifies processes for managing product information that is used by multiple systems within a merchant’s commerce ecosystem."
 	import com.x.pim.v1.*
 }
