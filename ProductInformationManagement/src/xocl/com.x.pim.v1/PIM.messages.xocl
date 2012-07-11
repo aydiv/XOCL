@@ -259,7 +259,7 @@ package com.x.pim.v1
     record CreateProductWithId
     {
     	summary "Requests creation of one or more products with unique IDs."
-    	description "Requests creation of one or more products with an array of ProductData."
+    	description "Requests creation of one or more products using an array of ProductData."
         array<Product> products "Array of products with unique IDs requested to be created.";
     }
 
