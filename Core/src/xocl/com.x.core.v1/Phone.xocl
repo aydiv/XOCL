@@ -3,16 +3,19 @@ package com.x.core.v1
 {
 	enum PhoneType
 	{
-		HOME,
-		MOBILE,
-		WORK,
-		FAX,
-		UNKNOWN
+		summary "Specifies the type of phone."
+ 		description "Defines the values used to specify the type of phone."
+		
+		HOME "Indicates this is a home phone number.",
+		MOBILE "Indicates this is a mobile phone number.",
+		WORK "Indicates this is a work phone number.",
+		FAX "Indicates this is a Fax number.",
+		UNKNOWN "Indicates the type of phone is not known."
 	}
 
 	record Phone
 	{
-		string number
-		PhoneType type
+		string number "Phone number."
+		PhoneType type "Phone number type."
 	}
 }

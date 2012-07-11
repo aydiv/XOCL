@@ -1,9 +1,7 @@
 package com.x.core.v1{
 
 	record EntityId{
-		// a stable guid for the system creating the record
-		guid namespace
-		// a locally unique stable identifier
-		string Id;
+		guid namespace "Stable guid for the system creating the record."
+		string Id "Local unique identifier.";
 	}
 }
