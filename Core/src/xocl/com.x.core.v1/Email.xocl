@@ -3,6 +3,6 @@ package com.x.core.v1
 {    
 	record Email
 	{
-		string emailAddress   		
+		string emailAddress "Email address." 		
 	}
 }

@@ -3,10 +3,10 @@ package com.x.core.v1
 {
 	record Name
 	{
-		string firstName
-		string? middleName
-		string lastName
-		string? prefix
-		string? suffix
+		string firstName "First name."
+		string? middleName "Middle name."
+		string lastName "Last name."
+		string? prefix "Prefix  the name, such as Mr., Mrs., Dr. etc."
+		string? suffix "Suffix of the name, such as III."
 	}
 }

@@ -5,18 +5,21 @@ package com.x.core.v1
 	
 	enum ContactAddressType
 	{
-		BILLING,
-		SHIPPING,
-		BILLING_AND_SHIPPING
+		summary "Specifies the contact type."
+ 		description "Defines the values used to specify the contact type.."
+		
+		BILLING "Indicates the address is a billing address.",
+		SHIPPING "Indicates the address is a shipping address.",
+		BILLING_AND_SHIPPING "Indicates the address is to be used for both billing and shipping."
 	}
 
 	record Contact 
 	{
-		Name fullName	   
-	    array<Address>? addresses
-		Phone? primaryPhone
-	    array<Phone>? additionalPhones
-		Email? emailAddress
-		ContactAddressType? addressType
+		Name fullName "First and last name of the contact."	   
+	    array<Address>? addresses "Array of the contact's addresses."
+		Phone? primaryPhone "Primary telephone number."
+	    array<Phone>? additionalPhones "Additional telephone numbers."
+		Email? emailAddress "Email address of the contact."
+		ContactAddressType? addressType "Indicates the address type."
 	}
 }
