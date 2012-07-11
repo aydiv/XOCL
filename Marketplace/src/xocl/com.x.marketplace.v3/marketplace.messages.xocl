@@ -37,6 +37,7 @@ package com.x.marketplace.v3{
 		array<SupportedCountry> countries;
 		string marketplace;
 		CalculatedShippingMetadata? calculatedShippingMetadata;
+		array<string>? supportedOfferDurations "The supported durations of offers allowed by this site- examples may be 7 days, 14 days, GTC, etc";
 	}
 
 	record CalculatedShippingMetadata{
@@ -208,6 +209,7 @@ package com.x.marketplace.v3{
 		ReturnPolicy? returnPolicy;
 		CalculatedShippingPolicy? calculatedShippingPolicy 
 		string xAccountId;
+		string? offerDuration "The duration of the offer, before it expires"
 	}
 
 	record CancelOfferError {
