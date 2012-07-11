@@ -2,20 +2,23 @@
 package com.x.core.v1
 {
 	enum AddressTag{
-		BILLING
-		SHIPPING
+		summary "Specifies the type of address."
+ 		description "Defines the values used to specify if the address is the billing or shipping address."
+		
+		BILLING "Indicates this is the billing address."
+		SHIPPING "Indicates this is the shipping address."
 	}
 	record Address
 	{
-		string street1
-		string? street2
-		string? street3
-		string? street4
-		string city
-		string? county
-		string? stateOrProvince
-		string postalCode
-		string country
-		array<AddressTag>? tags
+		string street1 "Street number and street name."
+		string? street "Street number and street name."
+		string? street3 "Street number and street name."
+		string? street4 "Street number and street name."
+		string city "Name of the city."
+		string? county "Name of the county."
+		string? stateOrProvince "Name of the state or province."
+		string postalCode "Postal code (zip code)."
+		string country "Name of the country."
+		array<AddressTag>? tags "Indicates the address type."
 	}
 }
