@@ -2,10 +2,7 @@ package com.x.core.v1
 {
 	record CurrencyAmount
 	{
-		 /** Allowed characters are 0-9 and a single optional period (.) as the decimal point */  
-		string amount;
-		
-		/**  Three letter currency code/ISO 4217 */
-		string code;
+		string amount "Currency amount. The allowed characters are 0-9 and a single optional period (.) as the decimal point.";
+		string code "3-letter upper case currency code (ISO 4217). For example, USD (United States dollar) or GBP (pound sterling).";
 	}
 }

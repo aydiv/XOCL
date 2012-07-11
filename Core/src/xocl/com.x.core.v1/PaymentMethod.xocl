@@ -2,27 +2,30 @@
 package com.x.core.v1
 {
 	enum CommonPaymentMethod {
-		AMEX,
-		CASH_ON_DELIVERY,
-		CHECK,
-		CREDIT_CARD,
-		DINERS,
-		DISCOVER,
-		ESCROW,
-		INTEGRATED_MERCHANT_CREDIT_CARD,
-		MASTERCARD,
-		MONEY_ORDER,
-		MONEY_TRANSFER,
-		MONEYBOOKERS,
-		PAYMATE,
-		PAYMENT_ON_PICKUP,
-		PAYPAL,
-		PROPAY,
-		VISA
+		summary "Specifies the payment method."
+ 		description "Defines the values used to specify a payment method."
+		
+		AMEX "American Express card.",
+		CASH_ON_DELIVERY "Cash on delivery (payment at the time of delivery).",
+		CHECK "Personal or business check",
+		CREDIT_CARD "Credit card other than the ones available in this enum list.",
+		DINERS "Diners Club credit card.",
+		DISCOVER "Discover credit card.",
+		ESCROW "Escrow.",
+		INTEGRATED_MERCHANT_CREDIT_CARD "Integrated Merchant credit card.",
+		MASTERCARD "Mastercard credit card.",
+		MONEY_ORDER "Money order.",
+		MONEY_TRANSFER "Money transfer.",
+		MONEYBOOKERS "Moneybookers.",
+		PAYMATE "PayMate.",
+		PAYMENT_ON_PICKUP "Payment when the item is pickup.",
+		PAYPAL "PayPal.",
+		PROPAY "ProPay.",
+		VISA "Visa credit card."
 	}
 	
 	record PaymentMethod {
 		//If the method is not a CommonPaymentMethod, use a string.
-		union{CommonPaymentMethod,string} method
+		union{CommonPaymentMethod,string} method "Either one of the CommonPaymentMethod values or a string. Use a string when the payment is not a CommonPaymentMethod."
 	} 
 }

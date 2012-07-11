@@ -1,32 +1,47 @@
 package com.x.core.v1
 {
 	enum MeasurementSystem{
-		METRIC "Measurements are in metric units: kg, g, cm, etc" ,
-		ENGLISH "Measurements are in english units: lb, oz, in, etc"
+		summary "Specifies the measurement system."
+ 		description "Defines the values to specify the measurement system."
+		
+		METRIC "Measurements are in metric units: kg, g, cm, etc." ,
+		ENGLISH "Measurements are in english units: lb, oz, in, etc."
 	}
 	
 	enum EnglishLengthMeasurementUnit{
-		INCH "inches, in."
-		FOOT "feet, ft."
-		YARD "yards, yd."
-		MILE "miles, m"
+		summary "Specifies the English length measurement units."
+ 		description "Defines the values to specify the English length measurement units."
+		
+		INCH "Inches, in."
+		FOOT "Feet, ft."
+		YARD "Yards, yd."
+		MILE "Miles, m"
 	}
 	enum EnglishWeightMeasurementUnit{
-		GRAIN "grains, gr"
-		OUNCE "ounces, oz"
-		POUND "pounds, lb"
-		TON "tons, "
+		summary "Specifies the English weight measurement units."
+ 		description "Defines the values to specify the English weight measurement units."
+		
+		GRAIN "Grains, gr"
+		OUNCE "Ounces, oz"
+		POUND "Pounds, lb"
+		TON "Tons, t"
 	}
 	enum MetricLengthMeasurementUnit{
-		MILLIMETER "millimeters, mm"
-		CENTIMETER "centimeters, cm"
-		METER "meters, m"
-		KILOMETER "kilometers, km"
+		summary "Specifies the metric length measurement units."
+ 		description "Defines the values to specify the metric length measurement units."
+		
+		MILLIMETER "Millimeters, mm"
+		CENTIMETER "Centimeters, cm"
+		METER "Meters, m"
+		KILOMETER "Kilometers, km"
 	}
 	
 	enum MetricWeightMeasurementUnit{
-		MILLIGRAM "milligrams, mg"
-		CENTIGRAM "centigram, cg"
+		summary "Specifies the metric weight measurement units."
+ 		description "Defines the values to specify metric weight measurement units."
+		
+		MILLIGRAM "Milligrams, mg"
+		CENTIGRAM "Centigram, cg"
 		GRAM "Grams, g"
 		KILOGRAM "Kilograms, kg"
 	}

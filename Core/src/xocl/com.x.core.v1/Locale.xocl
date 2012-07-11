@@ -2,12 +2,10 @@ package com.x.core.v1
 {
 	record Locale
 	{
-		/* ISO 639-2 Two-letter lower-cased language code */
-		string language;
+		string language "2-letter language code (ISO 639-1). For example, en (english) or fr (French).";
 		
-		/* ISO 3166 Two-letter UPPER-CASED country code */
-		string country;
+		string country "2-character country code (ISO 3166). For example, US (United States) or FR (France).";
 		
-        string? variant;		
+        string? variant "Variant for the locale.";		
 	}
 }

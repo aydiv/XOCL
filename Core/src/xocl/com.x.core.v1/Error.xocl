@@ -2,17 +2,14 @@ package com.x.core.v1
 {
 	record Error
 	{
-		/** Value that indicates the type of error.  Should be stable, short, and easily comparable */
-		string code;
- 
-		/**  Key whose value is a human displayable version of this error */
-		string? _AVDL_message
+		string code "Value that indicates the type of error.  Should be stable, short, and easily comparable.";
+ 		string? _AVDL_message "Explanation of the error."
  
 		/** 
 		 * Parameters for the message. Parameter place holders identified 
 		 * using the format in java.text.MessageFormat. The key of the map is
 		 * the placeholder string, and the value is the string that replaces it. 
 		 */
-		map<string>? parameters;
+		map<string>? parameters "Parameters for the message. Parameter place holders identified using the format in java.text.MessageFormat. The key of the map is the placeholder string, and the value is the string that replaces it.";
 	}
 }
