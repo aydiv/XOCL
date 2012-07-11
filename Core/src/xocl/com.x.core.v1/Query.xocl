@@ -5,118 +5,69 @@ package com.x.core.v1
 	 * It is intended for client/server interactions and not as the start of a business process.
 	 */
 	
-	/**
-	 * Operator
-	 */
 	enum Operator
 	{
-		EQUALS,
-		NOT_EQUALS,
-		GREATER_THAN,
-		GREATER_THAN_EQUALS,
-		LESS_THAN,
-		LESS_THAN_EQUALS
+		summary "Specifies the query operators."
+ 		description "Defines the values used to specify the query operators."
+		
+		EQUALS "Equals",
+		NOT_EQUALS "Is not equal.",
+		GREATER_THAN "Is greater than.",
+		GREATER_THAN_EQUALS "Is greater than or equal to.",
+		LESS_THAN "Is less than.",
+		LESS_THAN_EQUALS "Is less than or equal to."
 	}
 	
-	/**
-	 * Predicate
-	 */
 	record Predicate
 	{
-		string field;
+		string field "Field to use.";
 
-		Operator operator;
+		Operator operator "Indicates the operator to use.";
 
-		array<string> values;
+		array<string> values "Filters for the query.";
 	}
 
-	/**
-	 * Sort order
-	 */
 	enum SortOrder
 	{
-		ASCENDING,
-		DESCENDING
+		summary "Specifies the sort order."
+ 	description "Defines the values used to specify the sort order for the report."
+		
+		ASCENDING "Sorts the report in ascending order.",
+		DESCENDING "Sorts the report in descending order."
 	}
 
-	/**
-	 * Order by
-	 */
 	record OrderBy
 	{
-		string field;
+		string field "Field to sort by.";
 
-		SortOrder sortOrder;
+		SortOrder sortOrder "Sort order for the report.";
 	}
 
-	/**
-	 * Query that corresponds to the report
-	 */
 	record Query
 	{
-		/**
-		 * Fields to be selected. These will be 'columns' in the report.
-		 * When not specified, the entire object should be returned. 
-		 */
-		array<string>? fields;
+		summary "Contains query for a report."
+		description "Captures the query information for a report."
 		
-		/**
-		 * Specifies how an entity should be filtered. Essentially, the WHERE
-		 * clause.  Don't specify any predicate if the query is for all.
-		 */
-		array<Predicate>? predicates;
-
-		/**
-		 * Fields on which the report should be sorted. The order is significant -
-		 * first field determines primary sort order, the next determines
-		 * secondary sort order, etc.
-		 */
-		array<OrderBy> ordering;
-		
-		/**
-		 * Restrict the number of items return to this many or less.
-		 * When null, it is assumed there is no restriction
-		 */
-		long? numberItems;
-		
-		/**
-		 * Return the results starting from this zero-based index.
-		 * When null, items will be returned started from the first item
-		 */
-		long? startItemIndex;
-		
-		/**
-		 * The total number of items found by the data provider.
-		 * This field will be filled in by the result provider when supported.
-		 * Requester should not fill this out.
-		 */
-		 long? numberItemsFound;
+		array<string>? fields "Fields to be selected. These will be 'columns' in the report. When not specified, the entire object is returned.";
+		array<Predicate>? predicates "Specifies how an entity should be filtered. Essentially, the WHERE clause. If the query is for all, don't specify a predicate.";
+		array<OrderBy> ordering "Fields on which the report should be sorted. The order is significant. The first field determines the primary sort order, the next determines secondary sort order, etc.";
+		long? numberItems "Restricts the number of items returned to this many or less. When null, it is assumed there is no restriction.";
+		long? startItemIndex "Return the results starting from this zero-based index. When null, items will be returned started from the first item.";
+		long? numberItemsFound "The total number of items found by the data provider. This field is filled in by the result provider when supported. Note: The requester should not fill this out.";
 	}
 
 	record GenericItem
 	{
-		//Fixed is not supported. Use bytes instead.
-		//For union, the actual type should be use instead of the union type.
-		union {null,boolean,int,long,float,double,string,bytes,array<GenericItem>,map<GenericItem>} value;
+		union {null,boolean,int,long,float,double,string,bytes,array<GenericItem>,map<GenericItem>} value "Specifies the item. For union, the actual type should be use instead of the union type. Note: Fixed is not supported. Use bytes instead.";
 	}
 
 	record QueryResultItem
 	{
-		array<GenericItem> fields;
+		array<GenericItem> fields "Array of the items.";
 	}
 
-	/**
-	 * Query Result
-	 * The result of a query can be null, in which case the Error structure
-	 * will indicate the error.
-	 * In the successful case, the result is zero or more rows, each containing
-	 * one or more columns. The order of the columns would correspond to the
-	 * order of the fields in the Query record.
-	 * While the type of column supported is a string now, this can be enhanced
-	 * by adding additional types to the inner union.
-	 */
 	record QueryResult
 	{
-	   array<QueryResultItem>? data;
+	   array<QueryResultItem>? data "The result of a query can be null, in which case the Error structure will indicate the error. In the successful case, the result is zero or more rows, each containing one or more columns. The order of the columns would correspond to the order of the fields in the Query record. While the type of column supported is a string now, this can be enhanced by adding additional types to the inner union.";
 	}
 }
