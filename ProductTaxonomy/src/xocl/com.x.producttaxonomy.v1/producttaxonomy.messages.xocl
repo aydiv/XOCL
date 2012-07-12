@@ -140,7 +140,7 @@ package com.x.producttaxonomy.v1{
 		summary "Requests a search for product type details for a specific product class."
 		description "Requests a search for a product type using the product class ID. The results can be optionally filtered by locale and the level of detail to return."
 		SearchQuery criteria "Criteria used for the SearchProductType search. The criteria is the corresponding productClassId.";
-		Locale? locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
+		Locale? locale "Optional filter used to request Country/Language specific product types.";
 		Filter? filter "Optional filter that determines the level of detail. Two levels of details are supported: 1) summary information only (ID, version, name, productClassID) 2) all product type details. If this is null, only the product type summary is returned.";		
 	}
 
@@ -149,7 +149,7 @@ package com.x.producttaxonomy.v1{
 		description "Confirms successful retrieval of product type details for the specified product class."
 		array<ProductType> productTypes "Array of the product types matching the search criteria.";
 		SearchQuery criteria "Criteria used for the SearchProductType search. The criteria is the corresponding productClassId.";
-		Locale? locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
+		Locale? locale "Optional filter used to request Country/Language specific product types.";
 	    Filter? filter "Optional filter to request channel IDs or detail level. If filter is omitted, the detailed information is returned.";		
 	}
 	
@@ -165,14 +165,14 @@ package com.x.producttaxonomy.v1{
 	record GetProductTaxonomy {
 		summary "Returns all product classes by locale."
 		description "Returns all product classes by locale. If no locale is provided, en_US is used."
-		Locale? locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
+		Locale? locale "Optional filter used to request Country/Language specific product types.";
 	}
 	
 	record GetProductTaxonomySucceeded {
 		summary "Search of product classes by locale succeeded."
 		description "Confirms successful retrieval of product classes by locale."
 		ProductTaxonomy productTaxonomy "A product taxonomy that can contain one or more productClasses and has its own version.";
-		Locale? locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
+		Locale? locale "Optional filter used to request Country/Language specific product types.";
 	}
 
 	record GetProductTaxonomyFailed{
@@ -198,7 +198,7 @@ package com.x.producttaxonomy.v1{
 		summary "Requests a search for product type by ID."
 		description "Requests a search for product type by ID and returns the details for a specified product type. Note: More than one product type can be included."
 		array<string>? productTypeIds "Array of ProductTypeIDs. If the productTypeIds field is null, all the productTypes are returned.";
-	    Locale? locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
+	    Locale? locale "Optional filter used to request Country/Language specific product types.";
 		Filter? filter "Optional filter to request channel IDs or detail level. If filter is omitted, the detailed information is returned.";
 	}
 
@@ -206,7 +206,7 @@ package com.x.producttaxonomy.v1{
 		summary "Signals that the search for product type succeeded."
 		description "Confirms the successful retrieval of details for the specified product type or types."
 		array<ProductType> productTypes "Versioned data-structure containing various product types.";
-	    Locale? locale "Optional filter used to request Country/Language specific product types. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
+	    Locale? locale "Optional filter used to request Country/Language specific product types.";
 		Filter? filter "Optional filter to request channel IDs or detail level. If filter is omitted, the detailed information is returned.";		
 	}
 
