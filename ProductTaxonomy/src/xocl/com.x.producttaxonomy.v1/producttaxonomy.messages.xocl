@@ -126,7 +126,7 @@ package com.x.producttaxonomy.v1{
 		summary "Contains a root-level product taxonomy."
 		description "Captures the product classes and their version within a top-level product class."
 		array<ProductClass> productClasses "Array of classes within a top-level product class.";
-		string version "Version of the product taxonomy. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.";
+		string version "Version of the product taxonomy.";
 	}
 
 	//-----------------------------------------------------------------------------------------------------
@@ -184,7 +184,7 @@ package com.x.producttaxonomy.v1{
 	record ProductTaxonomyUpdated{
 		summary "Signals that the product taxonomy has been updated."
 		description "Confirms that updates have been made to the product taxonomy. This includes updates to ProductClass, ProductType, or details within a Producttype. This confirmation includes a version in the form of a time based on ISO 8601."
-		datetime version "Version of a ProductTaxonomy. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.";
+		datetime version "Version of a ProductTaxonomy.";
 	}
 
 	//-----------------------------------------------------------------------------------------------------
