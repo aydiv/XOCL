@@ -36,14 +36,18 @@ package com.x.marketplace.v3{
 		array<PaymentMethod> methods;
 		array<SupportedCountry> countries;
 		string marketplace;
-		CalculatedShippingMetadata? calculatedShippingMetadata;
+		CalculatedShippingMetadata? calculatedShippingMetadata "Metadata for calculated shipping.  If the site does not support calculated shipping, this element should not be present"
 		array<string>? supportedOfferDurations "The supported durations of offers allowed by this site- examples may be 7 days, 14 days, GTC, etc";
 	}
 
 	record CalculatedShippingMetadata{
-		array<string> supportedPackageTypes "The package types supported by this site"
-		boolean calculatedShippingSupported "Does this site support calculated shipping?"
+		array<PackageType> supportedPackageTypes "The package types supported by this site"
 		array<MeasurementSystem> measurementSystem "The measurement system used by this site"
+	}
+	
+	record PackageType{
+		string packageName "The name of the package type used by the system"
+		string packageDescription "The desciption of the package type"
 	}
 	
 	 /*
