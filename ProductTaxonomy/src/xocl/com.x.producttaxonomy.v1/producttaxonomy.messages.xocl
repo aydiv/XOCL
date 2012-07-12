@@ -177,7 +177,7 @@ package com.x.producttaxonomy.v1{
 
 	record GetProductTaxonomyFailed{
 		summary "Signals that search product class by locale failed."
-		description "Returns error details related to the failed retrieval, which are helpful in troubshooting."
+		description "Returns error details related to the failed retrieval, which are helpful in troubleshooting."
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}	
 	
