@@ -6,7 +6,7 @@ package com.x.inventory.v1
 	{
 		summary "Contains stock item information."
 		description "Captures the SKUs, quantity, and location of a stock item."
-		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant.";
+		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique identifier supplied by the merchant.";
 		int quantity "Number of stock items at a location. Note: Quantity is a high-consistency field due to serialization issues.";
 		string locationName "Unique name used to reference the location of the stock item.";
 	}
