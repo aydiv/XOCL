@@ -181,7 +181,7 @@ package com.x.pim.v1
      	description "Updates the SKUs for one or more products based on a request from a consumer. It returns either a succeeded message or a failed message containing the SKUs that were to be updated. Note: To use this transaction, the SKUs must exist."
     	preconditions
     	{
-    		exists(sku) "A pre-condition to updating a product SKU is that the SKU already exists (i.e., the merchant has already generated an SKU)."
+    		exists(sku) 
     	}
         sender
         {
@@ -213,7 +213,7 @@ package com.x.pim.v1
     	description "Creates the SKUs for one or more products based on a request from a consumer. It returns either a succeeded message or a failed message containing the SKUs that were to be created. Note: To use this transaction, the SKUs must NOT already exist."
         preconditions
         {
-        	!exists(sku) "A pre-condition to performing this transaction is that the SKU to be created does not already exist (i.e., the merchant has not already generated an SKU)."
+        	!exists(sku) 
         }
         sender
         {
@@ -245,7 +245,7 @@ package com.x.pim.v1
     	description "Deletes the SKUs for one or more products based on a request from a consumer. It returns either a succeeded message or a failed message containing the SKUs that were to be deleted. Note: To use this transaction, the SKUs must exist."
         preconditions
         {
-        	exists(sku) "A pre-condition to performing this transaction is that the SKU to be delete must already exist (i.e., the merchant has already generated the SKU)."
+        	exists(sku) 
         }
         sender
         {
