@@ -26,7 +26,7 @@ package com.x.pim.v1
         array<Image>? images "Array of images of the product.";
         array<ProductAttributeValue>? attributes "Values of the product attributes.";
         array<string>? variationFactors "Unique identifiers of the product variations.";
-        array<SKU>? skuList "Array of the SKUs of associated products.";
+        array<SKU>? skuList "Array of the SKUs of the associated products.";
     }
 
     record ProductAttributeValue
@@ -61,12 +61,12 @@ package com.x.pim.v1
 
 	record LocalizedMeasurement
 	{
-    	summary "Reserved for future use."
-    	description "Reserved for future use."
+    	summary "Contains the localized measurement information."
+    	description "Captures the localized measurement name, unit and value."
  		Locale? locale "County and language for the measurement unit. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
-		string name "Reserved for future use.";
-		string unit "Reserved for future use.";
-		string value "Reserved for future use.";
+		string name "Name of the measurement type, such as english or metric.";
+		string unit "Name of the measurement unit, such as weight or length.";
+		string value "Measurement value, such as lbs. or inches.";
 	}
 
  	record LocalizedNameValue
@@ -83,7 +83,7 @@ package com.x.pim.v1
     	summary "Specifies the product ID type."
     	description "Defines the values used to specify the product ID type."
 		PRODUCT_ID "Unique identifier of a product.",
-		SKU "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
+		SKU "Standardized SKU (Stock Keeping Unit) of the product. This is a unique identifier supplied by the merchant."
 	}
 
 	record ProductIdentifier
@@ -96,33 +96,32 @@ package com.x.pim.v1
 
     record BooleanAttributeValue
     {
-    	summary "TBD"
-    	description "TBD"
-        boolean value "TBD";
-        array<LocalizedString>? attributeName "TBD";
+    	summary "Contains a boolean attribute."
+    	description "Captures a boolean attribute value."
+        boolean value "Boolean attribute value.";
+        array<LocalizedString>? attributeName "Array of attribute names.";
     }
 
  	record StringAttributeValue
  	{
-    	summary "TBD"
-    	description "TBD"
- 		array<LocalizedNameValue> attributeNameValue "TBD";
+    	summary "Contains attribute name/values."
+    	description "Captures the attribute names and values."
+ 		array<LocalizedNameValue> attributeNameValue "Array of attribute names and values";
  	}
 
  	record MeasurementAttributeValue
  	{
-    	summary "TBD"
-    	description "TBD"
- 		array<LocalizedMeasurement> localizedMeasurementValue "TBD";
+    	summary "Contains the measurement attribute value."
+    	description "Captures the attribute values for measurement."
+ 		array<LocalizedMeasurement> localizedMeasurementValue "Array of measurement values.";
  	}
 
     record StringEnumerationAttributeValue
     {
-    	summary "TBD"
-    	description "TBD"
+    	summary "Contains the string enumeration attribute values."
+    	description "Captures the string enumeration attribute values."
     	array<string> valueId "ID of the attribute value defined in ProductTaxonomy StringEnumeration.";
-        // this localized value will be populated by capability
-        map<StringAttributeValue>? attributeValues "TBD";
+        map<StringAttributeValue>? attributeValues "Array of localized attribute values, which is populated by the capability.";
     }
 
     record ProductTypeStringAttributeValue
@@ -182,7 +181,7 @@ package com.x.pim.v1
     {
     	summary "Contains information used to create SKUs."
     	description "Captures information needed to create a SKU. It will override the values for MSRP and MAP in Product."
-        string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the requestor.";
+        string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique identifier supplied by the requester.";
         string? productId "Unique identifier of the product. Note: This is required in all cases except product creation.";
         CurrencyAmount? MSRP "Manufacturer suggested retail price. Note: This overrides the MSRP field in Product.";
         CurrencyAmount? MAP "Minimal advertisement price.  Note: This overrides the MAP field in Product.";

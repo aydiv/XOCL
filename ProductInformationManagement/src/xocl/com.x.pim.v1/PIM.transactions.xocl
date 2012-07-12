@@ -3,7 +3,13 @@ package com.x.pim.v1
 	import com.x.pim.v1.*
 	
     entity Product
+    {
+    	description "A cataloged item that may be offered for sale.  A product can have multiple variations."
+    }
     entity StockKeepingUnit
+    {
+    	description "A Stock Keeping Unit is a unique identifier for each product variation."
+    }
 
     
  	transaction SearchProduct query
