@@ -134,9 +134,9 @@ package com.x.pim.v1
     }
 
     enum ImageTag{
-		summary "Specifies the product image tag."
-		description "Defines the values that can be used to tag a product image."
-    	THUMBNAIL "Indicates this is a thumbnail image."
+			summary "Specifies the product image tag."
+			description "Defines the values that can be used to tag a product image."
+				THUMBNAIL "Indicates this is a thumbnail image."
     }
 
     record Image
