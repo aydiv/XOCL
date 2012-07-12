@@ -41,9 +41,17 @@ The versioning scheme for contracts, including compatibility and deprecation rul
 
 ## Details
 
-### Compilation (XOCL -> AVDL -> AVPR)
+### Compilation (XOCL -> AVDL/JSON -> AVPR)
 
-To compile XOCL into AVDL, you will need to build the xocl-maven-plugin from the [X.commerce XOCL Tools](https://github.com/xcommerce/XOCL-Tools) repository.  That repository will generate for you the xocl-maven-plugin and grammar jars that are needed to compile the ".xocl" files in this repository.  We hope to have a publicly hosted maven repository where these tools artifacts will be made available soon.
+There are two artifacts that are generated as apart of the XOCL compilation.  We've setup the maven projects to generate AVDL that represents the message schema as well as workflow in JSON representation that can be embedded in capability implementation as runtime metadata.
+
+To compile, checkout a copy of this repository and in a command prompt at the root of the XOCL project, run the following command:
+
+    > mvn install -Prelease
+
+This will execute the maven build and generate all the needed artifacts for your project.
+
+Alternatively, you can obtain a tag from this github repository which already have the generated artifacts (AVDL + JSON) built for you.
 
 Once the ".avdl" files are generated, the Eclipse plug-in in the [X.commerce Developer Package](https://www.x.com/fabric-download) lets you create capabilities directly from ".avdl" files.  However, if you're using a dynamic language with Avro - there are bindings for Python, Ruby, PHP - you'll want to compile an AVDL to an AVPR file that can be parsed by the AvroProtocol (or similarly-named) class in your language of choice.  To compile, you will need the the Avro tools jar built from the [Java Avro package](http://www.apache.org/dyn/closer.cgi/avro/).  Then you can compile like so:
 
