@@ -62,4 +62,36 @@ package com.x.authz.v1{
 		array<Error> errors;
 	}
 	
+	record GetAllAuthorizedAccounts {
+	}
+
+	record GetAllAuthorizedAccountsSucceeded {
+		array<Account> accounts;
+	}
+	
+	record GetAllAuthorizedAccountsFailed {
+		array<Error> errors;
+	}
+	
+	record RevokeAuthorization {
+		string xAccountId;
+	}
+
+	record RevokeAuthorizationSucceeded {
+		string xAccountId;
+	}
+	
+	record RevokeAuthorizationFailed {
+		string xAccountId;
+		array<Error> errors;
+	}
+
+	record Account {
+		string? xId ;   // ID provided by X.commerce
+		string? userMarketplaceId ;
+		string? siteCode ;
+		string? environmentName ;
+		long? authorizationExpiration ;
+	}
+	
 }

@@ -44,4 +44,43 @@ package com.x.authz.v1 {
             }
         }
     }
+    
+   	transaction GetAllAuthorizedAccounts unicast query {
+        sender {
+        	message GetAllAuthorizedAccounts	{
+        		 timeouts(response=30s) 
+        		 retries=3    		
+        	}
+        }
+        receiver {
+        	success GetAllAuthorizedAccountsSucceeded{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}
+        	failure GetAllAuthorizedAccountsFailed{
+        		timeouts(receipt=30s)   		
+        		retries=3
+        	}          
+        } 
+    }
+    
+    transaction RevokeAuthorization unicast response {
+        sender {
+        	message RevokeAuthorization {
+        		timeouts(receipt=30s, response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver {
+        	success RevokeAuthorizationSucceeded {
+            	timeouts(receipt=30s)
+            	retries=3
+            }
+            
+            failure RevokeAuthorizationFailed {
+            	timeouts(receipt=30s)
+            	retries=3
+            }
+        }
+    }
 }

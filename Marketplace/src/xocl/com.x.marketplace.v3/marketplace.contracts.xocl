@@ -24,8 +24,7 @@ package com.x.marketplace.v3{
 	   		PublishedOfferRevisionWithProductData.Marketplace
 	   		PublishedOfferRevocation.Marketplace
 	   		OfferSearch.Marketplace
-	   		AuthorizedAccountSearch.MarketplaceMetadataProvider
-	   		AuthorizationRevoke.MarketplaceMetadataProvider
+
 	   		TopSellingProductSearch.Marketplace
 	   
 	   		//Order roles
@@ -33,6 +32,9 @@ package com.x.marketplace.v3{
 	   		
 	   		//Auth roles
 	   		AuthorizationGrant.AuthorizationProvider
+	   		AuthorizedAccountSearch.AuthorizationProvider
+	   		AuthorizationRevoke.AuthorizationProvider
+	   		
 	   	    
 	   	    //PIM roles
 	   		ProductLookup.ProductInformationConsumer
@@ -81,15 +83,15 @@ package com.x.marketplace.v3{
 	   		PolicyGroupLookup.MarketplacePolicyManager 
 	   		PublishedOfferRevocation.OfferManager
 	   		OfferSearch.OfferManager
-	   		AuthorizedAccountSearch.MarketplaceMetadataConsumer
-	   		AuthorizationRevoke.MarketplaceMetadataConsumer
-	   		
+	
 	   		//Order roles
 	   		ProcessSalesChannelOrder.OrderProcessor<MarketplaceOrder> 
 	   		OrderSearch.OrderManager<MarketplaceOrderSearch> 
 	   		
 	   		//Auth roles
 	   		AuthorizationGrant.AuthorizedUser
+	   		AuthorizedAccountSearch.AuthorizedUser
+	   		AuthorizationRevoke.AuthorizedUser	   		
 	    }
 	    
 	 }

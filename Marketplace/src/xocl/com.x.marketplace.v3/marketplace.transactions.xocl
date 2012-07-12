@@ -10,44 +10,7 @@ package com.x.marketplace.v3{
     	state Inactive
     }
 	
-    transaction GetAllAuthorizedAccount unicast query {
-        sender {
-        	message GetAllAuthorizedAccount	{
-        		 timeouts(response=30s) 
-        		 retries=3    		
-        	}
-        }
-        receiver {
-        	success GetAllAuthorizedAccountSucceeded{
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}
-        	failure GetAllAuthorizedAccountFailed{
-        		timeouts(receipt=30s)   		
-        		retries=3
-        	}          
-        } 
-    }
-    
-    transaction RevokeAuthorization unicast response {
-        sender {
-        	message RevokeAuthorization {
-        		timeouts(receipt=30s, response=3m)     		
-        		retries=3
-        	}
-        }
-        receiver {
-        	success RevokeAuthorizationSucceeded {
-            	timeouts(receipt=30s)
-            	retries=3
-            }
-            
-            failure RevokeAuthorizationFailed {
-            	timeouts(receipt=30s)
-            	retries=3
-            }
-        }
-    }
+
     
     transaction GetAllAvailableChannels broadcast query {
         sender {

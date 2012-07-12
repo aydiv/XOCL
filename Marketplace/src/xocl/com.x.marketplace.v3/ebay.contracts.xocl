@@ -23,8 +23,7 @@ package com.x.marketplace.v3{
 	   		PublishedOfferRevisionWithProductData.Marketplace<Ebay>
 	   		PublishedOfferRevocation.Marketplace
 	   		OfferSearch.Marketplace<Ebay>
-	   		AuthorizedAccountSearch.MarketplaceMetadataProvider
-	   		AuthorizationRevoke.MarketplaceMetadataProvider
+
 	   		TopSellingProductSearch.Marketplace<Ebay>
 	   		
 	   		//Ebay roles
@@ -38,6 +37,8 @@ package com.x.marketplace.v3{
 	   		
 	   		//Auth roles
 	   		AuthorizationGrant.AuthorizationProvider
+	   		AuthorizedAccountSearch.AuthorizationProvider
+	   		AuthorizationRevoke.AuthorizationProvider
 	   		
 	   		//PIM roles
 	   		ProductLookup.ProductInformationConsumer
@@ -83,8 +84,7 @@ package com.x.marketplace.v3{
 	   		PolicyGroupLookup.MarketplacePolicyManager<Ebay> 
 	   		PublishedOfferRevocation.OfferManager
 	   		OfferSearch.OfferManager<Ebay>
-	   		AuthorizedAccountSearch.MarketplaceMetadataConsumer
-	   		AuthorizationRevoke.MarketplaceMetadataConsumer
+
 	   		
 	   		//Ebay roles
 	        StoreLookup.MarketplaceMetadataConsumer
@@ -96,6 +96,8 @@ package com.x.marketplace.v3{
 	   		
 	   		//Auth roles
 	   		AuthorizationGrant.AuthorizedUser
+	   		AuthorizedAccountSearch.AuthorizedUser
+	   		AuthorizationRevoke.AuthorizedUser
 	    }
 	    
 	 }

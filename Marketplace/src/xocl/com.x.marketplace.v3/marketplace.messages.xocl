@@ -4,16 +4,7 @@ package com.x.marketplace.v3{
 	import com.x.pim.v1.*
 	import com.x.ordermanagement.v2.*
 	
-	/*
-		Defines a marketplace account which is intended to be used for all supported marketplaces.
-	*/
-	record MarketplaceAccount {
-		string? xId ;   // ID provided by X.commerce
-		string? userMarketplaceId ;
-		string? siteCode ;
-		string? environmentName ;
-		long? authorizationExpiration ;
-	}
+
 
     record CustomCategory {
 		long id;
@@ -221,29 +212,6 @@ package com.x.marketplace.v3{
 		array<Error> errors;
 	}
 
-	record GetAllAuthorizedAccount {
-	}
-
-	record GetAllAuthorizedAccountSucceeded {
-		array<MarketplaceAccount> accounts;
-	}
-	
-	record GetAllAuthorizedAccountFailed {
-		array<Error> errors;
-	}
-	
-	record RevokeAuthorization {
-		string xAccountId;
-	}
-
-	record RevokeAuthorizationSucceeded {
-		string xAccountId;
-	}
-	
-	record RevokeAuthorizationFailed {
-		string xAccountId;
-		array<Error> errors;
-	}
 
     record Sku  {
     	/** Identifier of the SKU that is being offered */

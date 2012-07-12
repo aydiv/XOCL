@@ -254,28 +254,5 @@ package com.x.marketplace.v3{
 	}
 	
     
-    process AuthorizedAccountSearch (Authorization auth) {
-		description "A merchant retrieves their account information"
-		roles(MarketplaceMetadataConsumer, MarketplaceMetadataProvider)
-		preconditions(exists(auth))
-		workflow {
-			transaction GetAllAuthorizedAccount {
-				roles(MarketplaceMetadataConsumer, MarketplaceMetadataProvider)
-			}
-		}
-	}
-	
-	process AuthorizationRevoke (Authorization auth) {
-		description "A merchant disassociates their marketplace account"
-		roles(MarketplaceMetadataConsumer, MarketplaceMetadataProvider)
-		preconditions(exists(auth))
-		workflow {
-			transaction RevokeAuthorization {
-				roles(MarketplaceMetadataConsumer, MarketplaceMetadataProvider)
-			}
-		}
-	    postconditions {
-			success(!exists(auth))
-		}	
-	}
+
 }

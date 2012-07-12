@@ -24,4 +24,29 @@ package com.x.authz.v1 {
 				roles(AuthorizedUser, AuthorizationProvider)
 			}
 	}
+	
+	process AuthorizedAccountSearch (Authorization auth) {
+		description "A merchant retrieves their account information"
+		roles(AuthorizedUser, AuthorizationProvider)
+		preconditions(exists(auth))
+		workflow {
+			transaction GetAllAuthorizedAccounts {
+				roles(AuthorizedUser, AuthorizationProvider)
+			}
+		}
+	}
+	
+	process AuthorizationRevoke (Authorization auth) {
+		description "A merchant disassociates their marketplace account"
+		roles(AuthorizedUser, AuthorizationProvider)
+		preconditions(exists(auth))
+		workflow {
+			transaction RevokeAuthorization {
+				roles(AuthorizedUser, AuthorizationProvider)
+			}
+		}
+	    postconditions {
+			success(!exists(auth))
+		}	
+	}
 }
