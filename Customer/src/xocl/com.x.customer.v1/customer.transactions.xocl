@@ -58,7 +58,7 @@ package com.x.customer.v1{
     
 	transaction SearchCustomer<Email, NameAndId> query
     {
-    	description "Searches for a customer by email address or name and system ID. System ID is the identifier assigned to the customer by the system that created the customer record."
+    	description "Returns a customer based on an email address or name and system ID. System ID is the identifier assigned to the customer by the system that created the customer record."
         sender
         {
         	message SearchCustomer

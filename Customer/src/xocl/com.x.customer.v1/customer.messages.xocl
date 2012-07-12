@@ -9,7 +9,7 @@ package com.x.customer.v1{
 	}
 	record UpsertCustomerSucceeded{
 		summary "Signals that a customer was added or an existing customer's data was updated."
-		description "Notifies an observer that a customer was added or an existing customer's information was updated."
+		description "Response message that a customer was added or an existing customer's information was updated."
 		Customer data "Customer information that was sent in the request.";
 	}
     record UpsertCustomerFailed{
@@ -44,8 +44,8 @@ package com.x.customer.v1{
 	}  
 	
     record Customer confidential extends CustomerData {
-		summary "Contains the system ID, which is added to CustomerData."
-		description "Captures the identifier assigned to the customer by the system that created the customer record and adds this to CustomerData."
+		summary "Extends CustomerData with the ID field."
+		description "Captures the identifier assigned to the customer by the system that created the customer record and extends CustomerData with this field."
 		union{guid, EntityId} id "Identifier assigned to the customer by the system that created the customer record.";	
 	} 
 	
@@ -61,7 +61,7 @@ package com.x.customer.v1{
 		summary "Signals that searching for customers was successful."
 		description "Returns the a list of customers, the query request, and the total number of customers returned."
 	     array<Customer> customers "Array of customers found.";
-		 long totalItemsFound "Total number of customers returned.";
+		 long totalItemsFound "Total number of customers that matched the search criteria.";
 		 SearchCustomer request "Search criteria used."; 
 	}
 	
@@ -125,8 +125,8 @@ package com.x.customer.v1{
 	
 	record CustomerCreated{
 		summary "Signals that a new customer was created."
-		description "Notifies an observer that a new customer was created and returns the information sent in the request."
-		Customer data "Information about the customer, such as name, address, phone, etc., which is used to create the customer record.";
+		description "Notifies an observer that a new customer was created."
+		Customer data "Information about the customer, such as name, address, phone, etc., which was used to create the customer record.";
 	}
 	record CustomerUpdated{
 		summary "Signals that customer information was updated."
