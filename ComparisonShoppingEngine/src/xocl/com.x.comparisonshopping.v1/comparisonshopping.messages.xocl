@@ -94,7 +94,7 @@ package com.x.comparisonshopping.v1 {
 		summary "Contains the product information needed to represent a product on a comparison shopping engine channel."
 		description "Captures all the product information needed to represent a product on a comparison shopping engine channel, such as quantity, title, SKU, category, etc."
 
-		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
+		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique identifier supplied by the merchant."
 		string? itemGroup "The identifier that groups together all the variation values for this product (if it has variations)."
 		CurrencyAmount price "Price to purchase the product."; 
 		int quantity "How many of this product there are in stock.";
@@ -124,7 +124,7 @@ package com.x.comparisonshopping.v1 {
 		summary "Contains the product SKU to CSE-assigned product identifier mappings."
 		description "Captures the mapping of the merchant's product SKU to the product identifier assigned to the product by the comparison shopping engine."
 
-		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant.";
+		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique identifier supplied by the merchant.";
 		string cseProductId "CSE (Comparison Shopping Engine) identifier for the product."
 	}
 	
