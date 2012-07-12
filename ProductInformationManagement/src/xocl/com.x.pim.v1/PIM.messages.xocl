@@ -55,7 +55,7 @@ package com.x.pim.v1
     {
     	summary "Contains the location of the product."
     	description "Captures the country and language used where the product is located."
- 		Locale? locale "County and language for the product. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
+ 		Locale? locale "County and language for the product.";
   		string stringValue "Name of the country where the product is located.";
  	}
 
@@ -63,19 +63,19 @@ package com.x.pim.v1
 	{
     	summary "Contains the localized measurement information."
     	description "Captures the localized measurement name, unit and value."
- 		Locale? locale "County and language for the measurement unit. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
-		string name "Name of the measurement type, such as english or metric.";
-		string unit "Name of the measurement unit, such as weight or length.";
-		string value "Measurement value, such as lbs. or inches.";
+ 		Locale? locale "County and language for the measurement unit.";
+		string name "Name of the measurement type, such as weight or length.";
+		string unit "Name of the measurement unit, such as pounds or inches.";
+		string value "Actual value, such as 1.2.";
 	}
 
  	record LocalizedNameValue
  	{
-    	summary "Reserved for future use."
-    	description "Reserved for future use."
- 		Locale? locale "County and language. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
- 		string name "Reserved for future use.";
- 		string value "Reserved for future use.";
+    	summary "Contains the localize name and value."
+    	description "Captures the localize name and value."
+ 		Locale? locale "County and language code.";
+ 		string name "Localized name.";
+ 		string value "Localize value.";
  	}
 
 	enum ProductIdType
@@ -155,7 +155,7 @@ package com.x.pim.v1
        	summary "Requests a search for specific products."
     	description "Requests a search for specific product types and optionally limit the search by locale. If locale is not provided, en_US is used."
         Query _AVDL_query "Search query for product type.";
-        array<Locale> ? locales "Optional array of locales to search for. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
+        array<Locale> ? locales "Optional array of locales to search for.";
     }
 
     record SearchProductSucceeded
@@ -204,7 +204,7 @@ package com.x.pim.v1
     	description "Requests the lookup of specific products by their IDs. Contains an optional type filter and an optional locale filter."
         array<ProductIdentifier> ids "IDs of the products to be looked up.";
         FilterType? filter "Type of filter to be used on the results of the search.";
-        array<Locale> ? locales "Optional array of locales. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
+        array<Locale> ? locales "Optional array of locales.";
     }
 
     record LookupProductSucceeded
@@ -213,7 +213,7 @@ package com.x.pim.v1
     	description "Signals that specific products were successfully looked up by their IDs. Returns an array of products that were found. Also contains the (optional) type filter and locale(s) if any that were specified in the original lookup."
         array<Product> products "Array of products that were successfully looked up.";
         FilterType? filter "Type of filter to be used on the results of the search.";
-        array<Locale>? locales "Array of locales used on the results of the search. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
+        array<Locale>? locales "Array of locales used on the results of the search.";
     }
 
     record LookupProductFailed
@@ -222,7 +222,7 @@ package com.x.pim.v1
     	description "Signals that specific products couldn't be looked up by their IDs (in conjunction with a filter)."
         array<ProductIdentifier> ids "Array of product IDs that couldn't be looked up.";
         FilterType? filter "Type of filter to be used on the results of the search.";
-        array<Locale>? locales "Array of locales used on the results of the search. The format for locale is aa_BB, where aa is a 2-letter language code (ISO 639-1) and BB is a 2-letter country code (ISO 3166). For example, fr_FR ( French/France) or ja_JP  (Japanese/Japan). If this is not provided, en_US is used.";
+        array<Locale>? locales "Array of locales used on the results of the search.";
 		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
 
