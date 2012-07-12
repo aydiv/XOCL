@@ -32,8 +32,8 @@ package com.x.producttaxonomy.v1{
 	}
 	
 	process ProductTaxonomyUpdate{
-		summary "Updates the product taxonomy."
-		description "Updates the product taxonomy and notifies the ProductTaxonomyObserver that an updated has been done."	
+		summary "Send the product taxonomy update notification."
+		description "Notifies the ProductTaxonomyObserver that an updated has been done."	
 
 		roles
 			{
@@ -42,7 +42,7 @@ package com.x.producttaxonomy.v1{
 			}
 		
 		workflow {
-			description "Updates the product taxonomy."
+			description "Notifies observers that the product taxonomy was updated."
 						
 			transaction ProductTaxonomyUpdated {
 				roles(ProductTaxonomyManager, ProductTaxonomyObserver)
