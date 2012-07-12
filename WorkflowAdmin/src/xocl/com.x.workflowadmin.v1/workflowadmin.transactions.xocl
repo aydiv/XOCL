@@ -1,0 +1,9 @@
+package com.x.workflowadmin.v1 {
+	import com.x.workflowadmin.v1.*
+
+	transaction SetWorkflowExecutionControls notify {
+		sender {
+			message WorkflowExecutionControls
+		}
+	}
+}

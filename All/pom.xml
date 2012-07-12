@@ -189,6 +189,11 @@
 			<artifactId>webstore-xocl</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.x.ocl</groupId>
+			<artifactId>workflowadmin-xocl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>

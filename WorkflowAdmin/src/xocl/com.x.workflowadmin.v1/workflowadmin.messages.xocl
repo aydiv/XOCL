@@ -1,0 +1,38 @@
+package com.x.workflowadmin.v1 {
+	import com.x.workflowadmin.v1.*
+
+	record WorkflowExecutionControls {
+		
+		/*
+		 * If unspecified, this control will apply to all workflow.
+		*/
+		union{null, string} workflowDefID = null
+		union{null, string} workflowGuid = null
+		boolean workflowPreConditionsSucceedAlways
+		boolean workflowPostConditionsSucceedAlways
+		union{null, ApplicationInstanceControls} appInstanceControls = null
+		union{null, NodeControls} commonNodeControls = null
+		union{null, map<NodeControls>} nodeControls = null
+		union{null, TransactionControls} commonTransactionControls = null
+		union{null, map<TransactionControls>} transactionControls = null
+	}
+	
+	record NodeControls {
+		boolean ifConditionEvaluatesToTrueAlways;
+		int? doLoopNumInterations;
+	}
+	
+	record TransactionControls {
+		boolean preConditionsSucceedAlways;
+		boolean postConditionsSucceedAlways;
+	}
+	
+	record ApplicationInstanceControls {
+		int? maxOwnedWorkflows;
+		union{null, string} leaseReleaseNode = null;
+		union{null, string} softCrashNode = null;
+		union{null, string} sleepNode = null;
+		long? sleepTimeInMillis;
+	}
+}
+	

@@ -1,0 +1,16 @@
+package com.x.workflowadmin.v1 { 	
+    import com.x.workflowadmin.v1.*
+    	
+	process ControlWorkflowExecution {
+		description "This process is used to notify the role being controlled to accept the control setup"
+	
+		roles(WorkflowController, WorkflowExecutor)
+
+		workflow {
+			/* Notify the WorkflowExecutor that there are new control information */
+			transaction SetWorkflowExecutionControls {
+				roles(WorkflowController, WorkflowExecutor)
+			}
+		}
+	}
+}
