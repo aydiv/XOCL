@@ -9,14 +9,26 @@ package com.x.comparisonshopping.v1
 	import com.x.comparisonshopping.v1.* 
 	
 	// The CSE contract includes all the roles needed for a valid CSE provider
-    contract ComparisonShoppingFeedPublisher 
-    {
+    contract ComparisonShoppingEngine {
     	description "A provider that supports the publishing (adding) of products to a comparison shopping engines and linking the products to the merchant's store."
     	
     	// A set of roles collectively define the implementer's responsibilities
-    	roles
-    	{
-	        PublishProductFeed.ComparisonShoppingPublisher
+    	roles {
+	        PublishProductFeed.ProductFeedManager
+	        PublishInventoryFeed.InventoryFeedManager
+	        PublishStoreFeed.StoreFeedManager
+	    }
+    }
+    
+	// The CSE data publisher
+    contract ComparisonShoppingPublisher {
+    	description "A provider that supports the publishing (adding) of products to a comparison shopping engines and linking the products to the merchant's store."
+    	
+    	// A set of roles collectively define the implementer's responsibilities
+    	roles {
+	        PublishProductFeed.ProductFeedPublisher
+	        PublishInventoryFeed.InventoryFeedPublisher
+	        PublishStoreFeed.StoreFeedPublisher
 	    }
     }
 }
