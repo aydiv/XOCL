@@ -6,75 +6,209 @@ package com.x.comparisonshopping.v1
 {	
 	import com.x.comparisonshopping.v1.*
 	
-    entity ProductFeed
+ 	// This entity represents a product feed that can be
+ 	// published to a comparison shopping engine
+    entity DataFeed
     {   
-		summary "Specifies the state of a product feed file and the next valid states if any."
-		description "Defines the values used to specify the state of a product feed file and the next valid states if any."
+    	description "Represents a product feed file and its state, which can be published to a comparison shopping engine."
 
-        state Prepared[Published, Denied] "A product feed file has been generated. The next state can be either Published or Denied."           
-        state Published[Updated] "A product feed file was successfully published.  The next state can be Updated."        
-        state Updated[Denied] "A published product feed file was updated.  The next state can be Denied."        
-        state Denied "A product feed file was denied (publishing failed) by the comparison shopping engine."
+        state New[Started] "The feed is new and ready for publishing."           
+        state Started[Completed, Failed] "The publishing of a product feed has started."        
+        state Completed "The publishing of the product feed completed successfully."        
+        state Failed "The publishing of the product feed failed."
+	}
+	
+	// Start the processing of a new data feed
+	transaction StartDataFeed(DataFeed dataFeed) response {
+		description "Signal the beginning of a new data feed."
+		
+		preconditions(dataFeed[DataFeed.New])
+		
+        sender {
+        	message StartDataFeed {        		
+				// Timeouts for the receiver to acknowledge message receipt and/or message validation
+        		timeouts(receipt=3s, validation=5s, response=10s)
+        		
+        		// How many times should we retry if one of the timeouts expires? 
+        		retries=3
+        	}
+        }
+        
+        receiver {
+	       	success StartDataFeedSuccess {
+            	timeouts(receipt=3s, validation=5s)
+            	retries=3
+            }
+            
+            failure StartDataFeedFailure
+        }
+        
+        postconditions {
+        	success(dataFeed[DataFeed.Started])
+        	failure(dataFeed[DataFeed.Failed])
+        }
+        
 	} 
-    
-    transaction PublishProductFeed response
-    {
-    	description "Sends the product feed file. It will try to send the file a maximum of 3 times. If the publishing of the feed file is successful, you will receive the status of each product back from the comparison shopping engine. Otherwise, an error message is returned."
+	
+	// Conveys that the processing of a started data feed is complete
+	transaction CompleteDataFeed(DataFeed dataFeed) response {
+		description "Signal the end of processing for a data feed that is being published."
+		
+		preconditions(dataFeed[DataFeed.Started])
+		
+        sender {
+        	message CompleteDataFeed {        		
+				// Timeouts for the receiver to acknowledge message receipt and/or message validation
+        		timeouts(receipt=3s, validation=5s, response=10s)
+        		
+        		// How many times should we retry if one of the timeouts expires? 
+        		retries=3
+        	}
+        }
+        
+        receiver {
+	       	success CompleteDataFeedSuccess {
+            	timeouts(receipt=3s, validation=5s)
+            	retries=3
+            }
+            
+            failure CompleteDataFeedFailure
+        }
+        
+        postconditions {
+        	success(dataFeed[DataFeed.Completed])
+        	failure(dataFeed[DataFeed.Failed])
+        }
+	} 
+		    
+    // Publish a single product as part of a product feed
+    transaction PublishProduct(DataFeed productFeed) response {
+    	description "Send a single product to a comparison shopping engine."
     	
-        sender
-        {
-        	message PublishProductFeed
-        	{        		
+    	preconditions(productFeed[DataFeed.Started])
+    	
+    	// Send a product to the CSE
+        sender {
+        	message PublishProduct {        		
 				// Timeouts for the receiver to acknowledge message receipt and/or message validation
-        		timeouts(receipt=1h, validation=24h, response=3d)
+        		timeouts(receipt=3s, validation=5s, response=10s)
         		
+        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         }
         
-        // Receive a list of product sku and assigned CSE ids
-        receiver
-        {
-        	// The feed was accepted and processed by the CSE
-	       	success PublishProductFeedSuccess
-        	{
-            	timeouts(receipt=1h, validation=24h)
+        receiver {
+        	
+        	// The product was accepted and processed by the CSE
+	       	success PublishProductSuccess {
+            	timeouts(receipt=3s, validation=5s)
             	retries=3
             }
             
-            // The feed was not accepted by the CSE
-            failure PublishProductFeedFailure
+            // The product was not accepted by the CSE
+            failure PublishProductFailure
         }
     }
+
+	// CSE sends a message back to the published indicating that status of the published feed    
+    transaction ProductFeedProcessed(DataFeed productFeed) notify {
+    	description "Notifies the published that the supplied product feed was processed."
+    	
+    	preconditions(productFeed[DataFeed.Completed])
+    	
+    	sender {
+    		message ProductFeedProcessed {
+        		timeouts(receipt=3s, validation=3m)
+           		retries=3
+    		}
+    	}
+    }
     
-        
-    transaction UpdateProductFeed response
-    {
-    	description "Updates the products that are published on a comparison shopping engine. It will try to send the file a maximum of 3 times. If the updating is successful, you will receive a list of product SKUs and assigned comparison shopping engine IDs back from the comparison shopping engine. Otherwise, an error message is returned. "
- 
-    	// Send the list of products to the CSE
-        sender
-        {
-        	message UpdateProductFeed
-        	{        		
+    // Publish a single inventory item as part of an inventory feed
+    transaction PublishProductInventory(DataFeed inventoryFeed) response {
+    	description "Send a single inventory item to a comparison shopping engine."
+    	
+    	preconditions(inventoryFeed[DataFeed.Started])
+    	
+    	// Send an inventory item to the CSE
+        sender {
+        	message PublishProductInventory {        		
 				// Timeouts for the receiver to acknowledge message receipt and/or message validation
-        		timeouts(receipt=1h, validation=24h, response=3d)
+        		timeouts(receipt=3s, validation=5s, response=10s)
         		
+        		// How many times should we retry if one of the timeouts expires? 
         		retries=3
         	}
         }
         
-        // Receive a list of product sku and assigned CSE ids
-        receiver
-        {
-	       	success UpdateProductFeedSuccess
-        	{
-            	timeouts(receipt=1h, validation=24h)
+        receiver {
+        	// The inventory item was accepted and processed by the CSE
+	       	success PublishProductInventorySuccess {
+            	timeouts(receipt=3s, validation=5s)
             	retries=3
             }
             
-            failure UpdateProductFeedFailure
+            // The inventory item was not accepted by the CSE
+            failure PublishProductInventoryFailure
         }
     }
     
+    // CSE sends a message back to the published indicating that status of the published feed    
+    transaction ProductInventoryFeedProcessed(DataFeed inventoryFeed) notify {
+    	description "Notifies the published that the supplied inventory feed was processed."
+    	
+    	preconditions(inventoryFeed[DataFeed.Completed])
+    	
+    	sender {
+    		message ProductInventoryFeedProcessed {
+        		timeouts(receipt=3s, validation=3m)
+           		retries=3
+    		}
+    	}
+    }
+    
+    // Publish a single store as part of a product feed
+    transaction PublishStore(DataFeed storeFeed) response {
+    	description "Send a single store to a comparison shopping engine."
+    	
+    	preconditions(storeFeed[DataFeed.Started])
+    	
+    	// Send a store to the CSE
+        sender {
+        	message PublishStore {        		
+				// Timeouts for the receiver to acknowledge message receipt and/or message validation
+        		timeouts(receipt=3s, validation=5s, response=10s)
+        		
+        		// How many times should we retry if one of the timeouts expires? 
+        		retries=3
+        	}
+        }
+        
+        receiver {
+        	
+        	// The store was accepted and processed by the CSE
+	       	success PublishStoreSuccess {
+            	timeouts(receipt=3s, validation=5s)
+            	retries=3
+            }
+            
+            // The store was not accepted by the CSE
+            failure PublishStoreFailure
+        }
+    }
+    
+    // CSE sends a message back to the published indicating that status of the published feed    
+    transaction StoreFeedProcessed(DataFeed storeFeed) notify {
+    	description "Notifies the published that the supplied store feed was processed."
+    	
+    	preconditions(storeFeed[DataFeed.Completed])
+    	
+    	sender {
+    		message StoreFeedProcessed {
+        		timeouts(receipt=3s, validation=3m)
+           		retries=3
+    		}
+    	}
+    }
 }

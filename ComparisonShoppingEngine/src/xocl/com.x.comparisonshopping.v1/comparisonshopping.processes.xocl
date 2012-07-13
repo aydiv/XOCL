@@ -8,61 +8,146 @@ package com.x.comparisonshopping.v1
 	import com.x.comparisonshopping.v1.* 
 	
     // Publish a set of products on a comparison shopping engine site
-    process PublishProductFeed(ProductFeed productFeed) {
+    process PublishProductFeed(DataFeed productFeed) {
         summary "Publishes (adds) products to a comparison shopping engine."
-        description "Sends a product feed file to a comparison shopping engine and links the products to the merchant's store."
+        description "Sends a product feed to a comparison shopping engine and links the products to the merchant's store."
         
         roles {
-			TrafficGenerationManager "Sends a feed file containing a list of products to a comparison shopping engine."
-			ComparisonShoppingPublisher "Links the products to the merchant's online store."
+			ProductFeedPublisher "Sends a feed containing a list of products to a comparison shopping manager."
+			ProductFeedManager "Consumes the published products and manages them on the comparison shopping sites."
 		}
         
-        preconditions(productFeed[ProductFeed.Prepared])
+        preconditions(productFeed[DataFeed.New])
         
 	    // The baseline workflow for processing product feeds
 	    workflow
 	    {
-	    	summary "Baseline workflow for publishing products using a product feed file."
-	    	description "Sends a product feed file to a comparison shopping engine, which adds the products to the comparison shopping engine and links the products to the merchant's store. It returns either a success or failure message."
+	    	summary "Baseline workflow for publishing products using a product feed."
+	    	description "This workflow sends a product feed to a comparison shopping engine, which adds the products to the comparison shopping engine and links the products to the merchant's store. It returns either a success or failure message."
 	    	
-	    	// This transaction publishes the feed to the CSE 
-	        transaction PublishProductFeed {
-	        	roles (PublishProductFeed.TrafficGenerationManager, PublishProductFeed.ComparisonShoppingPublisher)
+	    	// Notify the CSE that a new feed is being started
+	    	transaction StartDataFeed {
+	        	roles (ProductFeedPublisher, ProductFeedManager)
 	        }
+	    	
+	    	do (!productFeed[DataFeed.Completed] || productFeed[DataFeed.Failed]) {
+		        one {
+			        transaction PublishProduct {
+			        	roles (ProductFeedPublisher, ProductFeedManager)
+			        }
+		        
+		        	transaction CompleteDataFeed {
+			        	roles (ProductFeedPublisher, ProductFeedManager)
+			        }
+		        }
+		    }
+		    
+		    if (productFeed[DataFeed.Completed]) {
+			    transaction ProductFeedProcessed {
+					roles (ProductFeedManager, ProductFeedPublisher)
+			    }
+			}
 	    }
 	    
         postconditions {
-			success(productFeed[ProductFeed.Published])
-			failure(productFeed[ProductFeed.Denied])
+			success(productFeed[DataFeed.Completed])
+			failure(productFeed[DataFeed.Failed])
         }
     }
     
-    
-    process UpdatePublishedProductFeed(ProductFeed productFeed) {
-        summary "Updates the information of published products."
-        description "Updates the information for one or more products that have already been published to a comparison shopping engine."
+    // Publish inventory and stores locations that reference previoulsy uploaded products
+    process PublishInventoryFeed(DataFeed inventoryFeed) {
+        summary "Publishes an inventory feed to a CSE."
+        description "Sends an inventory feed to a comparison shopping engine and links the inventory to the merchant's products."
         
         roles {
-    		TrafficGenerationManager "Sends a feed file containing updates to the products to a comparison shopping engine."
-    		ComparisonShoppingPublisher "Links the products to the merchant's online store."
-    	}
+			InventoryFeedPublisher "Sends a feed containing inventory and its associated stores to a inventory feed manager."
+			InventoryFeedManager "Updates the inventory and stores associated with the matching products."
+		}
         
-
+        preconditions(inventoryFeed[DataFeed.New])
         
-        preconditions(productFeed[ProductFeed.Published])
-        
-	    workflow {
-	    	summary "Updates published products."
-			description "Sends a product feed file, which updates (replaces) the information for one or more products that have already been published and links the product to the merchant's store. It returns either a success or failure message."
-			
-	        transaction UpdateProductFeed {
-	        	roles(TrafficGenerationManager, ComparisonShoppingPublisher)
+	    // The baseline workflow for processing inventory feeds
+	    workflow
+	    {
+	    	summary "Baseline workflow for publishing inventory and stores using an inventory feed."
+	    	description "This workflow sends a inventory feed to a comparison shopping engine, which adds the inventory to the comparison shopping engine and links the inventory to the merchant's store. It returns either a success or failure message."
+	    	
+	    	// Notify the CSE that a new feed is being started
+	    	transaction StartDataFeed {
+	        	roles (InventoryFeedPublisher, InventoryFeedManager)
 	        }
+	    	
+	    	do (!inventoryFeed[DataFeed.Completed] || inventoryFeed[DataFeed.Failed]) {
+		        one {
+			        transaction PublishProductInventory {
+			        	roles (InventoryFeedPublisher, InventoryFeedManager)
+			        }
+		        
+		        	transaction CompleteDataFeed {
+			        	roles (InventoryFeedPublisher, InventoryFeedManager)
+			        }
+		        }
+		    }
+		    
+		    if (inventoryFeed[DataFeed.Completed]) {
+			    transaction ProductInventoryFeedProcessed {
+					roles (InventoryFeedManager, InventoryFeedPublisher)
+			    }
+			}
 	    }
 	    
         postconditions {
-			success(productFeed[ProductFeed.Updated])
-			failure(productFeed[ProductFeed.Denied])
-        }	
+			success(inventoryFeed[DataFeed.Completed])
+			failure(inventoryFeed[DataFeed.Failed])
+        }
+    }
+    
+    // Publish stores locations that reference previoulsy uploaded products
+    process PublishStoreFeed(DataFeed storeFeed) {
+        summary "Publishes an store feed to a CSE."
+        description "Sends an store feed to a comparison shopping engine and links the store to the merchant's products."
+        
+        roles {
+			StoreFeedPublisher "Sends a feed containing stores to a store feed manager."
+			StoreFeedManager "Updates the store and associates stores with matching inventory."
+		}
+        
+        preconditions(storeFeed[DataFeed.New])
+        
+	    // The baseline workflow for processing store feeds
+	    workflow
+	    {
+	    	summary "Baseline workflow for publishing products using a product feed file."
+	    	description "This workflow sends a store feed to a comparison shopping engine, which adds the stores to the comparison shopping engine and links the inventory to the merchant's store. It returns either a success or failure message."
+	    	
+	    	// This transaction publishes the feed to the CSE 
+	    	transaction StartDataFeed {
+	        	roles (StoreFeedPublisher, StoreFeedManager)
+	        }
+	    	
+	    	do (!storeFeed[DataFeed.Completed] || storeFeed[DataFeed.Failed]) {
+		        one {
+			        transaction PublishStore {
+			        	roles (StoreFeedPublisher, StoreFeedManager)
+			        }
+		        
+		        	transaction CompleteDataFeed {
+			        	roles (StoreFeedPublisher, StoreFeedManager)
+			        }
+		        }
+		    }
+	    
+		    if (storeFeed[DataFeed.Completed]) {
+			    transaction StoreFeedProcessed {
+					roles (StoreFeedManager, StoreFeedPublisher)
+			    }
+			}
+		    
+		}
+        postconditions {
+			success(storeFeed[DataFeed.Completed])
+			failure(storeFeed[DataFeed.Failed])
+        }
     }
 }

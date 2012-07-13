@@ -5,42 +5,51 @@
 package com.x.comparisonshopping.v1 {
 	
 	import com.x.core.v1.*
-	
+
+	enum ConditionType {
+		summary "Condition of a product."
+		description "Specifies the condition values available for a product."
+
+		NEW "A new product."
+		RECONDITIONED "A product returned to like new condition."
+		USED "A product showing wear."
+	}
 
 	enum ImagePurpose {
 		summary "Specifies the product image type."
 		description "Defines the values used to specify the product image type."
 
-		Hero "Primary full-sized image of a product.", 
-		Gallery "Image to be used in the gallery.",
-		Thumbnail "Small image to be used as a thumbnail picture."
+		HERO "Primary full-sized image of a product.", 
+		GALLERY "Image to be used in the gallery.",
+		THUMBNAIL "Small image to be used as a thumbnail picture."
 	}
 	
 	enum ImageBackgroundType {
 		summary "Specifies the background used by a product image."
 		description "Defines the values used to specify the background of a product image."
 
-		HasBackground "Product image has a background.",
-		NoBackground "Product image doesn't have a background.",
-		Unknown "You don't know if the image has a background."
+		HAS_BACKGROUND "Product image has a background.",
+		NO_BACKGROUND "Product image doesn't have a background.",
+		UNKNOWN "You don't know if the image has a background."
 	}
 	
 	enum AvailabilityType {
 		summary "Specifies the product availability status for each offered product."
 		description "Defines the values used to identify the availability of a product."
 
-		InStock "Product is in stock and ready to ship within the required number of days.",
-		OutOfStock "Product is currently out of stock.",
-		AvailableForOrder "Product is not in stock but can be ordered.",	
-		Unknown "Availability is not known."
+		IN_STOCK "Product is in stock and ready to ship within the required number of days.",
+		OUT_OF_STOCK "Product is currently out of stock.",
+		AVAILAILABLE_FOR_ORDER "Product is not in stock but can be ordered.",	
+		UNKNOWN "Availability is not known."
 	}
 	
-	enum ProductFeedType {
-		summary "Specifies the product feed file classification."
-		description "Defines the values used to classify a product feed file."
+	enum DataFeedType {
+		summary "Specifies the data feed classification."
+		description "Defines the values used to classify a data feed."
 
-		Full "Product feed file contains all the products.",
-		Incremental "Product feed file contains only products to be added or updated."
+		FULL "The feed contains all the products.",
+		INCREMENTAL "The feed contains only products to be added."
+		UPDATE "The feed contains only items that are to be updated"
 	}
 			
 	record ProductAttribute {
@@ -57,8 +66,8 @@ package com.x.comparisonshopping.v1 {
 		description "Captures the product image URL, the image purpose, and the image background type."
 
 		string imageUrl "URL (location) of the image file."
-		ImagePurpose imagePurpose "Role associated with the image."
-		ImageBackgroundType backgroundType "Background of the product image."
+		ImagePurpose imagePurpose "Role associated with the image. The values are Hero, Gallery, or Thumbnail."
+		ImageBackgroundType backgroundType "Background state of the product image. The values are NoBackground, HasBackground, or Unknown."
 	}
 	
 	record TaxRate {
@@ -90,88 +99,234 @@ package com.x.comparisonshopping.v1 {
 		string value "The value assigned to the variation."
 	}
 	
+	record StartDataFeed {
+		summary "Contains data that descibes the data feed that was started."
+		description "Captures the id, name, feed type, and start date for a data feed."
+
+		string id "Unique identifier for this data feed."
+		string? name "A name assigned to this data feed."
+		DataFeedType feedType = FULL "The classification of this feed being started."
+		datetime startDate "The date and time when the feed was started."
+		string? xAccountId "The account id that will be used for this data feed."		
+	}
+	
+	record StartDataFeedSuccess {
+		summary "Contains data that descibing a successfull data feed start."
+		description "Provides the id, name, and start date of the feed that was started."
+
+		string id "Unique identifier for this data feed that started."
+		string? name "A name assigned to this data feed that started."
+		datetime startDate "The date and time when the feed was started."
+	}
+	
+	record StartDataFeedFailure {
+		summary "Contains data that descibing a failed data feed start."
+		description "Provides the id, name, and start date of the feed that failed to start."
+
+		string id "Unique identifier for this data feed."
+		string? name "A name assigned to this data feed."
+		datetime startDate "The date and time when the feed was started."
+	}
+	
+	record CompleteDataFeed {
+		summary "Contains data that descibes the data feed that was completed."
+		description "Captures the id of the data feed that was completed."
+
+		string id "Unique identifier for the data feed being completed."
+	}
+	
+	record CompleteDataFeedSuccess {
+		summary "Contains data that descibing a successfull data feed completion."
+		description "Provides the id and date/time the feed successfully was completed."
+
+		string id "Unique identifier for this data feed that completed."
+		datetime startDate "The date and time when the feed was started."
+	}
+	
+	record CompleteDataFeedFailure {
+		summary "Contains data that descibing a failure of a data feed completion."
+		description "Provides the id of the datafeed that failed to be completed."
+
+		string id "Unique identifier for this data feed that could not be completed."
+	}
+	
+	record Store {
+		summary "Contains data that descibing a physical store location."
+		description "Provides all the basic attributes of a store location."
+		
+		string storeId "The unique identifier of a store."
+		string? name "The name of a store."
+		string? storeDescription "A description of the store."
+		Address address "The address of the store."
+		string? latitude "The latitude associated with the store's location."
+		string? longitude "The longitude associated with the store's location"
+		string phone "The store's primary phone number."
+		string? tollFreePhone "The store's toll free phone number."
+		array<string>? hoursOfOperation "A collection of hours of operation for the store."
+		string? category "The category associated with the store."
+		string currency "The currency the store accepts."
+		datetime? establishedDate "The date the store was opened."
+		array<string>? paymentOptions "The types of payment accepted by the store."
+		string? email "The email address of the store."
+		array<string>? brands "The brands sold by the store."
+		boolean shipFromStore = false "Indicates whether the store support shipping directly from the store."
+		boolean eligibleForInStorePickup = false "Indicates whether the store support in-store pickup."
+		boolean onlineStore = false "Indicates whether this store have an online store."
+		string? onlineStoreUrl "The URL of the store's online store."
+		array<string>? photoUrls "The URLs for photos associated with the store."
+		string? logoUrl "The URL for the store's logo."
+		array<string>? services "The services provided by the store."
+	}
+	
+	record InventoryByLocation {
+		summary "Contains data that descibing inventory levels and pricing at a given location."
+		description "Provides the all the attributes needed to represent inventory levels, pricing, etc. at a store location."
+		
+		string storeId "A unique identifier for the store where this inventory resides."
+		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
+		Store? store "The store where this inventory resides"
+		boolean pickupAvailable = false "Can a shopper visit the location to acquire the product."
+		CurrencyAmount? price "An override price. If ommited the price will be taken from the base product."
+		CurrencyAmount? salePrice "An override of the sale price. If ommited the sale price will be taken from the base product."
+		datetime? salePriceEffectiveDate "Date the override salePrice activates."
+		datetime? salePriceExpiryDate "Date the override salePrice activates."
+		string? priceDescription "Free form entry."
+		int? quantity "The count at this location."
+		AvailabilityType availabile = Unknown "True with no quantity specified if inventory is not tracked."
+		datetime? availableDate "Timestamp specifying when the item will be available."
+		boolean shipFromStore = false "Is this item available to be shipped from this location?" 
+	}
+	
 	record Product {
 		summary "Contains the product information needed to represent a product on a comparison shopping engine channel."
 		description "Captures all the product information needed to represent a product on a comparison shopping engine channel, such as quantity, title, SKU, category, etc."
 
-		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique identifier supplied by the merchant."
+		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
 		string? itemGroup "The identifier that groups together all the variation values for this product (if it has variations)."
 		CurrencyAmount price "Price to purchase the product."; 
-		int quantity "How many of this product there are in stock.";
+		int quantity "How many of this product are in stock.";
    		string title "Title of the product."
    		string productDescription "Description of the product.";
-   		string manufacturer "Name of the manufacturer/supplier of the product."
+   		string? manufacturer "Name of the manufacturer/supplier of the product."
    		string? mpn "Manufacturer part number of the product."
    		string? gtin "Global Trade Item Number for the product that can represent UPC, EAN, JAN, or ISBN (the type is inferred from the format)."
    		string brand "Brand name of the product."
-   		string category "Category that will be used to determine where the product will appear in the comparison shopping engine taxonomy."
+   		string? category "Category that will be used to determine where the product will appear in the comparison shopping engine taxonomy."
    		string? xProductTypeId  "Product type identifier as defined by the taxonomy manager." 
    		array<string>? productTypes "Product types associated with the product as defined by the taxonomy manager."
    		array<ProductImage> images  "Array of  URLs for the product images (with assigned roles)."
    		string link "Link to the product landing page on the merchant's storefront."
    		CurrencyAmount originalPrice "Original price of the item before any discounting."
-   		AvailabilityType availability "Availability status of the product."
+   		AvailabilityType availability = Unknown "Availability status of the product. The values are InStock, AvailableForOrder, or Unknown."
    		TaxRate? taxRate "Tax rate based on the country and region of the product's location (where the product is shipped from)."
    		Shipping? shipping "Shipping profile of a product and its shipping price."
    		double? shippingWeight "Shipping weight of the product."
-   		array<ProductAttribute> attributes "Name/value attributes pairs used to represent product variation."
+   		array<ProductAttribute>? attributes "Name/value attributes pairs used to represent product attributes."
    		array<Variation>? variations "Collection of variations associated with the product."
    		CurrencyAmount? cpc "Amount the merchant is willing to pay per click (cost per click)."
-   		string channelId "Identifier of the comparison shopping engine channel."
+   		string? channelId "Identifier of the comparison shopping engine channel."
+   		array<InventoryByLocation>? inventoryByLocation "Collection of inventory levels by physical location"
+   		ConditionType condition = NEW "The condition of the product"
+   		string language = "en_US" "ISO language codes"
+   		boolean onlineOnly = true "is the product only available online" 
+	}
+		
+	record PublishProduct {
+		summary "Contains information for the product is being published."
+		description "Publishes products, inventory, and locations (stores) to a comparison shopping engine"
+		
+		string feedId "The id of the feed that is associated with this product"
+		Product product "The product being published"
 	}
 	
-	record MappedProductId {
-		summary "Contains the product SKU to CSE-assigned product identifier mappings."
-		description "Captures the mapping of the merchant's product SKU to the product identifier assigned to the product by the comparison shopping engine."
+	record PublishProductSuccess {
+		summary "Signals that a product was successfully published."
+		description "Indicates that a product was published."
 
-		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique identifier supplied by the merchant.";
-		string cseProductId "CSE (Comparison Shopping Engine) identifier for the product."
+		string feedId "The id of the feed that is associated with this product."
+		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
+		string? cseProductId "The id of the product as assigned by the CSE."
 	}
 	
-	record PublishProductFeed {
-		summary "Contains information for the product feed file."
-		description "Captures information needed to publish the feed file such as, products, site and account ID, name of the feed file, etc."
+	record PublishProductFailure {
+		summary "Signals that publishing a product failed."
+		description "Inidcates that there was an error when attempting to publish the product. Returns the error code of the failure, which is useful for troubleshooting."
+		
+		string feedId "The id of the feed that is associated with this product."
+		string errorCode "Error code of the publishing failure."
+	}
+	
+	record ProductFeedProcessed {
+    	description "Notifies the published that the supplied product feed was processed."
+    	
+    	string feedId "The id of the feed that was processed."
+    	array<string> statusValues "A collection of values that represent thet processing status of this feeed."
+    }
+	
+	record PublishProductInventory {
+		summary "Contains information for the product inventory is being published."
+		description "Publishes product inventory to a comparison shopping engine."
+		
+		string feedId "The id of the feed that is associated with this product inventory."
+		InventoryByLocation inventory "The product inventory being published."
+	}
+	
+	record PublishProductInventorySuccess {
+		summary "Signals that product inventory was successfully published."
+		description "Indicates that product inventory was published."
 
-		array<Product> products "Array of the products to be published to a comparison shopping engine."
-		ProductFeedType feedType "Type of product feed file."
-		string xAccountId "Unique X.commerce identifier for the merchant's account. This value is assigned to a merchant when an account created at the end of the authorization flow. It is returned in the message published to the /cse/authorization/completed topic."
-		string siteId "Identifier of the comparison shopping engine."
-		string? feedName "Name of the product feed file."
+		string feedId "The id of the feed that is associated with this store."
+		string?  productSku "The sku of the product that is having its inventory published."
+		string? storeId "The id of the store associated with the inventory item being published."
 	}
 	
-	record PublishProductFeedSuccess {
-		summary "Signals that a feed file was successfully published."
-		description "Signals that a feed file was successfully published and returns an array of the product IDs and their associated comparison shopping engine product IDs."
+	record PublishProductInventoryFailure {
+		summary "Signals that publishing product inventory failed."
+		description "Inidcates that there was an error when attempting to publish product inventory. Returns the error code of the failure, which is useful for troubleshooting."
+		
+		string feedId "The id of the feed that is associated with this store."
+		string errorCode "Error code of the publishing failure."
+	}
+	
+	record ProductInventoryFeedProcessed {
+    	description "Notifies the published that the supplied inventory feed was processed."
+    	
+    	string feedId "The id of the feed that was processed."
+    	array<string> statusValues "A collection of values that represent thet processing status of this feeed."
+    }
+	
+	record PublishStore {
+		summary "Contains information for the store is being published."
+		description "Publishes a store to a comparison shopping engine."
+		
+		string feedId "The id of the feed that is associated with this store."
+		Store store "The store being published."
+	}
+	
+	record PublishStoreSuccess {
+		summary "Signals that a store was successfully published."
+		description "Indicates that a store was published."
 
-		array<MappedProductId> cseProductIds "Array of the product IDs and their associated (CSE) Comparison Shopping Engine product IDs.";
+		string feedId "The id of the feed that is associated with this store."
+		string storeId "The id of the store that was published."
+		string? cseStoreId "The id of the store as assigned by the CSE."
 	}
 	
-	record PublishProductFeedFailure {
-		summary "Signals that publishing a feed file failed."
-		description "Signals that publishing a feed file failed and returns the error code of the failure, which is useful for troubleshooting."
-		string errorCode "Error code of the publishing failure.";
+	record PublishStoreFailure {
+		summary "Signals that publishing a store failed."
+		description "Inidcates that there was an error when attempting to publish the store. Returns the error code of the failure, which is useful for troubleshooting."
+		
+		string feedId "The id of the feed that is associated with this store."
+		string storeId "The id of the store that failed to publish."
+		string errorCode "Error code of the publishing failure."
 	}
 	
-	record UpdateProductFeed {
-		summary "Contains update information for published products."
-		description "Captures the information needed to update products that have already been published on a comparison shopping engine channel."
+	record StoreFeedProcessed {
+    	description "Notifies the published that the supplied store feed was processed."
+    	
+    	string feedId "The id of the feed that was processed."
+    	array<string> statusValues "A collection of values that represent thet processing status of this feeed."
+    }
+	
 
-		array<Product> products "Array of the products to be updated on a comparison shopping engine channel.";
-		string xAccountId "Unique X.commerce identifier for the merchant's account. This value is assigned to a merchant when an account created at the end of the authorization flow. It is returned in the message published to the /cse/authorization/completed topic."
-		string siteId "Identifier of the comparison shopping engine.";
-		string? feedName "Name of the product feed file."
-	}
-	
-	record UpdateProductFeedSuccess {
-		summary "Signals that published products were updated."
-		description "Signals that published products were updated and returns an array of product IDs and their associated comparison shopping engine product IDs when the products are successfully updated."
-
-		array<MappedProductId> cseProductIds "An array of the product identifiers and their associated (CSE) Comparison Shopping Engine product identifier.";
-	}
-	
-	record UpdateProductFeedFailure {
-		summary "Signals that published products failed to be updated."
-		description "Signals that the request to update published products has failed and returns the error codes of the failure, which are useful for troubleshooting."
-		string errorCode "Error code of the update failure.";
-	}
 }
