@@ -1,4 +1,399 @@
-package com.x.invoicing.v1{
-
+package com.x.invoicing.v1
+{
+	import com.x.invoicing.v1.*
 	import com.x.core.v1.*
+	
+	transaction CreateInvoice response
+	{
+    	description "Create invoice."
+        sender
+        {
+        	message CreateInvoice
+        	{
+        		timeouts(receipt=30s, response=3m)     		
+        		retries=3
+        	}
+        }
+        receiver
+        {
+			success CreateInvoiceSucceeded
+			{       
+				timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+            
+            failure CreateInvoiceFailed
+            {
+            	timeouts(receipt=30s)
+            }
+        }
+    }
+    
+    transaction InvoiceCreated inform
+    {
+    	sender
+        {
+        	message InvoiceCreated{
+        		   topic "/com.x.invoicing.v1/InvoiceCreation/InvoiceCreated"
+        	}
+        }
+    }
+    
+    transaction SendInvoice response
+    {
+    	description "Send invoice"
+    	sender
+    	{
+    		message SendInvoice
+    		{
+    			timeouts(receipt=30s, response=3m)     		
+        		retries=3
+    		}
+    	}
+    	receiver
+    	{
+    		success SendInvoiceSucceeded
+			{       
+				timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+            
+            failure SendInvoiceFailed
+            {
+            	timeouts(receipt=30s)
+            }
+    	}
+    }
+    
+    transaction InvoiceSent inform
+    {
+    	sender
+        {
+        	message InvoiceSent{
+        		   topic "/com.x.invoicing.v1/InvoiceSend/InvoiceSent"
+        	}
+        }
+    }
+    
+    transaction LookupInvoice query
+    {
+    	description "Retrieves the details for one invoice based on id."
+    	sender
+        {
+        	message LookupInvoice
+        	{
+        		timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success LookupInvoiceSucceeded
+            failure LookupInvoiceFailed
+        } 
+    }
+    
+    transaction SearchInvoice query
+    {
+    	description "Retrieves the details for invoices based on logical search criteria."
+    	sender
+        {
+        	message SearchInvoice
+        	{
+        		timeouts(response=30s)     		
+        	}
+        }
+        receiver
+        {
+        	success SearchInvoiceSucceeded
+            failure SearchInvoiceFailed
+        } 
+    }
+    
+    transaction CancelInvoice response
+    {
+    	description "Cancels the invoice based on id."
+    	sender
+    	{
+    		message CancelInvoice
+    		{
+    			timeouts(receipt=30s, response=3m)     		
+        		retries=3
+    		}
+    	}
+    	receiver
+    	{
+    		success CancelInvoiceSucceeded
+			{       
+				timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+            
+            failure CancelInvoiceFailed
+            {
+            	timeouts(receipt=30s)
+            }
+    	}
+    }
+    
+    transaction InvoiceCancelled inform
+    {
+    	sender
+        {
+        	message InvoiceCancelled{
+        		   topic "/com.x.invoicing.v1/InvoiceCancelled/InvoiceCancelled"
+        	}
+        }
+    }
+    
+    transaction UpdateInvoiceStatus response
+    {
+    	description "Updates the invoice status based on id."
+    	sender
+    	{
+    		message UpdateInvoiceStatus
+    		{
+    			timeouts(receipt=30s, response=3m)     		
+        		retries=3
+    		}
+    	}
+    	receiver
+    	{
+    		success UpdateInvoiceStatusSucceeded
+			{       
+				timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+            
+            failure UpdateInvoiceStatusFailed
+            {
+            	timeouts(receipt=30s)
+            }
+    	}
+    }
+    
+    transaction InvoiceStatusUpdated inform
+    {
+    	sender
+        {
+        	message InvoiceStatusUpdated{
+        		   topic "/com.x.invoicing.v1/InvoiceStatusUpdated/InvoiceStatusUpdated"
+        	}
+        }
+    }
+    
+    transaction UpdateInvoiceDetails response
+    {
+    	description "Updates the invoice details based on id."
+    	sender
+    	{
+    		message UpdateInvoiceDetails
+    		{
+    			timeouts(receipt=30s, response=3m)     		
+        		retries=3
+    		}
+    	}
+    	receiver
+    	{
+    		success UpdateInvoiceDetailsSucceeded
+			{       
+				timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+            
+            failure UpdateInvoiceDetailsFailed
+            {
+            	timeouts(receipt=30s)
+            }
+    	}
+    }
+    
+    transaction InvoiceDetailsUpdated inform
+    {
+    	sender
+        {
+        	message InvoiceDetailsUpdated{
+        		   topic "/com.x.invoicing.v1/InvoiceDetailsUpdated/InvoiceDetailsUpdated"
+        	}
+        }
+    }
+    
+    transaction UpdateInvoiceMerchantData response
+    {
+    	description "Updates the invoice merchant data based on id."
+    	sender
+    	{
+    		message UpdateInvoiceMerchantData
+    		{
+    			timeouts(receipt=30s, response=3m)     		
+        		retries=3
+    		}
+    	}
+    	receiver
+    	{
+    		success UpdateInvoiceMerchantDataSucceeded
+			{       
+				timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+            
+            failure UpdateInvoiceMerchantDataFailed
+            {
+            	timeouts(receipt=30s)
+            }
+    	}
+    }
+    
+    transaction InvoiceMerchantDataUpdated inform
+    {
+    	sender
+        {
+        	message InvoiceMerchantDataUpdated{
+        		   topic "/com.x.invoicing.v1/InvoiceMerchantDataUpdated/InvoiceMerchantDataUpdated"
+        	}
+        }
+    }
+    
+    transaction UpdateInvoiceCustomerData response
+    {
+    	description "Updates the invoice customer data based on id."
+    	sender
+    	{
+    		message UpdateInvoiceCustomerData
+    		{
+    			timeouts(receipt=30s, response=3m)     		
+        		retries=3
+    		}
+    	}
+    	receiver
+    	{
+    		success UpdateInvoiceCustomerDataSucceeded
+			{       
+				timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+            
+            failure UpdateInvoiceCustomerDataFailed
+            {
+            	timeouts(receipt=30s)
+            }
+    	}
+    }
+    
+    transaction InvoiceCustomerDataUpdated inform
+    {
+    	sender
+        {
+        	message InvoiceCustomerDataUpdated{
+        		   topic "/com.x.invoicing.v1/InvoiceCustomerDataUpdated/InvoiceCustomerDataUpdated"
+        	}
+        }
+    }
+    
+    transaction UpdateInvoiceShippingData response
+    {
+    	description "Updates the invoice shipping data based on id."
+    	sender
+    	{
+    		message UpdateInvoiceShippingData
+    		{
+    			timeouts(receipt=30s, response=3m)     		
+        		retries=3
+    		}
+    	}
+    	receiver
+    	{
+    		success UpdateInvoiceShippingDataSucceeded
+			{       
+				timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+            
+            failure UpdateInvoiceShippingDataFailed
+            {
+            	timeouts(receipt=30s)
+            }
+    	}
+    }
+    
+    transaction InvoiceShippingDataUpdated inform
+    {
+    	sender
+        {
+        	message InvoiceShippingDataUpdated{
+        		   topic "/com.x.invoicing.v1/InvoiceShippingDataUpdated/InvoiceShippingDataUpdated"
+        	}
+        }
+    }
+    
+    transaction UpdateInvoiceBillingData response
+    {
+    	description "Updates the invoice billing data based on id."
+    	sender
+    	{
+    		message UpdateInvoiceBillingData
+    		{
+    			timeouts(receipt=30s, response=3m)     		
+        		retries=3
+    		}
+    	}
+    	receiver
+    	{
+    		success UpdateInvoiceBillingDataSucceeded
+			{       
+				timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+            
+            failure UpdateInvoiceBillingDataFailed
+            {
+            	timeouts(receipt=30s)
+            }
+    	}
+    }
+    
+    transaction InvoiceBillingDataUpdated inform
+    {
+    	sender
+        {
+        	message InvoiceBillingDataUpdated{
+        		   topic "/com.x.invoicing.v1/InvoiceBillingDataUpdated/InvoiceBillingDataUpdated"
+        	}
+        }
+    }
+    
+    transaction UpdateInvoiceItemData response
+    {
+    	description "Updates the invoice item data based on id."
+    	sender
+    	{
+    		message UpdateInvoiceItemData
+    		{
+    			timeouts(receipt=30s, response=3m)     		
+        		retries=3
+    		}
+    	}
+    	receiver
+    	{
+    		success UpdateInvoiceItemDataSucceeded
+			{       
+				timeouts(receipt=30s, validation=3m)
+            	retries=3
+            }
+            
+            failure UpdateInvoiceItemDataFailed
+            {
+            	timeouts(receipt=30s)
+            }
+    	}
+    }
+    
+    transaction InvoiceItemDataUpdated inform
+    {
+    	sender
+        {
+        	message InvoiceItemDataUpdated{
+        		   topic "/com.x.invoicing.v1/InvoiceItemDataUpdated/InvoiceItemDataUpdated"
+        	}
+        }
+    }
 }

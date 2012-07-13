@@ -1,3 +1,4 @@
 package com.x.invoicing.v1 0.0 earlydraft {
+	packagetitle "Invoicing"
 	import  com.x.invoicing.v1.*
 }

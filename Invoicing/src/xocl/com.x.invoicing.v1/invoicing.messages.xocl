@@ -3,4 +3,380 @@ package com.x.invoicing.v1{
 
 	import com.x.core.v1.*
 	
+	record MerchantData
+	{
+		Address address;
+	}
+	
+	record CustomerData
+	{
+		Address address;
+		Phone phone;
+	}
+	
+	record ShippingData
+	{
+		Address address;
+		Phone phone;
+	}
+	
+	record BillingData
+	{
+		string currencyCode;
+		string? paymentTerms;
+	}
+	
+	record ItemData
+	{
+		string name;
+		string? itemDescription;
+		string? itemId;
+		string quantity;
+		string unitPrice;
+		string? taxName;
+		string? taxRate;
+	}
+	
+	enum InvoiceStatus 
+	{
+		PAID,
+		UNPAID,
+		REFUNDED	
+	}
+	
+	record InvoiceDetails
+	{
+		string? referenceId;
+		string? dueDate;
+		string? terms;
+		string? note;
+		string? logoUrl;
+	}
+	
+	record InvoiceData
+	{
+		string? id;
+		MerchantData merchantData;
+		CustomerData customerData;
+		ShippingData shippingData;
+		BillingData billingData;
+		array<ItemData> itemList;
+		InvoiceDetails? details;
+		InvoiceStatus? status;
+	}
+	
+	record CreateInvoice
+    {
+        InvoiceData invoiceData;
+    }
+    
+    record CreateInvoiceSucceeded
+    {
+    	string invoiceId;	
+    }
+    
+    record CreateInvoiceFailed
+    {
+    	InvoiceData invoiceData;
+    	array<Error> errors;
+    }
+	
+	record InvoiceCreated
+	{
+		InvoiceData invoiceData;
+	}
+	
+	record SendInvoice
+    {
+        string id;
+    }
+    
+    record SendInvoiceSucceeded
+    {
+    	string id;	
+    }
+    
+    record SendInvoiceFailed
+    {
+    	string id;
+    	array<Error> errors;
+    }
+	
+	record InvoiceSent
+	{
+		string id;
+	}
+	
+	record LookupInvoice
+    {
+    	array<string> ids "IDs of the invoices to be looked up.";
+    }
+
+    record LookupInvoiceSucceeded
+    {
+        array<InvoiceData> invoices;
+    }
+
+    record LookupInvoiceFailed
+    {
+        array<string> ids "Array of invoice IDs that couldn't be looked up.";
+		array<Error> errors
+    }
+    
+    //--- Search filter -------------------------
+	enum SearchableFieldName
+	{
+		CUSTOMER_LAST_NAME,
+		CUSTOMER_PHONE,
+		CUSTOMER_EMAIL,
+		REFERENCE_ID,
+		ITEM_NAME,
+		ITEM_ID,
+		INVOICE_PAYMENT_STATUS,
+		INVOICE_STATE,
+		INVOICE_CREATION_DATE,
+		INVOICE_DUE_DATE,
+		INVOICE_CANCELLATION_DATE
+	}
+	
+	record FilterExpression
+	{
+		SearchableFieldName field;
+		Operator operator;
+		array<string> values;
+	}
+	
+	enum BooleanOperator
+	{
+		AND,
+		OR,
+		NOT
+	}
+	
+	record BooleanExpression
+	{
+		FilterExpression? leftOperand;
+		BooleanOperator operator;
+		FilterExpression rightOperand;
+	}
+    
+    record InvoiceSearchFilter
+    {
+    	union{FilterExpression, BooleanExpression} filter;
+    }
+    //--- end of Search Filter section -------------------------------
+    
+    record SearchInvoice
+    {
+    	InvoiceSearchFilter filter;
+    }
+
+    record SearchInvoiceSucceeded
+    {
+        array<InvoiceData> invoices;
+    }
+
+    record SearchInvoiceFailed
+    {
+    	InvoiceSearchFilter filter;
+		array<Error> errors
+    }
+    
+    record CancelInvoice
+    {
+        string id;
+    }
+    
+    record CancelInvoiceSucceeded
+    {
+    	string id;	
+    }
+    
+    record CancelInvoiceFailed
+    {
+    	string id;
+    	array<Error> errors;
+    }
+	
+	record InvoiceCancelled
+	{
+		string id;
+	}
+	
+	record UpdateInvoiceStatus
+    {
+        string id;
+        InvoiceStatus status;
+    }
+    
+    record UpdateInvoiceStatusSucceeded
+    {
+    	string id;	
+    }
+    
+    record UpdateInvoiceStatusFailed
+    {
+    	string id;
+    	InvoiceStatus status;
+    	array<Error> errors;
+    }
+	
+	record InvoiceStatusUpdated
+	{
+		string id;
+		InvoiceStatus status;
+	}
+	
+	//--- UpdateInvoiceDetails ------
+	record UpdateInvoiceDetails
+    {
+        string id;
+        InvoiceDetails details;
+    }
+    
+    record UpdateInvoiceDetailsSucceeded
+    {
+    	string id;	
+    }
+    
+    record UpdateInvoiceDetailsFailed
+    {
+    	string id;
+    	InvoiceDetails details;
+    	array<Error> errors;
+    }
+	
+	record InvoiceDetailsUpdated
+	{
+		string id;
+		InvoiceDetails details;
+	}
+	
+	//--- UpdateInvoiceMerchantData ------
+	record UpdateInvoiceMerchantData
+    {
+        string id;
+        MerchantData merchantData;
+    }
+    
+    record UpdateInvoiceMerchantDataSucceeded
+    {
+    	string id;	
+    }
+    
+    record UpdateInvoiceMerchantDataFailed
+    {
+    	string id;
+    	MerchantData merchantData;
+    	array<Error> errors;
+    }
+	
+	record InvoiceMerchantDataUpdated
+	{
+		string id;
+		MerchantData merchantData;
+	}
+	
+	//--- UpdateInvoiceCustomerData ------
+	record UpdateInvoiceCustomerData
+    {
+        string id;
+        CustomerData customerData;
+    }
+    
+    record UpdateInvoiceCustomerDataSucceeded
+    {
+    	string id;	
+    }
+    
+    record UpdateInvoiceCustomerDataFailed
+    {
+    	string id;
+    	CustomerData customerData;
+    	array<Error> errors;
+    }
+	
+	record InvoiceCustomerDataUpdated
+	{
+		string id;
+		CustomerData customerData;
+	}
+	
+	//--- UpdateInvoiceShippingData ------
+	record UpdateInvoiceShippingData
+    {
+        string id;
+        ShippingData shippingData;
+    }
+    
+    record UpdateInvoiceShippingDataSucceeded
+    {
+    	string id;	
+    }
+    
+    record UpdateInvoiceShippingDataFailed
+    {
+    	string id;
+    	ShippingData shippingData;
+    	array<Error> errors;
+    }
+	
+	record InvoiceShippingDataUpdated
+	{
+		string id;
+		ShippingData shippingData;
+	}
+	
+	//--- UpdateInvoiceBillingData ------
+	record UpdateInvoiceBillingData
+    {
+        string id;
+        BillingData billingData;
+    }
+    
+    record UpdateInvoiceBillingDataSucceeded
+    {
+    	string id;	
+    }
+    
+    record UpdateInvoiceBillingDataFailed
+    {
+    	string id;
+    	BillingData billingData;
+    	array<Error> errors;
+    }
+	
+	record InvoiceBillingDataUpdated
+	{
+		string id;
+		BillingData billingData;
+	}
+		
+	//--- UpdateInvoiceBillingData ------
+	record UpdateInvoiceItemData
+    {
+        string id;
+        array<ItemData> itemList;
+    }
+    
+    record UpdateInvoiceItemDataSucceeded
+    {
+    	string id;	
+    }
+    
+    record UpdateInvoiceItemDataFailed
+    {
+    	string id;
+    	array<ItemData> itemList;
+    	array<Error> errors;
+    }
+	
+	record InvoiceItemDataUpdated
+	{
+		string id;
+		array<ItemData> itemList;
+	}
+		
+		
+	
 }
