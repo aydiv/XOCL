@@ -11,7 +11,7 @@ package com.x.core.v1
 	record Address
 	{
 		string street1 "Street number and street name."
-		string? street "Street number and street name."
+		string? street2 "Street number and street name."
 		string? street3 "Street number and street name."
 		string? street4 "Street number and street name."
 		string city "Name of the city."
