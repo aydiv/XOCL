@@ -7,7 +7,7 @@ package com.x.workflowadmin.v1 {
 		 * If unspecified, this control will apply to all workflow.
 		*/
 		union{null, string} workflowDefID = null
-		union{null, string} workflowGuid = null
+		union{null, string} workflowInstKey = null
 		boolean workflowPreConditionsSucceedAlways
 		boolean workflowPostConditionsSucceedAlways
 		union{null, ApplicationInstanceControls} appInstanceControls = null
