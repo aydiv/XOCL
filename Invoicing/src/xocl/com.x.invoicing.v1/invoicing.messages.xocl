@@ -1,6 +1,6 @@
 
 package com.x.invoicing.v1{
-
+	import com.x.invoicing.v1.*
 	import com.x.core.v1.*
 	
 	record MerchantData
