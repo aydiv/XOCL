@@ -3,9 +3,11 @@
  */
 package com.x.core.v1
 {
+	packagetitle "Core"
+
 	import com.x.core.v1.*
     /*
-     * This enum defines the set of all well known reasons for cancelling a transaction. 
+     * This enum defines the set of all well known reasons for cancelling a transaction.
      *   as well as a value indicating that the reason is not specified.
      */
     enum Reason {
@@ -19,14 +21,14 @@ package com.x.core.v1
         ResponseOutOfSequence // The sender received a response unexpectedly.
         MessageOutOfSequence // The sender received a message unexpectedly.
     }
-    
+
     /*
      * This message is sent to cancel a transaction for one of the reasons listed above.
-	 * A cancellation uses the standard message type com.x.core.v1.TransactionCancelled. 
+	 * A cancellation uses the standard message type com.x.core.v1.TransactionCancelled.
 	 * A cancellation must be sent to the standard topic com.x.core.v1/TransactionCancelled.
      * A cancellation must be routed only to the intended recipient by setting the
      *   X-XC-DESTINATION-ID header to the X-XC-PUBLISHER-PSEUDONYM.
-     *   If the transaction sender sends a cancellation, then the intended recipient must 
+     *   If the transaction sender sends a cancellation, then the intended recipient must
      *     be the transaction receiver.
      *   If the transaction receiver sends a cancellation, then the intended recipient must
      *     be the transaction sender.
@@ -35,41 +37,41 @@ package com.x.core.v1
 	    Reason reason // The reason for cancellation.
 	    array<Error>? errors // Any errors related to the cancellation.
 	}
-	
+
     /*
      * This message is sent to notify the receiver that a transaction has completed.
-     * It is an optimization that allows the receiver to stop waiting for the transaction 
-     *   to complete. If the receiver is not waiting for the transaction to complete, it 
+     * It is an optimization that allows the receiver to stop waiting for the transaction
+     *   to complete. If the receiver is not waiting for the transaction to complete, it
      *   should ignore any completions that it may receive.
-	 * A completion uses the standard message type com.x.core.v1.TransactionCompleted. 
+	 * A completion uses the standard message type com.x.core.v1.TransactionCompleted.
 	 * A completion must be sent to the standard topic com.x.core.v1/TransactionCompleted.
      * A completion must be routed only to the intended recipient by setting the
      *   X-XC-DESTINATION-ID header to the X-XC-PUBLISHER-PSEUDONYM.
-     *   If the transaction sender sends a completion, then the intended recipient must 
+     *   If the transaction sender sends a completion, then the intended recipient must
      *     be the transaction receiver.
      *   If the transaction receiver sends a completion, then the intended recipient must
      *     be the transaction sender.
      */
 	record TransactionCompleted {
 	}
-	
+
     /*
      * The following message types are acknowledgements.
      * An acknowledgement must be routed only to the sender of the message being acknowledged
-     *   by setting the X-XC-DESTINATION-ID header to the value of the X-XC-PUBLISHER-PSEUDONYM 
+     *   by setting the X-XC-DESTINATION-ID header to the value of the X-XC-PUBLISHER-PSEUDONYM
      *   header on the message being acknowledged.
      */
 
     /*
      * This message type is used to acknowledge the receipt of a message.
-     * If it is received out of order, then the receiving capability may send a cancellation 
+     * If it is received out of order, then the receiving capability may send a cancellation
      *   to abort the transaction, with the Reason set to ReceiptOutOfSequence.
      */
 	record MessageReceived {}
-	
+
     /*
      * This message type is used to acknowledge the validation of a message.
-     * If it is received out of order, then the receiving capability may send a cancellation 
+     * If it is received out of order, then the receiving capability may send a cancellation
      *   to abort the transaction, with the Reason set to ValidationOutOfSequence.
      */
 	record MessageValidated {}

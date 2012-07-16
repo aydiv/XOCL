@@ -1,6 +1,7 @@
-
 package com.x.core.v1
 {
+	packagetitle "Core"
+
 	enum CampaignStatus
 	{
 		DRAFT,
@@ -15,15 +16,15 @@ package com.x.core.v1
 
 		/** The account this campaign belongs to */
 		string accountId
-		
+
 		string name
 		string? _avdl_description
 
 		/** Date Time Format: ISO 8601 */
 		 datetime? startTime
 		 datetime? endTime
-		
+
 		/** Provider specific types can be specified as strings */
 		union{CampaignStatus,string} status
-	}	
+	}
 }

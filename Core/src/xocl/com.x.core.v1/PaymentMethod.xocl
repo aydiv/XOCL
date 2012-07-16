@@ -1,10 +1,11 @@
-
 package com.x.core.v1
 {
+	packagetitle "Core"
+
 	enum CommonPaymentMethod {
 		summary "Specifies the payment method."
  		description "Defines the values used to specify a payment method."
-		
+
 		AMEX "American Express card.",
 		CASH_ON_DELIVERY "Cash on delivery (payment at the time of delivery).",
 		CHECK "Personal or business check",
@@ -23,9 +24,9 @@ package com.x.core.v1
 		PROPAY "ProPay.",
 		VISA "Visa credit card."
 	}
-	
+
 	record PaymentMethod {
 		//If the method is not a CommonPaymentMethod, use a string.
 		union{CommonPaymentMethod,string} method "Either one of the CommonPaymentMethod values or a string. Use a string when the payment is not a CommonPaymentMethod."
-	} 
+	}
 }

@@ -1,21 +1,22 @@
-
 package com.x.core.v1
 {
+	packagetitle "Core"
+
 	import com.x.core.v1.*
-	
+
 	enum ContactAddressType
 	{
 		summary "Specifies the contact type."
  		description "Defines the values used to specify the contact type.."
-		
+
 		BILLING "Indicates the address is a billing address.",
 		SHIPPING "Indicates the address is a shipping address.",
 		BILLING_AND_SHIPPING "Indicates the address is to be used for both billing and shipping."
 	}
 
-	record Contact 
+	record Contact
 	{
-		Name fullName "First and last name of the contact."	   
+		Name fullName "First and last name of the contact."
 	    array<Address>? addresses "Array of the contact's addresses."
 		Phone? primaryPhone "Primary telephone number."
 	    array<Phone>? additionalPhones "Additional telephone numbers."

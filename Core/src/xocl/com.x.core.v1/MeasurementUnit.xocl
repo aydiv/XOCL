@@ -1,17 +1,19 @@
 package com.x.core.v1
 {
+	packagetitle "Core"
+
 	enum MeasurementSystem{
 		summary "Specifies the measurement system."
  		description "Defines the values to specify the measurement system."
-		
+
 		METRIC "Measurements are in metric units: kg, g, cm, etc." ,
 		ENGLISH "Measurements are in english units: lb, oz, in, etc."
 	}
-	
+
 	enum EnglishLengthMeasurementUnit{
 		summary "Specifies the English length measurement units."
  		description "Defines the values to specify the English length measurement units."
-		
+
 		INCH "Inches, in."
 		FOOT "Feet, ft."
 		YARD "Yards, yd."
@@ -20,7 +22,7 @@ package com.x.core.v1
 	enum EnglishWeightMeasurementUnit{
 		summary "Specifies the English weight measurement units."
  		description "Defines the values to specify the English weight measurement units."
-		
+
 		GRAIN "Grains, gr"
 		OUNCE "Ounces, oz"
 		POUND "Pounds, lb"
@@ -29,17 +31,17 @@ package com.x.core.v1
 	enum MetricLengthMeasurementUnit{
 		summary "Specifies the metric length measurement units."
  		description "Defines the values to specify the metric length measurement units."
-		
+
 		MILLIMETER "Millimeters, mm"
 		CENTIMETER "Centimeters, cm"
 		METER "Meters, m"
 		KILOMETER "Kilometers, km"
 	}
-	
+
 	enum MetricWeightMeasurementUnit{
 		summary "Specifies the metric weight measurement units."
  		description "Defines the values to specify metric weight measurement units."
-		
+
 		MILLIGRAM "Milligrams, mg"
 		CENTIGRAM "Centigram, cg"
 		GRAM "Grams, g"

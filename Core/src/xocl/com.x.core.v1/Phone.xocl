@@ -1,11 +1,12 @@
-
 package com.x.core.v1
 {
+	packagetitle "Core"
+
 	enum PhoneType
 	{
 		summary "Specifies the type of phone."
  		description "Defines the values used to specify the type of phone."
-		
+
 		HOME "Indicates this is a home phone number.",
 		MOBILE "Indicates this is a mobile phone number.",
 		WORK "Indicates this is a work phone number.",

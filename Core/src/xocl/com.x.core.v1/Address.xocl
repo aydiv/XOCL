@@ -1,10 +1,11 @@
-
 package com.x.core.v1
 {
+	packagetitle "Core"
+
 	enum AddressTag{
 		summary "Specifies the type of address."
  		description "Defines the values used to specify if the address is the billing or shipping address."
-		
+
 		BILLING "Indicates this is the billing address."
 		SHIPPING "Indicates this is the shipping address."
 	}

@@ -1,6 +1,7 @@
-
 package com.x.core.v1
 {
+	packagetitle "Core"
+
 	record Name
 	{
 		string firstName "First name."

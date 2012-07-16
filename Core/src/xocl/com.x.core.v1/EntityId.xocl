@@ -1,4 +1,5 @@
-package com.x.core.v1{
+package com.x.core.v1 {
+	packagetitle "Core"
 
 	record EntityId{
 		guid namespace "Stable guid for the system creating the record."

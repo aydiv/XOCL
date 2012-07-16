@@ -1,11 +1,13 @@
 package com.x.core.v1
 {
+	packagetitle "Core"
+
 	record Locale
 	{
 		string language "2-letter language code (ISO 639-1). For example, en (english) or fr (French).";
-		
+
 		string country "2-character country code (ISO 3166). For example, US (United States) or FR (France).";
-		
-        string? variant "Variant for the locale.";		
+
+        string? variant "Variant for the locale.";
 	}
 }

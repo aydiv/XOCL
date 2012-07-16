@@ -1,15 +1,17 @@
 package com.x.core.v1
 {
+	packagetitle "Core"
+
 	/* Note:
-	 * This common query object leaves lots of room for interpretation. 
+	 * This common query object leaves lots of room for interpretation.
 	 * It is intended for client/server interactions and not as the start of a business process.
 	 */
-	
+
 	enum Operator
 	{
 		summary "Specifies the query operators."
  		description "Defines the values used to specify the query operators."
-		
+
 		EQUALS "Equals",
 		NOT_EQUALS "Is not equal.",
 		GREATER_THAN "Is greater than.",
@@ -17,7 +19,7 @@ package com.x.core.v1
 		LESS_THAN "Is less than.",
 		LESS_THAN_EQUALS "Is less than or equal to."
 	}
-	
+
 	record Predicate
 	{
 		string field "Field to use.";
@@ -31,7 +33,7 @@ package com.x.core.v1
 	{
 		summary "Specifies the sort order."
  	description "Defines the values used to specify the sort order for the report."
-		
+
 		ASCENDING "Sorts the report in ascending order.",
 		DESCENDING "Sorts the report in descending order."
 	}
@@ -47,7 +49,7 @@ package com.x.core.v1
 	{
 		summary "Contains query for a report."
 		description "Captures the query information for a report."
-		
+
 		array<string>? fields "Fields to be selected. These will be 'columns' in the report. When not specified, the entire object is returned.";
 		array<Predicate>? predicates "Specifies how an entity should be filtered. Essentially, the WHERE clause. If the query is for all, don't specify a predicate.";
 		array<OrderBy> ordering "Fields on which the report should be sorted. The order is significant. The first field determines the primary sort order, the next determines secondary sort order, etc.";

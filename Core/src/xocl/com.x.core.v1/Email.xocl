@@ -1,8 +1,9 @@
-
 package com.x.core.v1
-{    
+{
+	packagetitle "Core"
+
 	record Email
 	{
-		string emailAddress "Email address." 		
+		string emailAddress "Email address."
 	}
 }
