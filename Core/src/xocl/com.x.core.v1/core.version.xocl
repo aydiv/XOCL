@@ -1,3 +1,4 @@
 package com.x.core.v1 0.1{
+	packagetitle "Core"
 	import com.x.core.v1.*
 }
