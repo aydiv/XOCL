@@ -1,5 +1,6 @@
 	
 package com.x.customer.v1{	
+
 	import com.x.core.v1.*
 	
 	record UpsertCustomer{
@@ -16,7 +17,7 @@ package com.x.customer.v1{
 		summary "Signals that a request to either add or update a customer information has failed."
 		description "Notifies an observer that the request to add or update a customer has failed. Returns the customer data that was sent in the request and information about the failure, which is useful for troubleshooting."
 		CustomerData data "Customer information that was sent in the request."; 
-		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	
 	enum Gender {
@@ -34,25 +35,25 @@ package com.x.customer.v1{
 		Phone? primaryPhone "Customer's primary phone number.";  
 		Email email "Customer's email address.";   
 		Gender? gender "Customer's gender.";
-		datetime? dateOfBirth "Customer's birthday. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.";
+		datetime? dateOfBirth "Customer's birthday.";
 		string? company "Customer's company name.";
-		datetime dateCreated "Date the customer record was created. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ."; 
-		datetime lastModified "Date the customer information was last modified (changed). The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.";
+		datetime dateCreated "Date the customer record was created."; 
+		datetime lastModified "Date the customer information was last modified (changed).";
 	    map<string>? sourceIds "Maps the source system name to the customer source identifier (ID). This is used for audit purposes, to indicate where the customer came from in the flow.";
 	    boolean? doNotCall "Indicates that the customer does not want to be contacted by telephone.";   
 		boolean? emailOptOut "Indicates that the customer does not want to receive marketing email (opted-out).";
 	}  
 	
     record Customer confidential extends CustomerData {
-		summary "Extends CustomerData with the ID field."
-		description "Captures the identifier assigned to the customer by the system that created the customer record and extends CustomerData with this field."
+		summary "Adds fields to the CustomerData record."
+		description "Adds the customer identifier field to the CustomerData record."
 		union{guid, EntityId} id "Identifier assigned to the customer by the system that created the customer record.";	
 	} 
 	
 	record SearchCustomer{
 		summary "Requests a search for customers by email address or name and system ID and optionally modification date."
 		description "Requests a search for customers based on their email address or name and system ID. Optionally you can add modification date and specify how many items are returned at a time and the startItemIndex. Note: When searching by email, the list returned does NOT include customers that have indicated they do not want to receive marketing email (opted-out)."
-		datetime? modifiedSince "Modification date for the search criteria. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ."; 
+		datetime? modifiedSince "Modification date for the search criteria."; 
 		long? itemsRequested "Maximum number of items to return at one time (used for paging). If this is not set, all items are returned.";
 		long? startItemIndex "Returns the results starting from this zero-based index. If this is not set, items will be returned started from the first item.";
 	}
@@ -60,7 +61,7 @@ package com.x.customer.v1{
 	record SearchCustomerSucceeded confidential{
 		summary "Signals that searching for customers was successful."
 		description "Returns the a list of customers, the query request, and the total number of customers returned."
-	     array<Customer> customers "Array of customers found.";
+	     array<Customer> customers "Collection of the customers found.";
 		 long totalItemsFound "Total number of customers that matched the search criteria.";
 		 SearchCustomer request "Search criteria used."; 
 	}
@@ -81,14 +82,14 @@ package com.x.customer.v1{
 		summary "Signals that the lookup of a customer by system ID failed."
 		description "Signals that the lookup of a customer has failed and returns the customer ID that was sent in the request and information about the failure, which is useful for troubleshooting."
         union{guid, EntityId} id "Identifier used for the lookup."
-		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
     }
 
     record CustomerEmail{
 		summary "Contains email information for a customer."
 		description "Captures the email address, record modification date, and ID of the customer. This ID can be assigned by the system that created the customer record, a guid, or null."	
 		Email email "Customer's email address.";		
-		datetime lastModifiedDate "Date the customer information was last modified (changed). The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.";		
+		datetime lastModifiedDate "Date the customer information was last modified (changed).";		
 		union{null,guid,EntityId} customerId = null "Identifier for a customer. This ID can be assigned  by the system that created the customer record, a guid, or null.";
 	}
 	
@@ -97,13 +98,13 @@ package com.x.customer.v1{
 		description "Captures the customer's full name, record modification date, and ID of the customer. This ID can be assigned  by the system that created the customer record, a guid, or null."	
 		union{guid,EntityId} customerId "Identifier assigned to the customer by the system that created the customer record or a guid.";
 		Name fullName "Customer's first and last name."; 
-		datetime lastModifiedDate "Date the customer information was last modified (changed). The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.";
+		datetime lastModifiedDate "Date the customer information was last modified (changed).";
 	}
 	
 	record SearchEmailCustomerSucceeded{
 		summary "Signals that searching for customer email addresses was successful."
 		description "Returns a list of customers and their email address that can be used to send marketing email. It also returns the total number of customers found and the search criteria used. Note: The results do NOT include customers that have indicated they do not want to receive marketing email (opted-out)."
-		array<CustomerEmail> customers "Array of customers with an email address and who allow the merchant to send them marketing email. In other words, customers who did NOT opt-out.";
+		array<CustomerEmail> customers "Collection of the customers with an email address and who allow the merchant to send them marketing email. In other words, customers who did NOT opt-out.";
 		long totalItemsFound "Total number of customers returned.";
 		SearchCustomer request "Search criteria used."; 
 	}
@@ -111,7 +112,7 @@ package com.x.customer.v1{
 	record SearchNameAndIdCustomerSucceeded{
 		summary "Signals a search for customer names and IDs was successful."
 		description "Returns a list of customer names and their system identification. It also returns the total number of customers found and the search criteria used. "
-		array<CustomerNameAndId> customers "Array of customer name and their system ID.";
+		array<CustomerNameAndId> customers "Collection of customer names and their system ID.";
 		long totalItemsFound "Total number of customers returned.";
 		SearchCustomer request "Search criteria used.";
 	}
@@ -120,7 +121,7 @@ package com.x.customer.v1{
 		summary "Signals that searching for customers failed."
 		description "Signals that a search for customers failed and returns the search criteria used and error details related to the failed retrieval of a customer."
 		SearchCustomer request "Search criteria used.";
-		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	
 	record CustomerCreated{
