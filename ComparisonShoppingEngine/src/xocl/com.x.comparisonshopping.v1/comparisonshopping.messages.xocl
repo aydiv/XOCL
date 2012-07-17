@@ -7,49 +7,49 @@ package com.x.comparisonshopping.v1 {
 	import com.x.core.v1.*
 
 	enum ConditionType {
-		summary "Condition of a product."
-		description "Specifies the condition values available for a product."
+		summary "Specifies the condition of a product."
+		description "Defines the condition values available for a product."
 
-		NEW "A new product."
-		RECONDITIONED "A product returned to like new condition."
-		USED "A product showing wear."
+		NEW "Indicates the product is new."
+		RECONDITIONED "Indicates a product was returned in like new condition."
+		USED "Indicates a product shows wear."
 	}
 
 	enum ImagePurpose {
 		summary "Specifies the product image type."
 		description "Defines the values used to specify the product image type."
 
-		HERO "Primary full-sized image of a product.", 
-		GALLERY "Image to be used in the gallery.",
-		THUMBNAIL "Small image to be used as a thumbnail picture."
+		HERO "Indicates the images is the primary full-sized image of a product.", 
+		GALLERY "Indicates the image is to be used in the gallery.",
+		THUMBNAIL "Indicates the image is a small thumbnail picture."
 	}
 	
 	enum ImageBackgroundType {
 		summary "Specifies the background used by a product image."
 		description "Defines the values used to specify the background of a product image."
 
-		HAS_BACKGROUND "Product image has a background.",
-		NO_BACKGROUND "Product image doesn't have a background.",
-		UNKNOWN "You don't know if the image has a background."
+		HAS_BACKGROUND "Indicates the product image has a background.",
+		NO_BACKGROUND "Indicates the product image doesn't have a background.",
+		UNKNOWN "Indicates you don't know if the image has a background."
 	}
 	
 	enum AvailabilityType {
 		summary "Specifies the product availability status for each offered product."
 		description "Defines the values used to identify the availability of a product."
 
-		IN_STOCK "Product is in stock and ready to ship within the required number of days.",
-		OUT_OF_STOCK "Product is currently out of stock.",
-		AVAILAILABLE_FOR_ORDER "Product is not in stock but can be ordered.",	
-		UNKNOWN "Availability is not known."
+		IN_STOCK "Indicates the product is in stock and ready to ship within the required number of days.",
+		OUT_OF_STOCK "Indicates the product is currently out of stock.",
+		AVAILAILABLE_FOR_ORDER "Indicates the product is not in stock but can be ordered.",	
+		UNKNOWN "Indicates that the availability of the product is not known."
 	}
 	
 	enum DataFeedType {
 		summary "Specifies the data feed classification."
 		description "Defines the values used to classify a data feed."
 
-		FULL "The feed contains all the products.",
-		INCREMENTAL "The feed contains only products to be added."
-		UPDATE "The feed contains only items that are to be updated"
+		FULL "Indicates the feed contains all the products.",
+		INCREMENTAL "Indicates the feed contains only products to be added."
+		UPDATE "Indicates the feed contains only items that are to be updated."
 	}
 			
 	record ProductAttribute {
@@ -66,8 +66,8 @@ package com.x.comparisonshopping.v1 {
 		description "Captures the product image URL, the image purpose, and the image background type."
 
 		string imageUrl "URL (location) of the image file."
-		ImagePurpose imagePurpose "Role associated with the image. The values are Hero, Gallery, or Thumbnail."
-		ImageBackgroundType backgroundType "Background state of the product image. The values are NoBackground, HasBackground, or Unknown."
+		ImagePurpose imagePurpose "Role associated with the image."
+		ImageBackgroundType backgroundType "Background state of the product image."
 	}
 	
 	record TaxRate {
@@ -92,109 +92,109 @@ package com.x.comparisonshopping.v1 {
 	
 	record Variation {
 		summary "Contains the product variation definition."
-		description "Captures the id, name, and single value for variation."
+		description "Captures the ID, name, and single value for variation."
 
 		string? id "Unique identifier for this variation."
-		string name "The label name for the variation."
-		string value "The value assigned to the variation."
+		string name "Label name for the variation."
+		string value "Value assigned to the variation."
 	}
 	
 	record StartDataFeed {
-		summary "Contains data that descibes the data feed that was started."
-		description "Captures the id, name, feed type, and start date for a data feed."
+		summary "Contains data that describes the data feed that was started."
+		description "Captures the ID, name, feed type, and start date for a data feed."
 
 		string id "Unique identifier for this data feed."
-		string? name "A name assigned to this data feed."
-		DataFeedType feedType = FULL "The classification of this feed being started."
-		datetime startDate "The date and time when the feed was started."
-		string? xAccountId "The account id that will be used for this data feed."		
+		string? name "Name assigned to this data feed."
+		DataFeedType feedType = FULL "Classification of this feed being started."
+		datetime startDate "Date and time when the feed was started."
+		string? xAccountId "Account ID that will be used for this data feed."		
 	}
 	
 	record StartDataFeedSuccess {
-		summary "Contains data that descibing a successfull data feed start."
-		description "Provides the id, name, and start date of the feed that was started."
+		summary "Contains data that describes a successful data feed start."
+		description "Provides the ID, name, and start date of the feed that was started."
 
 		string id "Unique identifier for this data feed that started."
-		string? name "A name assigned to this data feed that started."
-		datetime startDate "The date and time when the feed was started."
+		string? name "Name assigned to this data feed that started."
+		datetime startDate "Date and time when the feed was started."
 	}
 	
 	record StartDataFeedFailure {
-		summary "Contains data that descibing a failed data feed start."
-		description "Provides the id, name, and start date of the feed that failed to start."
+		summary "Contains data that describes a failed data feed start."
+		description "Provides the ID, name, and start date of the feed that failed to start."
 
 		string id "Unique identifier for this data feed."
-		string? name "A name assigned to this data feed."
-		datetime startDate "The date and time when the feed was started."
+		string? name "Name assigned to this data feed."
+		datetime startDate "Date and time when the feed was started."
 	}
 	
 	record CompleteDataFeed {
-		summary "Contains data that descibes the data feed that was completed."
-		description "Captures the id of the data feed that was completed."
+		summary "Contains data that describes the data feed that was completed."
+		description "Captures the ID of the data feed that was completed."
 
 		string id "Unique identifier for the data feed being completed."
 	}
 	
 	record CompleteDataFeedSuccess {
-		summary "Contains data that descibing a successfull data feed completion."
-		description "Provides the id and date/time the feed successfully was completed."
+		summary "Contains data that describes a successful data feed completion."
+		description "Provides the ID and date/time the feed successfully was completed."
 
 		string id "Unique identifier for this data feed that completed."
-		datetime startDate "The date and time when the feed was started."
+		datetime startDate "Date and time when the feed was started."
 	}
 	
 	record CompleteDataFeedFailure {
-		summary "Contains data that descibing a failure of a data feed completion."
-		description "Provides the id of the datafeed that failed to be completed."
+		summary "Contains data that describes a failure of a data feed completion."
+		description "Provides the ID of the data feed that failed to be completed."
 
 		string id "Unique identifier for this data feed that could not be completed."
 	}
 	
 	record Store {
-		summary "Contains data that descibing a physical store location."
+		summary "Contains data that describes a physical store location."
 		description "Provides all the basic attributes of a store location."
 		
-		string storeId "The unique identifier of a store."
-		string? name "The name of a store."
-		string? storeDescription "A description of the store."
-		Address address "The address of the store."
-		string? latitude "The latitude associated with the store's location."
-		string? longitude "The longitude associated with the store's location"
-		string phone "The store's primary phone number."
-		string? tollFreePhone "The store's toll free phone number."
-		array<string>? hoursOfOperation "A collection of hours of operation for the store."
-		string? category "The category associated with the store."
-		string currency "The currency the store accepts."
-		datetime? establishedDate "The date the store was opened."
-		array<string>? paymentOptions "The types of payment accepted by the store."
-		string? email "The email address of the store."
-		array<string>? brands "The brands sold by the store."
+		string storeId "Unique identifier of a store."
+		string? name "Name of a store."
+		string? storeDescription "Description of the store."
+		Address address "Address of the store."
+		string? latitude "Latitude associated with the store's location."
+		string? longitude "Longitude associated with the store's location."
+		string phone "Store's primary phone number."
+		string? tollFreePhone "Store's toll free phone number."
+		array<string>? hoursOfOperation "Collection of hours of operation for the store."
+		string? category "Category associated with the store."
+		string currency "Currency the store accepts."
+		datetime? establishedDate "Date the store was opened."
+		array<string>? paymentOptions "Types of payment accepted by the store."
+		string? email "Email address of the store."
+		array<string>? brands "Brands sold by the store."
 		boolean shipFromStore = false "Indicates whether the store support shipping directly from the store."
 		boolean eligibleForInStorePickup = false "Indicates whether the store support in-store pickup."
 		boolean onlineStore = false "Indicates whether this store have an online store."
-		string? onlineStoreUrl "The URL of the store's online store."
-		array<string>? photoUrls "The URLs for photos associated with the store."
-		string? logoUrl "The URL for the store's logo."
-		array<string>? services "The services provided by the store."
+		string? onlineStoreUrl "URL of the store's online store."
+		array<string>? photoUrls "URLs of images associated with the store."
+		string? logoUrl "URL of the store's logo."
+		array<string>? services "Services provided by the store."
 	}
 	
 	record InventoryByLocation {
-		summary "Contains data that descibing inventory levels and pricing at a given location."
+		summary "Contains data that describes inventory levels and pricing at a given location."
 		description "Provides the all the attributes needed to represent inventory levels, pricing, etc. at a store location."
 		
-		string storeId "A unique identifier for the store where this inventory resides."
+		string storeId "Unique identifier for the store where this inventory resides."
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
-		Store? store "The store where this inventory resides"
-		boolean pickupAvailable = false "Can a shopper visit the location to acquire the product."
-		CurrencyAmount? price "An override price. If ommited the price will be taken from the base product."
-		CurrencyAmount? salePrice "An override of the sale price. If ommited the sale price will be taken from the base product."
+		Store? store "Store where this inventory resides."
+		boolean pickupAvailable = false "Whether a shopper can visit the location to pickup the product."
+		CurrencyAmount? price "Overrides for the price. If omitted the price will be taken from the base product."
+		CurrencyAmount? salePrice "Overrides of the sale price. If omitted the sale price will be taken from the base product."
 		datetime? salePriceEffectiveDate "Date the override salePrice activates."
 		datetime? salePriceExpiryDate "Date the override salePrice activates."
-		string? priceDescription "Free form entry."
-		int? quantity "The count at this location."
+		string? priceDescription "Used for a free form entry."
+		int? quantity "How many of a product are at this location."
 		AvailabilityType availabile = Unknown "True with no quantity specified if inventory is not tracked."
 		datetime? availableDate "Timestamp specifying when the item will be available."
-		boolean shipFromStore = false "Is this item available to be shipped from this location?" 
+		boolean shipFromStore = false "Whether this item is available to be shipped from this location." 
 	}
 	
 	record Product {
@@ -202,7 +202,7 @@ package com.x.comparisonshopping.v1 {
 		description "Captures all the product information needed to represent a product on a comparison shopping engine channel, such as quantity, title, SKU, category, etc."
 
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
-		string? itemGroup "The identifier that groups together all the variation values for this product (if it has variations)."
+		string? itemGroup "Identifier that groups together all the variation values for this product (if it has variations)."
 		CurrencyAmount price "Price to purchase the product."; 
 		int quantity "How many of this product are in stock.";
    		string title "Title of the product."
@@ -214,10 +214,10 @@ package com.x.comparisonshopping.v1 {
    		string? category "Category that will be used to determine where the product will appear in the comparison shopping engine taxonomy."
    		string? xProductTypeId  "Product type identifier as defined by the taxonomy manager." 
    		array<string>? productTypes "Product types associated with the product as defined by the taxonomy manager."
-   		array<ProductImage> images  "Array of  URLs for the product images (with assigned roles)."
+   		array<ProductImage> images  "Collection of  URLs for the product images (with assigned roles)."
    		string link "Link to the product landing page on the merchant's storefront."
    		CurrencyAmount originalPrice "Original price of the item before any discounting."
-   		AvailabilityType availability = Unknown "Availability status of the product. The values are InStock, AvailableForOrder, or Unknown."
+   		AvailabilityType availability = Unknown "Availability status of the product."
    		TaxRate? taxRate "Tax rate based on the country and region of the product's location (where the product is shipped from)."
    		Shipping? shipping "Shipping profile of a product and its shipping price."
    		double? shippingWeight "Shipping weight of the product."
@@ -225,107 +225,107 @@ package com.x.comparisonshopping.v1 {
    		array<Variation>? variations "Collection of variations associated with the product."
    		CurrencyAmount? cpc "Amount the merchant is willing to pay per click (cost per click)."
    		string? channelId "Identifier of the comparison shopping engine channel."
-   		array<InventoryByLocation>? inventoryByLocation "Collection of inventory levels by physical location"
-   		ConditionType condition = NEW "The condition of the product"
-   		string language = "en_US" "ISO language codes"
-   		boolean onlineOnly = true "is the product only available online" 
+   		array<InventoryByLocation>? inventoryByLocation "Collection of inventory levels by physical location."
+   		ConditionType condition = NEW "Condition of the product."
+   		string language = "2-letter language code (ISO 639-1). For example, en (English) or fr (French)."
+   		boolean onlineOnly = true "Whether the product is available only online." 
 	}
 		
 	record PublishProduct {
 		summary "Contains information for the product is being published."
-		description "Publishes products, inventory, and locations (stores) to a comparison shopping engine"
+		description "Publishes products, inventory, and locations (stores) to a comparison shopping engine."
 		
-		string feedId "The id of the feed that is associated with this product"
-		Product product "The product being published"
+		string feedId "ID of the feed that is associated with this product."
+		Product product "Product being published."
 	}
 	
 	record PublishProductSuccess {
 		summary "Signals that a product was successfully published."
 		description "Indicates that a product was published."
 
-		string feedId "The id of the feed that is associated with this product."
+		string feedId "Identifier of the feed that is associated with this product."
 		string sku "Standardized SKU (Stock Keeping Unit) of the product. This is a unique number supplied by the merchant."
-		string? cseProductId "The id of the product as assigned by the CSE."
+		string? cseProductId "Identifier of the product as assigned by the CSE."
 	}
 	
 	record PublishProductFailure {
 		summary "Signals that publishing a product failed."
-		description "Inidcates that there was an error when attempting to publish the product. Returns the error code of the failure, which is useful for troubleshooting."
+		description "Indicates that there was an error when attempting to publish the product. Returns the error code of the failure, which is useful for troubleshooting."
 		
-		string feedId "The id of the feed that is associated with this product."
+		string feedId "Identifier of the feed that is associated with this product."
 		string errorCode "Error code of the publishing failure."
 	}
 	
 	record ProductFeedProcessed {
     	description "Notifies the published that the supplied product feed was processed."
     	
-    	string feedId "The id of the feed that was processed."
-    	array<string> statusValues "A collection of values that represent thet processing status of this feeed."
+    	string feedId "Identifier of the feed that was processed."
+    	array<string> statusValues "Collection of values that represent the processing status of this feed."
     }
 	
 	record PublishProductInventory {
 		summary "Contains information for the product inventory is being published."
 		description "Publishes product inventory to a comparison shopping engine."
 		
-		string feedId "The id of the feed that is associated with this product inventory."
-		InventoryByLocation inventory "The product inventory being published."
+		string feedId "Identifier of the feed that is associated with this product inventory."
+		InventoryByLocation inventory "Product inventory being published."
 	}
 	
 	record PublishProductInventorySuccess {
 		summary "Signals that product inventory was successfully published."
 		description "Indicates that product inventory was published."
 
-		string feedId "The id of the feed that is associated with this store."
-		string?  productSku "The sku of the product that is having its inventory published."
-		string? storeId "The id of the store associated with the inventory item being published."
+		string feedId "Identifier of the feed that is associated with this store."
+		string?  productSku "SKU of the product that is having its inventory published."
+		string? storeId "Identifier of the store associated with the inventory item being published."
 	}
 	
 	record PublishProductInventoryFailure {
 		summary "Signals that publishing product inventory failed."
 		description "Inidcates that there was an error when attempting to publish product inventory. Returns the error code of the failure, which is useful for troubleshooting."
 		
-		string feedId "The id of the feed that is associated with this store."
+		string feedId "Identifier of the feed that is associated with this store."
 		string errorCode "Error code of the publishing failure."
 	}
 	
 	record ProductInventoryFeedProcessed {
     	description "Notifies the published that the supplied inventory feed was processed."
     	
-    	string feedId "The id of the feed that was processed."
-    	array<string> statusValues "A collection of values that represent thet processing status of this feeed."
+    	string feedId "Identifier of the feed that was processed."
+    	array<string> statusValues "Collection of values that represent the processing status of this feed."
     }
 	
 	record PublishStore {
 		summary "Contains information for the store is being published."
 		description "Publishes a store to a comparison shopping engine."
 		
-		string feedId "The id of the feed that is associated with this store."
-		Store store "The store being published."
+		string feedId "Identifier of the feed that is associated with this store."
+		Store store "Store being published."
 	}
 	
 	record PublishStoreSuccess {
 		summary "Signals that a store was successfully published."
 		description "Indicates that a store was published."
 
-		string feedId "The id of the feed that is associated with this store."
-		string storeId "The id of the store that was published."
-		string? cseStoreId "The id of the store as assigned by the CSE."
+		string feedId "Identifier of the feed that is associated with this store."
+		string storeId "Identifier of the store that was published."
+		string? cseStoreId "Identifier of the store as assigned by the comparison shopping engine."
 	}
 	
 	record PublishStoreFailure {
 		summary "Signals that publishing a store failed."
-		description "Inidcates that there was an error when attempting to publish the store. Returns the error code of the failure, which is useful for troubleshooting."
+		description "Indicates that there was an error when attempting to publish the store. Returns the error code of the failure, which is useful for troubleshooting."
 		
-		string feedId "The id of the feed that is associated with this store."
-		string storeId "The id of the store that failed to publish."
+		string feedId "Identifier of the feed that is associated with this store."
+		string storeId "Identifier of the store that failed to publish."
 		string errorCode "Error code of the publishing failure."
 	}
 	
 	record StoreFeedProcessed {
     	description "Notifies the published that the supplied store feed was processed."
     	
-    	string feedId "The id of the feed that was processed."
-    	array<string> statusValues "A collection of values that represent thet processing status of this feeed."
+    	string feedId "Identifier of the feed that was processed."
+    	array<string> statusValues "A collection of values that represent the processing status of this feed."
     }
 	
 

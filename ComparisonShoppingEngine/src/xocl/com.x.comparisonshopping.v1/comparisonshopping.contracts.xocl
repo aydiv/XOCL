@@ -5,6 +5,9 @@
 // A package defines a namespace and optionally a version for the elements it contains
 package com.x.comparisonshopping.v1
 {	
+	packagetitle "Comparison Shopping Engine"
+	description "The Comparison Shopping Engine package specifies the processes for publishing products to comparison shopping engines."
+
 	// An import brings in definitions from another package
 	import com.x.comparisonshopping.v1.* 
 	
