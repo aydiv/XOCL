@@ -2,6 +2,8 @@
  *  order management domain
  */
 package com.x.ordermanagement.v2 {
+	packagetitle "Order Management"
+	
 	import com.x.ordermanagement.v2.*
 	
 	transaction ProcessOrder<MarketplaceOrder> response {
@@ -128,7 +130,7 @@ package com.x.ordermanagement.v2 {
     }
     
     transaction OrderCancelled<MarketplaceOrder> inform {
-    	description "Notifies observers that an order was cancelled."
+    	description "Notification that an order was cancelled."
         sender {
         	message OrderCancelled{
         		topic "/com.x.ordermanagement.v2/ProcessSalesChannelOrder/OrderCancelled"
@@ -160,7 +162,7 @@ package com.x.ordermanagement.v2 {
     }
     
     transaction ShippingInformationUpdate<MarketplaceOrder> notify {
-    	description "Updates the shipping information with accountID, siteCode, and sourceID of the marketplace."
+    	description "Updates the shipping information. For example, updating accountID, siteCode, sourceID, etc. for marketplace order."
         sender {
         	message ShippingInformationUpdate {
             	timeouts(receipt=30s, validation=3m)
@@ -174,7 +176,7 @@ package com.x.ordermanagement.v2 {
     }
     
     transaction OrderReturn(Order order) inform {
-    	description "Notifies observers that an order has been returned."
+    	description "Notifies observers that an entire order has been returned."
     	sender {
     		message OrderReturn
     	}

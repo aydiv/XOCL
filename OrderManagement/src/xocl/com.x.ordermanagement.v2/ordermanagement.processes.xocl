@@ -2,6 +2,8 @@
  *  order management domain
  */
 package com.x.ordermanagement.v2 {
+	packagetitle "Order Management"
+	
 	import com.x.ordermanagement.v2.*
 	import com.x.customer.v1.*
 	
@@ -18,7 +20,7 @@ package com.x.ordermanagement.v2 {
      process OrderSearch<NonSensitive, MarketplaceOrderSearch> {
     	
     	summary "Searches for orders based on the search criteria provided."
-    	description "A marketing or analytics provider searches for orders based on the search criteria provided."
+    	description "Searches for orders based on the search criteria provided."
     	
     	roles {
     		OrderManager "Searches for orders." 
@@ -69,7 +71,7 @@ package com.x.ordermanagement.v2 {
         	SalesChannel "Submits the order for processing."
         	OrderProcessor "Performs the order processing."
         	OrderObserver "Informed of the processing that happened."
-        	CustomerManager "Supplies the details needed for the processing of the order."
+        	CustomerManager "Creates or updates data about the customer associated with this order."
         
         }
     
