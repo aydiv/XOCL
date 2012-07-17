@@ -29,7 +29,7 @@ package com.x.inventory.v1
 	{
 		summary "Signals that the attempt to lookup stock items by SKU failed."
 		description "Signals that the request to lookup stock items by SKU has failed and returns information about the failure, which is useful for troubleshooting."
-		array<InventoryLookupError> errors "Array of errors related to the failed search for stock items.";
+		array<InventoryLookupError> errors "Collection of the errors related to the failed search for stock items.";
 	}
 	
 	record InventoryLookupError
@@ -37,7 +37,7 @@ package com.x.inventory.v1
 		summary "Signals there were stock item retrieval errors."
 		description "Returns the errors related to searching for one or more stock items."
 		string? sku "SKUs of the stock items involved in the failed search.";
-		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	
    record InventoryError
@@ -45,7 +45,7 @@ package com.x.inventory.v1
 		summary "Signals that there were errors with updating stock items."
 		description "Returns the errors related to updating a stock item. This can be used as a way of grouping error information in StockItemFailed."
 		StockItem? stockItem "One or more stock items involved in the failed update operation.";
-		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 
     record StockItemUpdated
@@ -90,7 +90,7 @@ package com.x.inventory.v1
 		summary "Contains the information for updating the snapshot."
 		description "Captures the date and time, reason, and location of the snapshot."
 		StockItemData inventorySnapshot "Information for the update."
-		datetime snapshotDate "Date and time the snapshot was done. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.;"
+		datetime snapshotDate "Date and time the snapshot was done.;"
 		InventorySnapshotReason snapshotReason "Reason the snapshot was done."
 		string locationName	"Location of where the snapshot is being taken."
 	}
@@ -107,14 +107,14 @@ package com.x.inventory.v1
 		summary "Signals that updating stock items in a snapshot failed."
 		description "Signals that the updating of stock items in a snapshot failed and returns the information that was sent in the request and information about the failure, which is useful for troubleshooting."
 		UpdateStockItemSnapshot request "Stock items that were not updated.";
-		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 	
 	record UpdateStockItemDelta {
 		summary "Contains the information for updating the stock items."
 		description "Captures date and time, inventory changes, and the warehouse identifier for the stock item update."
 		StockItemData inventoryChange "Inventory information for the update."
-		datetime snapshotDate "Date and time the snapshot was updated. The format is (ISO 8601): YYYY-MM-DDTHH:MMZ.;"
+		datetime snapshotDate "Date and time the snapshot was updated.;"
 		string warehouseId "Identifier of the warehouse."
 	}
 	
@@ -130,6 +130,6 @@ package com.x.inventory.v1
 		summary "Signals that updating stock items failed."
 		description "Returns the update data that was sent in the request and information about the failure, which is useful for troubleshooting."
 		UpdateStockItemDelta request "Update data that was sent in the request."
-		array<Error> errors "Array of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
+		array<Error> errors "Collection of the errors that occurred. Each error consists of an error code and error message, which is useful for troubleshooting. Your application can use error codes as identifiers in your customized error-handling algorithms.";
 	}
 }
