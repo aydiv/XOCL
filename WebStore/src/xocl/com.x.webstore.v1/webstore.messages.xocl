@@ -21,8 +21,8 @@ package com.x.webstore.v1{
 		string url "Location (URL) of the web store.";
 	}
 	record WebStoreOffer extends WebStoreOfferData{
-		summary "Contains the ID of an offer."
-		description "Captures the identifier of an offer."
+		summary "Adds the offer ID field to the WebStoreOfferData record."
+		description "Adds the offer ID field to the WebStoreOfferData record."
 
 		string offerId "Identifier of the offer. This ID is assigned by the channel that published the offer.";
 	}

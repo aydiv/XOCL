@@ -1,4 +1,5 @@
 package com.x.webstore.v1{
+	packagetitle "Web Store"
 	
 	import com.x.webstore.v1.*
 	
