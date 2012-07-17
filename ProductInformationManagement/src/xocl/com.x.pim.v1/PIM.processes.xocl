@@ -1,4 +1,6 @@
-package com.x.pim.v1 { 	
+package com.x.pim.v1 { 
+	packagetitle "Product Information Management"
+		
     import com.x.pim.v1.*
     
     process ProductSearch{

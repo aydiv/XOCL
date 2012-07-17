@@ -1,11 +1,13 @@
 package com.x.pim.v1
 {
+	packagetitle "Product Information Management"
+	
 	import com.x.core.v1.*
 
 	record Product extends ProductData
     {
-        summary "Contains additional information for the ProductData record."
-        description "Captures the unique identifier that represents a product, which is added to ProductData."
+        summary "Adds fields to the ProductData record."
+        description "Adds the ID field to the ProductData record."
         string id "Unique identifier of a product.";
     }
 
