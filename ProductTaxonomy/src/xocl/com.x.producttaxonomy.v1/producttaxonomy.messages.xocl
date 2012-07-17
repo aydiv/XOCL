@@ -1,4 +1,5 @@
-package com.x.producttaxonomy.v1{
+package com.x.producttaxonomy.v1{	
+	packagetitle "Product Taxonomy"
 	
 	record Locale {
 		summary "Contains the specifics of the product location, which is a combination of ISO language code, country code, and optional variant."
